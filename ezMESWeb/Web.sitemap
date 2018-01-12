@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="Default.aspx" title="Home"  description="Home">
+   
+    <siteMapNode url="~/Configure/Configuration.aspx" title="Configure"  description="Configuration">
+      <siteMapNode  title="User" description="User Configuration">
+        <siteMapNode url="~/Configure/User/ConfigEmployee.aspx" title="Employee"  description="User Configuration" />
+      </siteMapNode>
+      
+    <siteMapNode  title="Supply vs. Product"  description="Material and Product Configuration" >
+      <siteMapNode url="~/Configure/Product/UomConfig.aspx" title="UoM"  description="Unit of Measure Configuration" />
+      <siteMapNode url="~/Configure/Product/UomConversionConfig.aspx" title="UoM Conversions"  description="Unit of Measure Conversions" />
+      <siteMapNode url="~/Configure/Product/ProductConfig.aspx" title="Product"  description="Product Configuration" />
+      <siteMapNode url="~/Configure/Product/ProdProcConfig.aspx" title="Product vs. Workflow"  description="Product Workflow Association" />
+      <siteMapNode url="~/Configure/Material/MaterialGroupConfig.aspx" title="Item/Part Group"  description="Item/Part Group Configuration" />
+        <siteMapNode url="~/Configure/Material/MaterialConfig.aspx" title="Item/Part"  description="Item/Part Configuration" />
+      </siteMapNode>
+      
+    
+
+    <siteMapNode  title="Workflow"  description="Workflow Configuration" >
+      <siteMapNode url="~/Configure/Process/ProcessStepConfig.aspx" title="Step"  description="Step Configuration" />
+      <siteMapNode url="~/Configure/Process/RecipeConfig.aspx" title="Recipe"  description="Recipe Configuration" />
+      <siteMapNode url="~/Configure/Process/ProcessSegmentConfig.aspx" title="Segment"  description="Segment Configuration" />
+      <siteMapNode url="~/Configure/Process/ProcessConfig.aspx" title="Workflow"  description="Workflow Configuration" />
+    </siteMapNode>
+
+    <siteMapNode  title="Equipment"  description="Equipment Configuration" >
+      <siteMapNode url="~/Configure/Equipment/EquipmentConfig.aspx" title="Equipment"  description="Equipment Configuration" />
+    </siteMapNode>  
+
+    <siteMapNode  title="Order"  description="Order Configuration" >
+      <siteMapNode url="~/Configure/Order/ClientConfig.aspx" title="Customers/Suppliers"  description="Customer and Supplier Configuration" />
+      <siteMapNode url="~/Configure/Order/ClientDocConfig.aspx" title="Customer Documents"  description="Customer Documents" />
+      <siteMapNode url="~/Configure/Order/SalesOrderConfig.aspx" title="Sales Order"  description="Customer Incoming Order" />
+      <siteMapNode url="~/Configure/Order/InventoryOrderConfig.aspx" title="Inventory Order"  description="Inventory Product Order" />
+      <siteMapNode url="~/Configure/Order/PurchaseOrderConfig.aspx" title="Purchase Order"  description="Supplier Outgoing Order" />
+    </siteMapNode>
+  </siteMapNode>
+
+    <siteMapNode url="~/Tracking/Tracking.aspx"  title="Tracking" description="Tracking">
+      <siteMapNode  title="Warehouse"  description="Warehouse Tracking" >
+        <siteMapNode url="~/Tracking/Inventory/InventoryConfig.aspx" title="Inventory"  description="Inventory Editing" />
+        <siteMapNode url="~/Tracking/Inventory/LoadInventory.aspx" title="Load Inventory"  description="Inventory Loading" />
+      </siteMapNode>
+
+      <siteMapNode  title="Shopfloor"  description="Shopfloor Tracking" >
+        <siteMapNode  url="~/Tracking/Dispatch.aspx" title="Dispatch Product"  description="Dispatch Product" />
+        <siteMapNode  url="~/Tracking/MoveLot.aspx" title="Move Product"  description="Move Product" />
+      </siteMapNode> 
+      
+  </siteMapNode>
+
+    <siteMapNode url="~/Reports/Report.aspx" title="Report"  description="Report">
+      <siteMapNode url="~/Reports/BoMReport.aspx" title="Bill of Material"  description="Bill of Material for Workflow" />
+      <siteMapNode url="~/Reports/OrderReport.aspx" title="Order Status" description="Order Status" />
+      <siteMapNode url="~/Reports/WorkflowReport.aspx" title="Workflow Browser" description="Browse Workflow" />
+      <siteMapNode url="~/Reports/ProductInventoryReport.aspx" title="Product Inventory"  description="Correlate Product with Order and Inventory" />
+      <siteMapNode url="~/Reports/LotHistoryReport.aspx" title="Batch Status/History" description="Batch Status and History Report" />
+      <siteMapNode url="~/Reports/DispatchHistoryReport.aspx" title="Batch Dispatch/History" description="Batch Dsipatch History Report" />
+      <siteMapNode url="~/Reports/ProductInProcessReport.aspx" title="Products Quickview" description="Quickview of Products" />
+
+    </siteMapNode>
+
+  <siteMapNode url="ContactUs.aspx" title="Contact us"  description="Contact us page" />
+  </siteMapNode>
+
+</siteMap>

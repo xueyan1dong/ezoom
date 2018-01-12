@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- If the column shouldn't be displayed, don't put it into xml file -->
+<Table name="order">
+  <Header>Simple LED Customer Orders</Header>
+  <Column name ="priority">
+    <DisplayName>Priority</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.Name, p.id from priority p order by 1</DropdownQuery>
+  </Column>
+  <Column name ="quantity_requested">
+    <DisplayName>Quantity Ordered</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="output_date">
+    <DisplayName>Output Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="expected_deliver_date">
+    <DisplayName>Expected Deliver Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="actual_deliver_date">
+    <DisplayName>Actual Deliver Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="internal_contact">
+    <DisplayName>Internal Contract</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select e.username, e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="external_contact">
+    <DisplayName>External Contract</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>100</TextBoxLength>
+  </Column>
+</Table>

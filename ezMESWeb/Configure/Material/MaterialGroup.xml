@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="MartialGroup">
+  <Header>Item/Part Group</Header>
+    <Column name ="name">
+    <DisplayName>Group Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comments</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

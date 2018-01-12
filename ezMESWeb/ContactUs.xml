@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="feedback">
+  <Header>Feedback</Header>
+  <Column name ="subject">
+    <DisplayName>Subject</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="contact_info">
+    <DisplayName>Contact</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="note">
+    <DisplayName>Content</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>1000</TextBoxLength>
+  </Column>
+</Table>

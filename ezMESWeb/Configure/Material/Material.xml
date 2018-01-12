@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="material">
+  <Header>Item/Part</Header>
+  <Column name ="name">
+    <DisplayName>Part #</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>   
+  </Column>
+  <Column name ="alias">
+    <DisplayName>Vendor</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT '', NULL UNION SELECT name, id FROM client WHERE type in ('supplier', 'both')</DropdownQuery>
+  </Column>
+  <Column name ="mg_id">
+    <DisplayName>Group</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select name, id from material_group order by 1</DropdownQuery>
+    
+  </Column>
+  <Column name ="material_form">
+    <DisplayName>Form</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumQuery>show columns from material like 'material_form'</EnumQuery>
+  </Column>
+  <Column name ="status">
+    <DisplayName>Status</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumQuery>show columns from material like 'status'</EnumQuery>
+  </Column>
+  <Column name ="alert_quantity">
+    <DisplayName>Alert Quantity Level</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Integer</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>  
+  <Column name ="lot_size">
+    <DisplayName>Lot Size</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Integer</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="uom_id">
+    <DisplayName>Unit of Measure</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select name, id from uom order by 1</DropdownQuery>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  </Table>
+
+

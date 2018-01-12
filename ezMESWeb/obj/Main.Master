@@ -1,0 +1,92 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="ezMESWeb.Main" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Main Master Page</title>
+    <link rel="Stylesheet" href="/CSS/general.css" type="text/css" media="screen" />
+    <asp:contentPlaceholder id="head" runat="server" />  
+</head>
+<body>
+ <div id="Div1"></div>
+    <form id="form1" runat="server">
+    <div id="header">
+       <table class="HeaderStyle" >
+           <tr>
+              <td style="width:100px" >
+                    <img alt="Logo" src="/Images/logo.gif" style="width: 169px; height: 54px" />&nbsp;
+              </td>
+                <td style="width:940px">
+                    <div class="style12">
+                     
+                    <asp:LoginStatus ID="LoginStatus1" runat="server" 
+                        onloggingout="LoginStatus1_LoggingOut" style="text-align: right" />
+                    &nbsp;
+                    <asp:LoginName ID="LoginName2" runat="server" />
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <br />
+                    </div>
+               </td>
+             </tr>
+           </table>
+     </div>
+     <hr style="width:99%; height:1px; margin-left: 4px; text-align: left;  margin-top:2px; margin-bottom:2px;" />
+     <div id="TopLinks" >             
+        <table width="98%" cellpadding="0" cellspacing="0" border="0" align="left">
+        <tr >
+            <td width="20%"  align="center" valign="middle">
+                <a id="Configuration" href="/Configure/Configuration.aspx">Configuration</a>
+            </td>
+            <td align="center" width="5%"></td>
+            <td width="20%" align="center" valign="bottom">
+                <a id="Tracking" href="/Tracking/Tracking.aspx">Tracking</a>
+            </td>
+            <td align="center"  width="5%"></td>
+            <td width="20%" align="center">
+                <a id="Report" href="/Reports/Report.aspx">Report</a>
+            </td>
+            <td align="center"  width="5%"></td>
+            <td width="20%" align="center">
+                <a id="ContactUs" href="/ContactUs.aspx">Contact Us</a>
+            </td>
+            <td align="center" width="5%"></td>
+        </tr>
+        </table>
+      </div>
+
+      <div id="Content">
+         <table >
+            <tr>
+            <td valign="top" style="width: 700px; height: 471px;"  colspan="2" >
+            <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+            <table style="width: 100%; height: 423px; margin-right: 0px; margin-top: 0px; margin-bottom:2px;">
+                <tr>
+                    <td class="style2">
+                    </td>
+                    <td class="style1" rowspan="2" style="width: 495px">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style3">
+                        &nbsp;</td>
+                </tr>
+            </table>
+               </asp:ContentPlaceHolder>
+            </td>
+            </tr>
+            <tr style="background-color: #ffcc33;" >
+                <td style=" width:15%" align="center"><a href="" >User Agreement</a></td>
+                <td style=" width:15%" align="center"><a href="" >Privacy Policy</a></td>
+                <td style=" width:70%" align="left">Copyright 2009 @ Ambersoft, LLC.</td>
+            </tr>
+          </table>
+        </div>
+    </form>
+</body>
+</html>
+

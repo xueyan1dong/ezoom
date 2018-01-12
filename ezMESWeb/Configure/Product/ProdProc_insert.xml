@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="Product">
+  <Header>Workflow</Header>
+  <Column name ="process_id">
+    <DisplayName>Workflow</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DropDown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT name, id FROM process ORDER BY 1</DropdownQuery>
+  </Column>
+  <Column name ="priority">
+    <DisplayName>Priority</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DropDown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT name, id FROM priority ORDER BY 1</DropdownQuery>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
+  
+  

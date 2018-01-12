@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="uom">
+  <Header>Unit of Measure</Header>
+  <Column name ="name">
+    <DisplayName>Unit Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="alias">
+    <DisplayName>Alias</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

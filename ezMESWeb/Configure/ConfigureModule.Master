@@ -1,0 +1,138 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ConfigureModule.master.cs" Inherits="ezMESWeb.Configure.ConfigureModule" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+<% 
+    Session.Timeout = 20;
+%>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title>Configuration Master Page</title>
+    <link rel="Stylesheet" href="/CSS/general.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="/CSS/datagrid.css" type="text/css" media="screen" /> 
+  <link rel="stylesheet" href="/CSS/detailgrid.css" type="text/css" media="screen" />  
+<link rel="stylesheet" href="/CSS/tab.css" type="text/css" media="screen" /> 
+  <link rel="stylesheet" href="/CSS/calendar.css" type="text/css" media="screen" />
+  <link media="screen" rel="stylesheet" href="/CSS/master.css" type="text/css" />
+   
+    <asp:contentPlaceholder id="head" runat="server" />  
+
+<script type="text/javascript">
+// Popup window code
+function newPopup(url) {
+	popupWindow = window.open(
+		url,'popUpWindow','height=700,width=800,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,directories=no,status=yes')
+}
+
+function displayTime()
+{
+var localTime = new Date();
+var a_p = ""; 
+var year= localTime.getYear();
+var month= localTime.getMonth() +1;
+var date = localTime.getDate();
+var hours = localTime .getHours();
+if (hours  < 12) 
+{ a_p = "AM"; }
+else
+{ a_p = "PM"; }
+if (hours== 0)
+{ hours = 12; } 
+if (hours > 12) 
+{ hours = hours - 12; } 
+var minutes = localTime .getMinutes();
+minutes  = minutes  + "";
+if (minutes .length == 1) 
+{ 
+	minutes  = "0" + minutes ;
+} 
+var seconds = localTime .getSeconds(); 
+seconds = seconds + "";
+if (seconds .length == 1) 
+{ 
+	seconds = "0" + seconds ;
+} 
+
+var div=document.getElementById("div1");
+div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a_p;
+}
+
+</script>
+
+</head>
+<body id = "Configuration" onload="displayTime();">
+
+<div class="container">
+	<table border="0" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" >
+   		<tr>
+			<td align="left">
+				<a href="#">
+					<img src="/images/logo3.png" id="awmAnchor-menu" alt="" title="Home" /></a> 
+                
+		</td>
+
+ <%if ((bool)Session["LoggedIn"]){%>
+	<td style="padding-left:10px;"  align="left" valign="bottom">
+	 <asp:Label ID="lblName" runat="server" Font-Bold="True" 
+     Font-Size="14px" Width="200px" >Welcome <%=Session["LastName"]%>,<%=Session["FirstName"]%></asp:Label>
+<div id="div1"></div> 
+	</td>
+            <td style="padding-left:10px;"  align="left" valign="bottom">
+            	<a href="/Logout.aspx"><img src="/images/btn_logout.png" alt="Logout" title="Log Out"  vspace="10" /></a>
+             </td>
+ <%}
+   else
+   { %>             
+           <td  style="padding-left:30px;" align="left" valign="bottom">
+                <a href="/default.aspx"><img src="/images/btn_login.png" alt="Login" title="Login"  vspace="10" /></a>
+                </td>
+  <%} %>
+  		</tr>	
+	</table>	
+<div>
+	<ul class="glossymenu">
+ <% if (Session["Role"].Equals("Admin") || Session["Role"].Equals("Manager"))
+     {%>   
+
+	<li><a id="Configuration" href="/Configure/Configuration.aspx"><b>Configuration</b></a></li>
+  <%} %>
+	<li><a id="Tracking" href="/Tracking/Tracking.aspx"><b>Tracking</b></a></li>
+	<li><a id="Report" href="/Reports/Report.aspx"><b>Report</b></a></li>
+	<li><a id="ContactUs" href="/ContactUs.aspx"><b>Feedback</b></a></li>
+       <li><a id="Help" href="JavaScript:newPopup('/help.htm');"><b>Help</b></a></li>
+	</ul>
+</div>
+<form id="Form1" runat="server">   
+<div id="sidebar1">
+
+ <asp:TreeView ID="TreeView" runat="server" DataSourceID="SiteMapDataSource1" ExpandDepth="1" ImageSet="Arrows" MaxDataBindDepth="1" >
+                <ParentNodeStyle Font-Bold="False" />
+                <HoverNodeStyle Font-Underline="True" ForeColor="#5555DD" />
+                <SelectedNodeStyle Font-Underline="True" ForeColor="#5555DD" HorizontalPadding="1px"
+                    VerticalPadding="5px" />
+                <NodeStyle Font-Names="Verdana" Font-Size="1em" ForeColor="Black" HorizontalPadding="1px"
+                    NodeSpacing="0px" VerticalPadding="5px" />
+                   </asp:TreeView>
+               <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="False" StartingNodeUrl="/Configure/Configuration.aspx"  />
+</div>
+	 <div id="mainContent"> 
+<center><b> Configuration Module</b> </center>
+	<table style="width:100%; height: 500px; margin-right: 0px; margin-top: 0px; border : 2px solid #FFCC66; ">
+      <tr>
+         <td valign="top" style="width:95%" >
+    	  <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server" >
+           </asp:ContentPlaceHolder>
+        </td>
+        </tr>
+        </table>        
+                
+      </div>  
+</div>
+      <div id="footer">
+		<a href="#">&copy; Copyright 2010 Ambersoft, LLC</a> 
+		<p id="firewall">Updated: 10:15 pm ET Sep. 11, 2010</p></div>
+	</div>
+   </form>                
+</body>
+</html>
+

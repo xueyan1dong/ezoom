@@ -1,0 +1,103 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <title>Master Page</title>
+ <link rel="Stylesheet" href="/CSS/general.css" type="text/css" media="screen" /> 
+    <asp:contentPlaceholder id="head" runat="server" />  
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+    
+        <table class="style4" style="width:100%">
+            <tr>
+               <td class="style10" colspan="2" style="width: 494px">
+                    <img alt="Logo" src="/Images/logo.gif" style="width: 188px; height: 54px" />&nbsp;
+               </td>
+                <td class="style7" style="width: 134217727px">
+                    <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="False" />
+                    <div class="style12">
+          
+                    <asp:LoginStatus ID="LoginStatus1" runat="server" 
+                        onloggingout="LoginStatus1_LoggingOut" style="text-align: right" />
+                    &nbsp;
+                    <asp:LoginName ID="LoginName2" runat="server" />
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <br />
+                    </div>
+                    <hr style="width: 511px; height: -15px; margin-left: 0px; text-align: right;" />
+                    <asp:menu id="NavigationMenu1"
+                      staticsubmenuindent="8px" 
+                      orientation="Horizontal"
+                      Font-names="Verdana"
+                      Width="260px"
+                      runat="server" DataSourceID="SiteMapDataSource1" 
+                        Height="33px" onmenuitemclick="NavigationMenu1_MenuItemClick" 
+                        BackColor="Silver" Font-Size="Medium" ForeColor="DimGray" 
+                        DynamicHorizontalOffset="5" 
+                        DynamicEnableDefaultPopOutImage="False" BorderColor="Silver" Target="_blank">
+                        <StaticMenuStyle BorderColor="Silver" BackColor="Silver" BorderStyle="Double" />
+                        <StaticSelectedStyle BackColor="Silver" BorderColor="Silver" />
+
+                        <StaticMenuItemStyle BackColor="Silver" 
+                            BorderColor="White" HorizontalPadding="10px" ItemSpacing="2px" />
+
+                        <DynamicHoverStyle BackColor="Orange" ForeColor="White" BorderColor="Orange" BorderStyle="Double" />
+                        <DynamicMenuStyle BackColor="Silver" BorderColor="Silver" BorderStyle="Double" />
+                        <DynamicSelectedStyle BackColor="DimGray" BorderColor="DimGray" />
+                        <DynamicMenuItemStyle BorderStyle="Double" BackColor="Silver" 
+                            ForeColor="Black" HorizontalPadding="5px" VerticalPadding="2px" BorderColor="Silver" />
+
+                        <StaticHoverStyle BorderStyle="Groove" 
+                            BackColor="#7C6F57" ForeColor="White"/>
+                    </asp:menu>
+&nbsp;
+                    &nbsp;&nbsp; &nbsp;
+                    </td>
+               </tr>
+            <tr>
+                <td class="style11" bgcolor="#4A4945" style="width: 105px">
+                </td>
+                <td class="style9" bgcolor="#4A4945" colspan="2" style="width: 494px">
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+            <td valign="top" style="width: 105px">
+                   <asp:TreeView ID="TreeView1" runat="server" DataSourceID="SiteMapDataSource1" Height="243px" Width="156px">
+                   </asp:TreeView>
+            </td>
+            <td colspan="2" valign="top" style="width: 494px" >
+            <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+
+            <table style="width: 100%; height: 423px; margin-right: 0px; margin-top: 0px;">
+                <tr>
+                    <td class="style2">
+                    </td>
+                    <td class="style1" rowspan="2" style="width: 495px">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style3">
+                        &nbsp;</td>
+                </tr>
+            </table>
+
+                </asp:ContentPlaceHolder>
+            </td>
+            </tr>
+            <tr>
+                <td colspan ="3" style="width: 586px; background-color: #ffcc33;">Copyright 2009 @ Ambersoft, LLC.</td>
+            </tr>
+        </table>
+        </div>
+    </form>
+</body>
+</html>

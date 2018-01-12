@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="step">
+  <Header>Process Step Configuration</Header>
+  <Column name ="id">
+    <DisplayName>ID</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="name">
+    <DisplayName>Step Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="step_type_id">
+    <DisplayName>Step Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.name, p.id from step_type p order by 1</DropdownQuery>
+  </Column>
+  <Column name ="eq_id">
+    <DisplayName>Equipment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select '', null union Select e.name, e.id from equipment e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="emp_usage">
+    <DisplayName>Employee Usage</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'Employee Group', 'employee group' union Select 'Employee', 'employee'</DropdownQuery>
+    <Attribute key="OnChange">showDropDown(this, 'emp_id', 'emp_id2')</Attribute>
+    <NormalField>false</NormalField>
+  </Column>
+  <Column name ="emp_id">
+    <DisplayName>Employee or Group</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select '', null union Select eg.name, eg.id from employee_group eg order by 1</DropdownQuery>
+    <Attribute key="style">display:block</Attribute>
+    <NormalField>false</NormalField>
+    <AlterControl name="emp_id2">
+      <IsEnable>true</IsEnable>
+      <UI>Dropdown</UI>
+      <DropdownQuery dcol="0" vcol="1">Select '', null union Select concat(e.firstname, ' ', e.lastname), e.id from employee e where status ='active' order by 1</DropdownQuery>
+      <Attribute key="style">display:none</Attribute>
+      <NormalField>false</NormalField>
+    </AlterControl>
+  </Column>
+  <Column name ="recipe_id">
+    <DisplayName>Recipe</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT '', null UNION SELECT r.name, r.id from recipe r order by 1</DropdownQuery>
+  </Column>
+  <Column name ="mintime">
+    <DisplayName>Min Time</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="maxtime">
+    <DisplayName>Max Time</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>500</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>500</TextBoxLength>
+  </Column>
+  <Column name ="para1">
+    <DisplayName>Parameter 1</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para2">
+    <DisplayName>Parameter 2</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para3">
+    <DisplayName>Parameter 3</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para4">
+    <DisplayName>Parameter 4</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para5">
+    <DisplayName>Parameter 5</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para6">
+    <DisplayName>Parameter 6</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para7">
+    <DisplayName>Parameter 7</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para8">
+    <DisplayName>Parameter 8</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para9">
+    <DisplayName>Parameter 9</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="para10">
+    <DisplayName>Parameter 10</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
+

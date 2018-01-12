@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="recipe">
+  <Header>Recipe Configuration</Header>
+  <Column name ="name">
+    <DisplayName>Recipe Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="exec_method">
+    <DisplayName>Method</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumType>ExecMethodType</EnumType>
+  </Column>
+  <Column name ="contact_employee">
+    <DisplayName>Contact Person</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select e.username, e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="created_by">
+    <DisplayName>Created By</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select e.username, e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+</Table> 

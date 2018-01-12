@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="equipment">
+  <Header>Equipment</Header>
+  <Column name ="name">
+    <DisplayName>Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="state">
+    <DisplayName>State</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumQuery>
+       show columns from equipment like 'state'
+    </EnumQuery>
+  </Column>
+  <Column name ="contact_employee">
+    <DisplayName>Contact Employee</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select concat(firstname, ' ', lastname), id FROM employee</DropdownQuery>
+  </Column>
+  <Column name ="manufacture_date">
+    <DisplayName>Manufacture Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Datetime</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="manufacturer">
+    <DisplayName>Manufacturer</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="manufacturer_phone">
+    <DisplayName>Manufacturer Phone</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="online_date">
+    <DisplayName>Equipment Online Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

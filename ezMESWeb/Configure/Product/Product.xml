@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="product">
+  <Header>Product Configuration</Header>
+  <Column name ="pg_id">
+    <DisplayName>Product Group</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.name, p.id from product_group p order by 1</DropdownQuery>
+  </Column>
+  <Column name ="name">
+    <DisplayName>Product Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="lot_size">
+    <DisplayName>Lot Size</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Integer</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="uomid">
+    <DisplayName>Unit</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select u.alias, u.id from uom u order by 1</DropdownQuery>
+  </Column>
+  <Column name ="lifespan">
+    <DisplayName>Lifespan (days)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comments</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

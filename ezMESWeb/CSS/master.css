@@ -1,0 +1,1223 @@
+/*----------------------------------------------------------------------------------------
+master.CSS
+----------------------------------------------------------------------------------------*/
+	html,body,pre,p,blockquote,div,ul,ol,li,dl,dd,dt,input,fieldset,form,h1,h2,h3,h4,h5,h6,img,th,td
+	{margin:0;padding:0;}
+	
+	table
+	{ border-collapse:collapse;border-spacing:0;} 
+	
+	fieldset,img
+	{border:0;}
+	
+	address,caption,cite,code,dfn,em,strong,th,var
+	{font-style:normal;font-weight:normal;}
+	
+	ol,ul
+	{list-style:none;}
+	
+	caption,th
+	{text-align:left;}
+	
+	h1,h2,h3,h4,h5,h6
+	{font-size:100%;}
+	
+	q:before,q:after
+	{content:'';}
+	
+
+/* ====[Global Overrides]=================================================================
+
+These classes are meant to be applicable to any element and usable in any
+location/scenario.
+
+========================================================================================*/
+	.hidden
+	{display:none !important;}
+	
+	.join
+	{margin-top:2px !important;}
+	
+	.small
+	{font-size:90% !important;}
+	
+	.bold
+	{font-weight:bold !important;}
+	
+	.center
+	{text-align:center !important;}
+	
+	.allCaps
+	{text-transform:uppercase !important;}
+	
+	.smallCaps
+	{font-variant:small-caps !important;}
+
+/* ====[Base Styles]======================================================================
+
+There styles are non-limited; they apply themselves to all instances of their 
+elements on a page.
+
+========================================================================================*/
+	html, body
+	{background:#222 url("../images/blackstripe.gif") top left repeat;}
+	
+	body {font-family:Arial; font-size:76%; line-height:150%; color:#323232; text-align:center;}
+	
+	a, a:link, a:visited
+	{color:#222; text-decoration:underline;}
+	
+	a:hover, a:active
+	{text-decoration:none;}
+	
+	h1, h2, h3, h4, h5, h6
+	{font-family:Arial;}
+	
+/*	p, dl, ol, ul, table, address, blockquote
+	{font-size:1.0em; margin:13px 0 2px;}
+	
+Fixes the drop down */	
+	
+	abbr, acronym
+	{cursor:help; color:inherit; border-bottom:1px dotted #333;}
+	
+	a abbr, a acronym
+	{border-bottom-width:0;}
+	
+	th abbr, th acronym
+	{border-bottom-color:#bbb;}
+	
+	cite
+	{font-style:italic; color:#222;}
+	
+	hr 
+	{height:1px; color:#000; background-color:#000; border:0;
+	 margin:0px 0px 0px 0px; padding:0;}
+	
+	hr.dotted
+	{
+	color:#000;
+	background-color:#000;
+	background-image:url(../images/hrdotted.gif);
+	margin:0px 0px 0px 0px;
+	vertical-align:top;
+	background-position:center top;
+	background-repeat:repeat-x;
+	}
+	
+	hr.heavy
+	{color:#FFDF7E; background-color:#FFDF7E; height:12px; 
+	 background-image:url("../images/hrheavy.gif"); 
+	 background-position:left; background-repeat:repeat-x;}
+	
+	dl dl, ol ol, ul ul, ol ul, ul ol, table table
+	{font-size:1.0em;}
+	
+	ins
+	{color:#444; text-decoration:none; border-bottom:1px dotted #72C655;}
+	
+	del
+	{color:#323232; text-decoration:line-through;}
+	
+	kbd
+	{background-color:#ECE7D3; border:1px solid; border-color:#DDDAC8 #DDDAC8 #C1BD9C #C1BD9C; 
+	 padding:1px 2px; line-height:100%; font-size:1.2em;}
+	
+	ol, ul
+	{margin:15px 0 2px 4px; list-style-position:outside;}
+	
+	ol
+	{list-style-type:decimal; margin-left:16px;}
+	
+	ol ol
+	{list-style-type:lower-alpha;}
+	
+	ol ol ol
+	{list-style-type:lower-roman;}
+	
+	ul 
+	{list-style-type: disc;}
+	
+	ul ul
+	{list-style-type:circle;}
+	
+	ul ul ul
+	{list-style-type:disc;}
+	
+	ol li, ul li
+	{margin-left:20px;}
+	
+	ol ol, ul ul, ol ul, ul ol
+	{margin:2px 0;}
+	
+	ul.oversized li, ol.oversized li, ul.oversized li > .oversized li, ol.oversized li > .oversized li
+	{margin-top:10px;}
+	
+	ul.oversized li li, ol.oversized li li /* prevents cascading inheritance of oversize margining in non-oversized list children of oversized parents (over-ridden above if child is also oversized) */
+	{margin-top:2px;}
+	
+/*	table
+	{background-color:#EEE; border-collapse:separate; text-align:left; margin:18px 0 2px 0;} /* {background-color:#EEE; border:1px solid #666; border-collapse:separate; text-align:left; margin:18px 0 2px 0;} 
+	
+	table.strict
+	{table-layout:fixed;}
+	
+	table.collapsed
+	{border-collapse:collapse;}
+
+	table.layout
+	{background-color:#FFF; border:0; margin:15px 0 0;}
+	
+	table.layout tbody td, table.layout tbody th
+	{border:0; padding:0;}
+	
+	td, th
+	{vertical-align:top;}  */	/*  padding:2px 5px; */
+
+	caption
+	{font-weight:bold; text-align:center; margin:15px 5px 10px 5px;}
+	
+	caption.header
+	{background-color:#4D4D4D; text-align:center; color:#FFF; border:1px solid #2F2F2F; margin: 0; margin-bottom: -15px;}
+	
+	thead
+	{font-size:1.0em;}
+	
+	thead tr
+	{background-color:#383838;}
+	
+	thead tr.level-two, thead tr.levelTwo
+	{background-color:#DFBC53;}
+	
+	thead th
+	{font-weight:bold; color:#FFF; border:1px solid #666;}
+	
+	thead tr.level-two th, thead tr.levelTwo th
+	{color:#222;}
+	
+	tfoot tr
+	{background-color:#DCD7C3;}
+	
+	tfoot td
+	{font-size:0.8em; font-weight:bold;}
+	
+	tfoot th
+	{border:1px solid #666; border-top:2px solid #87826E; font-size:inherit; font-weight:bold;}
+	
+	td.tddata /*it is used to display data element in a page.*/
+	{
+	font-family : arial,verdana,tahoma,sans-serif;
+	font-size : 12px;
+	font-weight : normal;
+	}	
+	
+	tr.trhead /*it is used to display data element in a page.*/
+	{
+	font-family : arial,verdana,tahoma,sans-serif;
+	font-size : 12px;
+	font-weight :bold;
+	background-color:#E5E5E5;
+	}	
+/*	tbody tr
+	{background-color:#FFF;}
+This gets rid of the white part on the table  */			
+	tbody tr.altBg, tbody tr.alt-bg
+	{background-color:#F6F1DF;}
+	
+	tbody td
+    {
+	color: #000000;
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: normal;
+	} 
+	
+	
+	tbody th
+	{border:1px solid #535353; font-weight:bold;}
+
+	.container table thead tr th a, .container table thead tr th a:link, .container table thead tr th a:visited 
+	{color:#FFF;}
+	
+	table.centered, tr.centered, td.centered, th.centered 
+	{ text-align: center; }
+	
+	table.left, tr.left, td.left, th.left 
+	{ text-align: left; }
+
+	table.right, tr.right, td.right, th.right 
+	{ text-align: right; }
+	
+	dt
+	{font-weight: bold;}
+	
+	dd
+	{margin-bottom:10px; margin-left:20px;}
+	
+	strong
+	{font-weight:bold;}
+	
+	sup
+	{vertical-align:text-top; padding:0; position:relative; top:-2px;}
+	
+	sub
+	{vertical-align:text-bottom; padding:0; position:relative; bottom:-1px;}
+	
+	em
+	{font-style:italic;}
+	
+	code, var
+	{font-family:"Courier New", Courier, mono; padding:0 2px; color:#008;}
+
+	tt
+	{font-family:"Courier New", Courier, mono; padding:0 1px; color:#5F3412;}
+	
+	form
+	{margin:10px 0;}
+	
+	label
+	{line-height:125%;}
+	
+	input
+	{overflow:visible;}
+	
+	select[name], input[type="text"], input[type="input"], input[type="textarea"]
+	{border:1px solid #999; padding:1px 1px 2px 1px;}
+	
+	/******textField is for input fields in a form****************/
+	 input.textField 
+	  {font-size:12px; 
+	  font-weight:normal;
+	  font:arial,verdana,tahoma,sans-serif;}
+	  
+	 select.selectField 
+	  {font-size:12px; 
+	  font-weight:normal;
+	  font:arial,verdana,tahoma,sans-serif;}	  
+	 
+	input.button
+	{margin-right:10px; border:1px solid #999; border-top-color:#CCC; border-left-color:#CCC; padding:0.2em 0.6em; background-color:#FFF; background-position:left top; background-image: url("../images/buttonDefaultInverted.gif"); background-repeat:repeat-x; color:#333; font-size:0.9em; font-weight:bold;}
+	
+	input.button:hover
+	{background-image:url("../images/buttonDefault.gif"); background-position:left bottom; border-top-color:#999; border-left-color:#999; cursor:pointer;}
+	
+	input.button:active
+	{border-top-color:#999; border-left-color:#999; border-bottom-color:#CCC; border-right-color:#CCC; position:relative; bottom:-1px; right:-1px;}
+	
+	input.primary
+	{padding:0.2em 0.8em; border-color:#555; color:#0000FF}
+	
+	input.secondary
+	{background-image:url("../images/buttonSecondaryInverted.gif"); color:#0000FF; text-transform:capitalize;}
+	
+	input.secondary:hover
+	{background-image:url("../images/buttonSecondary.gif");}
+	
+	input.highlighted
+	{background-image:url("../images/buttonHighlightedInverted.gif");}
+	
+	input.highlighted:hover
+	{background-image:url("../images/buttonHighlighted.gif");}
+	
+	input.disabled, input.disabled:hover
+	{background-image:none; background-color:#EEE; color:#AAA;}
+	
+	input.disabled:hover
+	{cursor:default; border:1px solid #999; border-top-color:#CCC; border-left-color:#CCC;}
+	
+	input.disabled:active
+	{bottom:0; right:0;}
+
+
+/* ====[Specifics]======================================================================
+
+These are limited styles; they will only apply to one or more areas as outlined in the 
+style rule.
+
+======================================================================================*/
+
+	div.container /*wraps entirety of center area    chg'd KRH From width=98% */
+	{background-color: #FFF ; /*Red dotted line*/
+	margin:auto; overflow:hidden; text-align:left; width:100%;}
+	
+
+/*-------[Head]---------------------------------------------------------------
+
+----------------------------------------------------------------------------*/
+	#header
+	{height:68px; background-color:#fff; overflow:hidden; border-bottom:3px solid #CCC;}
+	
+	#header a.brand
+	{display:block; width:500px; height:68px; padding:3px 15px; float:left;}
+
+/*-------[Sidebar]---------------------------------------------------------------
+
+This is a scaled version of the sidebar implemented on the central servers.
+
+-------------------------------------------------------------------------------*/
+	#sidebar
+	{min-height:2px; width:185px; float:left;}
+	
+	#sidebar a
+	{display:block;}
+	
+	#sidebar ul
+	{margin:0; padding:0;}
+	
+	#sidebar ul li
+	{margin:0; padding:0 0 2px 0; 
+	 background:transparent url("../images/sidebarbuttonrunner.gif") left bottom repeat-x; 
+	 background-color:transprent; padding:0;}
+	
+	#sidebar ul li.isLB
+	{background-color:#EFEFEF;}
+	
+	#sidebar ul li.isLB ul
+	{margin-bottom:6px;}
+	
+	#sidebar ul li a
+	{background-color:transparent; background-image:none; background-repeat:no-repeat; 
+	 background-position:5px 10px; color:#323232; font-weight:bold; padding:5px 2px 5px 10px; 
+	 overflow:hidden; text-decoration:none;}
+	
+	#sidebar ul li a.here
+	{background-image:url("../images/sidebarhere.gif"); background-color:#fff; 
+	font-weight:bold; background-position:left center;}
+	
+	#sidebar ul li a:hover, #sidebar ul li a:active
+	{text-decoration:underline;}
+
+	#sidebar ul#noHeader li a
+	{font-weight:normal;}
+	
+	#sidebar ul#noHeader, #sidebar ul ul
+	{background:#DAE1E0 url("../images/sidebargradient.gif") left top no-repeat;}
+	
+	#sidebar ul#noHeader li, #sidebar ul ul li
+	{margin:0; padding:0 0 2px 0; background:transparent url("../images/sidebarbuttonrunner.gif") left bottom repeat-x;}
+	
+	#sidebar ul#noHeader li a, #sidebar ul ul li a
+	{background-image:url("../images/bullet_raquo.gif"); padding:4px 4px 4px 20px; color:#323232;}
+	
+	#sidebar ul#noHeader li a, #sidebar ul ul li a
+	{font-weight:normal;}
+	
+	#sidebar ul#noHeader li a.here, #sidebar ul ul li a.here
+	{background-image:url("../images/sidebarhere.gif"); background-color:#fff; 
+	 font-weight:bold; background-position:7px 8px;}
+	
+	#sidebar ul#noHeader ul, #sidebar ul ul ul
+	{background:transparent; margin-top:-2px;}
+	
+	#sidebar ul#noHeader ul li, #sidebar ul ul ul li
+	{margin:0; padding:0; list-style-type:none; background:transparent; background-image:none;}
+	
+	#sidebar ul#noHeader ul li a, #sidebar ul ul ul li a
+	{background:transparent url("../images/bullet_1raquo.gif") no-repeat; 
+	 padding:3px 2px 3px 30px; background-position:14px 9px; font-weight:normal;}
+	
+	#sidebar ul#noHeader ul li a.here, #sidebar ul ul ul li a.here
+	{background-image:url("../images/sidebarhere.gif"); background-position:20px 8px;}
+	
+	#sidebar ul#noHeader ul ul, #sidebar ul ul ul ul
+	{background:transparent; margin-top:-2px;}
+	
+	#sidebar ul#noHeader ul ul li, #sidebar ul ul ul ul li
+	{margin:0; padding:0; background:transparent; background-image:none;}
+	
+	#sidebar ul#noHeader ul ul li a, #sidebar ul ul ul ul li a
+	{background:transparent url("../images/bullet_dash.gif") left center no-repeat; 
+	 padding:3px 2px 3px 38px; background-position:25px 9px;}
+	
+	#sidebar ul#noHeader ul ul li a.here, #sidebar ul ul ul ul li a.here
+	{background-image:url("../images/sidebarhere.gif"); background-position:28px 7px;}
+	
+	#sidebar ul#noHeader ul ul ul li a
+	{padding:3px 2px 3px 53px; background-position:38px 9px;}
+
+/*-------[Main Content]---------------------------------------------------------------
+
+There is only one #mainContent instance on any page, however, content blocks 
+(including the Main Content) are classed as content. The content class can be applied 
+to any block, and carries the bulk of content styling. When styling page elements, 
+#mainContent should only be used to override stylings belonging to the content class 
+that are not wanted or need to be different.
+
+------------------------------------------------------------------------------------*/
+	#mainContent
+	{ border: 2px; padding:10px 23px; overflow:hidden; }
+
+    #mainContent span.header
+    { font-size:1.2em; font-weight:bold; }
+    
+	#mainContent p.lastUpdated
+	{font-size:0.8em; font-weight:normal; margin:0 0 10px;}
+	
+/*-------[Page Information]--------------------------------------------------------------
+
+Styles associated with the info area (title, page tools, etc) at the top of 2nd level 
+content pages
+
+---------------------------------------------------------------------------------------*/
+	#pageInfo
+	{overflow:hidden;}
+	
+	#pageTools
+	{width:200px; padding:2px; margin:5px 0 0 6px; border:1px solid #e9e9e9; 
+	 background-color:#f7f7f7; float:right; overflow:hidden; list-style:none; font-size:0.8em;}
+	
+	#pageTools li
+	{float:left; margin:0; padding:0; background:none;}
+	
+	#pageTools li a, #pageTools li a:link, #pageTools li a:visited, #pageTools li span
+	{display:block; padding:1px 1px 1px 13px; width:86px; background-color:transparent; 
+	 background-repeat:no-repeat; background-position:left center;}
+	
+	#pageTools li.print a, #pageTools li.print span
+	{background-image:url("../images/icons/pagetools_print.gif");}
+	
+	#pageTools li.email a, #pageTools li.email span
+	{background-image:url("../images/icons/pagetools_email.gif");}
+	
+	#pageTools li.bookmark a, #pageTools li.bookmark span
+	{background-image:url("../images/icons/pagetools_bookmark.gif");}
+	
+	#pageTools li.subscribe a, #pageTools li.subscribe span
+	{background-image:url("../images/icons/pagetools_subscribe.gif");}
+	
+	#pageTools li.feed a, #pageTools li.feed span
+	{background-image:url("../images/icons/pagetools_feed.gif");}
+	
+	#pageTools li span
+	{cursor:default;}
+
+
+/*------[Box Construct]----------------------------------------------------------------
+
+These styles can create row/column constructs. The maximum number of boxes per row is 
+3. These boxes have the ability to span multiple rows.
+
+-------------------------------------------------------------------------------------*/
+	.content div.quickSearch
+	{width:338px; margin:4px 8px; float:right; background-color:#FFF;}
+	
+	.content div.quickSearch select
+	{width:305px;}
+	
+	.content div.quickSearch input.button
+	{margin-right:0;}
+	
+	.content div.quickSearch hr
+	{margin:5px 0;}
+	
+	.content div.row
+	{background-image:url("../images/vert-dot-line-2.gif"); background-repeat:repeat-y; overflow:auto;}
+	
+	.content div.oneColumn
+	{background-image:url("../images/vert-dot-line.gif");}
+	
+	.content div.contentSquare
+	{margin:4px 8px; width:161px; float:left; display:inline; background:inherit;}
+	
+	.content div.constructNoTitle
+	{padding-top:15px;}
+	
+	.content div.contentSquare h2, .content div.quickSearch h2
+	{color:#900; font-weight:bold; margin-bottom:-9px; font-size:1.0em;}
+	
+	body.home .content div.contentSquare h2
+	{color:#222; font-size:1.25em; letter-spacing:-1px; word-spacing:2px; margin:10px 0 2px;}
+	
+
+/*------[Image Format]----------------------------------------------------------------
+
+Style rules that define the display of imageFormat() UDF
+
+-------------------------------------------------------------------------------------*/
+	div.image img
+	{display:block;}
+	
+	div.s1 img, #content div.s3 img
+	{border:1px solid #3d3d3d; margin:0 auto;}
+	
+	div.s2 img
+	{margin:0 auto;}
+	
+	div.s2, #content div.s3
+	{border:1px solid #3d3d3d; padding:2px 0; background:#f1f1f1;}
+	
+	div.image p.caption
+	{margin:0 auto; font-style:italic; font-size:76%;}
+	
+	div.left
+	{float:left;}
+	
+	div.right
+	{float:right;}
+
+
+/*=======[Content Blocks]===============================================================
+
+Blocks carrying class="content" pick up all of these styles. Multiple blocks can be 
+considered content on any page.
+
+======================================================================================*/
+	.content ul
+	{list-style-type:none;}
+	
+	.content ul ul
+	{margin-left:15px;}
+	
+	.content ul li
+	{background-image:url('../images/bullet.gif'); 
+	 background-repeat:no-repeat; background-position:3px 5px; 
+	 margin-left:0; padding-left:17px;}
+
+.content ul li a:link
+{
+	color:	#2A1FFF;
+}
+	.content ul li.more, .content ol li.more
+	{background-image:none; list-style:none; font-size:0.9em; font-weight:bold;}
+	
+	body.home .content ul li, .content ul.doubleBracket li
+	{background-image:url('../images/bullet_raquo.gif');}
+	
+	body.home .content ul ul, .content ul.doubleBracket ul
+	{margin-left:2px;}
+	
+	body.home .content ul ul li, .content ul.doubleBracket ul li
+	{background-position:0 6px; background-image:url('../images/bullet_indent.gif')}
+	
+	.content ul ul li
+	{background-image:url('../images/bullet_indent.gif'); background-position:0 4px; padding-left:15px;}
+	
+	.content a, .content a:link
+	{color:#373737; text-decoration:underline;}
+	
+	.content a:visited
+	{color:#900; text-decoration:underline;}
+	
+	.content a:hover
+	{color:#222; text-decoration:none;}
+	
+	.content a:active
+	{text-decoration:underline;}
+	
+	.content h1
+	{font-size:2.0em; letter-spacing:-0.05em; word-spacing:0.08em; 
+	 line-height:1.1em; font-weight:normal; font-family:Georgia, "Times New Roman", Times, serif; 
+	 color:#252525; margin:3px 0 10px;}
+	
+	.content h1.subHeading
+	{font-size:1.7em; color:#666; margin:-4px 0 6px;}
+	
+	.content h2, .content h3, .content h4, .content h5, .content h6
+	{margin:10px 0 2px 0;}
+	
+	.content h2 + *, .content h3 + *, .content h4 + *, .content h5 + *, .content h6 + * /*any element appearing directly after the specified headings gets a top margin of 2px -- CSS3*/
+	{margin-top:2px;}
+	
+	.content .contentSquare h2 + *, .content .contentSquare h2 + *, .content .contentSquare h2 + *, .content .contentSquare h2 + *, .content .contentSquare h2 + * /* .contentSquare (box construct) headings have an added negative bottom margin in the style declaration (IE6 conform.) to space headings up... original margins kept in this instance */
+	{margin-top:15px;}
+	
+	.content h2 + table, .content h3 + table, .content h4 + table, .content h5 + table, .content h6 + table /*except tables (captions)*/
+	{margin-top:15px;}
+	
+	.content h2 + table.layout, .content h3 + table.layout, .content h4 + table.layout, .content h5 + table.layout, .content h6 + table.layout /*if the table is for layout, it shouldn't have a caption, so reverse effect.*/
+	{margin-top:2px;}
+	
+	.content h2
+	{font-size:1.25em;}
+	
+	.content h3, .content h4, .content h5, .content h6
+	{font-size:1.00em;}
+	
+	.content h1 *, .content h2 *, .content h3 *, .content h4 *, .content h5 *, .content h6 *
+	{font-weight:inherit;}
+	
+	.content a.anchorUp, .content a.anchorDown
+	{background-color:transparent; background-position:left center; background-repeat:no-repeat; padding:0 0 0 13px;}
+	
+	.content ul.anchorDown, .content ul.anchorUp
+	{list-style:none;}
+	
+	.content ul.anchorDown li, .content ul.anchorUp li
+	{background-color:transparent; background-position:0 3px; 
+	 background-repeat:no-repeat; list-style:none; padding:0 0 0 13px;}
+	
+	.content a.anchorUp, .content ul.anchorUp li
+	{background-image:url("../images/icons/anchor_up.gif");}
+	
+	.content a.anchorDown, .content ul.anchorDown li
+	{background-image:url("../images/icons/anchor_down.gif");}
+	
+	.content address
+	{font-size:98%; font-style:normal; color:#333; line-height:1.2em;}
+	
+	.content p
+	{line-height:1.4em; border-color:#300;}
+	
+	.content pre
+	{font-size:110%; font-style:normal; background:#F3F3F3; border:1px solid #ccc; padding:1px 2px;}
+	
+	.content blockquote
+	{border:1px solid #D2D2D2; background:#EAEAEA url("../images/ldquo.gif") left top no-repeat; padding:2px 2px 2px 25px;}
+	
+	.content q
+	{display:inline; padding:0 1px;}
+	
+	.content img.left
+	{float:left; margin:0 4px 4px 0; padding:2px; border:1px solid #ccc;}
+	
+	.content img.right
+	{float:right; margin:0 0 4px 4px; padding:2px; border:1px solid #ccc;}
+
+	/*========[Form Syles]==================================================================
+
+    ======================================================================================*/
+		.content fieldset
+		{padding:4px; margin:0 0 8px 0;}
+		
+		.content input, .content select, .content textarea
+		{margin:2px 4px;}
+		
+		.content optgroup
+		{border-bottom:1px dotted #CCC; color:#999; font-weight:bold; font-style:normal; padding-bottom:3px;}
+		
+		.content option
+		{color:#000; font-weight:normal; font-style:normal;}
+		
+		.content label
+		{font-weight:bold;}
+		
+		.content input[type=password]
+		{font-style:normal;}
+		
+		.content label.secondary
+		{font-weight:normal;}
+		
+		.content span.required
+		{color:#900; font-weight:bold; margin-right:4px; /*font-size:1.5em;*/}
+		
+		/*---------------------[FORMS with LAYOUT]--------------------------------
+		
+		--------------------------------------------------- overflow:hidden; ---------------------*/
+		form.layout .formRow
+		{clear:both; padding:1px; vertical-align:top; border:1px solid transparent; line-height:20px;}
+		
+		form.layout .noLabel
+		{padding-left:104px;}
+		
+		form.layout .optionGroup
+		{clear:both; width:500px; border:1px solid transparent;}
+		
+		form.layout .caption
+		{display:block; clear:both; line-height:125%; margin-left:102px; font-style:italic;}
+		
+		form.layout .alt-bg
+		{background-color:#F6F1DF; border:1px solid #F6F1DF;}
+		
+		form.layout .border
+		{border:1px solid #A4AFAD;}
+		
+		
+		/*-----------[Headings as Legends]-------------------*/
+		form.layout .legend
+		{font-size:1.0em; font-weight:bold;}
+		
+		form.layout h2.legend
+		{display:block; width:100%; border-bottom:1px solid #A4AFAD; margin-top:0;}
+		
+		form.layout h3.legend
+		{display:block; width:100%; margin-top:0;}
+		
+		
+		/*------------[Labels]-------------------------------*/
+		form.layout label
+		{clear:left; width:100px; text-align:right; float:left; display:block; margin:4px 0 0;}
+		
+		form.layout label.secondary
+		{clear:none; width:100px; text-align:left; float:left;}
+		
+		
+		/*------------[Text, Password, and Select Input Styling]-----------*/
+		form.layout input[type=password]
+		{height:19px; border:1px solid #999;}
+		
+		form.layout input[type=text], form.layout textarea, form.layout select, form.layout input[type=password]
+		{float:left;}
+		
+		form.layout textarea
+		{padding:2px; }
+		
+		
+		/*-------------[Radio and Checkbox Styling]-----------------*/
+		form.layout fieldset.optionGroup input[type=radio], form.layout fieldset.optionGroup input[type=checkbox]
+		{clear:left; float:left; margin:3px 3px 0 100px;}
+		
+		form.layout fieldset.optionGroup label
+		{float:left; width:290px; clear:none; text-align:left; margin:0 3px 6px 3px; font-weight:normal;}
+		
+		
+		/*------------[Required, Error, and Locked Field Styling]--------*/	
+		form.layout input.locked
+		{background-position:1px 0px; background-repeat:no-repeat; padding-left:18px; 
+		  background-image:url("../images/templates/employees/1.0/icons/input_locked.gif"); 
+		  background-color:#EEE; color:#666;}
+			
+		form.layout input.errorField, form.layout textarea.errorField, form.layout select.errorField
+		{background-color:#FDD;}
+		
+		
+		/*------------[Hover effects]------------------------------------*/
+		.hover div.formRow:hover
+		{background-color:#F6F1DF !important; border:1px solid #EFE1B3 !important;}
+		
+		.hover div.alt-bg:hover
+		{background-color:#EFE1B3 !important; border:1px solid #DFCF99 !important;}
+		
+		.hover fieldset.optionGroup:hover
+		{background-color:#F6F1DF !important; border:1px solid #EFE1B3 !important;}
+		
+		.hover input[type=text]:hover, .hover select:hover, .hover input[type=password]:hover
+		{border-color:#A4AFAD;}	
+		
+		.hover input.required:hover, .hover select.required:hover, .hover fieldset.required:hover
+		{border-color:#900;}
+		
+		
+		/*---------[Horizontal Layout of Checkboxes and Radio Buttons]-----------*/
+	
+		form.layout fieldset.horizontal
+		{padding-left:100px; width:421px;}
+		
+		form.layout fieldset.horizontal h3.legend
+		{margin-left:-97px;}
+		
+		form.layout fieldset.horizontal input[type=radio], form.layout fieldset.horizontal input[type=checkbox]
+		{clear:none; margin:3px 3px 0 3px;}
+		
+		form.layout fieldset.horizontal label
+		{float:left; width:auto !important; clear:none; text-align:left; margin:0 6px 3px 3px;}
+		
+		form.layout fieldset.horizontal br
+		{clear:both;}
+		
+		form.layout fieldset.horizontal span.label
+		{display: block; float: left; width: 100px; text-align: right; font-weight: bold; 
+		  padding-right: 2px; margin: auto 0 auto -100px;}
+		
+		form.layout div.multiInput input, form.layout div.multiInput select, form.layout div.multiInput textarea 
+		{float: none; }
+
+/*========[Footer]========================================================================
+
+All styles related to the footer section of the page
+
+========================================================================================*/
+	#footer
+	{border-top:1px solid #202020; padding:10px; overflow:hidden; clear:both;}
+	
+	#footer a, #footer a:link, #footer a:visited
+	{color:#d0d0d0; text-decoration:none;margin:0 0 5px 0;}
+	
+	#footer a:hover, #footer a:active
+	{text-decoration:underline;}
+	
+	#footerLogo, #govLinks, #readersViewers
+	{float:left;}
+	
+	#footerLogo
+	{padding-right:60px;}
+	
+	#govLinks
+	{width:150px;}
+	
+	#readersViewers
+	{width:175px;}
+	
+	#footer h2
+	{font-family:Georgia, "Times New Roman", Times, serif; font-size:1.6em; font-weight:normal; color:#929292; margin:0 0 5px 0;}
+	
+	#footer ul, #footer li
+	{margin:0; padding:0; list-style:none;}
+	
+	#footer #readersViewers li
+	{padding-right:4px; float:left;}
+	
+	#firewall span.connected
+	{color:#87dc00;}
+	
+	#firewall a.notConnected
+	{color:#dc0000;}
+	
+	p#firewall
+	{float:right; border-left:1px dotted #999; width:250px; padding:0 0 0 10px; margin:0; color:#d0d0d0; line-height:150%;}
+
+/*========[Font color]========================================
+  All styles related to the font section of the page
+  ============================================================*/
+
+
+#RedTextLargeBold{
+	font-family : Arial;
+	font-size : 1.05em;
+	font-weight : bold;
+	color : Red;
+}
+
+#RedTextLarge{
+	font-family : Arial;
+	font-size : .85em;
+	font-weight : bold;
+	color : Red;
+}
+#RedTextMedium{
+	font-family : Arial;
+	font-size : .75em;
+	font-weight : bold;
+	color : Red;
+}
+
+#RedTextSmall{
+	font-family : Arial;
+	font-size : .65em;
+	font-weight : normal;
+	color : Red;
+}
+
+#NavyTextLarge{
+	font-family : Arial;
+	font-size : .85em;
+	font-weight : bold;
+	color : Navy;
+}
+
+#NavyTextMedium{
+	font-family : Arial;
+	font-size : .75em;
+	font-weight : bold;
+	color : Navy;
+}
+
+#NavyTextSmall{
+	font-family : Arial;
+	font-size : .65em;
+	font-weight : normal;
+	color : Navy;
+}
+
+#BlackTextLarge{
+	font-family : Arial;
+	font-size : .85em;
+	font-weight : bold;
+	color : Black;
+}
+#BlackTextMedium{
+	font-family : Arial;
+	font-size : .75em;
+	font-weight : bold;
+	color : Black;
+}
+#BlackTextSmall{
+	font-family : Arial;
+	font-size : .65em;
+	font-weight : normal;
+	color : Black;
+}
+
+#BlueTextLarge{
+	font-family : Arial;
+	font-size : 1.00em;
+	font-weight : bold;
+	color : Blue;
+}
+#BlueTextMedium{
+	font-family : Arial;
+	font-size : .75em;
+	font-weight : bold;
+	color : Blue;
+}
+#BlueTextSmall{
+	font-family : Arial;
+	font-size : .65em;
+	font-weight : normal;
+	color : Blue;
+}
+
+#GreenTextLarge{
+	font-family : Arial;
+	font-size : .85em;
+	font-weight : bold;
+	color : Green;
+}
+#GreenTextMedium{
+	font-family : Arial;
+	font-size : .75em;
+	font-weight : bold;
+	color : Green;
+}
+#GreenTextSmall{
+	font-family : Arial;
+	font-size : .65em;
+	font-weight : normal;
+	color : Green;
+}
+
+#PurpleTextLarge{
+	font-family : Arial;
+	font-size : .85em;
+	font-weight : bold;
+	color : Purple;
+}
+
+#PurpleTextMedium{
+	font-family : Arial;
+	font-size : .75em;
+	font-weight : bold;
+	color : Purple;
+}
+
+#PurpleTextSmall{
+	font-family : Arial;
+	font-size : .65em;
+	font-weight : normal;
+	color : Purple;
+}
+
+#WhiteTextLarge{
+	font-family : Arial;
+	font-size : .85em;
+	font-weight : bold;
+	color : White;
+}
+
+#WhiteTextMedium{
+	font-family : Arial;
+	font-size : .75em;
+	font-weight : bold;
+	color : White;
+}
+
+#WhiteTextSmall{
+	font-family : Arial;
+	font-size : .65em;
+	font-weight : normal;
+	color : White;
+}
+	
+#apDiv1 {
+position:absolute;
+left:22px;
+top:190px;
+width:180px;
+height:50px;
+z-index:1;
+background-color: #F5F5F5;
+border: 1px outset #D5FFFF;
+}
+
+.style1 {
+	color: #0000FF
+}
+.style2 {
+color: #004080;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 1.3em;
+font-weight: bold;
+
+}
+#apDiv2 {
+position:absolute;
+left:276px;
+top:140px;
+width:512px;
+height:auto;
+z-index:2;
+background-color: #F5F5F5;
+padding: 1px;
+border: 1px outset #D5FFFF;
+}
+#apDiv3 {
+position:absolute;
+left:178px;
+top:370px;
+width:698px;
+height:300px;
+z-index:3;
+}
+
+
+#container { 
+   width: 80%;  /* this will create a container 80% of the browser width */
+	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+	border: 1px solid #000000;
+	text-align: left; /* this overrides the text-align: center on the body element. */
+} 
+#header { 
+	background: #DDDDDD; 
+	padding: 0 10px;  /* this padding matches the left alignment of the elements in the divs that appear beneath it. If an image is used in the #header instead of text, you may want to remove the padding. */
+} 
+#header h1 {
+	margin: 0; /* zeroing the margin of the last element in the #header div will avoid margin collapse - an unexplainable space between divs. If the div has a border around it, this is not necessary as that also avoids the margin collapse */
+	padding: 10px 0; /* using padding instead of margin will allow you to keep the element away from the edges of the div */
+}
+
+/* Tips for sidebar1:
+1. Since we are working in relative units, it's best not to use padding on the sidebar. It will be added to the overall width for standards compliant browsers creating an unknown actual width. 
+2. Since em units are used for the sidebar value, be aware that its width will vary with different default text sizes.
+3. Space between the side of the div and the elements within it can be created by placing a left and right margin on those elements as seen in the ".twoColHybLtHdr #sidebar1 p" rule.
+*/
+ #sidebar1 {
+	float: left; 
+	width: 13em; /* since this element is floated, a width must be given */
+	background: #FFCC66; /* #EBEBEB;the background color will be displayed for the length of the content in the column, but no further */
+	padding: 0 0 10px 0; /* top,right,bottom & left padding create visual space within this div  */
+
+}
+#sidebar1 p{
+	text-indent:10px;
+	font-size:1em;
+	text-decoration: none; background-color: #FFCC66;
+	padding-bottom:12px;
+
+}
+
+#sidebar1 a {
+	padding-top:10px;
+	padding-bottom:10px;
+	font-size:1em;
+	width:12em;
+	background:#FFCC66;
+	color:#03F;
+
+}
+
+Body#Main #sidebar1 a#MainMenu ,
+Body#WhatsNew #sidebar1 a#NewMenu,
+Body#WorkSpace #sidebar1 a#WSMenu,
+Body#CustSupport #sidebar1 a#CSMenu,
+Body#Link #sidebar1 a#LinkMenu,
+Body#KittAdminMain #sidebar1 a#kittAdminMenu,
+Body#ContractAdmin #sidebar1 a#COAdminMenu,
+Body#RequestPage #sidebar1 a#RequestMenu 
+	{text-decoration: none; background-color: #FFF; }
+	
+#sidebar1 a:link, #sidebar1 a:visited
+	{color:#222;  text-decoration:underline;  
+	  }
+	
+#sidebar1 a:hover
+	{color:#03F;}
+	
+
+	
+/* Tips for mainContent:
+1. The space between the mainContent and sidebar1 is created with the left margin on the mainContent div.  No matter how much content the sidebar1 div contains, the column space will remain. You can remove this left margin if you want the #mainContent div's text to fill the #sidebar1 space when the content in #sidebar1 ends.
+2. Be aware it is possible to cause float drop (the dropping of the non-floated mainContent area below the sidebar) if an element wider than it can contain is placed within the mainContent div. WIth a hybrid layout (percentage-based overall width with em-based sidebar), it may not be possible to calculate the exact width available. If the user's text size is larger than average, you will have a wider sidebar div and thus, less room in the mainContent div. You should be aware of this limitation - especially if the client is adding content with Contribute.
+3. In the Internet Explorer Conditional Comment below, the zoom property is used to give the mainContent "hasLayout." This may help avoid several IE-specific bugs.
+*/
+#mainContent { 
+	margin: 0 20px 0 12em; /* the right margin can be given in percentages or pixels. It creates the space down the right side of the page. */
+} 
+
+#AdminHeader, #AdminHeader p
+{
+	margin-top:0px; margin-left:10px; margin-right:10px;
+	font:arial,Verdana, Geneva, sans-serif;
+	font-size:12px;
+}
+
+#AdminHeader a
+{
+	color: #03F;
+}
+
+/* Miscellaneous classes for reuse */
+.fltrt { /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.fltlft { /* this class can be used to float an element left in your page */
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class should be placed on a div or break element and should be the final element before the close of a container that should fully contain a float */
+	clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+
+.cssnav
+{
+position: relative;
+float: left;
+font-family: arial, helvetica, sans-serif;
+/*background: url(/Images/btn_logout.png) no-repeat;*/
+overflow:hidden;/* for ie to hide extra height*/	
+width: 200px;
+height: 100px;
+margin: 0;
+
+}
+
+.cssnav a
+{
+display: block;
+color: #000000;
+font-size: 11px;
+width: 200px;
+height: 100px;
+display: block;
+float: left;
+color: black;
+text-decoration: none;
+overflow:hidden;/* for ie to hide extra height*/
+ padding:0;
+}
+.cssnav a:hover {
+						color: White;
+			
+			}
+
+
+.cssnav img
+{
+width: 200px;
+height: 100px;
+border: 0
+}
+
+* html a:hover
+{
+visibility:visible;
+
+
+}
+
+.cssnav a:hover img
+{
+visibility:hidden;
+}
+
+.cssnav span
+{
+position: absolute;
+left: 35px;
+top: 40px;
+font-size:18px;
+text-align: center;
+cursor: pointer;
+background-color:#EBEBEB;
+padding-top: 10px;
+padding-bottom:10px;
+padding-right:10px;
+padding-left:10px;
+
+} 
+.cssnav span:hover
+{
+	background:#696969;
+}

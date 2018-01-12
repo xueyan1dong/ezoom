@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="uom_conversion">
+  <Header>Uom Conversion</Header>
+  <Column name ="to_id">
+    <DisplayName>Convert to UoM:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select name, id from uom order by 1</DropdownQuery>
+  </Column>
+  <Column name ="method">
+    <DisplayName>Converting Method</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumQuery>SHOW columns FROM uom_conversion LIKE 'method'</EnumQuery>
+  </Column>
+  <Column name ="constant">
+    <DisplayName>Conversion Constant</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

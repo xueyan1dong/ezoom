@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="client">
+  <Header>Simple LED Clients</Header>
+  <Column name ="name">
+    <DisplayName>Client Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>100</TextBoxLength>
+  </Column>
+  <Column name ="type">
+    <DisplayName>Client Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumType>ClientType</EnumType>
+  </Column>
+  <Column name ="internal_contact_id">
+    <DisplayName>Internal Contact</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select e.username, e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="company_phone">
+    <DisplayName>Company Ph#</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="address">
+    <DisplayName>Address</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="city">
+    <DisplayName>City</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="state">
+    <DisplayName>State</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="zip">
+    <DisplayName>Zip</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="country">
+    <DisplayName>Country</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="address2">
+    <DisplayName>Address 2</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="city2">
+    <DisplayName>City 2</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="state2">
+    <DisplayName>State 2</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="zip2">
+    <DisplayName>Zip 2</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="contact_person1">
+    <DisplayName>Contact 1</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="contact_person2">
+    <DisplayName>Contact 2</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="person1_workphone">
+    <DisplayName>Person1 Work Ph#</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="person1_cellphone">
+    <DisplayName>Person1 Cell Ph#</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="person1_email">
+    <DisplayName>Person1 Email</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>30</TextBoxLength>
+  </Column>
+  <Column name ="person2_workphone">
+    <DisplayName>Person2 Work Ph#</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="person2_cellphone">
+    <DisplayName>Person2 Cell Ph#</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="person2_email">
+    <DisplayName>Person2 Email</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>30</TextBoxLength>
+  </Column>
+  <Column name ="ifactive">
+    <DisplayName>Active</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>radiobutton</UI>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
+  
+  

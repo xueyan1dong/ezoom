@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="inventory">
+  <Header>Consumption</Header>
+
+  <Column name ="ingredient_id">
+    <DisplayName>Inventory</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 0, 0</DropdownQuery>
+   
+  </Column>
+
+  <Column name ="required_quantity">
+    <DisplayName>Quantity Needed</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="used_quantity">
+    <DisplayName>Quantity to Consume</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+
+  <Column name ="uom_name">
+    <DisplayName>Unit of Measure</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

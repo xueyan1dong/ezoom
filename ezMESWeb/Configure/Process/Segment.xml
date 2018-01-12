@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="Product">
+  <Header>Workflow Segment</Header>
+  <Column name ="name">
+    <DisplayName>Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>80</TextBoxLength>
+  </Column>
+  <Column name ="position">
+    <DisplayName>Position</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>40</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
+  
+  

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- If the column shouldn't be displayed, don't put it into xml file -->
+<Table name="order">
+  <Header>Simple LED Customer Orders</Header>
+  <Column name ="order_type">
+    <DisplayName>Order Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumType>OrderType</EnumType>
+  </Column>
+  <Column name ="ponumber">
+    <DisplayName>Process Number</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="client_id">
+    <DisplayName>Client</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select c.name, c.id from client c order by 1</DropdownQuery>
+  </Column>
+  <Column name ="priority">
+    <DisplayName>Priority</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.Name, p.id from priority p order by 1</DropdownQuery>
+  </Column>
+  <Column name ="product_id">
+    <DisplayName>Product Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.name, p.id from product p order by 1</DropdownQuery>
+  </Column>
+  <Column name ="quantity_requested">
+    <DisplayName>Quantity Ordered</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Integer</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="quantity_made">
+    <DisplayName>Quantity Made</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="quantity_in_process">
+    <DisplayName>Quantity In Process</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="quantity_shipped">
+    <DisplayName>Quantity Shipped</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="uomid">
+    <DisplayName>Unit</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select u.alias, u.id from uom u order by 1</DropdownQuery>
+  </Column>
+  <Column name ="order_date">
+    <DisplayName>Ordered Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="output_date">
+    <DisplayName>Output Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="expected_deliver_date">
+    <DisplayName>Expected Deliver Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="actual_deliver_date">
+    <DisplayName>Actual Deliver Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="internal_contact">
+    <DisplayName>Internal Contract</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select e.username, e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="external_contact">
+    <DisplayName>External Contract</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>100</TextBoxLength>
+  </Column>
+</Table>

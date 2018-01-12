@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="step">
+  <Header>Process</Header>
+  <Column name ="process_group">
+    <DisplayName>Workflow Group:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="name">
+    <DisplayName>Name:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="owner">
+    <DisplayName>Owner:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="usage">
+    <DisplayName>Usage:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>500</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>500</TextBoxLength>
+  </Column>
+  <Column name ="create_time">
+    <DisplayName>Create Time:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="created_by">
+    <DisplayName>Created By:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="update_time">
+    <DisplayName>Update Time:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="updated_by">
+    <DisplayName>Update By:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>label</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="URL">
+    <ID>hpBOM</ID>
+    <DisplayName>View Bill of Material</DisplayName>
+    <Value>/Reports/BoMReport.aspx?processid=</Value>
+  </Column>
+  <Column name ="URL">
+    <ID>hpTraveler</ID>
+    <DisplayName>View Traveler</DisplayName>
+    <Value>/Reports/WorkflowReport.aspx?processid=</Value>
+  </Column>
+</Table>
+
+
+

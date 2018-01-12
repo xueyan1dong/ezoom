@@ -1,0 +1,20 @@
+﻿DROP TABLE IF EXISTS `pd_attributes`;
+CREATE TABLE `pd_attributes` (
+  `pd_id` int(10) unsigned NOT NULL,
+  `attr_id` int(10) unsigned NOT NULL,
+  `attr_name` varchar(255) NOT NULL,  
+  `attr_type` enum('in','out','both') NOT NULL DEFAULT 'both',
+  `data_type` enum('decimal','signed integer','unsigned integer','signed big integer','unsigned big integer','varchar','char','date','datetime','time', 'text', 'mediumtext', 'longtext','enum') NOT NULL,
+  `length` tinyint(3) unsigned DEFAULT NULL,
+  `decimal_length` tinyint(1) unsigned DEFAULT NULL,
+  `key_attr` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `optional` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `uom_id` smallint(3) unsigned DEFAULT NULL,
+  `attr_value` text DEFAULT NULL,
+  `max_value` text DEFAULT NULL,
+  `min_value` text DEFAULT NULL,
+  `enum_values` text DEFAULT NULL,
+  `description` text,
+  `comment` text,
+  PRIMARY KEY (`pd_id`,`attr_id`)
+) ENGINE=InnoDB;

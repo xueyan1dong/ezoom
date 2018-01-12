@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="inventory">
+  <Header>SimplyLEDs Inventory</Header>
+  <Column name ="source_type">
+    <DisplayName>Source Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumQuery>
+      show columns from inventory like 'source_type'
+    </EnumQuery>
+    <Attribute key="OnChange">showDropDown(this, 'pd_or_mt_id', 'mt_id', 'supplier_id')</Attribute>
+    <NormalField>false</NormalField>
+  </Column>
+  <Column name ="pd_or_mt_id">
+    <DisplayName>Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select distinct d.name, d.id from product d order by 1</DropdownQuery>
+    <Attribute key="style">display:none</Attribute>
+    <NormalField>false</NormalField>
+    <AlterControl name="mt_id">
+      <IsEnalble>true</IsEnalble>
+      <UI>Dropdown</UI>
+      <DropdownQuery dcol="0" vcol ="1">Select name, id from material order by 1</DropdownQuery>
+      <Attribute key="style">display:block</Attribute>
+      <NormalField>false</NormalField>
+    </AlterControl>
+  </Column>
+  <Column name ="lot_id">
+    <DisplayName>Batch Number</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="serial_no">
+    <DisplayName>Serial Number</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="out_order_id">
+    <DisplayName>Purchase PO Number</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">select '', null union Select ponumber, id from `order_general` where order_type in ('inventory', 'supplier')</DropdownQuery>
+  </Column>
+  <Column name ="in_order_id">
+    <DisplayName>Sales PO Number</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">select '', null union Select ponumber, id from `order_general` where order_type in ('customer', 'inventory')</DropdownQuery>
+  </Column>
+  <Column name ="original_quantity">
+    <DisplayName>Original Quantity</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="actual_quantity">
+    <DisplayName>Actual Quantity</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="uom_id">
+    <DisplayName>Unit of Measure</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select if(u.alias IS null OR length(u.alias)=0, u.name, u.alias), u.id from uom u order by 1</DropdownQuery>
+  </Column>
+  <Column name ="manufacture_date">
+    <DisplayName>Manufacture Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="expiration_date">
+    <DisplayName>Expiration Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="arrive_date">
+    <DisplayName>Arrive Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DateTime</UI>
+    <TextBoxLength>15</TextBoxLength>
+  </Column>
+  <Column name ="contact_employee">
+    <DisplayName>Contact Employee</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select concat(e.firstname, ' ', e.lastname), e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

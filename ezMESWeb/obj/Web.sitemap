@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="Default.aspx" title="Home"  description="Home">
+   
+    <siteMapNode url="~/Configure/Configuration.aspx" title="Configure"  description="Configuration">
+      <siteMapNode url="~/Configure/User" title="User"  description="User Configuration">
+        <siteMapNode url="~/Configure/User/ConfigureUser.aspx" title="User"  description="User Configuration" />
+      </siteMapNode>
+
+    <siteMapNode url="~/Configure/Product" title="Product"  description="Product Configuration" >
+      <siteMapNode url="~/Configure/Product/ProductConfig.aspx" title="Product"  description="Product Configuration" />
+      <siteMapNode url="~/Configure/Product/ProductGroupConfig.aspx" title="Product Group"  description="Product Group Configuration" />
+      <siteMapNode url="~/Configure/Product/ProductCategoryConfig.aspx" title="Product Category"  description="Product Category Configuration" />
+    </siteMapNode>
+
+      <siteMapNode url="~/Configure/Material" title="Material"  description="Material Configuration">
+        <siteMapNode url="~/Configure/Material/MaterialGroupConfig.aspx" title="Material Group"  description="Material Group Configuration" />
+      </siteMapNode>
+      
+
+    <siteMapNode url="~/Configure/Process" title="Process"  description="Process Configuration" >
+      <siteMapNode url="~/Configure/Process/ProcessConfigure.aspx" title="Process"  description="Process Configuration" />
+    </siteMapNode>
+
+    <siteMapNode url="~/Configure/Location" title="Location"  description="Location Configuration" >
+      <siteMapNode url="~/Configure/Location/LocationConfigure.aspx" title="Location"  description="Location Configuration" />
+    </siteMapNode>
+
+    <siteMapNode url="~/Configure/Order" title="Order"  description="Order Configuration" >
+      <siteMapNode url="~/Configure/Order/OrderConfig.aspx" title="Order"  description="Order Configuration" />
+    </siteMapNode>
+  </siteMapNode>
+
+  <siteMapNode url="~/Tracking/Tracking.aspx"  title="Tracking" description="Tracking">
+    <siteMapNode url="~/Tracking/TrackProcess.aspx" title="Process"  description="Process Tracking" />
+    <siteMapNode url="~/Tracking/TrackProduct.aspx" title="Product"  description="Process Product" />
+  </siteMapNode>
+
+  <siteMapNode url="~/Reports/Report.aspx" title="Report"  description="Report">
+    <siteMapNode url="~/Reports/ProductInventoryReport.aspx" title="Inventory By Product"  description="Correlate Product with Inventory" />
+  </siteMapNode>
+
+  <siteMapNode url="ContactUs.aspx" title="Contact us"  description="Contact us page" />
+  </siteMapNode>
+
+</siteMap>

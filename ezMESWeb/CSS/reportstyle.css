@@ -1,0 +1,77 @@
+.title
+{
+	font-family:Verdana;
+	font-style:normal;
+	font-size:16px;
+	height: 20px;
+	padding-top: 10px;
+	padding-bottom:5px;
+}
+
+.drpStyle
+{
+	width: 100px;
+	height: 25px;
+	
+}
+
+.topBody
+{
+	position:inherit;
+	padding: 5px 5px 5px 0;
+	margin: 0 auto 0 auto;
+	height: 25px;
+	list-style: none;
+	width: 843px;
+}
+
+.topBody li{
+	float:left; 
+	 list-style:none; 
+}
+
+
+.Rpt_Filter_Title{
+	background: url(../Images/table_head_tile.png) repeat-x;
+	border-color:#D2D2D2; 
+	height:15px;
+	text-align:center;
+	font-size: 14px;
+	color:White; 
+	font-weight: bold; 
+	border-collapse:collapse;	
+} 
+
+.submit_button{
+	background: url(../Images/button_tile.png) repeat-x;
+	color:#FFFFFF; 
+	text-transform:capitalize;
+	font-weight: bold; 
+	height:24px;  /* max size is 27 */
+	border:0px;
+	margin-left:4px;
+}
+
+.Rpt_Filter_Table{
+	background-color:#D2D2D2;
+	border:thin;
+	border-color:#646464;
+	font-size:14px;
+	font-weight: bold;
+	border-bottom-color:#F00;	
+	border-top:1px solid #646464;
+	border-bottom:1px solid #646464;
+	border-right:1px solid #646464;
+	border-left:1px solid #646464;
+	border-collapse:collapse;
+}
+
+.Rpt_Deep_Gray{
+	background: url(../Images/button_tile.png) repeat-x;/*background-color:#152756; */
+	border:#646464;
+	font-size: 14px;
+	color:White; 
+	font-weight: bold;
+} 
+
+

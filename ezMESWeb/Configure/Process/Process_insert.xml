@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="step">
+  <Header>Workflow</Header>
+  <Column name ="prg_id">
+    <DisplayName>Workflow Group:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select prg.name, prg.id from process_group prg order by 1</DropdownQuery>
+  </Column>
+  <Column name ="name">
+    <DisplayName>Name:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="owner_id">
+    <DisplayName>Owner:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select concat(e.firstname, ' ', e.lastname), e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="usage">
+    <DisplayName>Usage:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>radiobutton</UI>
+    <ArrayName>Usage</ArrayName>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>200</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment:</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>200</TextBoxLength>
+  </Column>
+</Table>
+
+

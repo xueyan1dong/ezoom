@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- If the column shouldn't be displayed, don't put it into xml file -->
+<Table name="order">
+  <Header>Start New Batch(es)</Header>
+  <Column name ="ProductName">
+    <DisplayName>Product</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>80</TextBoxLength>
+  </Column>
+  <Column name ="process_id">
+    <DisplayName>Workflow</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.Name, p.id from process p</DropdownQuery>
+  </Column>
+  <Column name ="lot_size">
+    <DisplayName>Size per Batch</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Integer</UI>
+    <TextBoxLength>10</TextBoxLength>
+    <AlterControl name="uom">
+      <IsEnalble>true</IsEnalble>
+      <UI>Label</UI>
+      <TextBoxLength>10</TextBoxLength>
+    </AlterControl>
+  </Column>
+  <Column name ="num_lots">
+    <DisplayName>Number of Batch(es)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="alias_prefix">
+    <DisplayName>Prefix for Batch Name(s)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>10</TextBoxLength>
+  </Column>
+  <Column name ="lot_contact">
+    <DisplayName>Contract Person</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select concat(e.firstname, ' ', e.lastname), e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="lot_priority">
+    <DisplayName>Priority of Batch(es)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.Name, p.id from priority p order by 1</DropdownQuery>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>100</TextBoxLength>
+  </Column>
+</Table>

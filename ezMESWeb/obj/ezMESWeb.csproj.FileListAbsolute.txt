@@ -1,0 +1,34 @@
+C:\Test Projects\ezMESWeb\ezMESWeb\bin\ezMESWeb.dll
+C:\Test Projects\ezMESWeb\ezMESWeb\bin\ezMESWeb.pdb
+C:\Test Projects\ezMESWeb\ezMESWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Test Projects\ezMESWeb\ezMESWeb\obj\Debug\ezMESWeb.dll
+C:\Test Projects\ezMESWeb\ezMESWeb\obj\Debug\ezMESWeb.pdb
+C:\Test Projects\ezMESWeb\ezMESWeb\obj\Debug\ezMESWeb.Properties.Resources.resources
+C:\Test Projects\ezMESWeb\ezMESWeb\obj\Debug\ezMESWeb.csproj.GenerateResource.Cache
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\ezMESWeb.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\ezMESWeb.pdb
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\AjaxControlToolkit.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\System.Web.Ajax.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\AjaxControlToolkit.pdb
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\System.Web.Ajax.pdb
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\ar\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\cs\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\de\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\es\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\fr\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\he\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\hi\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\it\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\ja\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\ko\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\nl\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\pt\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\ru\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\tr-TR\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\zh-CHS\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\bin\zh-CHT\AjaxControlToolkit.resources.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\obj\Debug\ResolveAssemblyReference.cache
+C:\Test Projects\XueYan's Copy\ezMESWeb\obj\Debug\ezMESWeb.Properties.Resources.resources
+C:\Test Projects\XueYan's Copy\ezMESWeb\obj\Debug\ezMESWeb.csproj.GenerateResource.Cache
+C:\Test Projects\XueYan's Copy\ezMESWeb\obj\Debug\ezMESWeb.dll
+C:\Test Projects\XueYan's Copy\ezMESWeb\obj\Debug\ezMESWeb.pdb

@@ -1,0 +1,465 @@
+/* /////////////// basic elements /////////////// */
+* {
+	padding: 0;
+    font-size: small;
+	margin-right: 3px;
+	margin-top: 0px;
+	margin-bottom: 0;
+}
+
+body
+{
+    background-position: left top;
+    background: #DADADA url('/Images/bg_body.gif') repeat-x left top;
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ////////////// layout ///////////////// */
+
+#container
+{
+    width: 739px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0px;
+    top: 0px;
+    left: 22px;
+    height: 438px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2;
+}
+
+#intro
+{
+    background: transparent url('/Images/bg_intro.jpeg') no-repeat left top;
+    position: relative;
+    padding: 1px;
+    height: 191px;
+    width: 781px;
+    top: 0px;
+    left: 3px;
+}
+
+
+#pageHeader {
+	display: inline;
+	height: 0;
+	left: -1000px;
+	overflow: hidden;
+	position: absolute;
+	top: -1000px;
+	width: 0;
+}
+
+		#pageHeader h1{
+			font: bold 154%/25px Arial, Helvetica, sans-serif;
+		}
+		
+		#pageHeader h2{
+			font: bold 90%/25px Arial, Helvetica, sans-serif;
+		}
+
+#preamble
+{
+    
+    background: #52514E url('/Images/bg_preamble.jpeg') no-repeat right top;
+    color: #fff;
+    font: normal normal normal large normal Arial, Helvetica, sans-serif;
+    padding: 80px 30px 15px 15px;
+    margin-left: 288px;
+    margin-top: 0px;
+    height: 186px;
+    width: 446px;
+    Z-index: 5
+}
+
+#preamble h3
+{
+    background: transparent url('/Images/hl_roadto.gif') no-repeat right top;
+    height: 37px;
+    margin: 0 0px 10px 107px;
+    width: 495px;
+}
+	
+#preamble p {
+			padding-left: 30px;
+    width: 529px;
+}
+
+#preamble h3 span
+{
+    display: inline;
+    height: 0;
+    left: auto;
+    overflow: hidden;
+    position: absolute;
+    top: -1000px;
+    width: 0;
+}
+
+
+/*		Link List
+-----------------------------------------------------------------------*/
+
+#linkList
+{
+    background-position: 0px 2px;
+    z-index: 1;
+    background: transparent repeat-y 0px 2px;
+    color: #fff;
+    font-weight: normal;
+    padding: 15px 10px 0 0;
+    top: 177px;
+    width: 200px;
+    position: absolute;
+    left: auto;
+    height: 238px;
+    bottom: auto;
+}
+#linkList h3 {
+			padding-left: 10px;
+		}
+		
+		#linkList a, #linkList a:link, #linkList a:visited  {
+			color: #000;
+			text-decoration: underline;
+		}
+		
+		#linkList a:hover, #linkList a:active, #linkList a:focus  {
+			text-decoration: none;
+		}
+		
+		#linkList ul li {
+			font-size: 70%;
+			list-style: square; 
+			
+		}
+
+#extraDiv1, #extraDiv2, #extraDiv3, #extraDiv4, #extraDiv5, #extraDiv6{display:none;}
+
+
+/* ///////////// background image ////////////// */
+
+#lselect, #larchives, #lresources
+{
+    background: none repeat-y;
+    background-color: #FFCC66;
+    color: #000000;
+}
+
+A:link	{	
+	text-decoration:	none;
+	color:	#3333cc;
+	}	
+		
+A:visited	{	
+	text-decoration:	none;
+	color:	#333399;
+	}	
+		
+A:active	{	
+	text-decoration:	none;
+	color:	#333399;
+	}	
+		
+A:hover	{	
+	text-decoration:	underline;
+	color:	#3333cc;
+	}
+	
+SMALL	{	
+	font-size:	.7em;
+	}	
+
+BIG	{	
+	font-size:	1.17em;
+	}	
+
+BLOCKQUOTE, PRE	{	
+	font-family:	Courier New, monospace;
+	}	
+	
+
+UL LI	{	
+	list-style-type:    square;
+	}	
+
+UL LI LI	{	
+	list-style-type:	disc;
+	}	
+
+UL LI LI LI	{	
+	list-style-type:	circle;
+	}	
+	
+OL LI	{	
+	list-style-type:	decimal;
+	}	
+
+OL OL LI	{	
+	list-style-type:	lower-alpha;
+	}	
+
+OL OL OL LI	{	
+	list-style-type:	lower-roman;
+	}	
+
+IMG 	{
+	margin-top: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+	}
+label.report 
+{
+	font-family:Times New Roman;
+	font-size: 18px;
+	line-height : normal;
+}
+
+td
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif, Times New Roman;
+	font-size: 11px;
+	color: #000000;
+}
+
+.reporttext
+{
+	font-family:Times New Roman; 
+	font-size:22px;    	
+}
+.tan-border-top
+{
+	border-top: 1px solid #ffffff;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #D5D291;
+	border-bottom: 1px solid #D5D291;
+}
+
+.tan-border
+{
+	border-top: 1px solid #ffffff;
+	border-left: 1px solid #D5D291;
+	border-right: 1px solid #D5D291;
+	border-bottom: 1px solid #D5D291;
+}
+
+.header
+{
+	margin-left:4px;
+}
+
+.header-gray
+{
+	font-weight: bold;
+	font-size: 14px;
+	color: #696969;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+	margin-left:4px;
+}
+
+.tab-active
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #990000;
+	border-top: 0px none #EDECD1;
+	border-right: 1px solid #EDECD1;
+	border-left: 1px solid #EDECD1;
+	border-bottom: 0px none #EDECD1;
+	background-color: #EDECD1;
+	text-align: center;
+	padding-top: 3px;
+	padding-right: 18px;
+	padding-bottom: 3px;
+	padding-left: 18px;
+}
+
+.side-menu
+{
+	font-weight: bold;
+	font-size: 14px;
+	color: #696969;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+        .style1
+        {
+        }
+        .style2
+        {
+            width: 87px;
+        }
+        .style3
+        {
+            width: 87px;
+        }
+        .HeaderStyle
+        {
+			background-color: #ffcc33; 
+			border-width:thin; 
+			border-color:Aqua
+			width: 100%;
+            height: 100px;
+            margin-top: 0px;
+            margin-left: 4px;
+        }
+        .style7
+        {
+            height: 124px;
+            text-align: right;
+            width: 268435520px;
+        }
+        .style9
+        {
+            height: 5px;
+        }
+        .style10
+        {
+            width: 157px;
+            height: 124px;
+        }
+        .style11
+        {
+            width: 175px;
+            height: 5px;
+        }
+        .style12
+        {
+            width: 657px;
+            margin-top: 0px;
+            height: 15px;
+            z-index:2
+        }
+         .style13
+        {
+            height: 129px;
+        }
+        .style18
+        {
+            width: 217px;
+        }
+         .style19
+        {
+            height: 35px;
+        }    
+         .style20
+        {
+            height: 42px;
+        }  
+
+        .menu1
+        {
+            text-align: left;
+            margin-left: 0px;
+        }
+        
+
+/* Updated Row */
+TR.updated TD
+{
+	background-color:yellow;
+}
+/*Modal Popup*/
+.modalBackground 
+{
+    background-color:Gray;
+    filter:alpha(opacity=70);
+    opacity:0.7;
+} 
+
+#TopLinks
+{
+	background-image:url('/Images/horiz-menu-div.gif');
+	border-color:Gray;
+    border-width:medium;
+    height:25px;
+     padding-top:5px;
+    /*width: 99%; */
+   /* margin-left:4px;*/
+}
+
+#TopLinks a
+{
+	color:White;
+	font-size: 16px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+
+}
+#TopLinks a:hover
+{
+	background-color:#ffe4c4;
+	color:Black;
+	padding:5px 5px 5px 5px;
+}
+
+
+/*Credits: By Santosh Setty (http://webdesigninfo.wordpress.com) */
+/*Posted to: Dynamic Drive CSS Library (http://www.dynamicdrive.com/style/) */
+
+.glossymenu{
+	position: relative;
+	padding: 0 0 0 34px;
+	margin: 0 auto 0 auto;
+	background: url(../images/menuo_bg.gif) repeat-x; /*tab background image path*/
+	height: 46px;
+	list-style: none;
+}
+
+.glossymenu li{
+	float:left;
+	list-style:none;
+}
+
+.glossymenu li a{
+	float: left;
+	display: block;
+	color:#000;
+	text-decoration: none;
+	font-family: sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	padding:0 0 0 16px; /*Padding to accomodate left tab image. Do not change*/
+	height: 46px;
+	line-height: 46px;
+	text-align: center;
+	cursor: pointer;	
+}
+
+.glossymenu li a b{
+	float: left;
+	display: block;
+	padding: 0 40px 0 25px; /*Padding of menu items*/
+}
+
+.glossymenu li.current a, .glossymenu li a:hover{
+	color: #fff;
+	background: url(../images/menuo_hover_left.gif) no-repeat; /*left tab image path*/
+	background-position: left;
+}
+
+.glossymenu li.current a b, .glossymenu li a:hover b{
+	color: #fff;
+	background: url(../images/menuo_hover_right.gif) no-repeat right top; /*right tab image path*/
+}
+
+Body#Configuration .glossymenu a#Configuration, 
+Body#Tracking .glossymenu li a#Tracking,
+Body#Report .glossymenu li a#Report,
+Body#ContactUs .glossymenu li a#ContactUs,
+Body#Help .glossymenu li a#Help
+ {color: #fff;
+	background: url(../images/menuo_hover_left.gif) no-repeat /*url(../images/menuo_hover_right.gif) no-repeat right top;*/ /*right tab image path*/
+ }
+ 
+ Body#Configuration .glossymenu li a#Configuration b,
+ Body#Tracking .glossymenu li a#Tracking b,
+ Body#Report .glossymenu li a#Report b,
+ Body#ContactUs .glossymenu li a#ContactUs b,
+ Body#Help .glossymenu li a#Help b
+ {color: #fff;
+	background: url(../images/menuo_hover_right.gif) no-repeat right top; /*right tab image path*/
+ }
