@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="ezOMMServer.DispatchService" CodeBehind="DispatchService.svc.cs" %>

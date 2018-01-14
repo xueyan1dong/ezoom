@@ -1,0 +1,9 @@
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\bin\Release\ezOMMClient.exe.config
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\bin\Release\ezOMMClient.exe
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\bin\Release\ezOMMClient.pdb
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\obj\Release\ResolveAssemblyReference.cache
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\obj\Release\ezOMMClient.frmStudentDetails.resources
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\obj\Release\ezOMMClient.Properties.Resources.resources
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\obj\Release\ezOMMClient.csproj.GenerateResource.Cache
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\obj\Release\ezOMMClient.exe
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WindowsWCFTest\obj\Release\ezOMMClient.pdb

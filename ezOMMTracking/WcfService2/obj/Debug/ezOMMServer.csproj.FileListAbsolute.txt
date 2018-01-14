@@ -1,0 +1,10 @@
+C:\Users\xueyan\projects\ambersoft\MES\ezMESWeb_Fei\WcfService2\WcfService2\bin\WcfService2.dll
+C:\Users\xueyan\projects\ambersoft\MES\ezMESWeb_Fei\WcfService2\WcfService2\bin\WcfService2.pdb
+C:\Users\xueyan\projects\ambersoft\MES\ezMESWeb_Fei\WcfService2\WcfService2\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\xueyan\projects\ambersoft\MES\ezMESWeb_Fei\WcfService2\WcfService2\obj\Debug\WcfService2.dll
+C:\Users\xueyan\projects\ambersoft\MES\ezMESWeb_Fei\WcfService2\WcfService2\obj\Debug\WcfService2.pdb
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WcfService2\bin\WcfService2.dll
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WcfService2\bin\WcfService2.pdb
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WcfService2\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WcfService2\obj\Debug\WcfService2.dll
+C:\Users\xueyan\projects\ambersoft\MES\ezOMMTracking\WcfService2\obj\Debug\WcfService2.pdb
