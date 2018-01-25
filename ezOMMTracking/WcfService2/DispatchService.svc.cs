@@ -42,7 +42,7 @@ namespace ezOMMServer
             object[] values = new object[30];
 
             //string lotalias = "";
-            //sqlConn = new MySqlConnection("server=localhost;user id=root;Password=meslady;persist security info=True;database=ezmes");
+            //sqlConn = new MySqlConnection("server=localhost;user id=root;Password=root;persist security info=True;database=ezmes");
             //sqlConn.Open();
             //sqlCmd = new MySqlCommand();
             //sqlCmd.Connection = sqlConn;
