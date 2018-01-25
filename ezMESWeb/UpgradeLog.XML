@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
-<Properties><Property Name="Solution" Value="ezMESWeb">
-</Property><Property Name="Solution File" Value="C:\Users\xueyan\projects\new_product\MES\ezMESWeb\ezMESWeb\ezMESWeb.sln">
-</Property><Property Name="Date" Value="Thursday, November 05, 2009">
-</Property><Property Name="Time" Value="11:03:58 AM">
-</Property></Properties><Event ErrorLevel="0" Project="ezMESWeb" Source="ezMESWeb.csproj" Description="Project converted successfully">
-</Event><Event ErrorLevel="3" Project="ezMESWeb" Source="ezMESWeb.csproj" Description="Converted">
-</Event><Event ErrorLevel="0" Project="ezMESWeb" Source="ezMESWeb.csproj" Description="Scan complete: Upgrade not required for project files.">
-</Event></UpgradeLog>
