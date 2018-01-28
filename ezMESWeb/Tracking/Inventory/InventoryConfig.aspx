@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="InventoryConfig.aspx.cs" Inherits="ezMESWeb.Tracking.Inventory.InventoryConfig" Title="Inventory Tracking -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="InventoryConfig.aspx.cs" Inherits="ezMESWeb.Tracking.Inventory.InventoryConfig" Title="Inventory Tracking -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Assembly="IdeaSparx.CoolControls.Web" Namespace="IdeaSparx.CoolControls.Web" TagPrefix="asp" %>
 

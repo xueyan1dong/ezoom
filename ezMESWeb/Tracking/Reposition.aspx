@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.master" AutoEventWireup="true" CodeBehind="Reposition.aspx.cs" Inherits="ezMESWeb.Tracking.Reposition" Title="Reposition Batch -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.master" AutoEventWireup="true" CodeBehind="Reposition.aspx.cs" Inherits="ezMESWeb.Tracking.Reposition" Title="Reposition Batch -- ezOOM" %>
 <%@ Register TagPrefix="asp" TagName="lot" Src="~/Tracking/lot.ascx" %>
 <%@ Register TagPrefix="asp" TagName="ConsumptionStep" Src="~/Tracking/ConsumptionStep.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>

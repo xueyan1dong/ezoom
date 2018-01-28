@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Configure/ConfigureModule.Master" AutoEventWireup="true" CodeBehind="EquipmentConfig.aspx.cs" Inherits="ezMESWeb.Configure.Equipment.EquipmentConfig" Title="Equipment Configuration -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="~/Configure/ConfigureModule.Master" AutoEventWireup="true" CodeBehind="EquipmentConfig.aspx.cs" Inherits="ezMESWeb.Configure.Equipment.EquipmentConfig" Title="Equipment Configuration -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">

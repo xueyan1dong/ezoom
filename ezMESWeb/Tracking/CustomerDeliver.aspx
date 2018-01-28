@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.master" AutoEventWireup="true" CodeBehind="CustomerDeliver.aspx.cs" Inherits="ezMESWeb.Tracking.CustomerDeliver" Title="Customer Deliver -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.master" AutoEventWireup="true" CodeBehind="CustomerDeliver.aspx.cs" Inherits="ezMESWeb.Tracking.CustomerDeliver" Title="Customer Deliver -- ezOOM" %>
 <%@ Register TagPrefix="asp" TagName="lot" Src="~/Tracking/lot.ascx" %>
 <%@ Register TagPrefix="asp" TagName="ConsumptionStep" Src="~/Tracking/ConsumptionStep.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>

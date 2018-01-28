@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="ReportModule.master" AutoEventWireup="true" CodeBehind="WorkflowReport.aspx.cs" Inherits="ezMESWeb.Reports.WorkflowReport" 
- Title="Workflow Browser -- ezOMM" %>
+ Title="Workflow Browser -- ezOOM" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 

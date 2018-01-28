@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="UomConversionConfig.aspx.cs" Inherits="ezMESWeb.Configure.UomConversionConfig" Title="Uom Conversions Association -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="UomConversionConfig.aspx.cs" Inherits="ezMESWeb.Configure.UomConversionConfig" Title="Uom Conversions Association -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 

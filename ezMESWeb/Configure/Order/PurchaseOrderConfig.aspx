@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../ConfigureModule.master" AutoEventWireup="true" CodeBehind="PurchaseOrderConfig.aspx.cs" Inherits="ezMESWeb.Configure.Order.PurchaseOrderConfig"
- Title="Purchase Order Configuration -- ezOMM" %>
+ Title="Purchase Order Configuration -- ezOOM" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 

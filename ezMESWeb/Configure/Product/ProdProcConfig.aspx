@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ProdProcConfig.aspx.cs" Inherits="ezMESWeb.Configure.ProdProcConfig" Title="Product Process Association -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ProdProcConfig.aspx.cs" Inherits="ezMESWeb.Configure.ProdProcConfig" Title="Product Process Association -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 

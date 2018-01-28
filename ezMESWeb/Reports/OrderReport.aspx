@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="ReportModule.master" AutoEventWireup="true" CodeBehind="OrderReport.aspx.cs" Inherits="ezMESWeb.Reports.OrderReport" 
- Title="Order Progress Report -- ezOMM" %>
+ Title="Order Progress Report -- ezOOM" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 

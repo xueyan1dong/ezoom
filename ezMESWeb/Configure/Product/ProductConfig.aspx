@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../ConfigureModule.master" AutoEventWireup="true" CodeBehind="ProductConfig.aspx.cs" Inherits="ezMESWeb.Configure.ProductConfig" Title="Product Configuration -- ezOMM"
+<%@ Page Language="C#" MasterPageFile="../ConfigureModule.master" AutoEventWireup="true" CodeBehind="ProductConfig.aspx.cs" Inherits="ezMESWeb.Configure.ProductConfig" Title="Product Configuration -- ezOOM"
  %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>

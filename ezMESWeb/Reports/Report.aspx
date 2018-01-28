@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="ReportModule.Master" AutoEventWireup="true" CodeBehind="Report.aspx.cs" Inherits="ezMESWeb.Reports.Report" Title="ezOMM -- Reports" %>
+<%@ Page Language="C#" MasterPageFile="ReportModule.Master" AutoEventWireup="true" CodeBehind="Report.aspx.cs" Inherits="ezMESWeb.Reports.Report" Title="ezOOM -- Reports" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

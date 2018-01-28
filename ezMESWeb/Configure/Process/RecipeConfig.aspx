@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../ConfigureModule.master" AutoEventWireup="true" CodeBehind="RecipeConfig.aspx.cs" Inherits="ezMESWeb.Configure.Process.RecipeConfig"
- Title="Recipe Configuration -- ezOMM" %>
+ Title="Recipe Configuration -- ezOOM" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 

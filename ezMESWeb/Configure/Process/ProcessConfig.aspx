@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" MasterPageFile="../ConfigureModule.master" AutoEventWireup="true" CodeBehind="ProcessConfig.aspx.cs" Inherits="ezMESWeb.ProcessConfig"
- Title="Process Configuration -- ezOMM" %>
+ Title="Process Configuration -- ezOOM" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 

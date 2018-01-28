@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="TrackingModule.Master" AutoEventWireup="true" CodeBehind="MoveLot.aspx.cs" Inherits="ezMESWeb.Tracking.MoveLot" Title="Move Product -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="TrackingModule.Master" AutoEventWireup="true" CodeBehind="MoveLot.aspx.cs" Inherits="ezMESWeb.Tracking.MoveLot" Title="Move Product -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Assembly="IdeaSparx.CoolControls.Web" Namespace="IdeaSparx.CoolControls.Web" TagPrefix="asp" %>
 

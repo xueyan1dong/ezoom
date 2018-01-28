@@ -1,6 +1,6 @@
 <%@ Import Namespace="System.Data" %>
 
-<%@ Page Language="C#" MasterPageFile="~/Configure/ConfigureModule.master" AutoEventWireup="true" CodeBehind="MaterialGroupConfig.aspx.cs" Inherits="ezMESWeb.Configure.Material.MaterialGroupConfig" Title="Material Group Configuration -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="~/Configure/ConfigureModule.master" AutoEventWireup="true" CodeBehind="MaterialGroupConfig.aspx.cs" Inherits="ezMESWeb.Configure.Material.MaterialGroupConfig" Title="Material Group Configuration -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Assembly="IdeaSparx.CoolControls.Web" Namespace="IdeaSparx.CoolControls.Web" TagPrefix="asp" %>
 

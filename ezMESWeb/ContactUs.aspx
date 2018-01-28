@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="ContactUs.aspx.cs" Inherits="ezMESWeb.ContactUs" Title="Contact/Feedback -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="ContactUs.aspx.cs" Inherits="ezMESWeb.ContactUs" Title="Contact/Feedback -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -29,7 +29,7 @@
 height="90%">   
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
        <ContentTemplate>
-           <asp:GridView ID="gvTable" runat="server" Caption="Feedbacks for ezOMM" 
+           <asp:GridView ID="gvTable" runat="server" Caption="Feedbacks for ezOOM" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsFeedbackGrid" 
                EmptyDataText="No feedbacks so far." Height="145px" Width="100%"
                AutoGenerateColumns="False"  

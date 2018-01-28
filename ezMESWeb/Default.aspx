@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>ezOMM -- Online Manufacturing Management</title>
+    <title>ezOOM -- Online Operation Management</title>
      <link rel="stylesheet" href="/CSS/general.css" type="text/css" media="screen" />  
     <style type="text/css" title="currentStyle" media="screen">
 	    .style1
@@ -18,10 +18,7 @@
     <div id="container">
     <div id="intro"></div>
        <div id="preamble" class="style1" >
-           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           A demonstration of Manufacturing Management systems that can be accomplished visually through web 
-           site.
-           </div>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A web-based operation management systems that can be accomplished visually through web site.</div>
            <div id="linkList">
     <table id="tblLogin" cellspacing="1" cellpadding="1" style="border: thin solid black; 
         width:300px; height:200px; font-size:10px; font-family:Arial; background-color:White" 

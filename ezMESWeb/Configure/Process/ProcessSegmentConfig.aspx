@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ProcessSegmentConfig.aspx.cs" Inherits="ezMESWeb.Configure.ProcessSegmentConfig" Title="Process Segment Configuration -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ProcessSegmentConfig.aspx.cs" Inherits="ezMESWeb.Configure.ProcessSegmentConfig" Title="Process Segment Configuration -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 

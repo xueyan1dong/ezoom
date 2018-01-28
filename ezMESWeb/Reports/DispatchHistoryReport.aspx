@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="ReportModule.master" AutoEventWireup="true" CodeBehind="DispatchHistoryReport.aspx.cs" Inherits="ezMESWeb.Reports.DispatchHistoryReport"  Title="Dispatch History Report -- ezOMM"%>
+﻿<%@ Page Language="C#" MasterPageFile="ReportModule.master" AutoEventWireup="true" CodeBehind="DispatchHistoryReport.aspx.cs" Inherits="ezMESWeb.Reports.DispatchHistoryReport"  Title="Dispatch History Report -- ezOOM"%>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 

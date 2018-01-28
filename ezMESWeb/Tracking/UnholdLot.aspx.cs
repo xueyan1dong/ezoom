@@ -74,11 +74,11 @@ namespace ezMESWeb.Tracking
         switch(Request.QueryString["step_type"])
         {
           case "scrap":
-            Page.Title = "Scrap Batch -- ezOMM";
+            Page.Title = "Scrap Batch -- ezOOM";
             btnDo.Text = "Scrap Batch";
             break;
           case "hold lot":
-            Page.Title = "Unhold Batch -- ezOMM";
+            Page.Title = "Unhold Batch -- ezOOM";
             btnDo.Text = "Unhold Batch";
             break;
         }

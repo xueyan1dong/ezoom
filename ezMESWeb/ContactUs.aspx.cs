@@ -214,7 +214,7 @@ namespace ezMESWeb
         mailMessage.IsBodyHtml = false;
 
         //Set the subjet and body text
-        mailMessage.Subject = "ezOMM Feedback: " + subject;
+        mailMessage.Subject = "ezOOM Feedback: " + subject;
         mailMessage.Body = "From: " + txtFrom.Text.Trim() + "\n" + "Contact Info: " + contactInfo + "\n"
           + body;
 

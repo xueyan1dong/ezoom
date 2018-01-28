@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="../ConfigureModule.master" AutoEventWireup="true" CodeBehind="UomConfig.aspx.cs" Inherits="ezMESWeb.Configure.UomConfig"
- Title="Unit of Measure Configuration -- ezOMM" %>
+ Title="Unit of Measure Configuration -- ezOOM" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 

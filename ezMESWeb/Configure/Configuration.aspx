@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="ConfigureModule.Master" AutoEventWireup="true" CodeBehind="Configuration.aspx.cs" Inherits="ezMESWeb.Configure.Configuration" Title="Configuration Module -- ezOMM" %>
+<%@ Page Language="C#" MasterPageFile="ConfigureModule.Master" AutoEventWireup="true" CodeBehind="Configuration.aspx.cs" Inherits="ezMESWeb.Configure.Configuration" Title="Configuration Module -- ezOOM" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
