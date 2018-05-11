@@ -130,8 +130,8 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
       </div>  
 	</div>
       <div id="footer">
-		<a href="#">&copy; Copyright 2018 IT Helps Holding LLC</a> 
-		<p id="firewall">Updated: 10:15 pm ET Sep. 11, 2017</p></div>
+		<a href="#">&copy; Copyright 2018 IT Helps LLC</a> 
+		<p id="firewall">Updated: 10:15 pm ET May 09, 2018</p></div>
 	</div>
    </form>
 <% } else { %>
@@ -145,8 +145,8 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
 </div>
 </div>
  <div id="footer">
-		<a href="#">&copy; Copyright 2018 IT Helps Holding LLC</a> 
-		<p id="firewall">Updated: 10:15 pm ET Sep. 11, 2017</p></div>
+		<a href="#">&copy; Copyright 2018 IT Holding LLC</a> 
+		<p id="firewall">Updated: 10:15 pm ET May 09, 2018</p></div>
 </div>
 
 <% } %>

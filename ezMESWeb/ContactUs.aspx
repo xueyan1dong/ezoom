@@ -63,7 +63,7 @@ height="90%">
            
        </ContentTemplate>
               </asp:UpdatePanel> 
-             <div style="background-color:Beige; font-style:italic; padding:10px 5px 5px 10px;">You may also contact AmberSoft, LLC at: <a href="mailto:info@ambersoftsys.com">info@ambersoftsys.com</a>, 203-702-0623</div> 
+             <div style="background-color:Beige; font-style:italic; padding:10px 5px 5px 10px;">You may also contact IT Helps at: <a href="mailto:info@ithelps.co">info@ithelps.co</a>, 203-297-8285</div> 
               
        <asp:SqlDataSource ID="sdsFeedbackGrid" runat="server" 
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
