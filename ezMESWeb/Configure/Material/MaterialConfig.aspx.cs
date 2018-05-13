@@ -348,7 +348,9 @@ namespace ezMESWeb.Configure.Material
                      this.gvTable.SelectedIndex.ToString()
                  );
 
-                 UpdateDataPanel();
+                    gvTable.DataBind();
+                    this.gvTablePanel.Update();
+  //                  UpdateDataPanel();
               }
            }
         
