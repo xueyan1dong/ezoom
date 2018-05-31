@@ -1,3 +1,6 @@
+/*
+	5/30/2018:sdong:added new step_type: disassemble for disassemble a product into multiple components
+*/
 DROP TABLE IF EXISTS `step_type`;
 CREATE TABLE `step_type` (
   `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
@@ -10,3 +13,4 @@ CREATE TABLE `step_type` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `sc_un1` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

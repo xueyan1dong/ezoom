@@ -117,3 +117,5 @@ INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`
 VALUES ('scrap',0,0,now(),'No parameter is needed.');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES ('deliver to customer',0,0,now(),'No parameter is needed.Receiving information carried in lot comment');
+INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
+VALUES('disassemble', 0, 0, now(),  'disassemble products into one or multiple components. recipe is supplied as a column value.');
