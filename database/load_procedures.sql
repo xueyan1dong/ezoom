@@ -3855,6 +3855,17 @@ END IF;
 END$
 
 -- procedure start_lot_step
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : start_lot_step.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : db operations for starting a lot at a step
+*    Log                    :
+*    6/1/2018: xdong: adding handling to new step type -- disassemble
+*/
+
 DROP PROCEDURE IF EXISTS `start_lot_step`$
 CREATE PROCEDURE `start_lot_step`(
   IN _lot_id int(10) unsigned,
@@ -3984,7 +3995,7 @@ BEGIN
         IF (_response IS NULL OR length(_response)=0)  
         THEN
           CASE 
-          WHEN _step_type in ('consume material', 'condition')
+          WHEN _step_type in ('consume material', 'disassemble', 'condition')
           THEN
             SET _start_timecode = DATE_FORMAT(UTC_timestamp(), '%Y%m%d%H%i%s0');        
             SET _step_status = 'started';
