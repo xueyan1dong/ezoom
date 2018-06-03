@@ -20,7 +20,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
-//using MySql.Data.MySqlClient;
+//using MySql.Data.MySqlClient;  
 using CommonLib;
 using CommonLib.Data.EzSqlClient;
 
@@ -93,6 +93,7 @@ namespace ezMESWeb
          }
          catch (Exception ex)
          {
+           lblResults.Visible = true;
            lblResults.Text = "Failed to log in, due to " + ex.Message;
            return;
          }
@@ -134,6 +135,7 @@ namespace ezMESWeb
          }
          catch (Exception ex)
          {
+           lblResults.Visible = true;
            lblResults.Text = "Fail to log in due to " + ex.Message;
          }
       }

@@ -1,10 +1,13 @@
 /*--------------------------------------------------------------
-*    Copyright 2009 Ambersoft LLC.
-*    Source File            : TrackProduct.aspx.cs
-*    Created By             : Fei Xue
-*    Date Created           : 11/03/2009
-*    Platform Dependencies  : .NET 2.0
-*    Description            : 
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : StartConsumeMaterial.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET
+*    Description            : UI for ending disassemble step
+*    Log                    :
+*    6/1/2018: xdong: adding code to handle new step type disassemble, which has the same start step UI as ComsumeMaterial
+*   
 *
 ----------------------------------------------------------------*/
 
@@ -278,15 +281,26 @@ namespace ezMESWeb.Tracking
         {
           Session["lot_status"] = ezCmd.Parameters["@_lot_status"].Value.ToString();
           stepStatus = ezCmd.Parameters["@_step_status"].Value.ToString();
-          Response.Redirect("EndConsumeMaterial.aspx?step_status=" + stepStatus
-    + "&start_time="+ezCmd.Parameters["@_start_timecode"].Value.ToString()
-    + "&sub_process=" + subProcessId
-    + "&position=" + positionId
-    + "&sub_position=" + subPositionId
-    + "&step=" + stepId
-    + "&quantity=" + txtQuantity.Text.Trim()
-    + "&equipment=" + drpEquipment.SelectedValue
-    + "&step_type=" + Request.QueryString["step_type"]);
+          if (Request.QueryString["step_type"].Equals("disassemble") )
+              Response.Redirect("EndDisassemble.aspx?step_status=" + stepStatus
+        + "&start_time=" + ezCmd.Parameters["@_start_timecode"].Value.ToString()
+        + "&sub_process=" + subProcessId
+        + "&position=" + positionId
+        + "&sub_position=" + subPositionId
+        + "&step=" + stepId
+        + "&quantity=" + txtQuantity.Text.Trim()
+        + "&equipment=" + drpEquipment.SelectedValue
+        + "&step_type=" + Request.QueryString["step_type"]);
+          else
+            Response.Redirect("EndConsumeMaterial.aspx?step_status=" + stepStatus
+      + "&start_time="+ezCmd.Parameters["@_start_timecode"].Value.ToString()
+      + "&sub_process=" + subProcessId
+      + "&position=" + positionId
+      + "&sub_position=" + subPositionId
+      + "&step=" + stepId
+      + "&quantity=" + txtQuantity.Text.Trim()
+      + "&equipment=" + drpEquipment.SelectedValue
+      + "&step_type=" + Request.QueryString["step_type"]);
           ezCmd.Dispose();
           ezConn.Dispose();
         }

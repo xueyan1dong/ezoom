@@ -24,6 +24,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -85,7 +86,10 @@
     <Content Include="Images\bg.gif" />
     <Content Include="Images\bg_preamble.jpg" />
     <Content Include="Images\Logo.gif" />
-    <Content Include="Web.config" />
+    <Content Include="Tracking\EndDisassemble.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigTemplate.aspx.cs">
@@ -109,6 +113,10 @@
     </Compile>
     <Compile Include="Reports\ReportModule.Master.cs">
       <DependentUpon>ReportModule.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tracking\EndDisassemble.aspx.cs">
+      <DependentUpon>EndDisassemble.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Tracking\Reposition.aspx.cs">
@@ -487,6 +495,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configure\config_templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,11 +1,14 @@
 /*--------------------------------------------------------------
-*    Copyright 2009 Ambersoft LLC.
-*    Source File            : EndConsumeMaterial.aspx.cs
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : EndDisassemble.aspx.cs
 *    Created By             : Xueyan Dong
-*    Date Created           : 11/03/2009
-*    Platform Dependencies  : .NET 2.0
-*    Description            : UI for ending the consume material step
-
+*    Date Created           : 06/01/2018
+*    Platform Dependencies  : .NET 
+*    Description            : UI for ending disassemble step
+*    Log                    :
+*    6/1/2018: sdong: first created
+*   
+*
 ----------------------------------------------------------------*/
 
 using System;
@@ -23,7 +26,7 @@ using AjaxControlToolkit;
 
 namespace ezMESWeb.Tracking
 {
-  public partial class EndConsumeMaterial : TrackTemplate
+  public partial class EndDisassemble : TrackTemplate
   {
     protected Label lblStep, lblUom,  lblError2, lblEquipment, lblStartTime, lblStepStatus, lblMessage;
     protected Label lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblApprover, lblResult;

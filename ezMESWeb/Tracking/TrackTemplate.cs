@@ -1,4 +1,16 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : TrackTemplate.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 11/03/2009
+*    Platform Dependencies  : .NET 
+*    Description            : Basic features for tracking
+*    Log                    :
+*    6/1/2018: sdong: added disassemble to the GoNextStep adn GoEndStep to handle moving a new step type: disassemble
+*   
+*
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -11,6 +23,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using AjaxControlToolkit;
 using CommonLib.Data.EzSqlClient;
+
 
 namespace ezMESWeb.Tracking
 {
@@ -329,6 +342,16 @@ namespace ezMESWeb.Tracking
               + "&rework_limit=" + reworkLimit
               + "&step_type=" + stepType);
             break;
+            case "disassemble":
+            Response.Redirect("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+                "&sub_process=" + subProcessId
+                + "&position=" + position
+                + "&sub_position=" + subPosition
+                + "&step=" + step
+                + "&quantity=" + quantity
+                + "&rework_limit=" + reworkLimit
+                + "&step_type=" + stepType);
+            break;
             case "display message":
             Response.Redirect("PassDisplayStep.aspx?step_status=" + stepStatus +
               "&sub_process=" + subProcessId
@@ -424,7 +447,6 @@ namespace ezMESWeb.Tracking
           {
             case "consume material":
             case "condition":
-          
               Response.Redirect("EndConsumeMaterial.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
                 + "&sub_process=" + subProcessId
@@ -434,6 +456,17 @@ namespace ezMESWeb.Tracking
                 + "&quantity=" + quantity
                 + "&equipment=" + equipmentId+"&step_type="+stepType);
               break;
+            case "disassemble":
+              Response.Redirect("EndDisassemble.aspx?step_status=" + stepStatus +
+                "&start_time=" + startTime
+                + "&sub_process=" + subProcessId
+                + "&position=" + positionId
+                + "&sub_position=" + subPositionId
+                + "&step=" + stepId
+                + "&quantity=" + quantity
+                + "&equipment=" + equipmentId + "&step_type=" + stepType);
+              break;
+
             case "hold lot":
               Response.Redirect("UnholdLot.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
@@ -445,10 +478,11 @@ namespace ezMESWeb.Tracking
                 + "&equipment=" + equipmentId + "&step_type=" + stepType);
               break;
           
-        }
+          }
           
 
         }
+        return;
       }
       catch (Exception ex)
       {
