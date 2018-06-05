@@ -55,7 +55,7 @@
     
     if (chkitem.checked)
     {
-      tbritem.style.display='block';
+      tbritem.style.display='table-row';
     }
     else {
       tbritem.style.display='none';
@@ -599,7 +599,7 @@ order by position_id"
                       </SelectParameters>
                   </asp:SqlDataSource> 
              <asp:SqlDataSource ID="sdsSteps" runat="server" 
-                 SelectCommand="select id, name from step" 
+                 SelectCommand="select id, name from step order by name" 
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
                  ProviderName="System.Data.Odbc"></asp:SqlDataSource>
              <asp:SqlDataSource ID="sdsProcess_group" runat="server" 
@@ -617,7 +617,7 @@ order by position_id"
                  </SelectParameters>
              </asp:SqlDataSource>
              <asp:SqlDataSource ID="sdsEmployee" runat="server" 
-                 SelectCommand=" select id, concat(firstname, ' ', lastname) as name from employee" 
+                 SelectCommand=" select id, concat(firstname, ' ', lastname) as name from employee ORDER BY lastname" 
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
                  ProviderName="System.Data.Odbc">
              </asp:SqlDataSource>
@@ -739,7 +739,7 @@ order by position_id"
                            Approve By:</asp:TableCell>
                        <asp:TableCell ID="TableCell28" runat="server" Height="25px" HorizontalAlign="Left">
                            <asp:DropDownList ID="ddApproval" runat="server" 
-                               DataSourceID="sdsEmployee" DataTextField="name" DataValueField="id" 
+                               DataSourceID="sdsEmployee" DataTextField="name" DataValueField="id"
                                Height="25px" Width="166px">
                            </asp:DropDownList>
                        </asp:TableCell>
