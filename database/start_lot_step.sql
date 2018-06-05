@@ -7,9 +7,10 @@
 *    Description            : db operations for starting a lot at a step
 *    Log                    :
 *    6/1/2018: xdong: adding handling to new step type -- disassemble
+*    6/5/2018: xdong: just modified delimiter of the file to be consistant with load_procedures
 */
-DELIMITER ;;
-DROP PROCEDURE IF EXISTS `start_lot_step`;;
+DELIMITER $
+DROP PROCEDURE IF EXISTS `start_lot_step`$
 CREATE PROCEDURE `start_lot_step`(
   IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20),
@@ -255,4 +256,4 @@ BEGIN
       END IF;
     END IF;
   END IF;
-END;;
+END$

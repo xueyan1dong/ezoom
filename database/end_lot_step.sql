@@ -1,4 +1,15 @@
-DROP PROCEDURE IF EXISTS `end_lot_step`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : start_lot_step.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : db operations for ending a lot at a step
+*    Log                    :
+*    6/5/2018: xdong: adding handling to new step type -- disassemble
+*/
+DELIMITER $
+DROP PROCEDURE IF EXISTS `end_lot_step`$
 CREATE PROCEDURE `end_lot_step`(
   IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20),
@@ -147,7 +158,7 @@ BEGIN
               AND st.id =s.step_type_id;
   
             SET _end_timecode = DATE_FORMAT(UTC_timestamp(), '%Y%m%d%H%i%s0');
-            IF _step_type in ('consume material', 'condition', 'hold lot')
+            IF _step_type in ('consume material', 'disassemble', 'condition', 'hold lot')
             THEN
               SET _step_status = 'ended';
               UPDATE lot_history
@@ -222,4 +233,4 @@ BEGIN
     END IF;
   END IF;
 
-END;
+END$

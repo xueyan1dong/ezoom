@@ -87,6 +87,7 @@
     <Content Include="Images\bg_preamble.jpg" />
     <Content Include="Images\Logo.gif" />
     <Content Include="Tracking\EndDisassemble.aspx" />
+    <Content Include="Tracking\AddProductToInventory.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -125,6 +126,10 @@
     </Compile>
     <Compile Include="Tracking\Email.ascx.cs">
       <DependentUpon>Email.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tracking\AddProductToInventory.aspx.cs">
+      <DependentUpon>AddProductToInventory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Tracking\UnholdLot.aspx.cs">

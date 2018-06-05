@@ -1,3 +1,13 @@
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_lot_status.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : table to hold current lot/batch status information
+*    Log                    :
+*    6/5/2018: xdong: add a new column, location, to record batch/lot location
+*/
 DROP TABLE IF EXISTS `lot_status`;
 CREATE TABLE `lot_status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -16,5 +26,6 @@ CREATE TABLE `lot_status` (
   `dispatch_time` datetime NOT NULL,
   `output_time` datetime DEFAULT NULL,
   `comment` text,
+  `location` nvarchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;

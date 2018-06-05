@@ -1,3 +1,13 @@
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_lot_history.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : table to hold historical lot/batch information
+*    Log                    :
+*    6/5/2018: xdong: add a new column, location, to log batch/lot location
+*/
 DROP TABLE IF EXISTS `lot_history`;
 CREATE TABLE `lot_history` (
   `lot_id` int(10) unsigned NOT NULL,
@@ -20,5 +30,6 @@ CREATE TABLE `lot_history` (
   `approver_id` int(10) unsigned DEFAULT NULL,
   `result` text,
   `comment` text,
+  `location` nvarchar(255) DEFAULT NULL,  
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
 ) ENGINE=InnoDB;

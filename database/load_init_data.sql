@@ -92,7 +92,7 @@ INSERT INTO product_group (name, create_time, created_by, description)
 VALUES ('general', now(), 1, 'This group is a general group that can be used by any product');
 
 -- insert step type
-
+-- 6/5/2018:xdong: added new step_stype Add Product To Inventory
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES ('condition',10,3,now(),'Condition takes at least three parameters: x operator Y');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
@@ -119,3 +119,5 @@ INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`
 VALUES ('deliver to customer',0,0,now(),'No parameter is needed.Receiving information carried in lot comment');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES('disassemble', 0, 0, now(),  'disassemble products into one or multiple components. recipe is supplied as a column value.');
+INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
+VALUES('Add Product To Inventory', 0, 0, now(),  'Add final product to the product inventory pool. No parameter needed.');

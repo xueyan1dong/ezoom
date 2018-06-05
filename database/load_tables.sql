@@ -705,6 +705,16 @@ CREATE TABLE `product_process` (
 
 
 -- lot_status table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_lot_status.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : table to hold current lot/batch status information
+*    Log                    :
+*    6/5/2018: xdong: add a new column, location, to record batch/lot location
+*/
 DROP TABLE IF EXISTS `lot_status`;
 CREATE TABLE `lot_status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -723,11 +733,22 @@ CREATE TABLE `lot_status` (
   `dispatch_time` datetime NOT NULL,
   `output_time` datetime DEFAULT NULL,
   `comment` text,
+  `location` nvarchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 
 -- lot_history table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_lot_history.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : table to hold historical lot/batch information
+*    Log                    :
+*    6/5/2018: xdong: add a new column, location, to log batch/lot location
+*/
 DROP TABLE IF EXISTS `lot_history`;
 CREATE TABLE `lot_history` (
   `lot_id` int(10) unsigned NOT NULL,
@@ -750,9 +771,9 @@ CREATE TABLE `lot_history` (
   `approver_id` int(10) unsigned DEFAULT NULL,
   `result` text,
   `comment` text,
+  `location` nvarchar(255) DEFAULT NULL,  
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
 ) ENGINE=InnoDB;
-
 
 -- priority table
 DROP Table IF EXISTS `priority`;
