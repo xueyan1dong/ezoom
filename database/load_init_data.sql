@@ -120,4 +120,4 @@ VALUES ('deliver to customer',0,0,now(),'No parameter is needed.Receiving inform
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES('disassemble', 0, 0, now(),  'disassemble products into one or multiple components. recipe is supplied as a column value.');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
-VALUES('Add Product To Inventory', 0, 0, now(),  'Add final product to the product inventory pool. No parameter needed.');
+VALUES('Add Product To Inv', 0, 0, now(),  'Add final product to the product inventory pool. No parameter needed.');
