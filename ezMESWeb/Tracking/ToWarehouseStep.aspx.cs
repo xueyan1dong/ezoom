@@ -1,10 +1,14 @@
 /*--------------------------------------------------------------
-*    Copyright 2009 Ambersoft LLC.
-*    Source File            : TrackProduct.aspx.cs
-*    Created By             : Fei Xue
-*    Date Created           : 11/03/2009
-*    Platform Dependencies  : .NET 2.0
-*    Description            : 
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : EndDisassemble.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 06/05/2018
+*    Platform Dependencies  : .NET 
+*    Description            : UI for ending disassemble step
+*    Log                    :
+*    06/05/2018: xdong: first created
+*    06/06/2018: xdong: fixed the issue that step name now showing
+*                       Add _location parameter to call to db stored procedure pass_lot_step
 *
 ----------------------------------------------------------------*/
 
@@ -26,15 +30,17 @@ namespace ezMESWeb.Tracking
   public partial class ToWarehouseStep : TrackTemplate
   {
     protected Label lblStep, lblUom,  lblEquipment, lblStepStatus;
-    protected TextBox txtQuantity, txtComment;
+    protected TextBox txtLocation, txtComment;
     protected DropDownList drpEquipment;
     private string subProcessId, positionId, subPositionId, stepId;
     protected Button btnDo;
     protected ModalPopupExtender MessagePopupExtender;
     protected Panel MessagePanel;
 
-    protected void Page_Load(object sender, EventArgs e)
+    
+    protected override void OnInit(EventArgs e)
     {
+      base.OnInit(e);
       string response;
       if (Session["UserID"] == null)
         Response.Redirect("/Default.aspx");
@@ -48,12 +54,8 @@ namespace ezMESWeb.Tracking
       if (!IsPostBack)
       {
         stepId = Request.QueryString["step"];
-        lblUom.Text = Session["uom"].ToString();
-        txtQuantity.Text = Request.QueryString["quantity"];
-
- 
-        
-        
+        //lblUom.Text = Session["uom"].ToString();
+        //txtLocation.Text = Request.QueryString["quantity"];
 
         try
         {
@@ -98,9 +100,9 @@ namespace ezMESWeb.Tracking
               {
                 btnDo.Visible = false;
                 lblStep.Visible = false;
-                lblUom.Visible = false;
+                //lblUom.Visible = false;
                 //newStep.Visible = false;
-                txtQuantity.Visible = false;
+                txtLocation.Visible = false;
                 txtComment.Visible = false;
                 lblEquipment.Visible = false;
                 ezCmd.Dispose();
@@ -142,10 +144,11 @@ namespace ezMESWeb.Tracking
         ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
         ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
         ezCmd.Parameters.AddWithValue("@_operator_id", Convert.ToInt32(Session["UserID"]));
-        ezCmd.Parameters.AddWithValue("@_quantity", txtQuantity.Text.Trim());
+        ezCmd.Parameters.AddWithValue("@_quantity", txtLocation.Text.Trim());
         ezCmd.Parameters.AddWithValue("@_equipment_id", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_device_id", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
+        ezCmd.Parameters.AddWithValue("@_location", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
@@ -203,7 +206,7 @@ namespace ezMESWeb.Tracking
                       subPositionId,
                       stepId,
                       null,
-                      txtQuantity.Text.Trim(),
+                      txtLocation.Text.Trim(),
                       null);
           }
           else
@@ -219,7 +222,7 @@ namespace ezMESWeb.Tracking
                                     subPositionId,
                                     stepId,
                                     null,
-                                    txtQuantity.Text.Trim());
+                                    txtLocation.Text.Trim());
           }
           }
       }
@@ -259,7 +262,7 @@ namespace ezMESWeb.Tracking
                  Request.QueryString["sub_position"],
                  Request.QueryString["step"],
                  null,
-                 txtQuantity.Text.Trim()
+                 txtLocation.Text.Trim()
                  );
       ezCmd.Dispose();
       ezConn.Dispose();

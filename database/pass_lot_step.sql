@@ -1,4 +1,15 @@
-DROP PROCEDURE IF EXISTS `pass_lot_step`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : pass_lot_step.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : db operations for starting and ending a step in one shot
+*    Log                    :
+*    6/6/2018: xdong: adding _location parameter to record batch location for certain ship steps
+*/
+DELIMITER $
+DROP PROCEDURE IF EXISTS `pass_lot_step`$
 CREATE PROCEDURE `pass_lot_step`(
   IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20),
@@ -10,6 +21,7 @@ CREATE PROCEDURE `pass_lot_step`(
   IN _approver_password varchar(20),
   IN _short_result varchar(255), -- for short result
   IN _comment text,
+  IN _location nvarchar(255), -- for location
   INOUT _process_id int(10) unsigned,
   INOUT _sub_process_id int(10) unsigned,
   INOUT _position_id int(5) unsigned,
@@ -150,7 +162,14 @@ BEGIN
             SET _start_timecode = DATE_FORMAT(UTC_timestamp(), '%Y%m%d%H%i%s0');
             
             SET _step_status = 'ended';
-            
+            -- below logic is to preserve current location, if lot is not at those
+            -- ship steps
+            IF _step_type NOT IN ('ship to warehouse', 'ship outof warehouse', 'deliver to customer')
+            THEN
+				SELECT _location = location
+                  FROM lot_status
+				 WHERE id = _lot_id;
+            END IF;     
             INSERT INTO lot_history
             (
               lot_id,
@@ -171,7 +190,8 @@ BEGIN
               equipment_id,
               device_id,
               result,
-              comment
+              comment,
+              location
             )
             VALUES (
               _lot_id,
@@ -192,7 +212,8 @@ BEGIN
               _equipment_id,
               _device_id,
               _short_result,
-              _comment
+              _comment,
+              _location
             ); 
             IF row_count() > 0 THEN
               SET _lot_status = 'in transit';
@@ -202,6 +223,7 @@ BEGIN
                     ,actual_quantity = _quantity
                     ,update_timecode = _start_timecode
                     ,comment=_comment
+                    ,location = _location
               WHERE id=_lot_id;
             ELSE
               SET _response="Error when recording step pass in batch history.";
@@ -252,4 +274,4 @@ BEGIN
       END IF;
     END IF;
   END IF;
-END;
+END$

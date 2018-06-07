@@ -1,10 +1,13 @@
 /*--------------------------------------------------------------
-*    Copyright 2009 Ambersoft LLC.
-*    Source File            : TrackProduct.aspx.cs
-*    Created By             : Fei Xue
-*    Date Created           : 11/03/2009
-*    Platform Dependencies  : .NET 2.0
-*    Description            : 
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : AddProductToInventory.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 06/05/2018
+*    Platform Dependencies  : .NET 
+*    Description            : UI for AddProductToInv step
+*    Log                    :
+*    06/05/2018: xdong: first created
+*    06/06/2018: xdong: Add _location parameter to call to db stored procedure pass_lot_step
 *
 ----------------------------------------------------------------*/
 
@@ -146,6 +149,7 @@ namespace ezMESWeb.Tracking
         ezCmd.Parameters.AddWithValue("@_equipment_id", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_device_id", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
+        ezCmd.Parameters.AddWithValue("@_location", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];

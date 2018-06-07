@@ -26,7 +26,7 @@
                 <asp:Label ID="lblError" Style="font-family:Times New Roman;font-size:20px;" ForeColor="Red" runat="server" />
              <asp:CoolGridView ID="gvTable" runat="server" Caption="" 
                CssClass="GridStyle" GridLines="None" DataSourceID="sdsPDGrid" 
-               EmptyDataText="There is no outstanding order currently" PageSize="15" Width="860px" Height="480px" AllowResizeColumn="true" 
+               EmptyDataText="There is no outstanding order currently" PageSize="15" Width="1080px" Height="480px" AllowResizeColumn="true" 
                AutoGenerateColumns="False"  
                onselectedindexchanged="gvTable_SelectedIndexChanged" 
                 DataKeyNames="id, sub_process_id, sub_position_id, product_id, process_id, step_id, lot_status, result, equipment_id,  start_timecode, alias" AllowPaging="True"  AllowSorting="True" 

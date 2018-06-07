@@ -390,12 +390,22 @@ namespace ezMESWeb.Tracking
                 +  "&step_type=" + stepType);
               break;
             case "ship to warehouse":
+              //Response.Redirect("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+              //   "&sub_process=" + subProcessId
+              //   + "&position=" + position
+              //   + "&sub_position=" + subPosition
+              //   + "&step=" + step
+              //   + "&quantity=" + quantity
+              //   + "&rework_limit=" + reworkLimit
+              //   + "&step_type=" + stepType);
               Response.Redirect("ToWarehouseStep.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
                 + "&step=" + step
-                + "&quantity=" + quantity);
+                + "&quantity=" + quantity
+                + "&rework_limit=" + reworkLimit
+                + "&step_type=" + stepType);
               break;
             case "scrap":
               Response.Redirect("UnholdLot.aspx?step_status=" + stepStatus

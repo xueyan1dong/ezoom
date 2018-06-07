@@ -5,13 +5,19 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
+  <style type="text/css">
+    .auto-style1 {
+      width: 379px;
+    }
+  </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" /> 
 <div>
 <asp:panel id="pnlScroll" runat="server" width="100%" 
 height="100%" scrollbars="Horizontal"> 
-<table width=98% align="center">
+<table width="98%" align="center">
 <tr>
     <td>   
         <asp:lot runat="server" />
@@ -20,25 +26,25 @@ height="100%" scrollbars="Horizontal">
 <tr><td><asp:Label ID="lblError" Style="font-family:Times New Roman;font-size:20px;" ForeColor="Red" runat="server" /></td></tr>
 <tr>
 <td>
-<table style="width: 95%; height: 137px;" align="center" cellspacing=10px>
+<table style="width: 95%; height: 137px;" align="center" cellspacing="10px">
         <tr>
-            <td colspan=2 align=left>
-            <font Style="font-family:Times New Roman;font-size:20px;">
-            When ready to put the batch into warehouse, click button to </font>&nbsp;
-              <asp:Button ID="btnDo" runat="server" Text="Add Batch to Inventory" 
+            <td colspan="2" align="left">
+            <font Style="font-family:'Times New Roman';font-size:20px;">
+              Please fill the warehouse location and optional comment, then click button</font>&nbsp;
+              <asp:Button ID="btnDo" runat="server" Text="Ship to Warehouse" 
                     Style="font-family:Times New Roman;font-size:22px; width:180px;" 
-                    onclick="btnDo_Click"/>  
+                    onclick="btnDo_Click" BackColor="Green" ForeColor="White"/>  
             </td>
 
         </tr>
-        <tr><td>&nbsp;</td></tr>
+        <tr><td class="auto-style1">&nbsp;</td></tr>
         <tr>
-            <td align=left>
+            <td align="left" class="auto-style1">
                 <font Style="font-family:Times New Roman;font-size:20px;">Step Name:</font>&nbsp;<asp:Label ID="lblStep" runat="server" Style="font-family:Times New Roman;font-size:20px;"></asp:Label></td>
-            <td align=left>
-                <font Style="font-family:Times New Roman;font-size:20px;">Quantity:</font> &nbsp; 
-                <asp:TextBox ID="txtQuantity" runat="server" Width="80px" Style="font-family:Times New Roman;font-size:20px;"></asp:TextBox>
-                <asp:Label ID="lblUom" runat="server"  Style="font-family:Times New Roman;font-size:20px;"></asp:Label></td>
+            <td align="left">
+                <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp; 
+                <asp:TextBox ID="txtLocation" runat="server" Width="297px" Style="font-family:Times New Roman;font-size:20px;"></asp:TextBox>
+                </td>
          </tr>
          <tr>
             <td align=left colspan=2><font Style="font-family:Times New Roman;font-size:20px;">Comment:</font> <br />
@@ -60,7 +66,7 @@ height="100%" scrollbars="Horizontal">
          BackgroundCssClass="modalBackground" PopupControlID="MessagePanel" 
         PopupDragHandleControlID="MessagePanel" Drag="True" DropShadow="True" >
         </asp:ModalPopupExtender>    
-        <table width=90% height=90% cellpadding=5px cellspacing = 10px align="center" >
+        <table width="90%" height="90%" cellpadding="5px" cellspacing = "10px" align="center" >
         <tr><td>&nbsp;</td></tr>
         <tr><td>
         <asp:Label ID="lblMessage" runat="server"  Style="font-family:Times New Roman; font-style:italic; font-size:20px; line-height:22px; color:Green;">
