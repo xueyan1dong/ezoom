@@ -1,4 +1,15 @@
-DROP PROCEDURE IF EXISTS `report_lot_history`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : start_lot_step.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : db operations for ending a lot at a step
+*    Log                    :
+*    6/5/2018: xdong: adding handling to new step type -- disassemble
+*/
+DELIMITER $
+DROP PROCEDURE IF EXISTS `report_lot_history`$
 CREATE PROCEDURE `report_lot_history`(
   IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20)
@@ -33,6 +44,7 @@ BEGIN
     end_quantity decimal(16,4) unsigned,
     uomid smallint(3) unsigned,
     uom_name  varchar(20),
+    location nvarchar(255),
     equipment_id int(10) unsigned,
     equipment_name varchar(255),
     device_id int(10) unsigned,
@@ -63,6 +75,7 @@ BEGIN
         l.end_quantity,
         l.uomid,
         u.name,
+        l.location,
         l.equipment_id,
         null,
         l.device_id,
@@ -130,6 +143,7 @@ BEGIN
     end_quantity,
     uomid,
     uom_name,
+    -- location,
     equipment_id,
     equipment_name,
     device_id,
@@ -139,4 +153,4 @@ BEGIN
     comment
   FROM lot_history_report;
   DROP TABLE lot_history_report;
- END;
+ END$

@@ -5937,6 +5937,25 @@ BEGIN
 END$
  
 -- procedure report_consumption_for_step
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : report_consumption_for_step.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : output the consumption information for a given lot/batch and given step
+                              This is used in Consume Material step or Disassemble step.
+                              In Consume step, the final consumption is recorded in inventory_consumption table,
+                              thus, this procedure retrieve the quantity_used from this table
+                              In Disassemble step, this procedure actually output quantity_returned from consumption_return
+                              table to the quantity_used column in output resultset, so that application can show it on UI
+*    example	            : 
+call report_consumption_for_step (21, 'WWMTOFauce0000000006', 3, 38, '201806190044480', @_response);
+select @_response
+*    Log                    :
+*    6/18/2018: xdong: added logic to count inventory returned for disassemble step. 					
+*/
+DELIMITER $
 DROP PROCEDURE IF EXISTS `report_consumption_for_step`$
 CREATE PROCEDURE `report_consumption_for_step`(
   IN _lot_id int(10) unsigned,
@@ -5950,7 +5969,8 @@ BEGIN
 -- the procedure uses _start_timecode,  to locate the consumption record if possible
 -- otherwise, it will use the 
   DECLARE _end_timecode char(15);
-
+  DECLARE _step_type varchar(20);
+  
   IF _lot_id IS NULL
   THEN
     SET _response = "Please selected a batch.";
@@ -5961,6 +5981,14 @@ BEGIN
   THEN
     SET _response = "The batch is not inside a step.";
   ELSE
+  
+	SELECT st.name
+      INTO _step_type
+      FROM step_type st
+	  JOIN step s
+        ON s.step_type_id = st.id
+           AND s.id = _step_id;
+           
     CREATE TEMPORARY TABLE IF NOT EXISTS temp_consumption 
       (
         source_type varchar(20),
@@ -5980,7 +6008,7 @@ BEGIN
     
     INSERT INTO temp_consumption
     SELECT v.source_type, 
-           V.ingredient_id,
+           v.ingredient_id,
            v.name, 
            v.order,
            v.description, 
@@ -6012,21 +6040,38 @@ BEGIN
        AND step_id = _step_id;
     
 
-      
-    UPDATE temp_consumption t LEFT JOIN 
-      (SELECT i.source_type,
-              i.pd_or_mt_id,
-              sum(c.quantity_used) as total_used
-         FROM inventory_consumption c INNER JOIN inventory i
-           ON i.id = c.inventory_id
-        WHERE c.lot_id = _lot_id
-          AND c.start_timecode >= _start_timecode
-          AND (_end_timecode IS NULL OR c.end_timecode<=_end_timecode)
-          AND c.step_id = _step_id
-        GROUP BY i.source_type, i.pd_or_mt_id) a
-       ON a.source_type = t.source_type
-          AND a.pd_or_mt_id = t.ingredient_id
-     SET t.used_quantity = a.total_used;
+	IF _step_type = 'consume material'
+    THEN
+		UPDATE temp_consumption t LEFT JOIN 
+		  (SELECT i.source_type,
+				  i.pd_or_mt_id,
+				  sum(c.quantity_used) as total_used
+			 FROM inventory_consumption c INNER JOIN inventory i
+			   ON i.id = c.inventory_id
+			WHERE c.lot_id = _lot_id
+			  AND c.start_timecode >= _start_timecode
+			  AND (_end_timecode IS NULL OR c.end_timecode<=_end_timecode)
+			  AND c.step_id = _step_id
+			GROUP BY i.source_type, i.pd_or_mt_id) a
+		   ON a.source_type = t.source_type
+			  AND a.pd_or_mt_id = t.ingredient_id
+		 SET t.used_quantity = a.total_used;
+	ELSEIF _step_type = 'disassemble'
+    THEN
+		UPDATE temp_consumption t LEFT JOIN 
+		  (SELECT i.source_type,
+				  i.pd_or_mt_id,
+				  sum(c.quantity_returned) as total_used
+			 FROM consumption_return c INNER JOIN inventory i
+			   ON i.id = c.inventory_id
+			WHERE c.lot_id = _lot_id
+			  AND c.consumption_start_timecode >= _start_timecode
+			  AND c.step_id = _step_id
+			GROUP BY i.source_type, i.pd_or_mt_id) a
+		   ON a.source_type = t.source_type
+			  AND a.pd_or_mt_id = t.ingredient_id
+		 SET t.used_quantity = a.total_used;    
+    END IF;
     
     SELECT 
         source_type,
@@ -6048,160 +6093,6 @@ BEGIN
     DROP TABLE temp_consumption;
   END IF;
  
-END$
-
--- function convert_quantity
-DROP FUNCTION IF EXISTS `convert_quantity`$
-CREATE FUNCTION `convert_quantity`(
-   _quantity decimal(16,4) unsigned,
-   _from_uomid smallint(3) unsigned,
-   _to_uomid smallint(3) unsigned
-)
-RETURNS decimal(16,4) unsigned
-BEGIN
-  
-  DECLARE _to_quantity decimal(16,4) unsigned;
-  
-  IF _from_uomid = _to_uomid
-  THEN
-    RETURN _quantity;
-  ELSE
-    SELECT _quantity*constant
-      INTO _to_quantity
-      FROM uom_conversion
-    WHERE from_id = _from_uomid
-      AND method= 'ratio'
-      AND to_id = _to_uomid;
-  
-    IF _to_quantity IS NULL
-    THEN
-      SELECT _quantity/constant
-        INTO _to_quantity
-        FROM uom_conversion
-      WHERE from_id = _to_uomid
-        AND method="ratio"
-        AND to_id = _from_uomid
-        AND constant > 0;
-    END IF;
-    
-    return _to_quantity;
-  END IF;
-  
- END$
- 
- -- procedure consume_inventory
-DROP PROCEDURE IF EXISTS `consume_inventory`$
-CREATE PROCEDURE `consume_inventory`(
-  IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
-  IN _operator_id int(10) unsigned,
-  IN _equipment_id int(10) unsigned,
-  IN _device_id int(10) unsigned,
-  IN _process_id int(10) unsigned,
-  IN _sub_process_id int(10) unsigned,
-  IN _position_id int(5) unsigned,
-  IN _sub_position_id int(5) unsigned,
-  IN _step_id int(10) unsigned,
-  IN _step_start_timecode char(15),
-  IN _inventory_id int(10) unsigned,
-  IN _quantity decimal(16,4) unsigned,
-  IN _comment text,
-  IN _recipe_uomid smallint(3) unsigned,  
-  OUT _response varchar(255)
-)
-BEGIN
-  
-  DECLARE _inventory_uomid smallint(3) unsigned;
-  DECLARE _inv_consume_quantity decimal(16,4) unsigned;
-  DECLARE _inv_quantity decimal(16,4) unsigned;
-  DECLARE _timecode char(15);
- 
-  SET autocommit=0;
-
-  IF _lot_id IS NULL THEN
-     SET _response = "Batch identifier is missing. Please supply a batch indentifier.";
-  ELSEIF NOT EXISTS (SELECT * FROM lot_status WHERE id= _lot_id)
-  THEN
-    SET _response = "The batch you selected is not in database.";
-  ELSEIF NOT EXISTS (
-    SELECT *
-      FROM lot_history
-     WHERE lot_id = _lot_id
-       AND start_timecode = _step_start_timecode
-       AND process_id = _process_id
-       AND sub_process_id <=> _sub_process_id
-       AND position_id = _position_id
-       AND sub_position_id <=> _sub_position_id
-       AND step_id = _step_id
-  )
-  THEN
-    SET _response = "The batch you selected is not at the step and position given.";
-  ELSE
-    SELECT uom_id, actual_quantity
-      INTO _inventory_uomid, _inv_quantity
-      FROM inventory
-     WHERE id=_inventory_id;
-    
-    IF _inventory_uomid IS NULL
-    THEN
-      SET _response = "The inventory you selected doesn't exist in database.";
-    ELSE
-      SET _inv_consume_quantity=convert_quantity(_quantity, _recipe_uomid, _inventory_uomid);
-      IF _inv_consume_quantity IS NULL
-      THEN
-        SET _response = "Can not calculate consumption because no UoM conversion provided to convert quantity into the UoM used in inventory.";
-      ELSEIF _inv_consume_quantity > _inv_quantity
-      THEN
-        SET _response = "The inventory doesn't have enough to meet the quantity required.";
-      ELSE
-        SET _timecode = DATE_FORMAT(utc_timestamp(), '%Y%m%d%H%i%s0');
-        
-        START TRANSACTION;
-          INSERT INTO inventory_consumption
-          (lot_id,
-           lot_alias,
-           start_timecode,
-           end_timecode,
-           inventory_id,
-           quantity_used,
-           uom_id,
-           process_id,
-           sub_process_id,
-           position_id,
-           sub_position_id,
-           step_id,
-           operator_id,
-           equipment_id,
-           device_id,
-           comment
-           )
-           VALUES(
-           _lot_id,
-           _lot_alias,
-           _timecode,
-           _timecode,
-           _inventory_id,
-           _quantity,
-           _recipe_uomid,
-           _process_id,
-           _sub_process_id,
-           _position_id,
-           _sub_position_id,
-           _step_id,
-           _operator_id,
-           _equipment_id,
-           _device_id,
-           _comment
-           );
-           
-          UPDATE inventory
-             SET actual_quantity = actual_quantity - _inv_consume_quantity
-           WHERE id=_inventory_id;
-           
-        COMMIT;
-      END IF;
-    END IF;
-  END IF;
 END$
 
 -- procedure report_consumption_details
@@ -6276,20 +6167,38 @@ BEGIN
 END$
 
 -- procedure return_inventory
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : return_inventory.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : db operations for return products or components back to inventory
+*    example	            : 
+call return_inventory (21, 'WWMTOFauce0000000006', 2, 3, 38, '201806190044480', '201806190044480', 6, 1, 'test', 1, @_response);
+select @_response
+*    Log                    :
+*    6/14/2018: sdong: added this header session
+*    6/17/2018: sdong: added more comment
+*    6/18/2018: sdong: since when used in disassemble step, the quantity_before is null, which will throw off consumption_return
+*                      table, thus, replace it with 0 in this case. Also, fixed typo.
+*/
+DELIMITER $
 DROP PROCEDURE IF EXISTS `return_inventory`$
 CREATE PROCEDURE `return_inventory`(
-  IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
-  IN _operator_id int(10) unsigned,
-  IN _process_id int(10) unsigned,
-  IN _step_id int(10) unsigned,
-  IN _step_start_timecode char(15),
-  IN _consumption_start_timecode char(15),
-  IN _inventory_id int(10) unsigned,
-  IN _quantity_returned decimal(16,4) unsigned,
-  IN _comment text, 
-  IN _recipe_uomid smallint(3) unsigned,  
-  OUT _response varchar(255)
+  IN _lot_id int(10) unsigned,  -- id of the batch
+  IN _lot_alias varchar(20),   -- name of the batch
+  IN _operator_id int(10) unsigned,  -- id of the operator performed this action
+  IN _process_id int(10) unsigned,   -- id of the workflow
+  IN _step_id int(10) unsigned,     -- id of the step
+  IN _step_start_timecode char(15),  -- the start time of the lot to the step
+  IN _consumption_start_timecode char(15),  -- the start time of the last consumption if the current step is a "consume material" step
+			-- the start time of the current step if the current step is a "disassemble" step, since there is no consumption in such a step
+  IN _inventory_id int(10) unsigned, -- id of the inventory to be returned
+  IN _quantity_returned decimal(16,4) unsigned,  -- the quantity to be returned
+  IN _comment text,   -- comment associated with this action
+  IN _recipe_uomid smallint(3) unsigned,    -- the id of the uom used in the recipe
+  OUT _response varchar(255)    -- response of this stored procedure
 )
 BEGIN
   
@@ -6297,9 +6206,11 @@ BEGIN
   DECLARE _inv_return_quantity decimal(16,4) unsigned;
   DECLARE _timecode char(15);
   DECLARE _quantity_before decimal(16,4) unsigned;
+  DECLARE _step_type varchar(20);
   
   SET autocommit=0;
 
+-- integrity checks
   IF _lot_id IS NULL THEN
      SET _response = "Batch identifier is missing. Please supply a batch indentifier.";
   ELSEIF NOT EXISTS (SELECT * FROM lot_status WHERE id= _lot_id)
@@ -6314,6 +6225,14 @@ BEGIN
   THEN
     SET _response = "The batch you selected hasn't reach the step given.";
   ELSE
+  
+	SELECT st.name
+      INTO _step_type
+      FROM step_type st
+	  JOIN step s
+        ON s.step_type_id = st.id
+           AND s.id = _step_id;
+           
     SELECT quantity_used
       INTO _quantity_before
       FROM inventory_consumption
@@ -6326,14 +6245,18 @@ BEGIN
       FROM inventory
      WHERE id=_inventory_id;
     
-    IF _quantity_before < _quantity_returned
+
+    IF _step_type = 'consume material' AND _quantity_before < _quantity_returned
+    -- for consume step, you can only return what has been consumed. _quantity_before is what has been consumed
     THEN
       SET _response = CONCAT("The quantity used ", _quantity_before, " is less than quantity to return. Please refresh form and reenter return quantity.");
     ELSEIF _inventory_uomid IS NULL
     THEN
       SET _response = "The inventory you selected doesn't exist in database.";
     ELSE
+	  -- the uom used in inventory record might be different than the uom used in recipe. below conversion calculates the qunatity by inventory uom
       SET _inv_return_quantity=convert_quantity(_quantity_returned, _recipe_uomid, _inventory_uomid);
+      
       IF _inv_return_quantity IS NULL
       THEN
         SET _response = "Can not calculate inventory return because no UoM conversion provided to convert returned quantity into the UoM used in inventory.";
@@ -6342,6 +6265,7 @@ BEGIN
         SET _timecode = DATE_FORMAT(utc_timestamp(), '%Y%m%d%H%i%s0');
         
         START TRANSACTION;
+        -- record the returns happend in consumption step or disassemble step
         INSERT INTO `consumption_return` (
           `lot_id` ,
           `lot_alias` ,
@@ -6361,7 +6285,7 @@ BEGIN
            _lot_alias,
            _timecode,
            _inventory_id,
-           _quantity_before,
+           ifnull(_quantity_before, 0),
            _quantity_returned,
            _recipe_uomid,
            _operator_id,
@@ -6395,6 +6319,7 @@ BEGIN
     END IF;
   END IF;
 END$
+
 
 -- procedure check_approver
 DROP PROCEDURE IF EXISTS `check_approver`$

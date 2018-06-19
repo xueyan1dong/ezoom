@@ -7,8 +7,8 @@
 *    Description            : UI for ending disassemble step
 *    Log                    :
 *    6/1/2018: sdong: first created
-*   
-*
+*   6/13/2018: sdong: fixed bug the the "To Inventory" popup do not show the inventory list to return parts to
+*   6/17/2018: sdong: fixed values sent to db sp "return_inventory" when submit button in return popup is clicked
 ----------------------------------------------------------------*/
 
 using System;
@@ -50,7 +50,7 @@ namespace ezMESWeb.Tracking
         colc = dv.Table.Columns;
 
         //Initial insert template  
-        FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"EndReturnMaterial.xml"));
+        FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"EndReturnDisassemble.xml"));
         //Initial Edit template           
         FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"EndConsumeMaterial.xml"));
 
@@ -282,15 +282,12 @@ namespace ezMESWeb.Tracking
 
 
           ezCmd.CommandText = "SELECT CONCAT( CAST(i.lot_id AS CHAR)" +
-              ", IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ' consumed at ', date_format(str_to_date(c.start_timecode, '%Y%m%d%H%i%s0' ), '%m/%d/%Y %I:%i%p'))," +
-              " CONCAT(c.start_timecode,',', CAST(c.quantity_used AS UNSIGNED INTEGER), ',', CAST(i.uom_id AS CHAR),',', CAST(c.inventory_id AS CHAR), ',', u.name)" +
-              " FROM inventory_consumption c, inventory i, uom u WHERE c.lot_id ="
-              + Session["lot_id"].ToString() +
-              " AND c.start_timecode > '" + Request.QueryString["start_time"] +
-              "' AND i.id = c.inventory_id " +
-              " AND i.source_type = '" + gvTable.SelectedDataKey.Values["source_type"].ToString() +
+              ", IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ', ', CAST(i.actual_quantity AS UNSIGNED INTEGER), ' ', u.name, ' in stock'), " 
+              + "CONCAT(CAST(r.uom_id AS CHAR), ',', CAST(i.id AS CHAR))  FROM inventory i, uom u,  step s, ingredients r WHERE i.source_type = '"
+              + gvTable.SelectedDataKey.Values["source_type"].ToString() +
               "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString() +
-              " AND u.id = c.uom_id ";
+              " AND u.id = i.uom_id AND s.id = " + Request.QueryString["step"] +
+              " AND r.recipe_id = s.recipe_id AND r.ingredient_id = i.pd_or_mt_id AND r.source_type = i.source_type"; 
           ezCmd.CommandType = CommandType.Text;
           ezReader = ezCmd.ExecuteReader();
           while (ezReader.Read())
@@ -299,12 +296,15 @@ namespace ezMESWeb.Tracking
           }
           if (ddInventory.Items.Count > 0)
           {
-            ddInventory.SelectedIndex = 0;
-            string[] dataValues = ddInventory.Items[0].Value.Split(',');
-            Label lblRequired = (Label)FormView1.FindControl("lblrequired_quantity");
-            lblRequired.Text = dataValues[1];
-            Label lblUom = (Label)FormView1.FindControl("lbluom_name");
-            lblUom.Text = dataValues[4];
+           ddInventory.SelectedIndex = 0;
+           string[] dataValues = ddInventory.Items[0].Text.Split(',');
+           Label lblRequired = (Label)FormView1.FindControl("lblrequired_quantity");
+           Decimal defaultQuantity =
+                      Convert.ToDecimal(gvTable.SelectedDataKey.Values["required_quantity"])
+              - Convert.ToDecimal(gvTable.SelectedDataKey.Values["used_quantity"]);
+           lblRequired.Text = string.Format("{0:N0}", defaultQuantity);
+           Label lblUom = (Label)FormView1.FindControl("lbluom_name");
+           lblUom.Text = dataValues[1].Split(' ')[2];
           }
           ezReader.Close();
           ezReader.Dispose();
@@ -490,6 +490,7 @@ namespace ezMESWeb.Tracking
       {
         try
         {
+          //this chunk of code was copied from EndConsumeMaterial and won't be used logically in this form
           ConnectToDb();
           ezCmd = new EzSqlCommand();
           ezCmd.Connection = ezConn;
@@ -593,23 +594,32 @@ namespace ezMESWeb.Tracking
           else
             ezCmd.Parameters.AddWithValue("@_step_id", DBNull.Value);
 
+          // for consumption step, send step start_timecode as consumption_start_timecode 
           if (Request.QueryString["start_time"].Length > 0)
+          {
             ezCmd.Parameters.AddWithValue("@_step_start_timecode", Request.QueryString["start_time"]);
-          else
-            ezCmd.Parameters.AddWithValue("@_step_start_timecode", DBNull.Value);
+            ezCmd.Parameters.AddWithValue("@_consumption_start_timecode", Request.QueryString["start_time"]);
+          }
 
+          else
+          {
+            ezCmd.Parameters.AddWithValue("@_step_start_timecode", DBNull.Value);
+            ezCmd.Parameters.AddWithValue("@_consumption_start_timecode", DBNull.Value);
+          }
           DropDownList ddInventory = (DropDownList)FormView1.FindControl("drpingredient_id");
           string[] valueArray = ddInventory.SelectedValue.Split(',');
-          ezCmd.Parameters.AddWithValue("@_consumption_start_timecode", valueArray[0]);
-
-          ezCmd.Parameters.AddWithValue("@_inventory_id", valueArray[3]);
+          
+          if (ddInventory.SelectedItem.Value.Length > 0)
+            ezCmd.Parameters.AddWithValue("@_inventory_id", valueArray[1]);
+          else
+            ezCmd.Parameters.AddWithValue("@_inventory_id", DBNull.Value);
 
           fTemp =
             (ezMES.ITemplate.FormattedTemplate)FormView1.InsertItemTemplate;
 
           LoadSqlParasFromTemplate(ezCmd, fTemp);
 
-          ezCmd.Parameters.AddWithValue("@_recipe_uomid", valueArray[2]);
+          ezCmd.Parameters.AddWithValue("@_recipe_uomid", valueArray[0]);
           ezCmd.Parameters.AddWithValue("@_response", DBNull.Value, ParameterDirection.Output);
 
           ezCmd.ExecuteNonQuery();

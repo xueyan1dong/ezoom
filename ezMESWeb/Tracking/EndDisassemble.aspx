@@ -60,7 +60,7 @@ height="100%" scrollbars="Horizontal">
             </td>
          </tr>
          <tr>
-         <td align=center colspan=3>
+         <td align="center" colspan=3>
     <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
                
@@ -82,9 +82,9 @@ height="100%" scrollbars="Horizontal">
 			     <asp:BoundField DataField="source_type" HeaderText="Source Type" />  
 			     <asp:BoundField DataField="ingredient_id" HeaderText="ingredient_id" Visible="false" /> 
 			     <asp:BoundField DataField="name" HeaderText="Part #"  /> 
-			     <asp:BoundField DataField="order" HeaderText="Consumption Order"  /> 
+			     <asp:BoundField DataField="order" HeaderText="Disassemble Sequence"  /> 
 			     <asp:BoundField DataField="description" HeaderText="Description" /> 
-			     <asp:BoundField DataField="required_quantity" HeaderText="Required Quantity" DataFormatString="{0:N0}" /> 
+			     <asp:BoundField DataField="required_quantity" HeaderText="Expected Quantity" DataFormatString="{0:N0}" /> 
 			     <asp:BoundField DataField="used_quantity" HeaderText="Quantity Returned" DataFormatString="{0:N0}"/> 			     
 			     <asp:BoundField DataField="uom_name" HeaderText="Unit" /> 
 			     <asp:BoundField DataField="restriction" HeaderText="Time Restriction" /> 
@@ -98,8 +98,8 @@ height="100%" scrollbars="Horizontal">
          </tr>
          <tr><td colspan=3>&nbsp;</td></tr>
          <tr>
-         <td align=left  colspan=3><asp:Label ID="lblResult" runat="server"  Style="font-family:Times New Roman;font-size:20px;" Visible=false>Final Result:</asp:Label>
-<asp:RadioButtonList ID="rbResult" runat="server" RepeatDirection="Horizontal"  RepeatLayout="Flow"  Visible=false > 
+         <td align="left"  colspan=3><asp:Label ID="lblResult" runat="server"  Style="font-family:Times New Roman;font-size:20px;" Visible="false">Final Result:</asp:Label>
+<asp:RadioButtonList ID="rbResult" runat="server" RepeatDirection="Horizontal"  RepeatLayout="Flow"  Visible="false" > 
        <asp:ListItem  Value="True" Selected="True" ><font Style="font-family:Times New Roman;font-size:20px;">Pass</font> </asp:ListItem>
                                <asp:ListItem  Value="False" ><font Style="font-family:Times New Roman;font-size:20px;">Fail</font> </asp:ListItem>
                            </asp:RadioButtonList>
@@ -185,7 +185,7 @@ height="100%" scrollbars="Horizontal">
          </table>           
        </asp:Panel>
        <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 
-       style="margin-top: 19px;  height:500px; width:370px; display:none" HorizontalAlign="Left" >
+       style="margin-top: 19px;  height:500px; width:400px; display:none" HorizontalAlign="Left" >
    <asp:UpdatePanel ID="updateRecordPanel" runat="server" UpdateMode="Conditional">
    <ContentTemplate>
    <asp:Button id="btnShowPopup" runat="server" style="display:none" />

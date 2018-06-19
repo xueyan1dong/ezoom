@@ -29,9 +29,9 @@ namespace ezMESWeb.Tracking
 {
   public partial class ToWarehouseStep : TrackTemplate
   {
-    protected Label lblStep, lblUom,  lblEquipment, lblStepStatus;
-    protected TextBox txtLocation, txtComment;
-    protected DropDownList drpEquipment;
+    protected Label lblStep, lblUom,  lblEquipment, lblStepStatus, lblApprover,lblStartTime, lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId;
+    protected TextBox txtLocation, txtComment, txtPassword;
+    protected DropDownList drpEquipment, drpApprover;
     private string subProcessId, positionId, subPositionId, stepId;
     protected Button btnDo;
     protected ModalPopupExtender MessagePopupExtender;
@@ -112,7 +112,56 @@ namespace ezMESWeb.Tracking
             }
           }
           else
-            ezReader.Dispose();
+          {
+            if ((ezReader != null) && (!ezReader.IsClosed))
+              ezReader.Close();
+            //ezReader.Dispose();
+          }
+          //toggle approval controls depending whether the step needs approval
+          ezCmd.Dispose();
+          ezReader.Dispose();
+
+          ezCmd = new EzSqlCommand();
+          ezCmd.Connection = ezConn;
+          ezCmd.CommandText =
+            "SELECT need_approval, approve_emp_usage, approve_emp_id FROM process_step WHERE process_id= "
+            + Session["process_id"].ToString()
+            + " AND position_id = "
+            + Request.QueryString["position"]
+            + " AND step_id = " + Request.QueryString["step"];
+          ezCmd.CommandType = CommandType.Text;
+
+          //manipulate the approval dropdown list and password input. populate the dropdown or hide the whole block, if not needed
+          ezReader = ezCmd.ExecuteReader();
+          if (ezReader.Read())
+          {
+            if (ezReader[0].ToString().Equals("1"))
+            {
+              switch (ezReader[1].ToString())
+              {
+                case "employee group":
+                  ezCmd.CommandText = "SELECT CONCAT(firstname, ' ', lastname), id FROM employee WHERE eg_id = "
+                    + ezReader[2].ToString();
+                  break;
+                case "employee":
+                  ezCmd.CommandText = "SELECT CONCAT(firstname, ' ', lastname), id FROM employee WHERE id = "
+                    + ezReader[2].ToString();
+                  break;
+                  //didn't deal with "employee category"
+              }
+              ezCmd.CommandType = CommandType.Text;
+              ezReader.Close();
+              ezReader = ezCmd.ExecuteReader();
+              if (ezReader.Read())
+              {
+                drpApprover.Items.Add(new ListItem(String.Format("{0}", ezReader[0]), String.Format("{0}", ezReader[1])));
+                lblApprover.Visible = true;
+                drpApprover.Visible = true;
+                txtPassword.Visible = true;
+              }
+              ezReader.Dispose();
+            }
+          }
         }
         catch (Exception ex)
         {
@@ -121,6 +170,7 @@ namespace ezMESWeb.Tracking
         }
         ezCmd.Dispose();
         ezConn.Dispose();
+        ezReader.Dispose();
       }
     }
     protected void btnListForm_Click(object sender, EventArgs e)
@@ -144,11 +194,22 @@ namespace ezMESWeb.Tracking
         ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
         ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
         ezCmd.Parameters.AddWithValue("@_operator_id", Convert.ToInt32(Session["UserID"]));
-        ezCmd.Parameters.AddWithValue("@_quantity", txtLocation.Text.Trim());
+        ezCmd.Parameters.AddWithValue("@_quantity", Request.QueryString["quantity"]);
         ezCmd.Parameters.AddWithValue("@_equipment_id", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_device_id", DBNull.Value);
+        if (drpApprover.Visible == true)
+        {
+          ezCmd.Parameters.AddWithValue("@_approver_id", drpApprover.SelectedValue);
+          ezCmd.Parameters.AddWithValue("@_approver_password", txtPassword.Text);
+        }
+        else
+        {
+          ezCmd.Parameters.AddWithValue("@_approver_id", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_approver_password", DBNull.Value);
+        }
+        ezCmd.Parameters.AddWithValue("@_short_result", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
-        ezCmd.Parameters.AddWithValue("@_location", DBNull.Value);
+        ezCmd.Parameters.AddWithValue("@_location", txtLocation.Text.Trim());
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
@@ -184,47 +245,20 @@ namespace ezMESWeb.Tracking
           lblError.Text = response;
         else
         {
-          lotStatus = ezCmd.Parameters["@_lot_status"].Value.ToString();
-          Session["lot_status"] = lotStatus;
-          stepStatus = ezCmd.Parameters["@_step_status"].Value.ToString();
-          startTime = ezCmd.Parameters["@_autostart_timecode"].Value.ToString();
-          if ((startTime != null) && (startTime.Length > 0))
+          Session["lot_status"] = ezCmd.Parameters["@_lot_status"].Value.ToString();
+          lblStepStatus.Text = ezCmd.Parameters["@_step_status"].Value.ToString();
+          lblStartTime.Text = ezCmd.Parameters["@_autostart_timecode"].Value.ToString();
+          if (lblStartTime.Text.Length > 0)
           {
-            subProcessId = ezCmd.Parameters["@_sub_process_id"].Value.ToString();
-            positionId = ezCmd.Parameters["@_position_id"].Value.ToString();
-            subPositionId = ezCmd.Parameters["@_sub_position_id"].Value.ToString();
-            stepId = ezCmd.Parameters["@_step_id"].Value.ToString();
+            lblSubProcessId.Text = ezCmd.Parameters["@_sub_process_id"].Value.ToString();
+            lblPositionId.Text = ezCmd.Parameters["@_position_id"].Value.ToString();
+            lblSubPositionId.Text = ezCmd.Parameters["@_sub_position_id"].Value.ToString();
+            lblStepId.Text = ezCmd.Parameters["@_step_id"].Value.ToString();
 
-            GoEndStep(Session["lot_id"].ToString(),
-                      Session["lot_alias"].ToString(),
-                      lotStatus,
-                      startTime,
-                      stepStatus,
-                      Session["process_id"].ToString(),
-                      subProcessId,
-                      positionId,
-                      subPositionId,
-                      stepId,
-                      null,
-                      txtLocation.Text.Trim(),
-                      null);
           }
-          else
-          {
-  
-            GoNextStep(Session["lot_id"].ToString(),
-                                    Session["lot_alias"].ToString(),
-                                    lotStatus,
-                                    stepStatus,
-                                    Session["process_id"].ToString(),
-                                    subProcessId,
-                                    positionId,
-                                    subPositionId,
-                                    stepId,
-                                    null,
-                                    txtLocation.Text.Trim());
-          }
-          }
+
+          MessagePopupExtender.Show();
+        }
       }
       catch (Exception ex)
       {
@@ -250,9 +284,24 @@ namespace ezMESWeb.Tracking
       {
         lblError.Text = ex.Message;
       }
-
+      if (lblStartTime.Text.Length > 0)
+        //next step auto started
+        GoEndStep(Session["lot_id"].ToString(),
+                  Session["lot_alias"].ToString(),
+                  Session["lot_status"].ToString(),
+                  lblStartTime.Text,
+                  lblStepStatus.Text,
+                  Session["process_id"].ToString(),
+                  lblSubProcessId.Text,
+                  lblPositionId.Text,
+                  lblSubPositionId.Text,
+                  lblStepId.Text,
+                  null,
+                  Request.QueryString["quantity"],
+                  null);
+      else
         //go to start form for next step
-      GoNextStep(Session["lot_id"].ToString(),
+        GoNextStep(Session["lot_id"].ToString(),
                  Session["lot_alias"].ToString(),
                  Session["lot_status"].ToString(),
                  lblStepStatus.Text,
@@ -262,7 +311,7 @@ namespace ezMESWeb.Tracking
                  Request.QueryString["sub_position"],
                  Request.QueryString["step"],
                  null,
-                 txtLocation.Text.Trim()
+                 Request.QueryString["quantity"]
                  );
       ezCmd.Dispose();
       ezConn.Dispose();

@@ -102,8 +102,8 @@ height="100%" scrollbars="Horizontal">
          </tr>
          <tr><td colspan=3>&nbsp;</td></tr>
          <tr>
-         <td align=left  colspan=3><asp:Label ID="lblResult" runat="server"  Style="font-family:Times New Roman;font-size:20px;" Visible=false>Final Result:</asp:Label>
-<asp:RadioButtonList ID="rbResult" runat="server" RepeatDirection="Horizontal"  RepeatLayout="Flow"  Visible=false > 
+         <td align="left"  colspan=3><asp:Label ID="lblResult" runat="server"  Style="font-family:Times New Roman;font-size:20px;" Visible=false>Final Result:</asp:Label>
+<asp:RadioButtonList ID="rbResult" runat="server" RepeatDirection="Horizontal"  RepeatLayout="Flow"  Visible="false" > 
        <asp:ListItem  Value="True" Selected="True" ><font Style="font-family:Times New Roman;font-size:20px;">Pass</font> </asp:ListItem>
                                <asp:ListItem  Value="False" ><font Style="font-family:Times New Roman;font-size:20px;">Fail</font> </asp:ListItem>
                            </asp:RadioButtonList>
