@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `report_lot_status`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `report_lot_status`$
 CREATE PROCEDURE `report_lot_status`(
   IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20)
@@ -40,4 +52,4 @@ BEGIN
    AND e.id = l.contact
    AND u.id = l.uomid;
  
- END;
+ END$

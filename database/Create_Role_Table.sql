@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `system_roles`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `system_roles`$
 CREATE TABLE `system_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `applicationId` int(11) NOT NULL,
@@ -20,4 +32,4 @@ CREATE TABLE `users_in_roles` (
 
 Insert into `users_in_roles` (`userId`, `roleId`) values(1, 1);
 Insert into `users_in_roles` (`userId`, `roleId`) values(2, 1);
-Insert into `users_in_roles` (`userId`, `roleId`) values(3, 3);
+Insert into `users_in_roles` (`userId`, `roleId`) values(3, 3)$

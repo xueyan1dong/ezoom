@@ -1,4 +1,16 @@
-﻿DROP TABLE IF EXISTS `attribute_history`;
+﻿/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `attribute_history`$
 CREATE TABLE `attribute_history` (
   `event_time` datetime NOT NULL,
   `employee_id` int(10) unsigned NOT NULL,
@@ -22,4 +34,4 @@ CREATE TABLE `attribute_history` (
   `description` text,
   `comment` text,
   PRIMARY KEY (`event_time`,`parent_type`, `parent_id`, `attr_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$

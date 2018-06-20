@@ -1,4 +1,16 @@
-﻿DROP TABLE IF EXISTS `product`;
+﻿/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `product`$
 CREATE TABLE  `product` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `pg_id` int(10) unsigned NOT NULL,
@@ -16,4 +28,4 @@ CREATE TABLE  `product` (
   `comment` text,
   PRIMARY KEY (`id`),
   KEY `pd_un1` (`pg_id`,`name`,`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$

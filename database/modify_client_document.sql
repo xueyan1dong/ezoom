@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `modify_client_document`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `modify_client_document`$
 CREATE PROCEDURE `modify_client_document`(
   IN _operation char(6), -- 'insert' or 'update'
   IN _id int(10) unsigned,
@@ -88,4 +100,4 @@ BEGIN
   
 
 
-END;
+END$

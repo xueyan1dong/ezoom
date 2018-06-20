@@ -1,4 +1,16 @@
-﻿DROP TABLE IF EXISTS `eq_attributes`;
+﻿/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `eq_attributes`$
 CREATE TABLE  `eq_attributes` (
   `eq_id` int(10) unsigned NOT NULL,
   `attr_id` int(10) unsigned NOT NULL,
@@ -17,5 +29,5 @@ CREATE TABLE  `eq_attributes` (
   `description` text,
   `comment` text,
   PRIMARY KEY (`eq_id`,`attr_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 

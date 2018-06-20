@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `employee`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `employee`$
 CREATE TABLE  `employee` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` varchar(20) NOT NULL,
@@ -16,4 +28,4 @@ CREATE TABLE  `employee` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `em_un1` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$

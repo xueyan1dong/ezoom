@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `modify_order_detail`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `modify_order_detail`$
 CREATE PROCEDURE `modify_order_detail`(
   IN _operation enum('insert', 'update'),
   IN _order_id int(10) unsigned,
@@ -114,4 +126,4 @@ BEGIN
       END IF;
     END IF;
   END IF;
-END;
+END$

@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `report_process_bom_total`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `report_process_bom_total`$
 CREATE PROCEDURE `report_process_bom_total`(
   IN _process_id int(10) unsigned
 )
@@ -184,4 +196,4 @@ BEGIN
     DROP TABLE process_bom_temp;
   END IF;
   
-END;
+END$

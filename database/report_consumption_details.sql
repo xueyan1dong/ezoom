@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `report_consumption_details`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `report_consumption_details`$
 CREATE PROCEDURE `report_consumption_details`(
   IN _lot_id int(10) unsigned,
   IN _step_start_timecode char(15),
@@ -66,4 +78,4 @@ BEGIN
         ;
 
    END IF;
-END;
+END$

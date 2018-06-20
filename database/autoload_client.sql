@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `autoload_client`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `autoload_client`$
 -- used when load vendors/customers from Quickbooks export file
 -- the only difference it has over modify_client is _client_id is not supplied
 -- and the program check whether a client exists by name and if not exist, insert, but not update.
@@ -114,7 +126,7 @@ BEGIN
     END IF;
 
   END IF;
-END;
+END$
 
 
 

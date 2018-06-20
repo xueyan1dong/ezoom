@@ -1,4 +1,3 @@
-
 -- run this script with command mysql -u<username> -p<password> < create_database.sql
 
 -- create database , if need different database name, change the name in below 3 lines.

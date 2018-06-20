@@ -8,7 +8,8 @@
 *    Log                    :
 *    6/5/2018: xdong: add a new column, location, to record batch/lot location
 */
-DROP TABLE IF EXISTS `lot_status`;
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `lot_status`$
 CREATE TABLE `lot_status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `alias` varchar(20) DEFAULT NULL,
@@ -28,4 +29,4 @@ CREATE TABLE `lot_status` (
   `comment` text,
   `location` nvarchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$

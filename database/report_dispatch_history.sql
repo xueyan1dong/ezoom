@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `report_dispatch_history`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `report_dispatch_history`$
 CREATE PROCEDURE `report_dispatch_history`(
   IN _from_time datetime,
   IN _to_time datetime,
@@ -119,4 +131,4 @@ BEGIN
   ELSE   
       SET _response = "Both From Time and To Time need to be filled and From Time must be a datatime earlier than To Time.";
   END IF;
-END;
+END$

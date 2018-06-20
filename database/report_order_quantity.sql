@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `report_order_quantity`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `report_order_quantity`$
 CREATE PROCEDURE `report_order_quantity`(
   IN _order_id int(10) unsigned
 )
@@ -37,4 +49,4 @@ BEGIN
         AND o.order_type in ('inventory', 'customer')
         AND od.source_type='product'; 
   END IF;
-END;
+END$

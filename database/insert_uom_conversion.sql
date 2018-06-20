@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `insert_uom_conversion`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `insert_uom_conversion`$
 CREATE procedure insert_uom_conversion (
   IN _from_id smallint(3) unsigned,
   IN _to_id smallint(3) unsigned,
@@ -40,4 +52,4 @@ BEGIN
   (from_id, to_id, method,constant, comment)
   VALUES (_from_id, _to_id, _method, _constant, _comment);
  END IF;
-END;
+END$

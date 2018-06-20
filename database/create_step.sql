@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `step`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `step`$
 CREATE TABLE `step` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `step_type_id` int(5) unsigned NOT NULL,
@@ -32,4 +44,4 @@ CREATE TABLE `step` (
   `para10` text,  
   PRIMARY KEY (`id`),
   UNIQUE KEY `st_un1` (`name`,`version`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$

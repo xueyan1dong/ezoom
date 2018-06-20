@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `inventory`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `inventory`$
 CREATE TABLE `inventory` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `source_type` enum('product','material') NOT NULL,
@@ -19,4 +31,4 @@ CREATE TABLE `inventory` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inventory_un01` (`source_type`,`pd_or_mt_id`, `supplier_id`, `lot_id`, `serial_no`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$

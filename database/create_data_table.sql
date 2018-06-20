@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `create_data_table`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `create_data_table`$
 CREATE PROCEDURE `create_data_table`(
   IN _db_name varchar(60),
   IN _def_id int(10) unsigned,
@@ -61,4 +73,4 @@ BEGIN
     
   END IF;
 
-END; 
+END$

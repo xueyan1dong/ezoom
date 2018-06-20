@@ -1,4 +1,16 @@
-DROP FUNCTION IF EXISTS `convert_quantity`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP FUNCTION IF EXISTS `convert_quantity`$
 CREATE FUNCTION `convert_quantity`(
    _quantity decimal(16,4) unsigned,
    _from_uomid smallint(3) unsigned,
@@ -34,4 +46,4 @@ BEGIN
     return _to_quantity;
   END IF;
   
- END;
+ END$

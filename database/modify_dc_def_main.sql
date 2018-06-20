@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `modify_dc_def_main`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `modify_dc_def_main`$
 CREATE PROCEDURE `modify_dc_def_main`(
   INOUT _def_id int(10) unsigned,
   IN _recorder int(10) unsigned,
@@ -132,4 +144,4 @@ BEGIN
       END IF;
     END IF;
   END IF;
-END; 
+END$ 

@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `scrap_lot`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `scrap_lot`$
 CREATE PROCEDURE `scrap_lot`(
   IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20),
@@ -209,4 +221,4 @@ BEGIN
     END IF;
     END IF;
   END IF;
-END;
+END$

@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `inventory_consumption`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `inventory_consumption`$
 CREATE TABLE `inventory_consumption` (
   `lot_id` int(10) unsigned NOT NULL,
   `lot_alias` varchar(20) DEFAULT NULL,
@@ -17,4 +29,4 @@ CREATE TABLE `inventory_consumption` (
   `device_id` int(10) unsigned DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (lot_id, start_timecode, inventory_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$

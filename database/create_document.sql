@@ -1,4 +1,16 @@
-﻿DROP TABLE IF EXISTS `document`;
+﻿/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `document`$
 CREATE TABLE  `document` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `source_table` varchar(50) NOT NULL,
@@ -16,4 +28,4 @@ CREATE TABLE  `document` (
   `comment` text,
   PRIMARY KEY(`id`),
   KEY (`source_table`, `source_id`, `key_words`, `title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$

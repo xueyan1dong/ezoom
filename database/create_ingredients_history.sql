@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `ingredients_history`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `ingredients_history`$
 CREATE TABLE `ingredients_history` (
   `event_time` datetime NOT NULL,
   `employee_id` int(10) unsigned NOT NULL,
@@ -13,4 +25,4 @@ CREATE TABLE `ingredients_history` (
   `maxtime` int(10) unsigned DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (`event_time`, `recipe_id`,`source_type`,`ingredient_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$

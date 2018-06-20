@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `modify_material`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `modify_material`$
 CREATE procedure modify_material (
   INOUT _material_id int(10) unsigned,
   IN _employee_id int(10) unsigned,
@@ -102,4 +114,4 @@ BEGIN
     VALUES(_material_id, _alias);
   END IF;
  END IF;
-END;
+END$

@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `process_step_history`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `process_step_history`$
 CREATE TABLE `process_step_history` (
   `event_time` datetime NOT NULL,
   `process_id` int(10) unsigned NOT NULL,
@@ -18,4 +30,4 @@ CREATE TABLE `process_step_history` (
   `approve_emp_usage` enum('employee group','employee category','employee') DEFAULT NULL,
   `approve_emp_id` int(10) unsigned DEFAULT NULL,  
   PRIMARY KEY (`event_time`, process_id, position_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$

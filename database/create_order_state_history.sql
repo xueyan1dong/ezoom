@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `order_state_history`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `order_state_history`$
 CREATE TABLE `order_state_history` (
   `order_id` int(10) unsigned NOT NULL,
   `state` enum('quoted', 'POed', 'scheduled', 'produced', 'shipped', 'delivered', 'invoiced', 'paid') NOT NULL,
@@ -6,4 +18,4 @@ CREATE TABLE `order_state_history` (
   `recorder_id` int(10) unsigned NOT NULL,
   `comment` text,
   PRIMARY KEY (`order_id`, `state`, `state_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$

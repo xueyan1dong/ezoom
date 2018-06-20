@@ -1,4 +1,16 @@
-DROP TABLE IF EXISTS `order_general`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `order_general`$
 CREATE TABLE `order_general` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_type` enum('inventory', 'customer','supplier') NOT NULL,
@@ -17,4 +29,4 @@ CREATE TABLE `order_general` (
   `comment` text,
   PRIMARY KEY (`id`),
   KEY `order_in01` (`order_type`,`client_id`,`ponumber`,`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$

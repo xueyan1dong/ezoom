@@ -1,4 +1,16 @@
-﻿DROP TABLE IF EXISTS `dc_def_attr`;
+﻿/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP TABLE IF EXISTS `dc_def_attr`$
 CREATE TABLE  `dc_def_attr` (
   `def_id` int(10) unsigned NOT NULL,
   `attr_id` tinyint(3) unsigned NOT NULL,
@@ -16,4 +28,4 @@ CREATE TABLE  `dc_def_attr` (
   `description` text CHARACTER SET latin1,
   `comment` text CHARACTER SET latin1,
   PRIMARY KEY (`def_id`, `attr_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$

@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `check_emp_access`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `check_emp_access`$
 CREATE PROCEDURE `check_emp_access`(
   IN _emp_id int(10) unsigned,
   IN _emp_usage enum('employee group', 'employee'),
@@ -29,4 +41,4 @@ BEGIN
   END IF;
   
   SELECT _if_allow;
- END;
+ END$

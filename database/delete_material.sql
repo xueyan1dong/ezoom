@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `delete_material`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `delete_material`$
 
 -- delete a material and its suppliers from material_supplier table
 -- a material can't be deleted if it is used by active process/workflow
@@ -34,4 +46,4 @@ BEGIN
     DELETE FROM material
      WHERE id = _material_id;
   END IF;
-END;
+END$

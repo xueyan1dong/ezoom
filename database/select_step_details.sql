@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `select_step_details`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `select_step_details`$
 CREATE PROCEDURE `select_step_details`(
   IN _step_id int(10) unsigned
 )
@@ -45,4 +57,4 @@ BEGIN
          LEFT JOIN step_type st ON st.id = s.step_type_id
    WHERE s.id = _step_id
   ;
-END; 
+END$

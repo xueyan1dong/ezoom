@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `insert_dc_def`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `insert_dc_def`$
 CREATE PROCEDURE `insert_dc_def`(
   INOUT _def_id int(10) unsigned,
   IN _recorder int(10) unsigned,
@@ -14,4 +26,4 @@ BEGIN
   SET @stmt = CONCAT('CREATE TABLE dc_', _name, ' (data_id bigint unsigned NOT NULL)');
   PREPARE stmt FROM @stmt;
   EXECUTE stmt;
-END; 
+END$

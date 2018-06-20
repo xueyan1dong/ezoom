@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `alt_dc_column`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `alt_dc_column`$
 CREATE PROCEDURE `alt_dc_column`(
   IN _action enum('INSERT', 'MODIFY', 'DROP'),
   IN _data_table varchar(60),
@@ -53,4 +65,4 @@ BEGIN
   END IF;
   -- SELECT substring(@stmt, 1, 300);
 
-END; 
+END$

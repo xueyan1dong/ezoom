@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `dispatch_multi_lots`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `dispatch_multi_lots`$
 CREATE PROCEDURE `dispatch_multi_lots`(
   IN _order_id int(10) unsigned, 
   IN _product_id int(10) unsigned,
@@ -290,4 +302,4 @@ BEGIN
   END IF;
 
 
-END;
+END$

@@ -1,4 +1,16 @@
-DROP PROCEDURE IF EXISTS `modify_order_general`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : <sqlfilename>
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `modify_order_general`$
 CREATE PROCEDURE `modify_order_general`(
   IN _order_id int(10) unsigned,
   IN _ponumber varchar(40),
@@ -81,4 +93,4 @@ BEGIN
      WHERE id = _order_id;
      
   END IF;
-END;
+END$
