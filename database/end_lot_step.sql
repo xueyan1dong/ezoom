@@ -1,6 +1,6 @@
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : start_lot_step.sql
+*    Source File            : end_lot_step.sql
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql

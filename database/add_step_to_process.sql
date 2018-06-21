@@ -1,6 +1,6 @@
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : <sqlfilename>
+*    Source File            : add_step_to_process.sql
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql

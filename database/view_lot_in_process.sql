@@ -1,4 +1,16 @@
-DROP VIEW IF EXISTS `view_lot_in_process`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : view_lot_in_process.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP VIEW IF EXISTS `view_lot_in_process`$
 CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
  SELECT s.id,
         s.alias,
@@ -59,4 +71,4 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
         LEFT JOIN employee ea ON ea.id = h.approver_id
   WHERE s.status NOT IN ('shipped', 'scrapped')
   ORDER BY s.product_id, s.priority, s.dispatch_time
-     ;
+     $

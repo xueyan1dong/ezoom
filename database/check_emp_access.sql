@@ -1,6 +1,6 @@
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : <sqlfilename>
+*    Source File            : check_emp_access.sql
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql

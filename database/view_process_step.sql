@@ -1,4 +1,16 @@
-DROP VIEW IF EXISTS `view_process_step`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : view_process_step.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP VIEW IF EXISTS `view_process_step`$
 CREATE ALGORITHM = MERGE VIEW `view_process_step` AS
     SELECT ps.process_id,
          ps.position_id,
@@ -20,4 +32,4 @@ CREATE ALGORITHM = MERGE VIEW `view_process_step` AS
              (SELECT concat(e.firstname, ' ', e.lastname) FROM employee e WHERE e.id = ps.approve_emp_id),
              (SELECT eg.name FROM employee_group eg WHERE eg.id = ps.approve_emp_id)) AS approve_emp_name
      FROM process_step ps 
-     ;
+     $

@@ -1,4 +1,16 @@
-DROP VIEW IF EXISTS `view_ingredient`;
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : view_ingredient.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 					
+*/
+DELIMITER $  -- for escaping purpose
+DROP VIEW IF EXISTS `view_ingredient`$
 CREATE ALGORITHM = MERGE VIEW `view_ingredient` AS
 SELECT i.recipe_id,
         -- CONCAT('self-manufactured ', i.source_type) AS source_type,
@@ -35,4 +47,4 @@ SELECT i.recipe_id,
    LEFT JOIN material m ON m.id = i1.ingredient_id
    LEFT JOIN uom u1 ON u1.id = i1.uom_id
   WHERE i1.source_type = 'material'
-     ;
+     $

@@ -1,6 +1,16 @@
 /*
-	5/30/2018:sdong:added new step_type: disassemble for disassemble a product into multiple components
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_step_type.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    5/30/2018:sdong:added new step_type: disassemble for disassemble a product into multiple components
+*    6/19/2018: Peiyu Ge: added header info. 					
 */
+
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `step_type`$
 CREATE TABLE `step_type` (
