@@ -3,7 +3,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
+<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
 
 <asp:content ID="Content2" contentplaceholderid="head" runat="server"> 
     <link rel="Stylesheet" href="/CSS/general.css" type="text/css" media="screen" /> 
@@ -45,6 +45,9 @@
         </table>      
 </td></tr>
 <tr><td>
+
+           <asp:ScriptManager ID="ScriptManager1" runat="server">
+           </asp:ScriptManager>
 
            <rsweb:ReportViewer ID="rvProInvent" runat="server" Height="800px" 
                Width="98%" Font-Names="Verdana" Font-Size="8pt" Visible="False">

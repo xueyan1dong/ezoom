@@ -1,13 +1,13 @@
 ﻿<%@ Page Language="C#" MasterPageFile="ReportModule.master" AutoEventWireup="true" CodeBehind="LotHistoryReport.aspx.cs" Inherits="ezMESWeb.Reports.LotHistoryReport" %>
 
-<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
+<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
 
 <asp:content ID="Content2" contentplaceholderid="head" runat="server"> 
     <link rel="Stylesheet" href="/CSS/general.css" type="text/css" media="screen" /> 
     <link rel="Stylesheet" href="/CSS/reportstyle.css" type="text/css" media="screen" />
 </asp:content>
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1"> 
-   <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="Double" 
+    <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="Double" 
            Width="800px" Height="1100px" >
   <center class="title">Batch Status and History Report</center>    
  <div style="padding-bottom:5px; padding-top:5px;">   
@@ -22,6 +22,9 @@
 </ul>
  </ul>
  </div>       
+
+            <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
 
             <rsweb:ReportViewer ID="rvLot" runat="server" Height="941px" 
                Width="99%" Font-Names="Verdana" Font-Size="8pt" Visible="False">

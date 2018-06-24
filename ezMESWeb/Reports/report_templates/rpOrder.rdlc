@@ -1,36 +1,520 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Textbox Name="txtTitle">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>="Quantity Distribution for " &amp; Parameters!order.Value</Value>
+                <Style>
+                  <FontStyle>Italic</FontStyle>
+                  <FontSize>18pt</FontSize>
+                  <FontWeight>SemiBold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <Top>0.25in</Top>
+        <Left>0.125in</Left>
+        <Height>0.375in</Height>
+        <Width>8.5in</Width>
+        <Style>
+          <Border>
+            <Color>Silver</Color>
+            <Style>Solid</Style>
+          </Border>
+          <BackgroundColor>LightGrey</BackgroundColor>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Chart Name="chart1">
+        <ChartCategoryHierarchy>
+          <ChartMembers>
+            <ChartMember>
+              <Group Name="chart1_CategoryGroup1">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!product_id.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <Label>=Fields!product_name.Value</Label>
+              <DataElementOutput>Output</DataElementOutput>
+            </ChartMember>
+          </ChartMembers>
+        </ChartCategoryHierarchy>
+        <ChartSeriesHierarchy>
+          <ChartMembers>
+            <ChartMember>
+              <Label>quantity made</Label>
+            </ChartMember>
+            <ChartMember>
+              <Label>quantity in process</Label>
+            </ChartMember>
+            <ChartMember>
+              <Label>quantity shipped</Label>
+            </ChartMember>
+            <ChartMember>
+              <Label>quantity shipped</Label>
+            </ChartMember>
+          </ChartMembers>
+        </ChartSeriesHierarchy>
+        <ChartData>
+          <ChartSeriesCollection>
+            <ChartSeries Name="Series1">
+              <ChartDataPoints>
+                <ChartDataPoint>
+                  <ChartDataPointValues>
+                    <Y>=Fields!quantity_made.Value</Y>
+                  </ChartDataPointValues>
+                  <ChartDataLabel>
+                    <Style>
+                      <FontWeight>Medium</FontWeight>
+                    </Style>
+                    <Label>=FormatNumber(Fields!quantity_made.Value,0)</Label>
+                    <Visible>true</Visible>
+                  </ChartDataLabel>
+                  <Style>
+                    <Border>
+                      <Width>0.376pt</Width>
+                    </Border>
+                  </Style>
+                  <ChartMarker>
+                    <Size>6pt</Size>
+                    <Style />
+                  </ChartMarker>
+                  <DataElementOutput>NoOutput</DataElementOutput>
+                </ChartDataPoint>
+              </ChartDataPoints>
+              <Type>Bar</Type>
+              <Subtype>Stacked</Subtype>
+              <Style />
+              <ChartEmptyPoints>
+                <Style />
+                <ChartMarker>
+                  <Style />
+                </ChartMarker>
+                <ChartDataLabel>
+                  <Style />
+                </ChartDataLabel>
+              </ChartEmptyPoints>
+              <CustomProperties>
+                <CustomProperty>
+                  <Name>PointWidth</Name>
+                  <Value>0.6</Value>
+                </CustomProperty>
+              </CustomProperties>
+              <ValueAxisName>Primary</ValueAxisName>
+              <CategoryAxisName>Primary</CategoryAxisName>
+              <ChartSmartLabel>
+                <CalloutLineColor>Black</CalloutLineColor>
+                <MinMovingDistance>0pt</MinMovingDistance>
+              </ChartSmartLabel>
+            </ChartSeries>
+            <ChartSeries Name="Series2">
+              <ChartDataPoints>
+                <ChartDataPoint>
+                  <ChartDataPointValues>
+                    <Y>=Fields!quantity_in_process.Value</Y>
+                  </ChartDataPointValues>
+                  <ChartDataLabel>
+                    <Style>
+                      <FontWeight>Medium</FontWeight>
+                    </Style>
+                    <Label>=FormatNumber(Fields!quantity_in_process.Value,0)</Label>
+                    <Visible>true</Visible>
+                  </ChartDataLabel>
+                  <Style />
+                  <ChartMarker>
+                    <Size>6pt</Size>
+                    <Style />
+                  </ChartMarker>
+                  <DataElementOutput>NoOutput</DataElementOutput>
+                </ChartDataPoint>
+              </ChartDataPoints>
+              <Type>Bar</Type>
+              <Subtype>Stacked</Subtype>
+              <Style />
+              <ChartEmptyPoints>
+                <Style />
+                <ChartMarker>
+                  <Style />
+                </ChartMarker>
+                <ChartDataLabel>
+                  <Style />
+                </ChartDataLabel>
+              </ChartEmptyPoints>
+              <CustomProperties>
+                <CustomProperty>
+                  <Name>PointWidth</Name>
+                  <Value>0.6</Value>
+                </CustomProperty>
+              </CustomProperties>
+              <ValueAxisName>Primary</ValueAxisName>
+              <CategoryAxisName>Primary</CategoryAxisName>
+              <ChartSmartLabel>
+                <CalloutLineColor>Black</CalloutLineColor>
+                <MinMovingDistance>0pt</MinMovingDistance>
+              </ChartSmartLabel>
+            </ChartSeries>
+            <ChartSeries Name="Series3">
+              <ChartDataPoints>
+                <ChartDataPoint>
+                  <ChartDataPointValues>
+                    <Y>=Fields!quantity_shipped.Value</Y>
+                  </ChartDataPointValues>
+                  <ChartDataLabel>
+                    <Style>
+                      <FontWeight>Medium</FontWeight>
+                    </Style>
+                    <Label>=FormatNumber(Fields!quantity_shipped.Value, 0)</Label>
+                    <Visible>true</Visible>
+                  </ChartDataLabel>
+                  <Style />
+                  <ChartMarker>
+                    <Size>6pt</Size>
+                    <Style />
+                  </ChartMarker>
+                  <DataElementOutput>NoOutput</DataElementOutput>
+                </ChartDataPoint>
+              </ChartDataPoints>
+              <Type>Bar</Type>
+              <Subtype>Stacked</Subtype>
+              <Style />
+              <ChartEmptyPoints>
+                <Style />
+                <ChartMarker>
+                  <Style />
+                </ChartMarker>
+                <ChartDataLabel>
+                  <Style />
+                </ChartDataLabel>
+              </ChartEmptyPoints>
+              <CustomProperties>
+                <CustomProperty>
+                  <Name>PointWidth</Name>
+                  <Value>0.6</Value>
+                </CustomProperty>
+              </CustomProperties>
+              <ValueAxisName>Primary</ValueAxisName>
+              <CategoryAxisName>Primary</CategoryAxisName>
+              <ChartSmartLabel>
+                <CalloutLineColor>Black</CalloutLineColor>
+                <MinMovingDistance>0pt</MinMovingDistance>
+              </ChartSmartLabel>
+            </ChartSeries>
+            <ChartSeries Name="Series4">
+              <ChartDataPoints>
+                <ChartDataPoint>
+                  <ChartDataPointValues>
+                    <Y>=Fields!quantity_requested.Value-Fields!quantity_made.Value-Fields!quantity_in_process.Value-Fields!quantity_shipped.Value</Y>
+                  </ChartDataPointValues>
+                  <ChartDataLabel>
+                    <Style>
+                      <FontWeight>Medium</FontWeight>
+                    </Style>
+                    <Label>=FormatNumber((Fields!quantity_requested.Value - Fields!quantity_made.Value - Fields!quantity_in_process.Value - Fields!quantity_shipped.Value) ,0)</Label>
+                    <Visible>true</Visible>
+                  </ChartDataLabel>
+                  <Style />
+                  <ChartMarker>
+                    <Size>6pt</Size>
+                    <Style />
+                  </ChartMarker>
+                  <DataElementOutput>NoOutput</DataElementOutput>
+                </ChartDataPoint>
+              </ChartDataPoints>
+              <Type>Bar</Type>
+              <Subtype>Stacked</Subtype>
+              <Style />
+              <ChartEmptyPoints>
+                <Style />
+                <ChartMarker>
+                  <Style />
+                </ChartMarker>
+                <ChartDataLabel>
+                  <Style />
+                </ChartDataLabel>
+              </ChartEmptyPoints>
+              <CustomProperties>
+                <CustomProperty>
+                  <Name>PointWidth</Name>
+                  <Value>0.6</Value>
+                </CustomProperty>
+              </CustomProperties>
+              <ValueAxisName>Primary</ValueAxisName>
+              <CategoryAxisName>Primary</CategoryAxisName>
+              <ChartSmartLabel>
+                <CalloutLineColor>Black</CalloutLineColor>
+                <MinMovingDistance>0pt</MinMovingDistance>
+              </ChartSmartLabel>
+            </ChartSeries>
+          </ChartSeriesCollection>
+        </ChartData>
+        <ChartAreas>
+          <ChartArea Name="Default">
+            <ChartCategoryAxes>
+              <ChartAxis Name="Primary">
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                    <Width>0.75pt</Width>
+                  </Border>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Product</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <Margin>False</Margin>
+                <ChartMajorGridLines>
+                  <Enabled>False</Enabled>
+                  <Style>
+                    <Border>
+                      <Style>Solid</Style>
+                      <Width>0.75pt</Width>
+                    </Border>
+                  </Style>
+                  <Interval>NaN</Interval>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Enabled>False</Enabled>
+                  <Style>
+                    <Border>
+                      <Style>Solid</Style>
+                      <Width>0.75pt</Width>
+                    </Border>
+                  </Style>
+                  <Interval>NaN</Interval>
+                  <IntervalOffset>-1</IntervalOffset>
+                </ChartMinorGridLines>
+                <ChartMajorTickMarks>
+                  <Enabled>True</Enabled>
+                  <Style>
+                    <Border>
+                      <Style>Solid</Style>
+                      <Width>0.75pt</Width>
+                    </Border>
+                  </Style>
+                  <Interval>NaN</Interval>
+                </ChartMajorTickMarks>
+                <ChartMinorTickMarks>
+                  <Type>None</Type>
+                </ChartMinorTickMarks>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <PreventFontShrink>true</PreventFontShrink>
+                <PreventFontGrow>true</PreventFontGrow>
+                <IncludeZero>false</IncludeZero>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+              <ChartAxis Name="Secondary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption />
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <CrossAt>NaN</CrossAt>
+                <Location>Opposite</Location>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+            </ChartCategoryAxes>
+            <ChartValueAxes>
+              <ChartAxis Name="Primary">
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                    <Width>0.75pt</Width>
+                  </Border>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Unit</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <Margin>True</Margin>
+                <ChartMajorGridLines>
+                  <Enabled>True</Enabled>
+                  <Style>
+                    <Border>
+                      <Style>Solid</Style>
+                      <Width>0.75pt</Width>
+                    </Border>
+                  </Style>
+                  <Interval>NaN</Interval>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Enabled>False</Enabled>
+                  <Style>
+                    <Border>
+                      <Style>Solid</Style>
+                      <Width>0.75pt</Width>
+                    </Border>
+                  </Style>
+                  <Interval>NaN</Interval>
+                </ChartMinorGridLines>
+                <ChartMajorTickMarks>
+                  <Enabled>True</Enabled>
+                  <Style>
+                    <Border>
+                      <Style>Solid</Style>
+                      <Width>0.75pt</Width>
+                    </Border>
+                  </Style>
+                  <Interval>NaN</Interval>
+                </ChartMajorTickMarks>
+                <ChartMinorTickMarks>
+                  <Type>None</Type>
+                </ChartMinorTickMarks>
+                <Scalar>true</Scalar>
+                <Minimum>0</Minimum>
+                <PreventFontShrink>true</PreventFontShrink>
+                <PreventFontGrow>true</PreventFontGrow>
+                <IncludeZero>false</IncludeZero>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+              <ChartAxis Name="Secondary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption />
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <CrossAt>NaN</CrossAt>
+                <Location>Opposite</Location>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+            </ChartValueAxes>
+            <ChartThreeDProperties>
+              <Enabled>true</Enabled>
+              <WallThickness>15</WallThickness>
+              <Clustered>true</Clustered>
+            </ChartThreeDProperties>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+                <Width>0.75pt</Width>
+              </Border>
+              <BackgroundColor>LightGrey</BackgroundColor>
+            </Style>
+          </ChartArea>
+        </ChartAreas>
+        <ChartLegends>
+          <ChartLegend Name="Default">
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+                <Width>0.75pt</Width>
+              </Border>
+            </Style>
+            <Position>BottomCenter</Position>
+            <ChartLegendTitle>
+              <Caption />
+              <Style>
+                <FontSize>8pt</FontSize>
+                <FontWeight>Bold</FontWeight>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </ChartLegendTitle>
+            <AutoFitTextDisabled>true</AutoFitTextDisabled>
+          </ChartLegend>
+        </ChartLegends>
+        <ChartTitles>
+          <ChartTitle Name="Default">
+            <Caption>Quantity Distribution</Caption>
+            <Style />
+          </ChartTitle>
+        </ChartTitles>
+        <ChartBorderSkin>
+          <Style>
+            <BackgroundColor>Gray</BackgroundColor>
+            <BackgroundGradientType>None</BackgroundGradientType>
+            <Color>White</Color>
+          </Style>
+        </ChartBorderSkin>
+        <ChartNoDataMessage Name="NoDataMessage">
+          <Caption>No Data Available</Caption>
+          <Style>
+            <BackgroundGradientType>None</BackgroundGradientType>
+            <TextAlign>General</TextAlign>
+            <VerticalAlign>Top</VerticalAlign>
+          </Style>
+        </ChartNoDataMessage>
+        <DataSetName>DataSet1_report_order_quantity</DataSetName>
+        <Top>0.875in</Top>
+        <Left>0.25in</Left>
+        <Height>4.625in</Height>
+        <Width>8.5in</Width>
+        <ZIndex>1</ZIndex>
+        <CustomProperties>
+          <CustomProperty>
+            <Name>__Upgraded2005__</Name>
+            <Value>__Upgraded2005__</Value>
+          </CustomProperty>
+        </CustomProperties>
+        <Style>
+          <BackgroundColor>White</BackgroundColor>
+        </Style>
+      </Chart>
+    </ReportItems>
+    <Height>5.5in</Height>
+    <Style />
+  </Body>
+  <Width>9in</Width>
+  <Page>
+    <LeftMargin>1in</LeftMargin>
+    <RightMargin>1in</RightMargin>
+    <TopMargin>1in</TopMargin>
+    <BottomMargin>1in</BottomMargin>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DummyDataSource">
-      <rd:DataSourceID>d4bca86a-e1ec-42b9-92cc-b1ccb1da40a8</rd:DataSourceID>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString />
       </ConnectionProperties>
+      <rd:DataSourceID>d4bca86a-e1ec-42b9-92cc-b1ccb1da40a8</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <InteractiveHeight>11in</InteractiveHeight>
-  <ReportParameters>
-    <ReportParameter Name="order">
-      <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>""</Value>
-        </Values>
-      </DefaultValue>
-      <AllowBlank>true</AllowBlank>
-      <Prompt>order</Prompt>
-    </ReportParameter>
-  </ReportParameters>
-  <rd:DrawGrid>true</rd:DrawGrid>
-  <InteractiveWidth>8.5in</InteractiveWidth>
-  <rd:SnapToGrid>true</rd:SnapToGrid>
-  <RightMargin>1in</RightMargin>
-  <LeftMargin>1in</LeftMargin>
-  <BottomMargin>1in</BottomMargin>
-  <rd:ReportID>0af20dd9-9382-4783-ba0d-c27767493bb1</rd:ReportID>
   <DataSets>
     <DataSet Name="DataSet1_report_order_quantity">
+      <Query>
+        <DataSourceName>DummyDataSource</DataSourceName>
+        <CommandText />
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
       <Fields>
         <Field Name="id">
           <DataField>id</DataField>
@@ -81,265 +565,26 @@
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
-      <Query>
-        <DataSourceName>DummyDataSource</DataSourceName>
-        <CommandText />
-        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
-      </Query>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSet1</rd:DataSetName>
         <rd:TableName>report_order_quantity</rd:TableName>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
-  <Width>9in</Width>
-  <Body>
-    <ReportItems>
-      <Chart Name="chart1">
-        <Legend>
-          <Visible>true</Visible>
-          <Style>
-            <BorderStyle>
-              <Default>Solid</Default>
-            </BorderStyle>
-          </Style>
-          <Position>BottomCenter</Position>
-          <Layout>Table</Layout>
-        </Legend>
-        <CategoryAxis>
-          <Axis>
-            <Title>
-              <Caption>Product</Caption>
-            </Title>
-            <MajorGridLines>
-              <Style>
-                <BorderStyle>
-                  <Default>Solid</Default>
-                </BorderStyle>
-              </Style>
-            </MajorGridLines>
-            <MinorGridLines>
-              <Style>
-                <BorderStyle>
-                  <Default>Solid</Default>
-                </BorderStyle>
-              </Style>
-            </MinorGridLines>
-            <MajorTickMarks>Outside</MajorTickMarks>
-            <Min>0</Min>
-            <Visible>true</Visible>
-          </Axis>
-        </CategoryAxis>
-        <ZIndex>1</ZIndex>
-        <DataSetName>DataSet1_report_order_quantity</DataSetName>
-        <PlotArea>
-          <Style>
-            <BackgroundColor>LightGrey</BackgroundColor>
-            <BorderStyle>
-              <Default>Solid</Default>
-            </BorderStyle>
-          </Style>
-        </PlotArea>
-        <ThreeDProperties>
-          <Enabled>true</Enabled>
-          <ProjectionMode>Orthographic</ProjectionMode>
-          <Rotation>30</Rotation>
-          <Inclination>30</Inclination>
-          <Shading>Real</Shading>
-          <WallThickness>50</WallThickness>
-        </ThreeDProperties>
-        <PointWidth>0</PointWidth>
-        <SeriesGroupings>
-          <SeriesGrouping>
-            <StaticSeries>
-              <StaticMember>
-                <Label>Quantity in Warehouse</Label>
-              </StaticMember>
-              <StaticMember>
-                <Label>Quantity in Process</Label>
-              </StaticMember>
-              <StaticMember>
-                <Label>Quantity Shipped</Label>
-              </StaticMember>
-              <StaticMember>
-                <Label>Quantity Not Scheduled</Label>
-              </StaticMember>
-            </StaticSeries>
-          </SeriesGrouping>
-        </SeriesGroupings>
-        <Top>0.875in</Top>
-        <Subtype>Stacked</Subtype>
-        <ValueAxis>
-          <Axis>
-            <Title>
-              <Caption>Unit</Caption>
-            </Title>
-            <MajorGridLines>
-              <ShowGridLines>true</ShowGridLines>
-              <Style>
-                <BorderStyle>
-                  <Default>Solid</Default>
-                </BorderStyle>
-              </Style>
-            </MajorGridLines>
-            <MinorGridLines>
-              <Style>
-                <BorderStyle>
-                  <Default>Solid</Default>
-                </BorderStyle>
-              </Style>
-            </MinorGridLines>
-            <MajorTickMarks>Outside</MajorTickMarks>
-            <Min>0</Min>
-            <Margin>true</Margin>
-            <Visible>true</Visible>
-            <Scalar>true</Scalar>
-          </Axis>
-        </ValueAxis>
-        <Type>Bar</Type>
-        <Width>8.5in</Width>
-        <CategoryGroupings>
-          <CategoryGrouping>
-            <DynamicCategories>
-              <Grouping Name="chart1_CategoryGroup1">
-                <GroupExpressions>
-                  <GroupExpression>=Fields!product_id.Value</GroupExpression>
-                </GroupExpressions>
-              </Grouping>
-              <Label>=Fields!product_name.Value</Label>
-            </DynamicCategories>
-          </CategoryGrouping>
-        </CategoryGroupings>
-        <Palette>Default</Palette>
-        <ChartData>
-          <ChartSeries>
-            <DataPoints>
-              <DataPoint>
-                <DataValues>
-                  <DataValue>
-                    <Value>=Fields!quantity_made.Value</Value>
-                  </DataValue>
-                </DataValues>
-                <DataLabel>
-                  <Style>
-                    <FontWeight>500</FontWeight>
-                  </Style>
-                  <Value>=FormatNumber(Fields!quantity_made.Value,0)</Value>
-                  <Visible>true</Visible>
-                </DataLabel>
-                <Style />
-                <Marker>
-                  <Size>6pt</Size>
-                </Marker>
-                <DataElementOutput>NoOutput</DataElementOutput>
-              </DataPoint>
-            </DataPoints>
-          </ChartSeries>
-          <ChartSeries>
-            <DataPoints>
-              <DataPoint>
-                <DataValues>
-                  <DataValue>
-                    <Value>=Fields!quantity_in_process.Value</Value>
-                  </DataValue>
-                </DataValues>
-                <DataLabel>
-                  <Style>
-                    <FontWeight>500</FontWeight>
-                  </Style>
-                  <Value>=FormatNumber(Fields!quantity_in_process.Value,0)</Value>
-                  <Visible>true</Visible>
-                </DataLabel>
-                <Marker>
-                  <Size>6pt</Size>
-                </Marker>
-                <DataElementOutput>NoOutput</DataElementOutput>
-              </DataPoint>
-            </DataPoints>
-          </ChartSeries>
-          <ChartSeries>
-            <DataPoints>
-              <DataPoint>
-                <DataValues>
-                  <DataValue>
-                    <Value>=Fields!quantity_shipped.Value</Value>
-                  </DataValue>
-                </DataValues>
-                <DataLabel>
-                  <Style>
-                    <FontWeight>500</FontWeight>
-                  </Style>
-                  <Value>=FormatNumber(Fields!quantity_shipped.Value, 0)</Value>
-                  <Visible>true</Visible>
-                </DataLabel>
-                <Marker>
-                  <Size>6pt</Size>
-                </Marker>
-                <DataElementOutput>NoOutput</DataElementOutput>
-              </DataPoint>
-            </DataPoints>
-          </ChartSeries>
-          <ChartSeries>
-            <DataPoints>
-              <DataPoint>
-                <DataValues>
-                  <DataValue>
-                    <Value>=Fields!quantity_requested.Value-Fields!quantity_made.Value-Fields!quantity_in_process.Value-Fields!quantity_shipped.Value</Value>
-                  </DataValue>
-                </DataValues>
-                <DataLabel>
-                  <Style>
-                    <FontWeight>500</FontWeight>
-                  </Style>
-                  <Value>=FormatNumber((Fields!quantity_requested.Value - Fields!quantity_made.Value - Fields!quantity_in_process.Value - Fields!quantity_shipped.Value) ,0)</Value>
-                  <Visible>true</Visible>
-                </DataLabel>
-                <Marker>
-                  <Size>6pt</Size>
-                </Marker>
-                <DataElementOutput>NoOutput</DataElementOutput>
-              </DataPoint>
-            </DataPoints>
-          </ChartSeries>
-        </ChartData>
-        <Style>
-          <BackgroundColor>White</BackgroundColor>
-        </Style>
-        <Title>
-          <Caption>Quantity Distribution</Caption>
-          <Style />
-        </Title>
-        <Height>4.625in</Height>
-        <Left>0.25in</Left>
-      </Chart>
-      <Textbox Name="txtTitle">
-        <Top>0.25in</Top>
-        <Width>8.5in</Width>
-        <Style>
-          <BackgroundColor>LightGrey</BackgroundColor>
-          <BorderColor>
-            <Default>Silver</Default>
-          </BorderColor>
-          <BorderStyle>
-            <Default>Solid</Default>
-          </BorderStyle>
-          <FontStyle>Italic</FontStyle>
-          <FontSize>18pt</FontSize>
-          <FontWeight>600</FontWeight>
-          <TextAlign>Center</TextAlign>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-        <CanGrow>true</CanGrow>
-        <Left>0.125in</Left>
-        <Height>0.375in</Height>
-        <Value>="Quantity Distribution for " &amp; Parameters!order.Value</Value>
-      </Textbox>
-    </ReportItems>
-    <Height>6.125in</Height>
-  </Body>
+  <ReportParameters>
+    <ReportParameter Name="order">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>""</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>order</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <Language>en-US</Language>
-  <TopMargin>1in</TopMargin>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0af20dd9-9382-4783-ba0d-c27767493bb1</rd:ReportID>
 </Report>

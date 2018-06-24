@@ -2,7 +2,9 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
+<%@ Register assembly="Microsoft.ReportViewer.WebForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
+
+<%@ Register assembly="Microsoft.ReportViewer.WebForms" namespace="Microsoft.Reporting.WebForms" tagprefix="rsweb" %>
 
 <asp:content ID="Content2" contentplaceholderid="head" runat="server"> 
     <link rel="Stylesheet" href="/CSS/general.css" type="text/css" media="screen" /> 
@@ -10,8 +12,9 @@
     <link rel="Stylesheet" href="/CSS/reportstyle.css" type="text/css" media="screen" /> 
 </asp:content>
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1"> 
-  <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
-
+<%--
+    <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
+--%>
    <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="Double" 
            Width="800px" Height="1100px" >
           
@@ -64,10 +67,12 @@
 </ul>
  </div>  
  
-        <rsweb:ReportViewer Width="99%"  ID="rvDispatch" runat="server" Height="80%" 
-    Font-Names="Verdana" Font-Size="8pt" Visible="False" >
-           <LocalReport ReportPath="Reports\report_templates\rpDispatchHistory.rdlc">
-           </LocalReport>
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+       </asp:ScriptManager>
+ 
+        <rsweb:ReportViewer ID="rvDispatch" runat="server" Font-Names="Verdana" Font-Size="8pt" Height="80%" Visible="False" Width="99%">
+           <localreport reportpath="Reports\report_templates\rpDispatchHistory.rdlc">
+           </localreport>
         </rsweb:ReportViewer>
         
      </asp:Panel>
