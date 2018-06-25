@@ -35,10 +35,10 @@ CREATE TABLE  `company` (
   `description` text DEFAULT NULL,
   `comment` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 -- client table
-DROP TABLE IF EXISTS `client`;
+DROP TABLE IF EXISTS `client`$
 CREATE TABLE `client` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL,
@@ -67,11 +67,11 @@ CREATE TABLE `client` (
   `ifactive` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `comment` text,
   PRIMARY KEY (`id`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- attribute_history table
-DROP TABLE IF EXISTS `attribute_history`;
+DROP TABLE IF EXISTS `attribute_history`$
 CREATE TABLE `attribute_history` (
   `event_time` datetime NOT NULL,
   `employee_id` int(10) unsigned NOT NULL,
@@ -95,11 +95,11 @@ CREATE TABLE `attribute_history` (
   `description` text,
   `comment` text,
   PRIMARY KEY (`event_time`,`parent_type`, `parent_id`, `attr_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 
 -- config_history table
-DROP TABLE IF EXISTS `config_history`;
+DROP TABLE IF EXISTS `config_history`$
 CREATE TABLE `config_history` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `event_time` datetime NOT NULL,
@@ -111,11 +111,11 @@ CREATE TABLE `config_history` (
   `comment` text,
   `new_record` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- organization table
-DROP TABLE IF EXISTS `organization`;
+DROP TABLE IF EXISTS `organization`$
 CREATE TABLE `organization` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -125,11 +125,11 @@ CREATE TABLE `organization` (
   `email` varchar(45) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- employee_group table
-DROP TABLE IF EXISTS `employee_group`;
+DROP TABLE IF EXISTS `employee_group`$
 CREATE TABLE `employee_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -140,11 +140,11 @@ CREATE TABLE `employee_group` (
   `lead_employee` int(10) unsigned DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- employee table
-DROP TABLE IF EXISTS `employee`;
+DROP TABLE IF EXISTS `employee`$
 CREATE TABLE  `employee` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` varchar(20) NOT NULL,
@@ -162,11 +162,11 @@ CREATE TABLE  `employee` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `em_un1` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- locationt able
-DROP TABLE IF EXISTS `location`;
+DROP TABLE IF EXISTS `location`$
 CREATE TABLE `location` (
   `id` INTEGER(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -182,11 +182,11 @@ CREATE TABLE `location` (
   `comment` TEXT,
   PRIMARY KEY (`id`)
 )
-ENGINE = InnoDB DEFAULT CHARSET=utf8;
+ENGINE = InnoDB DEFAULT CHARSET=utf8$
 
 
 -- equipment_group table
-DROP TABLE IF EXISTS `equipment_group`;
+DROP TABLE IF EXISTS `equipment_group`$
 CREATE TABLE  `equipment_group` (
   `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -198,11 +198,11 @@ CREATE TABLE  `equipment_group` (
   `comment` text,
   PRIMARY KEY (`id`),
   KEY `eg_un1` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- equipment table
-DROP TABLE IF EXISTS `equipment`;
+DROP TABLE IF EXISTS `equipment`$
 CREATE TABLE  `equipment` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `eg_id` int(10) unsigned zerofill DEFAULT NULL,
@@ -222,11 +222,11 @@ CREATE TABLE  `equipment` (
   `comment` text,
   PRIMARY KEY (`id`),
   KEY `eq_un1` (`eg_id`,`name`) 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- eq_attributes table
-DROP TABLE IF EXISTS `eq_attributes`;
+DROP TABLE IF EXISTS `eq_attributes`$
 CREATE TABLE  `eq_attributes` (
   `eq_id` int(10) unsigned NOT NULL,
   `attr_id` int(10) unsigned NOT NULL,
@@ -244,11 +244,11 @@ CREATE TABLE  `eq_attributes` (
   `description` text,
   `comment` text,
   PRIMARY KEY (`eq_id`,`attr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- equip_history table
-DROP TABLE IF EXISTS `equip_history`;
+DROP TABLE IF EXISTS `equip_history`$
 CREATE TABLE `equip_history` (
   `event_time`  datetime NOT NULL,
   `equip_id` int(10) unsigned NOT NULL,
@@ -258,21 +258,21 @@ CREATE TABLE `equip_history` (
   `comment` text CHARACTER SET latin1 NOT NULL,
   `new_record` text CHARACTER SET latin1,
   PRIMARY KEY (`equip_id`,`event_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- uom table
-DROP TABLE IF EXISTS `uom`;
+DROP TABLE IF EXISTS `uom`$
 CREATE TABLE `uom` (
   `id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `alias` varchar(20) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 -- uom_conversion table
-DROP TABLE IF EXISTS `uom_conversion`;
+DROP TABLE IF EXISTS `uom_conversion`$
 CREATE TABLE `uom_conversion` (
   `from_id` smallint(3) unsigned NOT NULL ,
   `to_id` smallint(3) unsigned NOT NULL ,
@@ -280,10 +280,10 @@ CREATE TABLE `uom_conversion` (
   `constant` decimal(16,4) unsigned NOT NULL,
   `comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`from_id`, `to_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 -- recipe table
-DROP TABLE IF EXISTS `recipe`;
+DROP TABLE IF EXISTS `recipe`$
 CREATE TABLE `recipe` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
@@ -297,11 +297,11 @@ CREATE TABLE `recipe` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (`id`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- ingredients table
-DROP TABLE IF EXISTS `ingredients`;
+DROP TABLE IF EXISTS `ingredients`$
 CREATE TABLE `ingredients` (
   `recipe_id` int(10) unsigned NOT NULL,
   `source_type` enum('product', 'material') NOT NULL,
@@ -313,10 +313,10 @@ CREATE TABLE `ingredients` (
   `maxtime` int(10) unsigned DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (`recipe_id`,`source_type`,`ingredient_id`,`order`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 -- ingredients_history table
-DROP TABLE IF EXISTS `ingredients_history`;
+DROP TABLE IF EXISTS `ingredients_history`$
 CREATE TABLE `ingredients_history` (
   `event_time` datetime NOT NULL,
   `employee_id` int(10) unsigned NOT NULL,
@@ -331,11 +331,11 @@ CREATE TABLE `ingredients_history` (
   `maxtime` int(10) unsigned DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (`event_time`, `recipe_id`,`source_type`,`ingredient_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- inventory table
-DROP TABLE IF EXISTS `inventory`;
+DROP TABLE IF EXISTS `inventory`$
 CREATE TABLE `inventory` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `source_type` enum('product','material') NOT NULL,
@@ -356,11 +356,11 @@ CREATE TABLE `inventory` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inventory_un01` (`source_type`,`pd_or_mt_id`, `supplier_id`, `lot_id`, `serial_no`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 
 -- inventory_consumption table
-DROP TABLE IF EXISTS `inventory_consumption`;
+DROP TABLE IF EXISTS `inventory_consumption`$
 CREATE TABLE `inventory_consumption` (
   `lot_id` int(10) unsigned NOT NULL,
   `lot_alias` varchar(20) DEFAULT NULL,
@@ -379,22 +379,22 @@ CREATE TABLE `inventory_consumption` (
   `device_id` int(10) unsigned DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (lot_id, start_timecode, inventory_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 
 -- material_group table
-DROP TABLE IF EXISTS `material_group`;
+DROP TABLE IF EXISTS `material_group`$
 CREATE TABLE `material_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text,
   `comment` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- material table
-DROP TABLE IF EXISTS `material`;
+DROP TABLE IF EXISTS `material`$
 CREATE TABLE `material` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -413,11 +413,11 @@ CREATE TABLE `material` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ma_un1` (`name`,`alias`,`mg_id`,`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- order_general table
-DROP TABLE IF EXISTS `order_general`;
+DROP TABLE IF EXISTS `order_general`$
 CREATE TABLE `order_general` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `order_type` enum('inventory', 'customer','supplier') NOT NULL,
@@ -436,11 +436,11 @@ CREATE TABLE `order_general` (
   `comment` text,
   PRIMARY KEY (`id`),
   KEY `order_in01` (`order_type`,`client_id`,`ponumber`,`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- order_detail table
-DROP TABLE IF EXISTS `order_detail`;
+DROP TABLE IF EXISTS `order_detail`$
 CREATE TABLE `order_detail` (
   `order_id` int(10) unsigned NOT NULL,
   `source_type` enum('product', 'material') NOT NULL,
@@ -458,11 +458,11 @@ CREATE TABLE `order_detail` (
   `record_time` datetime NOT NULL,
   `comment` text,
   PRIMARY KEY (`order_id`, `source_type`, `source_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- order_state_history table
-DROP TABLE IF EXISTS `order_state_history`;
+DROP TABLE IF EXISTS `order_state_history`$
 CREATE TABLE `order_state_history` (
   `order_id` int(10) unsigned NOT NULL,
   `state` enum('quoted', 'POed', 'scheduled', 'produced', 'shipped', 'delivered', 'invoiced', 'paid') NOT NULL,
@@ -470,11 +470,11 @@ CREATE TABLE `order_state_history` (
   `recorder_id` int(10) unsigned NOT NULL,
   `comment` text,
   PRIMARY KEY (`order_id`, `state`, `state_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- product_group table
-DROP TABLE IF EXISTS `product_group`;
+DROP TABLE IF EXISTS `product_group`$
 CREATE TABLE `product_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -486,11 +486,11 @@ CREATE TABLE `product_group` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `pg_un1` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8$
 
 
 -- product table
-DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `product`$
 CREATE TABLE  `product` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `pg_id` int(10) unsigned NOT NULL,
@@ -508,11 +508,11 @@ CREATE TABLE  `product` (
   `comment` text,
   PRIMARY KEY (`id`),
   KEY `pd_un1` (`pg_id`,`name`,`version`) 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- pd_attributes table
-DROP TABLE IF EXISTS `pd_attributes`;
+DROP TABLE IF EXISTS `pd_attributes`$
 CREATE TABLE `pd_attributes` (
   `pd_id` int(10) unsigned NOT NULL,
   `attr_id` int(10) unsigned NOT NULL,
@@ -530,11 +530,11 @@ CREATE TABLE `pd_attributes` (
   `description` text CHARACTER SET latin1,
   `comment` text CHARACTER SET latin1,
   PRIMARY KEY (`pd_id`,`attr_id`, `attr_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- step_type table
-DROP TABLE IF EXISTS `step_type`;
+DROP TABLE IF EXISTS `step_type`$
 CREATE TABLE `step_type` (
   `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
@@ -545,10 +545,10 @@ CREATE TABLE `step_type` (
   `description` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `sc_un1` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 -- step table
-DROP TABLE IF EXISTS `step`;
+DROP TABLE IF EXISTS `step`$
 CREATE TABLE `step` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `step_type_id` int(5) unsigned NOT NULL,
@@ -582,11 +582,11 @@ CREATE TABLE `step` (
   `para10` text,  
   PRIMARY KEY (`id`),
   UNIQUE KEY `st_un1` (`name`,`version`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 
 -- process_group
-DROP TABLE IF EXISTS `process_group`;
+DROP TABLE IF EXISTS `process_group`$
 CREATE TABLE `process_group` (
   `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -599,11 +599,11 @@ CREATE TABLE `process_group` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `prg_un1` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- process table
-DROP TABLE IF EXISTS `process`;
+DROP TABLE IF EXISTS `process`$
 CREATE TABLE `process` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -622,10 +622,10 @@ CREATE TABLE `process` (
   `comment` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `pr_un1` (`name`,`version`,`prg_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 -- process_segment table
-DROP TABLE IF EXISTS `process_segment`;
+DROP TABLE IF EXISTS `process_segment`$
 CREATE TABLE `process_segment` (
   `process_id` int(10) unsigned NOT NULL,
   `segment_id` int(5) unsigned NOT NULL,  
@@ -633,10 +633,10 @@ CREATE TABLE `process_segment` (
   `position` smallint(2) unsigned NOT NULL,
   `description` text,
   PRIMARY KEY (`process_id`, `segment_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 -- process_step table
-DROP TABLE IF EXISTS `process_step`;
+DROP TABLE IF EXISTS `process_step`$
 CREATE TABLE `process_step` (
   `process_id` int(10) unsigned NOT NULL,
   `position_id` int(5) unsigned NOT NULL,
@@ -653,10 +653,10 @@ CREATE TABLE `process_step` (
   `approve_emp_usage` enum('employee group','employee category','employee') DEFAULT NULL,
   `approve_emp_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`process_id`,`position_id`,`step_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 -- process_step view
-DROP VIEW IF EXISTS `view_process_step`;
+DROP VIEW IF EXISTS `view_process_step`$
 CREATE ALGORITHM = MERGE VIEW `view_process_step` AS
     SELECT ps.process_id,
          ps.position_id,
@@ -678,11 +678,11 @@ CREATE ALGORITHM = MERGE VIEW `view_process_step` AS
              (SELECT concat(e.firstname, ' ', e.lastname) FROM employee e WHERE e.id = ps.approve_emp_id),
              (SELECT eg.name FROM employee_group eg WHERE eg.id = ps.approve_emp_id)) AS approve_emp_name
      FROM process_step ps 
-     ;
+     $
 
      
 -- process_step_history
-DROP TABLE IF EXISTS `process_step_history`;
+DROP TABLE IF EXISTS `process_step_history`$
 CREATE TABLE `process_step_history` (
   `event_time` datetime NOT NULL,
   `process_id` int(10) unsigned NOT NULL,
@@ -702,18 +702,18 @@ CREATE TABLE `process_step_history` (
   `approve_emp_usage` enum('employee group','employee category','employee') DEFAULT NULL,
   `approve_emp_id` int(10) unsigned DEFAULT NULL,  
   PRIMARY KEY (`event_time`, process_id, position_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 
 -- product_process table
-DROP TABLE IF EXISTS `product_process`;
+DROP TABLE IF EXISTS `product_process`$
 CREATE TABLE `product_process` (
   `product_id` int(10) unsigned NOT NULL,
   `process_id` int(10) unsigned NOT NULL,
   `priority` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `recorder` int(10) unsigned NOT NULL,
   `comment` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- lot_status table
@@ -727,7 +727,7 @@ CREATE TABLE `product_process` (
 *    Log                    :
 *    6/5/2018: xdong: add a new column, location, to record batch/lot location
 */
-DROP TABLE IF EXISTS `lot_status`;
+DROP TABLE IF EXISTS `lot_status`$
 CREATE TABLE `lot_status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `alias` varchar(20) DEFAULT NULL,
@@ -747,7 +747,7 @@ CREATE TABLE `lot_status` (
   `comment` text,
   `location` nvarchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 
 -- lot_history table
@@ -761,7 +761,7 @@ CREATE TABLE `lot_status` (
 *    Log                    :
 *    6/5/2018: xdong: add a new column, location, to log batch/lot location
 */
-DROP TABLE IF EXISTS `lot_history`;
+DROP TABLE IF EXISTS `lot_history`$
 CREATE TABLE `lot_history` (
   `lot_id` int(10) unsigned NOT NULL,
   `lot_alias` varchar(20) DEFAULT NULL,
@@ -785,19 +785,19 @@ CREATE TABLE `lot_history` (
   `comment` text,
   `location` nvarchar(255) DEFAULT NULL,  
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 -- priority table
-DROP Table IF EXISTS `priority`;
+DROP Table IF EXISTS `priority`$
 CREATE TABLE `priority` (
   `id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
 -- document table
-DROP TABLE IF EXISTS `document`;
+DROP TABLE IF EXISTS `document`$
 CREATE TABLE  `document` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `source_table` varchar(50) NOT NULL,
@@ -815,10 +815,10 @@ CREATE TABLE  `document` (
   `comment` text,
   PRIMARY KEY(`id`),
   KEY (`source_table`, `source_id`, `key_words`, `title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 -- feedback table
-DROP TABLE IF EXISTS `feedback`;
+DROP TABLE IF EXISTS `feedback`$
 CREATE TABLE `feedback` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `create_time` datetime NOT NULL,
@@ -834,28 +834,28 @@ CREATE TABLE `feedback` (
   `note` text DEFAULT NULL,
   `response` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 -- system_roles table
-DROP TABLE IF EXISTS `system_roles`;
+DROP TABLE IF EXISTS `system_roles`$
 CREATE TABLE `system_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `applicationId` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC$
 
 -- users_in_roles table
 
-DROP TABLE IF EXISTS `users_in_roles`;
+DROP TABLE IF EXISTS `users_in_roles`$
 CREATE TABLE `users_in_roles` (
   `userId` int(11) NOT NULL DEFAULT '0',
   `roleId` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`userId`,`roleId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC$
 
 -- view_ingredient view
-DROP VIEW IF EXISTS `view_ingredient`;
+DROP VIEW IF EXISTS `view_ingredient`$
 CREATE ALGORITHM = MERGE VIEW `view_ingredient` AS
 SELECT i.recipe_id,
         -- CONCAT('self-manufactured ', i.source_type) AS source_type,
@@ -892,10 +892,10 @@ SELECT i.recipe_id,
    LEFT JOIN material m ON m.id = i1.ingredient_id
    LEFT JOIN uom u1 ON u1.id = i1.uom_id
   WHERE i1.source_type = 'material'
-     ;
+     $
      
  -- view_lot_in_process view
-DROP VIEW IF EXISTS `view_lot_in_process`;
+DROP VIEW IF EXISTS `view_lot_in_process`$
 CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
  SELECT s.id,
         s.alias,
@@ -1013,10 +1013,10 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
         LEFT JOIN employee ea ON ea.id = h.approver_id
   WHERE s.status NOT IN ('shipped', 'scrapped')
   ORDER BY s.product_id, s.priority, s.dispatch_time
-     ;
+     $
 
 -- consumption_return table
-DROP TABLE IF EXISTS `consumption_return`;
+DROP TABLE IF EXISTS `consumption_return`$
 CREATE TABLE `consumption_return` (
   `lot_id` int(10) unsigned NOT NULL,
   `lot_alias` varchar(20) DEFAULT NULL,
@@ -1032,10 +1032,10 @@ CREATE TABLE `consumption_return` (
   `step_id` int(10) unsigned NOT NULL,
   `comment` text,
   PRIMARY KEY (lot_id, return_timecode, inventory_id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB$
 
 -- material_supplier table
-DROP TABLE IF EXISTS `material_supplier`;
+DROP TABLE IF EXISTS `material_supplier`$
 CREATE TABLE `material_supplier` (
   `material_id` int(10) unsigned NOT NULL,
   `supplier_id` int(10)unsigned NOT NULL,
