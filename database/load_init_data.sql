@@ -74,10 +74,25 @@ Insert into `users_in_roles` (`userId`, `roleId`) values(1, 1);
  -- insert a dummy location to be used by all equipments and equipment groups
 INSERT INTO location (name, create_time, contact_employee, description)
 VALUES ('company', now(), 1, 'This is the location representing the whole company');
+-- insert common areas: dispatch area
+INSERT INTO location (name, parent_loc_id, create_time, contact_employee, description)
+VALUES ('dispatch area', 1, now(), 1, 'This is the location where dispatch happened');
+
+-- insert common areas: process area
+INSERT INTO location (name, parent_loc_id, create_time, contact_employee, description)
+VALUES ('process area', 1, now(), 1, 'This is the location where batch is processed or being produced');
+
+-- insert common areas: transit area
+INSERT INTO location (name, parent_loc_id, create_time, contact_employee, description)
+VALUES ('transit area', 1, now(), 1, 'This is the location where batch is waiting for a while during process');
+
+-- insert common areas: inventory area
+INSERT INTO location (name, parent_loc_id, create_time, contact_employee, description)
+VALUES ('inventory area', 1, now(), 1, 'This is the location where batch is waiting for a while during process');
 
 -- insert a dummy equipment group to be used by all equipments
 INSERT INTO equipment_group (name, location_id, create_time, created_by, description)
-VALUES ('general', 1, now(), 1, 'This group is a general group that can be used by any equipment');
+VALUES ('general', 3, now(), 1, 'This group is a general group that can be used by any equipment');
 
 -- insert a dummy material group to be used by all materials
 INSERT INTO material_group (name, description)
