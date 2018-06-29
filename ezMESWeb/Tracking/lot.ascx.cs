@@ -23,7 +23,8 @@ namespace ezMESWeb.Tracking
       lblLotStatus,
       lblQuantity,
       lblUom,
-      lblStepStatus;
+      lblStepStatus,
+      lblLocation;
     protected void Page_Load(object sender, EventArgs e)
     {
       string stepStatus = Request.QueryString["step_status"];
@@ -36,6 +37,7 @@ namespace ezMESWeb.Tracking
         lblLotStatus.Text = Session["lot_status"].ToString();
         lblQuantity.Text = Request.QueryString["quantity"];
         lblUom.Text = Session["uom"].ToString();
+        lblLocation.Text = Session["location"].ToString();//Todo: add location to session in movelot.aspx [peiyu]
 
         if (!(stepStatus.Equals("shipped")||stepStatus.Equals("scrapped")||stepStatus.Equals("dispatched")))
           lblStepStatus.Text = Request.QueryString["step_status"];
