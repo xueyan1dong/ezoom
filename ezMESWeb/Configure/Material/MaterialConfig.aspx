@@ -96,7 +96,8 @@ scrollbars="Both" DefaultButton="Search">
        SelectCommand="SELECT m.id, 
                              m.name, 
                              (select supplier_id FROM material_supplier s WHERE s.material_id = m.id ORDER BY preference limit 1) AS alias,
-                             (select name FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) vendor,
+                           --  (select c.id FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) AS alias,
+                             (select name FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) AS vendor,
                              m.mg_id, 
                              mg.name as group_name,  
                              u.name as uom_name,
@@ -145,6 +146,7 @@ scrollbars="Both" DefaultButton="Search">
        EnableCaching="false"
        SelectCommand="SELECT m.name,
                              (select s.supplier_id FROM material_supplier s WHERE s.material_id = m.id ORDER BY s.preference limit 1) AS alias,
+                            -- (select c.id FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) AS alias,
                              m.mg_id,
                              m.material_form,
                              m.status,

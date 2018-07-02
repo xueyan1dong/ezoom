@@ -4,12 +4,14 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : Insert or update material (item/part in UI) into the material table
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 	
+*    6/29/2018: Xueyan Dong: added code to also record _alias into the alias column of material table.				
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $
+
 DROP PROCEDURE IF EXISTS `modify_material`$
 CREATE procedure modify_material (
   INOUT _material_id int(10) unsigned,
@@ -49,6 +51,7 @@ BEGIN
       INSERT INTO material (
         name,
         mg_id,
+        alias,
         uom_id,
         alert_quantity,
         lot_size,
@@ -62,6 +65,7 @@ BEGIN
       VALUES (
         _name,
         _mg_id,
+        _alias,
         _uom_id,
         _alert_quantity,
         _lot_size,
@@ -89,6 +93,7 @@ BEGIN
       UPDATE material
          SET name = _name,
              mg_id = _mg_id,
+             alias = _alias,
              uom_id = _uom_id,
              alert_quantity = _alert_quantity,
              lot_size = _lot_size,

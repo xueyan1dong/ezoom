@@ -26,7 +26,7 @@ scrollbars=Both>
                AutoGenerateColumns="False"  
                onselectedindexchanged="gvTable_SelectedIndexChanged" 
                 DataKeyNames="id,source_id" AllowPaging="True"  AllowSorting="True" PageSize="5" 
-               EnableTheming="False" Width="860px" Height="280px" AllowResizeColumn="true" 
+               EnableTheming="False" Width="1280px" Height="280px" AllowResizeColumn="true" 
                PagerStyle-BackColor="#f2e8da" PagerSettings-Mode="NumericFirstLast" 
                onpageindexchanged="gvTable_PageIndexChanged"
              >

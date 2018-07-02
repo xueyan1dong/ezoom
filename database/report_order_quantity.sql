@@ -6,9 +6,12 @@
 *    Platform Dependencies  : MySql
 *    Description            : 
 *    example	            : 
+CALL report_order_quantity (6);
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*    6/20/2018: Xueyan Dong: added call example to header					
 */
+
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `report_order_quantity`$
 CREATE PROCEDURE `report_order_quantity`(

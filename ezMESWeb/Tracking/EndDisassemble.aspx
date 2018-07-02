@@ -66,11 +66,11 @@ height="100%" scrollbars="Horizontal">
                
              <asp:GridView ID="gvTable" runat="server" Caption="Part(s) Consumption" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsPDGrid" 
-               EmptyDataText="The step does not consume parts" Height="50px" Width="700px"
+               EmptyDataText="The step does not consume parts" Height="50px" Width="1000px"
                AutoGenerateColumns="False"  
                onselectedindexchanged="gvTable_SelectedIndexChanged" 
-                DataKeyNames="source_type, ingredient_id, name, required_quantity, used_quantity, uom_id" AllowPaging="False"  AllowSorting="False" 
-               EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged"
+                DataKeyNames="source_type,ingredient_id,name,required_quantity,used_quantity,uom_id" 
+               EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged" EnableModelValidation="True"
              >
              <Columns>
 
@@ -78,15 +78,28 @@ height="100%" scrollbars="Horizontal">
  			   <ItemTemplate>
 			       <asp:LinkButton ID="btnReturn" runat="server" Text="to Inventory" CommandName="Select" />
 			     </ItemTemplate>                    
+                 <ControlStyle Width="25%" />
                  </asp:TemplateField>                
 			     <asp:BoundField DataField="source_type" HeaderText="Source Type" />  
 			     <asp:BoundField DataField="ingredient_id" HeaderText="ingredient_id" Visible="false" /> 
-			     <asp:BoundField DataField="name" HeaderText="Part #"  /> 
-			     <asp:BoundField DataField="order" HeaderText="Disassemble Sequence"  /> 
-			     <asp:BoundField DataField="description" HeaderText="Description" /> 
-			     <asp:BoundField DataField="required_quantity" HeaderText="Expected Quantity" DataFormatString="{0:N0}" /> 
-			     <asp:BoundField DataField="used_quantity" HeaderText="Quantity Returned" DataFormatString="{0:N0}"/> 			     
-			     <asp:BoundField DataField="uom_name" HeaderText="Unit" /> 
+			     <asp:BoundField DataField="name" HeaderText="Part #"  > 
+			         <ControlStyle Width="25%" />
+               </asp:BoundField>
+			     <asp:BoundField DataField="order" HeaderText="Disassemble Sequence"  > 
+			         <ControlStyle Width="3%" />
+               </asp:BoundField>
+			     <asp:BoundField DataField="description" HeaderText="Description" > 
+			         <ControlStyle Width="35%" />
+               </asp:BoundField>
+			     <asp:BoundField DataField="required_quantity" HeaderText="Expected Quantity" DataFormatString="{0:N0}" > 
+			         <ControlStyle Width="3%" />
+               </asp:BoundField>
+			     <asp:BoundField DataField="used_quantity" HeaderText="Quantity Returned" DataFormatString="{0:N0}"> 			     
+			         <ControlStyle Width="3%" />
+               </asp:BoundField>
+			     <asp:BoundField DataField="uom_name" HeaderText="Unit" > 
+			         <ControlStyle Width="3%" />
+               </asp:BoundField>
 			     <asp:BoundField DataField="restriction" HeaderText="Time Restriction" /> 
                  <asp:BoundField DataField="uom_id" HeaderText="uom id" visible="false" /> 
 			   </Columns>

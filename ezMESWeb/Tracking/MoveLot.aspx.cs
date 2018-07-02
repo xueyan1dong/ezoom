@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : EndDisassemble.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for Move Lot form
+*    Log                    :
+*    07/01/2018: Xueyan Dong: initiate session[location] to empty string for now 
+*                             to satisfy other tracking forms need for location
+----------------------------------------------------------------*/
 using System;
 using System.Data;
 using System.Configuration;
@@ -51,7 +62,7 @@ namespace ezMESWeb.Tracking
         Session["process_id"] = arr[20];
         Session["lot_status"] = arr[6];
         Session["uom"] = arr[16];
-
+        Session["location"] = "";
         try
         {
           ConnectToDb();
