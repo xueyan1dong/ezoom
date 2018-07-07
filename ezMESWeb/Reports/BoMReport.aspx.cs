@@ -58,7 +58,7 @@ namespace ezMESWeb.Reports
                 ezType = DbConnectionType.Unknown;
 
             if (Session["UserID"] == null)
-                Response.Redirect("/Default.aspx");
+                Server.Transfer("/Default.aspx");
             else { 
                 Label tLabel = (Label)Page.Master.FindControl("lblName");
                 if (!tLabel.Text.StartsWith("Welcome"))
@@ -136,7 +136,7 @@ namespace ezMESWeb.Reports
 
 
             if (Session["UserID"] == null)
-                Response.Redirect("/Default.aspx");
+                Server.Transfer("/Default.aspx");
             else
             {
                 Label tLabel = (Label)Page.Master.FindControl("lblName");

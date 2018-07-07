@@ -537,12 +537,12 @@ namespace ezMESWeb.Configure.Process
                 if (lblMainError.Text.Length > 0)
                 {
                   if (Int32.Parse(recipeId) > 0)
-                    Response.Redirect("RecipeConfig.aspx?Id=" + recipeId + "&Error=" + lblMainError.Text);
+                    Server.Transfer("RecipeConfig.aspx?Id=" + recipeId + "&Error=" + lblMainError.Text);
                   else
-                    Response.Redirect("RecipeConfig.aspx?Error=" + lblMainError.Text);
+                    Server.Transfer("RecipeConfig.aspx?Error=" + lblMainError.Text);
                 }
                 else
-                  Response.Redirect("RecipeConfig.aspx?Id=" + recipeId);              
+                  Server.Transfer("RecipeConfig.aspx?Id=" + recipeId);              
             }
             else if (fvMain.CurrentMode == FormViewMode.Edit)
             {
@@ -645,7 +645,7 @@ namespace ezMESWeb.Configure.Process
                     }
 
                     if (lblMainError.Text.Length == 0)
-                        Response.Redirect("RecipeConfig.aspx?Id=" + txtID.Text);
+                        Server.Transfer("RecipeConfig.aspx?Id=" + txtID.Text);
                 }
             }
             else
@@ -742,7 +742,7 @@ namespace ezMESWeb.Configure.Process
                     }
                     else
                     {
-                        Response.Redirect("RecipeConfig.aspx?Tab=" + tcMain.ActiveTabIndex);
+                        Server.Transfer("RecipeConfig.aspx?Tab=" + tcMain.ActiveTabIndex);
                     }
                 }
                 else

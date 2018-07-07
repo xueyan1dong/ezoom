@@ -120,9 +120,9 @@ namespace ezMESWeb
 
                if (Session["Role"].ToString().Equals("Admin") ||
                     Session["Role"].ToString().Equals("Manager"))
-                  Response.Redirect("~/Configure/configuration.aspx");
+                  Server.Transfer("~/Configure/configuration.aspx");
                else
-                  Response.Redirect("~/Tracking/Tracking.aspx");
+                  Server.Transfer("~/Tracking/Tracking.aspx");
 
                break;
             }

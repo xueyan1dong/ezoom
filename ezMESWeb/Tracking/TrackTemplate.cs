@@ -132,7 +132,7 @@ namespace ezMESWeb.Tracking
         protected virtual void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserID"] == null)
-                Response.Redirect("/Default.aspx");
+                Server.Transfer("/Default.aspx");
             else
             {
                 Label tLabel = (Label)Page.Master.FindControl("lblName");
@@ -333,7 +333,7 @@ namespace ezMESWeb.Tracking
           switch (stepType)
           {
             case "consume material":
-            Response.Redirect("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+            Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
               "&sub_process=" + subProcessId
               + "&position=" + position
               + "&sub_position=" + subPosition
@@ -343,7 +343,7 @@ namespace ezMESWeb.Tracking
               + "&step_type=" + stepType);
             break;
             case "disassemble":
-            Response.Redirect("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+            Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -353,7 +353,7 @@ namespace ezMESWeb.Tracking
                 + "&step_type=" + stepType);
             break;
             case "display message":
-            Response.Redirect("PassDisplayStep.aspx?step_status=" + stepStatus +
+            Server.Transfer("PassDisplayStep.aspx?step_status=" + stepStatus +
               "&sub_process=" + subProcessId
               + "&position=" + position
               + "&sub_position=" + subPosition
@@ -361,7 +361,7 @@ namespace ezMESWeb.Tracking
               + "&quantity=" + quantity);
             break;
             case "deliver to customer":
-            Response.Redirect("CustomerDeliver.aspx?step_status=" + stepStatus +
+            Server.Transfer("CustomerDeliver.aspx?step_status=" + stepStatus +
               "&sub_process=" + subProcessId
               + "&position=" + position
               + "&sub_position=" + subPosition
@@ -370,7 +370,7 @@ namespace ezMESWeb.Tracking
 
             break;
             case "condition":
-              Response.Redirect("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+              Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -380,7 +380,7 @@ namespace ezMESWeb.Tracking
                 + "&step_type=" + stepType);
               break;
             case "reposition":
-              Response.Redirect("Reposition.aspx?step_status=" + stepStatus 
+              Server.Transfer("Reposition.aspx?step_status=" + stepStatus 
                 + "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -390,7 +390,7 @@ namespace ezMESWeb.Tracking
                 +  "&step_type=" + stepType);
               break;
             case "ship to warehouse":
-              //Response.Redirect("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+              //Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
               //   "&sub_process=" + subProcessId
               //   + "&position=" + position
               //   + "&sub_position=" + subPosition
@@ -398,7 +398,7 @@ namespace ezMESWeb.Tracking
               //   + "&quantity=" + quantity
               //   + "&rework_limit=" + reworkLimit
               //   + "&step_type=" + stepType);
-              Response.Redirect("ToWarehouseStep.aspx?step_status=" + stepStatus +
+              Server.Transfer("ToWarehouseStep.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -408,7 +408,7 @@ namespace ezMESWeb.Tracking
                 + "&step_type=" + stepType);
               break;
             case "scrap":
-              Response.Redirect("UnholdLot.aspx?step_status=" + stepStatus
+              Server.Transfer("UnholdLot.aspx?step_status=" + stepStatus
                 + "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -465,7 +465,7 @@ namespace ezMESWeb.Tracking
           {
             case "consume material":
             case "condition":
-              Response.Redirect("EndConsumeMaterial.aspx?step_status=" + stepStatus +
+              Server.Transfer("EndConsumeMaterial.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
                 + "&sub_process=" + subProcessId
                 + "&position=" + positionId
@@ -475,7 +475,7 @@ namespace ezMESWeb.Tracking
                 + "&equipment=" + equipmentId+"&step_type="+stepType);
               break;
             case "disassemble":
-              Response.Redirect("EndDisassemble.aspx?step_status=" + stepStatus +
+              Server.Transfer("EndDisassemble.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
                 + "&sub_process=" + subProcessId
                 + "&position=" + positionId
@@ -486,7 +486,7 @@ namespace ezMESWeb.Tracking
               break;
 
             case "hold lot":
-              Response.Redirect("UnholdLot.aspx?step_status=" + stepStatus +
+              Server.Transfer("UnholdLot.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
                 + "&sub_process=" + subProcessId
                 + "&position=" + positionId

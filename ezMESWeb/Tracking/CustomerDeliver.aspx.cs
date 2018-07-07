@@ -263,7 +263,7 @@ ezCmd.Parameters.AddWithValue("@_deliver_datetime", DBNull.Value);
     protected void btnListForm_Click(object sender, EventArgs e)
     {
       MessagePopupExtender.Hide();
-      Response.Redirect("MoveLot.aspx");
+      Server.Transfer("MoveLot.aspx");
     }
   }
 }

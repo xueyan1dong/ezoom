@@ -137,7 +137,7 @@ namespace ezMESWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserID"] == null)
-                Response.Redirect("/Default.aspx");
+                Server.Transfer("/Default.aspx");
             else
             {
                 Label tLabel = (Label)Page.Master.FindControl("lblName");

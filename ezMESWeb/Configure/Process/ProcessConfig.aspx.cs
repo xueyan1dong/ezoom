@@ -559,7 +559,7 @@ namespace ezMESWeb
                       {
                         newId = result.ToString();
                       }
-                        Response.Redirect(Request.CurrentExecutionFilePath+"?Id=" + newId);
+                        Server.Transfer(Request.CurrentExecutionFilePath+"?Id=" + newId);
 
                     }
                     ezCmd.Dispose();
@@ -631,7 +631,7 @@ namespace ezMESWeb
                 else
                 {
 
-                    Response.Redirect(Request.CurrentExecutionFilePath+"?Id=" + txtID.Text);
+                    Server.Transfer(Request.CurrentExecutionFilePath+"?Id=" + txtID.Text);
                 }
             }
             else
@@ -701,7 +701,7 @@ namespace ezMESWeb
 
 
                     ezCmd.ExecuteNonQuery();
-                    Response.Redirect(Request.CurrentExecutionFilePath+"?Tab=" + tcMain.ActiveTabIndex);
+                    Server.Transfer(Request.CurrentExecutionFilePath+"?Tab=" + tcMain.ActiveTabIndex);
                     ezCmd.Dispose();
                     ezConn.Dispose();
                 }

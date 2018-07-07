@@ -73,6 +73,7 @@
                         <RowStyle CssClass="GridRowStyle" />
                 </asp:CoolGridView>
                 </ContentTemplate>
+                <Triggers><asp:PostBackTrigger ControlID="gvTable" /></Triggers>
                 </asp:UpdatePanel> 
               </asp:panel>   
                 <div>

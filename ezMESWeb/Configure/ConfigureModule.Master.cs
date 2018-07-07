@@ -17,7 +17,7 @@ namespace ezMESWeb.Configure
       {
         //if (!(bool)Session["LoggedIn"])
         if ((Session["LoggedIn"] == null)||!(bool)Session["LoggedIn"])
-          Response.Redirect("~/Default.aspx");
+          Server.Transfer("~/Default.aspx");
       }
    }
 }

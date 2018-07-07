@@ -49,7 +49,7 @@ namespace ezMESWeb.Tracking
       TableCell newCell;
 
       if (Session["UserID"] == null)
-        Response.Redirect("/Default.aspx");
+        Server.Transfer("/Default.aspx");
       else
       {
         Label tLabel = (Label)Page.Master.FindControl("lblName");
@@ -248,7 +248,7 @@ namespace ezMESWeb.Tracking
     protected void btnListForm_Click(object sender, EventArgs e)
     {
       MessagePopupExtender.Hide();
-      Response.Redirect("MoveLot.aspx");
+      Server.Transfer("MoveLot.aspx");
     }
     protected void btnMoveForm_Click(object sender, EventArgs e)
     {
