@@ -30,11 +30,11 @@
         </tr>
         <tr>
 
-            <td align=left colspan=2>
+            <td align=left>
                <font Style="font-family:Times New Roman;font-size:20px;">Last Step Status:</font> &nbsp;
                <asp:Label ID="lblStepStatus" runat="server" Style="font-family:Times New Roman;font-size:20px;"></asp:Label>
             </td>
-            <td align=left colspan=2>
+            <td align=left>
                <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp;
                <asp:Label ID="lblLocation" runat="server" Style="font-family:Times New Roman;font-size:20px;"></asp:Label>
             </td>
