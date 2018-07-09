@@ -7,7 +7,7 @@
 *    Description            : UI for ending disassemble step
 *    Log                    :
 *    6/1/2018: xdong: adding code to handle new step type disassemble, which has the same start step UI as ComsumeMaterial
-*   
+*    7/8/2018: peiyu added DropDownList drpLocation and fed with data from location table.
 *
 ----------------------------------------------------------------*/
 
@@ -30,6 +30,7 @@ namespace ezMESWeb.Tracking
     protected Label lblStep, lblUom, lblError;
     protected TextBox txtQuantity, txtComment;
     protected DropDownList drpEquipment;
+    protected DropDownList drpLocation;
     private string subProcessId, positionId, subPositionId, stepId, stepStatus, stepType;
     protected Button btnDo;
     protected ConsumptionStep newStep;
@@ -53,7 +54,6 @@ namespace ezMESWeb.Tracking
         lblUom.Text = Session["uom"].ToString();
         txtQuantity.Text = Request.QueryString["quantity"];
 
-        
         string dbConnKey = ConfigurationManager.AppSettings.Get("DatabaseType");
         string connStr = ConfigurationManager.ConnectionStrings["ezmesConnectionString"].ConnectionString; ;
         DbConnectionType ezType;
@@ -81,9 +81,20 @@ namespace ezMESWeb.Tracking
         try
         {
           ezCmd.Connection = ezConn;
-          //ezCmd.CommandText = "SELECT comment FROM lot_status WHERE id = " + Session["lot_id"].ToString();
-          //ezCmd.CommandType = CommandType.Text;
-          //txtComment.Text = ezCmd.ExecuteScalar().ToString();
+         //ezCmd.CommandText = "SELECT comment FROM lot_status WHERE id = " + Session["lot_id"].ToString();
+         //ezCmd.CommandType = CommandType.Text;
+         //txtComment.Text = ezCmd.ExecuteScalar().ToString();
+
+          //query location talbe, prepare query statement, get commandtype and get ezRead
+          ezCmd.CommandText = "SELECT name from location";  
+          ezCmd.CommandType = CommandType.Text;
+          ezReader = ezCmd.ExecuteReader();
+        //iterate through ezReader to populate location dropdown list
+          while (ezReader.Read())
+           {
+               drpLocation.Items.Add(new ListItem(String.Format("{0}", ezReader[0])));
+           }
+           ezReader.Dispose();
 
           ezCmd.CommandText = "SELECT name, eq_usage, eq_id, emp_usage, emp_id  FROM step where id=" + stepId;
           ezCmd.CommandType = CommandType.Text;
@@ -231,7 +242,7 @@ namespace ezMESWeb.Tracking
       ezCmd.Connection = ezConn;
       try
       {
-        ezCmd.CommandText = "start_lot_step";
+        ezCmd.CommandText = "start_lot_step";//revise stopprcedure
         ezCmd.CommandType = CommandType.StoredProcedure;
         ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
         ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
