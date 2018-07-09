@@ -101,7 +101,7 @@ namespace ezMESWeb.Configure.Material
 
             if (Session["UserID"] == null)
             {
-               Response.Redirect("/Default.aspx");
+               Server.Transfer("/Default.aspx");
                return;
             }
            

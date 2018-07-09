@@ -320,7 +320,7 @@ namespace ezMESWeb.Tracking.Inventory
       protected void btnInvForm_Click(object sender, EventArgs e)
       {
         MessagePopupExtender.Hide();
-        Response.Redirect("InventoryConfig.aspx");
+        Server.Transfer("InventoryConfig.aspx");
       }
    }
 }

@@ -453,7 +453,7 @@ namespace ezMESWeb.Configure.Order
                       {
                         newId = result.ToString();
                       } 
-                      Response.Redirect("SalesOrderConfig.aspx?Id=" + newId);
+                      Server.Transfer("SalesOrderConfig.aspx?Id=" + newId);
 
                     }
                     ezCmd.Dispose();
@@ -537,7 +537,7 @@ namespace ezMESWeb.Configure.Order
                 else
                 {
 
-                    Response.Redirect("SalesOrderConfig.aspx?Id=" + txtID.Text);
+                    Server.Transfer("SalesOrderConfig.aspx?Id=" + txtID.Text);
                 }
             }
             else
@@ -581,7 +581,7 @@ namespace ezMESWeb.Configure.Order
 
 
                     ezCmd.ExecuteNonQuery();
-                    Response.Redirect("SalesOrderConfig.aspx?Tab=" + tcMain.ActiveTabIndex);
+                    Server.Transfer("SalesOrderConfig.aspx?Tab=" + tcMain.ActiveTabIndex);
                     ezCmd.Dispose();
                     ezConn.Dispose();
                 }

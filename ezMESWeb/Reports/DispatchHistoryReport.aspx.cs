@@ -31,7 +31,7 @@ namespace ezMESWeb.Reports
       protected void Page_Load(object sender, EventArgs e)
       {
          if (Session["UserID"] == null)
-            Response.Redirect("/Default.aspx");
+            Server.Transfer("/Default.aspx");
          if (!IsPostBack)
          {
            if (Request.QueryString["for"] != null)
@@ -128,7 +128,7 @@ namespace ezMESWeb.Reports
 
          if (Session["UserID"] == null)
          {
-            Response.Redirect("/Default.aspx");
+            Server.Transfer("/Default.aspx");
             return;
          }
      

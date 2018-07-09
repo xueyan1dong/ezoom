@@ -21,7 +21,7 @@ namespace ezMESWeb
          Session.RemoveAll();
 
          //Redirect to login page
-         Response.Redirect("~/Default.aspx");
+         Server.Transfer("~/Default.aspx");
       }
    }
 }

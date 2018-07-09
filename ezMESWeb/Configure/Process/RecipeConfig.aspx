@@ -291,7 +291,8 @@
                  
               </ContentTemplate>
              <Triggers>
-                   <asp:PostBackTrigger ControlID="btnDo" />                    
+                   <asp:PostBackTrigger ControlID="btnDo" />        
+                 <asp:PostBackTrigger ControlID="btnCancel" />            
              </Triggers>
           </asp:UpdatePanel>
           </td>

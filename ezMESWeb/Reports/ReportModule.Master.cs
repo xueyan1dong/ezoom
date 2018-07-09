@@ -17,7 +17,7 @@ namespace ezMESWeb.Report
       protected void Page_Load(object sender, EventArgs e)
       {
          if (!(bool) Session["LoggedIn"] )
-            Response.Redirect("/Default.aspx");
+            Server.Transfer("/Default.aspx");
 
       }
     
