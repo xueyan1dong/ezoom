@@ -1,6 +1,8 @@
 <%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.master" AutoEventWireup="true" CodeBehind="StartConsumeMaterial.aspx.cs" Inherits="ezMESWeb.Tracking.StartConsumeMaterial" Title="Start Step -- ezOOM" %>
 <%@ Register TagPrefix="asp" TagName="lot" Src="~/Tracking/lot.ascx" %>
 <%@ Register TagPrefix="asp" TagName="ConsumptionStep" Src="~/Tracking/ConsumptionStep.ascx" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
 </asp:Content>
@@ -45,6 +47,11 @@ height="100%" scrollbars="Horizontal">
             <td align=left colspan=3><font Style="font-family:Times New Roman;font-size:20px;">Comment:</font> <br />
                 <asp:TextBox ID="txtComment" runat="server" Width="100%" Height="50px" Wrap="True" TextMode="MultiLine" Style="font-family:Times New Roman;font-size:20px;"></asp:TextBox>
             </td>
+             <!--<td align=left>
+                <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp; 
+                <asp:DropDownList ID="DropDownList1" Width="160px" runat="server" Style="font-family:Times New Roman;font-size:20px;">
+                </asp:DropDownList>
+            </td>       [peiyu] --> 
 
         </tr>
     </table>
