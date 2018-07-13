@@ -465,7 +465,7 @@ namespace ezMESWeb.Reports
 
         protected void dpProcess_SelectedIndexChanged(object sender, EventArgs e)
         {
-          Server.Transfer(Request.CurrentExecutionFilePath + "?processid=" + dpProcess.SelectedValue);
+          Server.Transfer(Request.CurrentExecutionFilePath + "?processid=" + dpProcess.SelectedValue, true);
         }
 
 

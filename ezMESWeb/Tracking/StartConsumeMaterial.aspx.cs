@@ -39,7 +39,7 @@ namespace ezMESWeb.Tracking
     {
       string response;
       if (Session["UserID"] == null)
-        Response.Redirect("/Default.aspx");
+        Server.Transfer("/Default.aspx");
       else
       {
         Label tLabel = (Label)Page.Master.FindControl("lblName");
@@ -293,7 +293,7 @@ namespace ezMESWeb.Tracking
           Session["lot_status"] = ezCmd.Parameters["@_lot_status"].Value.ToString();
           stepStatus = ezCmd.Parameters["@_step_status"].Value.ToString();
           if (Request.QueryString["step_type"].Equals("disassemble") )
-              Response.Redirect("EndDisassemble.aspx?step_status=" + stepStatus
+              Server.Transfer("EndDisassemble.aspx?step_status=" + stepStatus
         + "&start_time=" + ezCmd.Parameters["@_start_timecode"].Value.ToString()
         + "&sub_process=" + subProcessId
         + "&position=" + positionId
@@ -301,9 +301,9 @@ namespace ezMESWeb.Tracking
         + "&step=" + stepId
         + "&quantity=" + txtQuantity.Text.Trim()
         + "&equipment=" + drpEquipment.SelectedValue
-        + "&step_type=" + Request.QueryString["step_type"]);
+        + "&step_type=" + Request.QueryString["step_type"], true);
           else
-            Response.Redirect("EndConsumeMaterial.aspx?step_status=" + stepStatus
+            Server.Transfer("EndConsumeMaterial.aspx?step_status=" + stepStatus
       + "&start_time="+ezCmd.Parameters["@_start_timecode"].Value.ToString()
       + "&sub_process=" + subProcessId
       + "&position=" + positionId
@@ -311,7 +311,7 @@ namespace ezMESWeb.Tracking
       + "&step=" + stepId
       + "&quantity=" + txtQuantity.Text.Trim()
       + "&equipment=" + drpEquipment.SelectedValue
-      + "&step_type=" + Request.QueryString["step_type"]);
+      + "&step_type=" + Request.QueryString["step_type"], true);
           ezCmd.Dispose();
           ezConn.Dispose();
         }
