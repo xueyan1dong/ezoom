@@ -7,7 +7,7 @@
 *    Description            : UI for ending disassemble step
 *    Log                    :
 *    6/1/2018: xdong: adding code to handle new step type disassemble, which has the same start step UI as ComsumeMaterial
-*   
+*    7/8/2018: peiyu added DropDownList drpLocation and fed with data from location table.
 *
 ----------------------------------------------------------------*/
 
@@ -54,7 +54,6 @@ namespace ezMESWeb.Tracking
         lblUom.Text = Session["uom"].ToString();
         txtQuantity.Text = Request.QueryString["quantity"];
 
-        
         string dbConnKey = ConfigurationManager.AppSettings.Get("DatabaseType");
         string connStr = ConfigurationManager.ConnectionStrings["ezmesConnectionString"].ConnectionString; ;
         DbConnectionType ezType;
@@ -82,9 +81,20 @@ namespace ezMESWeb.Tracking
         try
         {
           ezCmd.Connection = ezConn;
-          //ezCmd.CommandText = "SELECT comment FROM lot_status WHERE id = " + Session["lot_id"].ToString();
-          //ezCmd.CommandType = CommandType.Text;
-          //txtComment.Text = ezCmd.ExecuteScalar().ToString();
+         //ezCmd.CommandText = "SELECT comment FROM lot_status WHERE id = " + Session["lot_id"].ToString();
+         //ezCmd.CommandType = CommandType.Text;
+         //txtComment.Text = ezCmd.ExecuteScalar().ToString();
+
+          //query location talbe, prepare query statement, get commandtype and get ezRead
+          ezCmd.CommandText = "SELECT name from location";  
+          ezCmd.CommandType = CommandType.Text;
+          ezReader = ezCmd.ExecuteReader();
+        //iterate through ezReader to populate location dropdown list
+          while (ezReader.Read())
+           {
+               drpLocation.Items.Add(new ListItem(String.Format("{0}", ezReader[0])));
+           }
+           ezReader.Dispose();
 
           //query location talbe, prepare query statement, get commandtype and get ezRead
           ezCmd.CommandText = "SELECT name from location";
@@ -330,7 +340,7 @@ namespace ezMESWeb.Tracking
       + "&step=" + stepId
       + "&quantity=" + txtQuantity.Text.Trim()
       + "&equipment=" + drpEquipment.SelectedValue
-      + "&step_type=" + Request.QueryString["step_type"]);
+      + "&step_type=" + Request.QueryString["step_type"], true);
           ezCmd.Dispose();
           ezConn.Dispose();
         }

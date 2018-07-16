@@ -340,7 +340,7 @@ namespace ezMESWeb.Tracking
               + "&step=" + step
               + "&quantity=" + quantity
               + "&rework_limit=" + reworkLimit
-              + "&step_type=" + stepType);
+              + "&step_type=" + stepType, true);
             break;
             case "disassemble":
             Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
@@ -350,7 +350,7 @@ namespace ezMESWeb.Tracking
                 + "&step=" + step
                 + "&quantity=" + quantity
                 + "&rework_limit=" + reworkLimit
-                + "&step_type=" + stepType);
+                + "&step_type=" + stepType, true);
             break;
             case "display message":
             Server.Transfer("PassDisplayStep.aspx?step_status=" + stepStatus +
@@ -358,7 +358,7 @@ namespace ezMESWeb.Tracking
               + "&position=" + position
               + "&sub_position=" + subPosition
               + "&step=" + step
-              + "&quantity=" + quantity);
+              + "&quantity=" + quantity, true);
             break;
             case "deliver to customer":
             Server.Transfer("CustomerDeliver.aspx?step_status=" + stepStatus +
@@ -366,7 +366,7 @@ namespace ezMESWeb.Tracking
               + "&position=" + position
               + "&sub_position=" + subPosition
               + "&step=" + step
-              + "&quantity=" + quantity);
+              + "&quantity=" + quantity, true);
 
             break;
             case "condition":
@@ -377,7 +377,7 @@ namespace ezMESWeb.Tracking
                 + "&step=" + step
                 + "&quantity=" + quantity
                 + "&rework_limit=" + reworkLimit
-                + "&step_type=" + stepType);
+                + "&step_type=" + stepType, true);
               break;
             case "reposition":
               Server.Transfer("Reposition.aspx?step_status=" + stepStatus 
@@ -387,7 +387,7 @@ namespace ezMESWeb.Tracking
                 + "&step=" + step
                 + "&quantity=" + quantity
                 + "&rework_limit=" + reworkLimit
-                +  "&step_type=" + stepType);
+                +  "&step_type=" + stepType, true);
               break;
             case "ship to warehouse":
               //Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
@@ -397,7 +397,7 @@ namespace ezMESWeb.Tracking
               //   + "&step=" + step
               //   + "&quantity=" + quantity
               //   + "&rework_limit=" + reworkLimit
-              //   + "&step_type=" + stepType);
+              //   + "&step_type=" + stepType, true);
               Server.Transfer("ToWarehouseStep.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
@@ -405,7 +405,7 @@ namespace ezMESWeb.Tracking
                 + "&step=" + step
                 + "&quantity=" + quantity
                 + "&rework_limit=" + reworkLimit
-                + "&step_type=" + stepType);
+                + "&step_type=" + stepType, true);
               break;
             case "scrap":
               Server.Transfer("UnholdLot.aspx?step_status=" + stepStatus
@@ -414,7 +414,7 @@ namespace ezMESWeb.Tracking
                 + "&sub_position=" + subPosition
                 + "&step=" + step
                 + "&quantity=" + quantity
-                + "&equipment=&step_type=" + stepType);
+                + "&equipment=&step_type=" + stepType, true);
               break;
           }
         }
@@ -472,7 +472,7 @@ namespace ezMESWeb.Tracking
                 + "&sub_position=" + subPositionId
                 + "&step=" + stepId
                 + "&quantity=" + quantity
-                + "&equipment=" + equipmentId+"&step_type="+stepType);
+                + "&equipment=" + equipmentId+"&step_type="+stepType, true);
               break;
             case "disassemble":
               Server.Transfer("EndDisassemble.aspx?step_status=" + stepStatus +
@@ -482,7 +482,7 @@ namespace ezMESWeb.Tracking
                 + "&sub_position=" + subPositionId
                 + "&step=" + stepId
                 + "&quantity=" + quantity
-                + "&equipment=" + equipmentId + "&step_type=" + stepType);
+                + "&equipment=" + equipmentId + "&step_type=" + stepType, true);
               break;
 
             case "hold lot":
@@ -493,7 +493,7 @@ namespace ezMESWeb.Tracking
                 + "&sub_position=" + subPositionId
                 + "&step=" + stepId
                 + "&quantity=" + quantity
-                + "&equipment=" + equipmentId + "&step_type=" + stepType);
+                + "&equipment=" + equipmentId + "&step_type=" + stepType, true);
               break;
           
           }
