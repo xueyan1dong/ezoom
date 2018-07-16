@@ -86,17 +86,6 @@ namespace ezMESWeb.Tracking
          //txtComment.Text = ezCmd.ExecuteScalar().ToString();
 
           //query location talbe, prepare query statement, get commandtype and get ezRead
-          ezCmd.CommandText = "SELECT name from location";  
-          ezCmd.CommandType = CommandType.Text;
-          ezReader = ezCmd.ExecuteReader();
-        //iterate through ezReader to populate location dropdown list
-          while (ezReader.Read())
-           {
-               drpLocation.Items.Add(new ListItem(String.Format("{0}", ezReader[0])));
-           }
-           ezReader.Dispose();
-
-          //query location talbe, prepare query statement, get commandtype and get ezRead
           ezCmd.CommandText = "SELECT name from location";
           ezCmd.CommandType = CommandType.Text;
           ezReader = ezCmd.ExecuteReader();
