@@ -60,7 +60,7 @@ namespace ezMESWeb.Tracking
 
     protected void Page_Load(object sender, EventArgs e)
     {
-            int test = 0;
+          int test = 0;
           string pos = Request.QueryString["position"];
           if (pos == null) return;
           string position = (pos.Length >0)?pos:"1";
