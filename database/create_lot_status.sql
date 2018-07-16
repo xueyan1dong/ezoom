@@ -7,6 +7,7 @@
 *    Description            : table to hold current lot/batch status information
 *    Log                    :
 *    6/5/2018: xdong: add a new column, location, to record batch/lot location
+*    7/16/2018 peiyu: modified column `location` nvarchar to `location_id` int(11)
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `lot_status`$
@@ -27,6 +28,6 @@ CREATE TABLE `lot_status` (
   `dispatch_time` datetime NOT NULL,
   `output_time` datetime DEFAULT NULL,
   `comment` text,
-  `location` nvarchar(255) DEFAULT NULL,
+  `location_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB$

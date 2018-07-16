@@ -7,6 +7,7 @@
 *    Description            : table to hold historical lot/batch information
 *    Log                    :
 *    6/5/2018: xdong: add a new column, location, to log batch/lot location
+*    7/16/2018 peiyu: modified column `location` nvarchar to `location_id` int(11)
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `lot_history`$
@@ -31,6 +32,6 @@ CREATE TABLE `lot_history` (
   `approver_id` int(10) unsigned DEFAULT NULL,
   `result` text,
   `comment` text,
-  `location` nvarchar(255) DEFAULT NULL,  
+  `location_id` int(11) unsigned DEFAULT NULL,  
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
 ) ENGINE=InnoDB$
