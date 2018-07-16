@@ -40,6 +40,12 @@ height="100%" scrollbars="Horizontal">
                 <asp:DropDownList ID="drpEquipment" Width="160px" runat="server" Style="font-family:Times New Roman;font-size:20px;">
                 </asp:DropDownList>
             </td>
+            <td align=left>
+                <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp; 
+                <asp:DropDownList ID="drpLocation" Width="160px" runat="server" Style="font-family:Times New Roman;font-size:20px;">
+                    <asp:ListItem Text="Select a location..."  Value=""></asp:ListItem>
+                </asp:DropDownList>
+            </td>
          </tr>
          <tr>
             <td align=left colspan=3><font Style="font-family:Times New Roman;font-size:20px;">Comment:</font> <br />
@@ -58,6 +64,7 @@ height="100%" scrollbars="Horizontal">
 </tr>
  </table>   
 </div>
+    
 </asp:panel>
 </asp:Content>
 

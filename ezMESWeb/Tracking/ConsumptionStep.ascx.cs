@@ -60,7 +60,10 @@ namespace ezMESWeb.Tracking
 
     protected void Page_Load(object sender, EventArgs e)
     {
-          string position = (Request.QueryString["position"].Length >0)?Request.QueryString["position"]:"1";
+            int test = 0;
+          string pos = Request.QueryString["position"];
+          if (pos == null) return;
+          string position = (pos.Length >0)?pos:"1";
           string subProcessID = Request.QueryString["sub_process"].ToString();
           string subPosition = "1";
           string 
