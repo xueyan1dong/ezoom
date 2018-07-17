@@ -244,9 +244,10 @@ namespace ezMESWeb.Tracking
       ezCmd.Connection = ezConn;
       try
       {
-        //location:
+       // location:
         string locationID = "";
-        if (drpLocation.SelectedValue.Length > 0) { 
+        if (drpLocation.SelectedValue.Length > 0)
+        {
             ezCmd.CommandText = "SELECT id from location WHERE name = '" + drpLocation.SelectedValue + "'";
             ezCmd.CommandType = CommandType.Text;
             ezReader = ezCmd.ExecuteReader();
@@ -256,10 +257,7 @@ namespace ezMESWeb.Tracking
         }
         ezCmd.CommandText = "start_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
-        if(locationID.Length == 0)
-             ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value, ParameterDirection.InputOutput);
-        else
-             ezCmd.Parameters.AddWithValue("@_location_id", locationID, ParameterDirection.InputOutput);
+        
 
         ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
         ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
@@ -295,6 +293,11 @@ namespace ezMESWeb.Tracking
           ezCmd.Parameters.AddWithValue("@_step_id", stepId, ParameterDirection.InputOutput);
         else
           ezCmd.Parameters.AddWithValue("@_step_id", DBNull.Value, ParameterDirection.InputOutput);
+
+        if (locationID.Length == 0)
+            ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value, ParameterDirection.InputOutput);
+        else
+            ezCmd.Parameters.AddWithValue("@_location_id", locationID, ParameterDirection.InputOutput);
 
         ezCmd.Parameters.AddWithValue("@_lot_status", DBNull.Value, ParameterDirection.Output);
         ezCmd.Parameters.AddWithValue("@_step_status", DBNull.Value, ParameterDirection.Output);
