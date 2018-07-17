@@ -39,7 +39,8 @@ namespace ezMESWeb.Tracking
         lblUom.Text = Session["uom"].ToString();
         lblLocation.Text = Session["location"].ToString();//Todo: add location to session in movelot.aspx [peiyu]
 
-        if (!(stepStatus.Equals("shipped")||stepStatus.Equals("scrapped")||stepStatus.Equals("dispatched")))
+
+        if (stepStatus == null || !(stepStatus.Equals("shipped") || stepStatus.Equals("scrapped") || stepStatus.Equals("dispatched")))
           lblStepStatus.Text = Request.QueryString["step_status"];
       }
     }
