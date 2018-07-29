@@ -178,14 +178,16 @@ scrollbars=Both>
             u.name as uom,
             1 as num_lots,
             substring(p.name, 1, 10) as alias_prefix,
+           (SELECT id from `location` ORDER BY id asc LIMIT 1) as location_id,
             o.internal_contact as lot_contact,
             o.priority as lot_priority,
           substr(o.comment,0,0) as comment
+          
   FROM `order_general` o
   INNER JOIN order_detail d ON d.order_id = o.id
   INNER JOIN product p ON d.source_type = 'product' AND d.source_id=? AND p.id = d.source_id
   LEFT JOIN uom u ON p.uomid =u.id
- WHERE o.id= ?" 
+ WHERE o.id= ? " 
    
              
         >

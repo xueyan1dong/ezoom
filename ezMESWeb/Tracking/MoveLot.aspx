@@ -41,13 +41,14 @@
                  <asp:BoundField DataField="id" HeaderText="Batch ID" ReadOnly="True"  Visible="false" />
                  <asp:HyperLinkField DataNavigateUrlFields="alias" 
                 DataNavigateUrlFormatString="~/Reports/LotHistoryReport.aspx?batch={0}" 
-                DataTextField="alias"  HeaderText="Batch Name" SortExpression="alias" /> 
+                DataTextField="alias"  HeaderText="Batch Name" SortExpression="alias" /> <%--2--%>
                  <asp:BoundField DataField="product" HeaderText="Product" SortExpression="product" />
                  <asp:BoundField DataField="priority_name" HeaderText="Priority" SortExpression="priority"/>
                  <asp:BoundField DataField="dispatch_time" HeaderText="Dispatched At" SortExpression="dispatch_time" />
                  <asp:BoundField DataField="lot_status" HeaderText="Lot Status" SortExpression="lot_status"/>
                  <asp:BoundField DataField="process" HeaderText="Workflow" SortExpression="process" />
                  <asp:BoundField DataField="sub_process_id" HeaderText="SubWorkflow"  Visible="false" />
+                 <asp:BoundField DataField="location_id" HeaderText="Location" SortExpression="location_id" /> <%--9--%>
                  <asp:BoundField DataField="position_id" HeaderText="Current Position" SortExpression="position_id" />
                  <asp:BoundField DataField="sub_position_id" HeaderText="Sub Position"  Visible="false" />
                  <asp:BoundField DataField="step" HeaderText="Step Name" SortExpression="step" />
@@ -62,10 +63,10 @@
                  <asp:BoundField DataField="product_id" HeaderText="product_id" Visible="false" />
                  <asp:BoundField DataField="process_id" HeaderText="process_id" Visible="false" /> 
                  <asp:BoundField DataField="step_id" HeaderText="step_id" Visible="false" />  
-                   
                  <asp:BoundField DataField="result" HeaderText="result" Visible="false" />  
                  <asp:BoundField DataField="equipment_id" HeaderText="Equipment" Visible="false" />	
                  <asp:BoundField DataField="start_timecode" HeaderText="StartTime" Visible="false" />	
+                 
 			   </Columns>
                <SelectedRowStyle  BackColor="#FFFFCC"/>
                  <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>
@@ -113,7 +114,8 @@ SELECT id,
         comment,
         result,
         emp_usage,
-        emp_id
+        emp_id,
+        ifnull((select name from location where id = location_id), '') as location_id
    FROM view_lot_in_process
    ORDER BY start_timecode DESC"
         EnableCaching="false">

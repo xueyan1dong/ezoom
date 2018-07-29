@@ -85,16 +85,16 @@ namespace ezMESWeb.Tracking
          //ezCmd.CommandType = CommandType.Text;
          //txtComment.Text = ezCmd.ExecuteScalar().ToString();
 
-          //query location talbe, prepare query statement, get commandtype and get ezRead
-          ezCmd.CommandText = "SELECT name from location";
+          //query location talbe, prepare query statement, get commandtype and get ezReader
+          ezCmd.CommandText = "SELECT id, name from location";
           ezCmd.CommandType = CommandType.Text;
           ezReader = ezCmd.ExecuteReader();
           //iterate through ezReader to populate location dropdown list
           while (ezReader.Read())
           {
-            drpLocation.Items.Add(new ListItem(String.Format("{0}", ezReader[0])));
+            drpLocation.Items.Add(new ListItem(String.Format("{0}", ezReader[1]), String.Format("{0}", ezReader[0])));             
           }
-        
+          drpLocation.SelectedValue = drpLocation.Items.FindByText(Session["location"].ToString()).Value; //set default value as previous location value
           ezReader.Dispose();
 
           ezCmd.CommandText = "SELECT name, eq_usage, eq_id, emp_usage, emp_id  FROM step where id=" + stepId;
@@ -204,13 +204,15 @@ namespace ezMESWeb.Tracking
           }
           ezCmd.Dispose();
           ezConn.Dispose();
-        }
+                    
+         }
         catch (Exception ex)
         {
           lblError.Text = ex.Message;
           ezCmd.Dispose();
           ezConn.Dispose();
         }
+                
       }
     }
 
@@ -221,7 +223,7 @@ namespace ezMESWeb.Tracking
       DbConnectionType ezType;
       EzSqlConnection ezConn;
       EzSqlCommand ezCmd;
-      System.Data.Common.DbDataReader ezReader; //[peiyu] uncommented ezReader
+      //System.Data.Common.DbDataReader ezReader; //[peiyu] uncommented ezReader
 
       if (dbConnKey.Equals("ODBC"))
       {
@@ -244,17 +246,7 @@ namespace ezMESWeb.Tracking
       ezCmd.Connection = ezConn;
       try
       {
-       // location:
-        string locationID = "";
-        if (drpLocation.SelectedValue.Length > 0)
-        {
-            ezCmd.CommandText = "SELECT id from location WHERE name = '" + drpLocation.SelectedValue + "'";
-            ezCmd.CommandType = CommandType.Text;
-            ezReader = ezCmd.ExecuteReader();
-            if (ezReader.Read())
-                locationID = String.Format("{0}", ezReader[0]);
-            ezReader.Dispose();
-        }
+       
         ezCmd.CommandText = "start_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
         
@@ -294,10 +286,10 @@ namespace ezMESWeb.Tracking
         else
           ezCmd.Parameters.AddWithValue("@_step_id", DBNull.Value, ParameterDirection.InputOutput);
 
-        if (locationID.Length == 0)
-            ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value, ParameterDirection.InputOutput);
+        if (drpLocation.SelectedValue.Length > 0) //here also need to override session['location'] [peiyu 7/27/2018]
+            ezCmd.Parameters.AddWithValue("@_location_id", drpLocation.SelectedValue, ParameterDirection.InputOutput);      
         else
-            ezCmd.Parameters.AddWithValue("@_location_id", locationID, ParameterDirection.InputOutput);
+            ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value, ParameterDirection.InputOutput);
 
         ezCmd.Parameters.AddWithValue("@_lot_status", DBNull.Value, ParameterDirection.Output);
         ezCmd.Parameters.AddWithValue("@_step_status", DBNull.Value, ParameterDirection.Output);

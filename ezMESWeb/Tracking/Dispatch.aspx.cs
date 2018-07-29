@@ -34,6 +34,7 @@ namespace ezMESWeb.Tracking
             colc.Add(new DataColumn("uom"));
             colc.Add(new DataColumn("num_lots"));
             colc.Add(new DataColumn("alias_prefix"));
+            colc.Add(new DataColumn("location_id"));//[peiyu]
             colc.Add(new DataColumn("lot_contact"));
             colc.Add(new DataColumn("lot_priority"));
             //colc.Add(new DataColumn("dispatcher"));

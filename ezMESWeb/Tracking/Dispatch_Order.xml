@@ -37,8 +37,14 @@
     <UI>Textbox</UI>
     <TextBoxLength>10</TextBoxLength>
   </Column>
+  <Column name ="location_id">
+    <DisplayName>Location of Batch(es)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select l.name, l.id from location l order by 1</DropdownQuery>
+  </Column>
   <Column name ="lot_contact">
-    <DisplayName>Contract Person</DisplayName>
+    <DisplayName>Contact Person</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
     <DropdownQuery dcol="0" vcol="1">Select concat(e.firstname, ' ', e.lastname), e.id from employee e order by 1</DropdownQuery>
@@ -55,4 +61,5 @@
     <UI>TextBox</UI>
     <TextBoxLength>100</TextBoxLength>
   </Column>
+  
 </Table>
