@@ -44,7 +44,8 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
         s.comment,
         h.result,
         st.emp_usage,
-        st.emp_id
+        st.emp_id,
+		h.location_id
    FROM lot_status s 
         INNER JOIN lot_history h ON h.lot_id = s.id
                                  AND h.process_id = s.process_id
