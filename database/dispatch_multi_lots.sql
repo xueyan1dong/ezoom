@@ -210,7 +210,7 @@ BEGIN
             priority,
             dispatcher,
             dispatch_time,
-			location_id
+			location_id,
             comment
             )
             VALUES

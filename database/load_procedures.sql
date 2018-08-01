@@ -3192,6 +3192,18 @@ BEGIN
   END IF;
 END$
 
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : load_procedures.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+* 	 7/26/2018: Peiyu Ge: added an new variable location_id					
+*/
 
 -- procedure dispatch_multi_lots
 DROP PROCEDURE IF EXISTS `dispatch_multi_lots`$
@@ -3201,7 +3213,8 @@ CREATE PROCEDURE `dispatch_multi_lots`(
   IN _process_id int(10) unsigned,
   IN _lot_size decimal(16,4) unsigned,
   IN _num_lots int(10) unsigned,
-  IN _alias_prefix varchar(10), 
+  IN _alias_prefix varchar(10),
+  IN _location_id int(11) unsigned,  
   IN _lot_contact int(10) unsigned,
   IN _lot_priority tinyint(2) unsigned,
   IN _comment text,
@@ -3393,6 +3406,7 @@ BEGIN
             priority,
             dispatcher,
             dispatch_time,
+			location_id,
             comment
             )
             VALUES
@@ -3410,6 +3424,7 @@ BEGIN
               _lot_priority,
               _dispatcher,
               _dispatch_time,
+			  _location_id,
               _comment  
             );
           SET _new_id = last_insert_id();
@@ -3430,6 +3445,7 @@ BEGIN
               start_quantity,
               end_quantity,
               uomid,
+			  location_id,
               comment
               )
             VALUES (
@@ -3446,6 +3462,7 @@ BEGIN
               _lot_size,
               _lot_size,
               _uom_id,
+			  _location_id,
               _comment
               );
   
