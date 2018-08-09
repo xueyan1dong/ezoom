@@ -410,6 +410,11 @@ namespace ezMESWeb.Tracking
         else
           ezCmd.Parameters.AddWithValue("@_short_result", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_result_comment", txtComment.Text);
+        if (Request.QueryString["location_id"] == null)
+            ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
+        else
+            ezCmd.Parameters.AddWithValue("@_location_id", Request.QueryString["location_id"]); //added 8/2/2018 peiyu
+
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];

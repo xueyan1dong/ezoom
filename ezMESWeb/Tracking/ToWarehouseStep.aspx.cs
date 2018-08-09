@@ -30,8 +30,8 @@ namespace ezMESWeb.Tracking
   public partial class ToWarehouseStep : TrackTemplate
   {
     protected Label lblStep, lblUom,  lblEquipment, lblStepStatus, lblApprover,lblStartTime, lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId;
-    protected TextBox txtLocation, txtComment, txtPassword;
-    protected DropDownList drpEquipment, drpApprover;
+    protected TextBox txtComment, txtPassword;
+    protected DropDownList drpEquipment, drpApprover, drpLocation;
     private string subProcessId, positionId, subPositionId, stepId;
     protected Button btnDo;
     protected ModalPopupExtender MessagePopupExtender;
@@ -65,6 +65,16 @@ namespace ezMESWeb.Tracking
           ezCmd.CommandText = "SELECT comment, 1 FROM lot_status WHERE id = " + Session["lot_id"].ToString();
           ezCmd.CommandType = CommandType.Text;
           txtComment.Text = ezCmd.ExecuteScalar().ToString();
+
+          //populate location dropdown
+          ezCmd.CommandText = "SELECT id, name FROM location";
+          ezCmd.CommandType = CommandType.Text;
+          ezReader = ezCmd.ExecuteReader();
+          while (ezReader.Read())
+          {
+            drpLocation.Items.Add(new ListItem(String.Format("{0}", ezReader[1]), String.Format("{0}", ezReader[0])));
+          }
+          ezReader.Dispose();
 
           ezCmd.CommandText = "SELECT name, emp_usage, emp_id  FROM step where id=" + stepId;
           ezCmd.CommandType = CommandType.Text;
@@ -102,7 +112,7 @@ namespace ezMESWeb.Tracking
                 lblStep.Visible = false;
                 //lblUom.Visible = false;
                 //newStep.Visible = false;
-                txtLocation.Visible = false;
+                drpLocation.Visible = false;
                 txtComment.Visible = false;
                 lblEquipment.Visible = false;
                 ezCmd.Dispose();
@@ -209,7 +219,14 @@ namespace ezMESWeb.Tracking
         }
         ezCmd.Parameters.AddWithValue("@_short_result", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
-        ezCmd.Parameters.AddWithValue("@_location", txtLocation.Text.Trim());
+        if(drpLocation.SelectedValue.Length == 0)
+        {
+            ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
+        }
+        else
+        {
+            ezCmd.Parameters.AddWithValue("@_location_id", drpLocation.SelectedValue);
+        }
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];

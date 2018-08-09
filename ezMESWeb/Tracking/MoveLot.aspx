@@ -48,7 +48,7 @@
                  <asp:BoundField DataField="lot_status" HeaderText="Lot Status" SortExpression="lot_status"/>
                  <asp:BoundField DataField="process" HeaderText="Workflow" SortExpression="process" />
                  <asp:BoundField DataField="sub_process_id" HeaderText="SubWorkflow"  Visible="false" />
-                 <asp:BoundField DataField="location_id" HeaderText="Location" SortExpression="location_id" /> <%--9--%>
+                 <asp:BoundField DataField="location_name" HeaderText="Location" SortExpression="location_name" /> <%--9--%>
                  <asp:BoundField DataField="position_id" HeaderText="Current Position" SortExpression="position_id" />
                  <asp:BoundField DataField="sub_position_id" HeaderText="Sub Position"  Visible="false" />
                  <asp:BoundField DataField="step" HeaderText="Step Name" SortExpression="step" />
@@ -115,7 +115,7 @@ SELECT id,
         result,
         emp_usage,
         emp_id,
-        ifnull((select name from location where id = location_id), '') as location_id
+        ifnull((select name from location where id = location_id), 'N/A') as location_name
    FROM view_lot_in_process
    ORDER BY start_timecode DESC"
         EnableCaching="false">

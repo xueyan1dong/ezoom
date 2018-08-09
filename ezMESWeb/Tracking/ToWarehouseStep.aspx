@@ -41,10 +41,16 @@ height="100%" scrollbars="Horizontal">
         <tr>
             <td align="left" class="auto-style1">
                 <font Style="font-family:Times New Roman;font-size:20px;">Step Name:</font>&nbsp;<asp:Label ID="lblStep" runat="server" Style="font-family:Times New Roman;font-size:20px;"></asp:Label></td>
-            <td align="left">
+            <%--<td align="left">
                 <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp; 
                 <asp:TextBox ID="txtLocation" runat="server" Width="297px" Style="font-family:Times New Roman;font-size:20px;"></asp:TextBox>
-                </td>
+                </td>--%>
+            <td align=left>
+                <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp;
+                <asp:DropDownList ID="drpLocation" runat="server" Width="180px" Style="font-family:Times New Roman;font-size:20px;" >
+                <asp:ListItem Text="......SELECT......"  Value=""></asp:ListItem>
+                </asp:DropDownList>
+            </td>
          </tr>
          <tr>
             <td align=left colspan=2><font Style="font-family:Times New Roman;font-size:20px;">Comment:</font> <br />

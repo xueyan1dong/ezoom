@@ -41,7 +41,7 @@
     <DisplayName>Location of Batch(es)</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select l.name, l.id from location l order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">(Select 'N/A', '') UNION (Select l.name, l.id from location l)</DropdownQuery>
   </Column>
   <Column name ="lot_contact">
     <DisplayName>Contact Person</DisplayName>

@@ -6,9 +6,9 @@
             <td colspan=3 align=center>
               <asp:Label ID="lblCaption" runat="server" Height="33px" Width="362px" Style="font-family:Times New Roman;font-size:22px;">Batch Information</asp:Label>  
             </td>
-
         </tr>
-        <tr">
+        
+        <tr>
 
             <td align=left>
                 <font Style="font-family:Times New Roman;font-size:20px;">Name: </font>&nbsp; <asp:Label ID="lblName" runat="server" Style="font-family:Times New Roman;font-size:20px;"></asp:Label></td>
@@ -40,5 +40,7 @@
             </td>
 
         </tr>
+
+        
     </table>
 </asp:Panel>

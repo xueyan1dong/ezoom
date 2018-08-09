@@ -79,7 +79,7 @@ namespace ezMESWeb.Tracking
           if ((arr[6].Equals("dispatched") || arr[6].Equals("in transit") || arr[6].Equals("to warehouse"))
                 && (arr[13].Equals("dispatched") || arr[13].Equals("ended"))) // 12 -> 13
           {
-
+// added following variables: product arr[3], process arr[7], priority arr[4], uom arr[17], location arr[9], but after talking with Xueyan, I deleted it (keep original)
             GoNextStep(arr[1], arr[2], arr[6], arr[13], arr[21], arr[8], arr[10], arr[11], arr[22], arr[23], arr[16]);//12->13, 20->21,9->10,10->11,21->22,22->23, 15->16
 
           }

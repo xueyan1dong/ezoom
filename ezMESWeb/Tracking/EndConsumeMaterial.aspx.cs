@@ -375,8 +375,9 @@ namespace ezMESWeb.Tracking
     }
     protected void btnDo_Click(object sender, EventArgs e)
     {
-      
+
       string subProcessId, positionId, subPositionId, stepId;
+      string locationID = "";
       try
       {
         ConnectToDb();
@@ -384,7 +385,16 @@ namespace ezMESWeb.Tracking
         ezCmd = new EzSqlCommand();
 
         ezCmd.Connection = ezConn;
-
+        
+        //pull location_id from view
+        ezCmd.CommandText = "SELECT location_id from view_lot_in_process where id = " + Request.QueryString["lot_id"];
+        ezCmd.CommandType = CommandType.Text;
+        ezReader = ezCmd.ExecuteReader();
+        if (ezReader.Read())
+        {
+            locationID = String.Format("{0}", ezReader[0]);
+        }
+        ezReader.Dispose();
         ezCmd.CommandText = "end_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
         ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
@@ -407,6 +417,11 @@ namespace ezMESWeb.Tracking
         else
           ezCmd.Parameters.AddWithValue("@_short_result", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_result_comment", txtComment.Text);
+        if (locationID.Length == 0)
+            ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value); //added 8/7/2018
+        else
+            ezCmd.Parameters.AddWithValue("@_location_id", locationID); //added 8/2/2018 peiyu
+
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
