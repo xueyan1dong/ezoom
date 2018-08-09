@@ -919,7 +919,7 @@ SELECT i.recipe_id,
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info.
-*	 7/22/2018: Peiyu Ge: added selection of location_id to view 					
+*	 7/27/2018: Peiyu Ge: added selection of location_id to view 					
 */
   
  -- view_lot_in_process view

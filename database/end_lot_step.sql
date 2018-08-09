@@ -7,6 +7,7 @@
 *    Description            : db operations for ending a lot at a step
 *    Log                    :
 *    6/5/2018: xdong: adding handling to new step type -- disassemble
+*	 8/2/2018: peiyu: added an new variable location_id and added to call 'start_lot_step' 
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `end_lot_step`$
@@ -20,6 +21,7 @@ CREATE PROCEDURE `end_lot_step`(
   IN _approver_password varchar(20),
   IN _short_result varchar(255), -- for short result
   IN _result_comment text,  -- for long text result or comment
+  IN _location_id int(11) unsigned, 
   INOUT _process_id int(10) unsigned,
   INOUT _sub_process_id int(10) unsigned,
   INOUT _position_id int(5) unsigned,
@@ -204,6 +206,7 @@ BEGIN
                   _position_id_n,
                   _sub_position_id_n,
                   _step_id_n,
+				  _location_id,
                   _lot_status_n,
                   _step_status_n,
                   _autostart_timecode,

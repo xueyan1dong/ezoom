@@ -21,7 +21,8 @@ CREATE PROCEDURE `pass_lot_step`(
   IN _approver_password varchar(20),
   IN _short_result varchar(255), -- for short result
   IN _comment text,
-  IN _location nvarchar(255), -- for location
+  -- IN _location nvarchar(255), -- for location
+  IN _location_id int(11) unsigned,
   INOUT _process_id int(10) unsigned,
   INOUT _sub_process_id int(10) unsigned,
   INOUT _position_id int(5) unsigned,
@@ -166,7 +167,7 @@ BEGIN
             -- ship steps
             IF _step_type NOT IN ('ship to warehouse', 'ship outof warehouse', 'deliver to customer')
             THEN
-				SELECT _location = location
+				SELECT _location_id = location_id
                   FROM lot_status
 				 WHERE id = _lot_id;
             END IF;     
@@ -191,7 +192,7 @@ BEGIN
               device_id,
               result,
               comment,
-              location
+              location_id
             )
             VALUES (
               _lot_id,
@@ -213,7 +214,7 @@ BEGIN
               _device_id,
               _short_result,
               _comment,
-              _location
+              _location_id
             ); 
             IF row_count() > 0 THEN
               SET _lot_status = 'in transit';
@@ -223,7 +224,7 @@ BEGIN
                     ,actual_quantity = _quantity
                     ,update_timecode = _start_timecode
                     ,comment=_comment
-                    ,location = _location
+                    ,location_id = _location_id
               WHERE id=_lot_id;
             ELSE
               SET _response="Error when recording step pass in batch history.";
@@ -250,6 +251,7 @@ BEGIN
                 _position_id_n,
                 _sub_position_id_n,
                 _step_id_n,
+				_location_id,
                 _lot_status_n,
                 _step_status_n,
                 _autostart_timecode,
