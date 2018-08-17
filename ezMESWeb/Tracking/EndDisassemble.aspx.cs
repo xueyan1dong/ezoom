@@ -39,7 +39,8 @@ namespace ezMESWeb.Tracking
     public DataColumnCollection colc;
     protected ModalPopupExtender MessagePopupExtender;
     protected RadioButtonList rbResult;
-    //protected Panel MessagePanel;
+        //protected Panel MessagePanel;
+    protected Label lblLotStatus2; //record lotstatus in a label separately 8/12
 
     protected override void OnInit(EventArgs e)
     {
@@ -71,7 +72,7 @@ namespace ezMESWeb.Tracking
       if (!IsPostBack)
       {
         stepId = Request.QueryString["step"];
-        lblUom.Text = Session["uom"].ToString();
+        //lblUom.Text = Session["uom"].ToString();
         txtQuantity.Text = Request.QueryString["quantity"];
         
         if(Request.QueryString["step_type"].Equals("condition"))
@@ -91,9 +92,13 @@ namespace ezMESWeb.Tracking
             ezCmd.CommandType = CommandType.Text;
             lblEquipment.Text = ezCmd.ExecuteScalar().ToString();
           }
-          ezCmd.CommandText = "SELECT comment FROM lot_status WHERE id = " + Session["lot_id"].ToString();
+          ezCmd.CommandText = "SELECT comment FROM lot_status WHERE id = " + Request.QueryString["lot_id"];//Session["lot_id"].ToString();
           ezCmd.CommandType = CommandType.Text;
           txtComment.Text = ezCmd.ExecuteScalar().ToString();
+
+          ezCmd.CommandText = "SELECT uom from view_lot_in_process where id = "+ Request.QueryString["lot_id"];
+          ezCmd.CommandType = CommandType.Text;
+          lblUom.Text = ezCmd.ExecuteScalar().ToString();//replaced session['uom'] with querying from view 
 
           ezCmd.CommandText = "SELECT name, emp_usage, emp_id  FROM step where id=" + stepId;
           ezCmd.CommandType = CommandType.Text;
@@ -155,9 +160,9 @@ namespace ezMESWeb.Tracking
           // for some reason, there is an error saying Reader is not closed with the command. -- x.d.
           ezCmd = new EzSqlCommand();
           ezCmd.Connection = ezConn;
-          ezCmd.CommandText =
+            ezCmd.CommandText =
             "SELECT need_approval, approve_emp_usage, approve_emp_id FROM process_step WHERE process_id= "
-            + Session["process_id"].ToString()
+            + Request.QueryString["process_id"]//Session["process_id"].ToString()
             + " AND position_id = "
             + Request.QueryString["position"]
             + " AND step_id = " + Request.QueryString["step"];
@@ -346,12 +351,12 @@ namespace ezMESWeb.Tracking
       }
       if (lblStartTime.Text.Length > 0)
         //next step auto started
-        GoEndStep(Session["lot_id"].ToString(),
-                  Session["lot_alias"].ToString(),
-                  Session["lot_status"].ToString(),
+        GoEndStep(Request.QueryString["lot_id"],//Session["lot_id"].ToString(),
+                  Request.QueryString["lot_alias"], //Session["lot_alias"].ToString(),
+                   lblLotStatus2.Text,//Session["lot_status"].ToString(),
                   lblStartTime.Text,
                   lblStepStatus.Text,
-                  Session["process_id"].ToString(),
+                  Request.QueryString["process_id"],//Session["process_id"].ToString(),
                   lblSubProcessId.Text,
                   lblPositionId.Text,
                   lblSubPositionId.Text,
@@ -361,11 +366,11 @@ namespace ezMESWeb.Tracking
                   null);
       else
         //go to start form for next step
-        GoNextStep(Session["lot_id"].ToString(),
-                   Session["lot_alias"].ToString(),
-                   Session["lot_status"].ToString(),
+        GoNextStep(Request.QueryString["lot_id"],//Session["lot_id"].ToString(),
+                   Request.QueryString["lot_alias"],//Session["lot_alias"].ToString(),                   
+                   lblLotStatus2.Text,//Session["lot_status"].ToString(),
                    lblStepStatus.Text,
-                   Session["process_id"].ToString(),
+                   Request.QueryString["process_id"],//Session["process_id"].ToString(),
                    Request.QueryString["sub_process"],
                    Request.QueryString["position"],
                    Request.QueryString["sub_position"],
@@ -390,8 +395,8 @@ namespace ezMESWeb.Tracking
 
         ezCmd.CommandText = "end_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
-        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
-        ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
+        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Request.QueryString["lot_id"]));//Session["lot_id"]));
+        ezCmd.Parameters.AddWithValue("@_lot_alias", Request.QueryString["lot_alias"]);//Session["lot_alias"].ToString());
         ezCmd.Parameters.AddWithValue("@_start_timecode", Request.QueryString["start_time"]);
         ezCmd.Parameters.AddWithValue("@_operator_id", Convert.ToInt32(Session["UserID"]));
         ezCmd.Parameters.AddWithValue("@_end_quantity", txtQuantity.Text.Trim());
@@ -415,7 +420,7 @@ namespace ezMESWeb.Tracking
         else
             ezCmd.Parameters.AddWithValue("@_location_id", Request.QueryString["location_id"]); //added 8/2/2018 peiyu
 
-        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
+        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
         if (subProcessId.Length > 0)
@@ -453,7 +458,7 @@ namespace ezMESWeb.Tracking
           lblError.Text = response;
         else
         {
-          Session["lot_status"] = ezCmd.Parameters["@_lot_status"].Value.ToString();
+          /*Session["lot_status"]*/ lblLotStatus2.Text = ezCmd.Parameters["@_lot_status"].Value.ToString(); //replace session['lot_status'] with a label variable lblLotStatus2
           lblStepStatus.Text = ezCmd.Parameters["@_step_status"].Value.ToString();
           lblStartTime.Text = ezCmd.Parameters["@_autostart_timecode"].Value.ToString();
           if (lblStartTime.Text.Length > 0)

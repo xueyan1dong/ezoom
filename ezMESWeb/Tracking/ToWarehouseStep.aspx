@@ -50,6 +50,7 @@ height="100%" scrollbars="Horizontal">
                 <asp:DropDownList ID="drpLocation" runat="server" Width="180px" Style="font-family:Times New Roman;font-size:20px;" >
                 <asp:ListItem Text="......SELECT......"  Value=""></asp:ListItem>
                 </asp:DropDownList>
+                <asp:Label ID="lblLotStatus2" runat="server" Visible=false></asp:Label>
             </td>
          </tr>
          <tr>

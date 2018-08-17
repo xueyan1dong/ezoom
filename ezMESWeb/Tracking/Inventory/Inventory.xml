@@ -62,6 +62,12 @@
     <UI>Textbox</UI>
     <TextBoxLength>20</TextBoxLength>
   </Column>
+  <Column name ="location_id">
+    <DisplayName>Location Of Inventory</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'N/A', null union Select name, id from location</DropdownQuery>
+  </Column>
   <Column name ="uom_id">
     <DisplayName>Unit of Measure</DisplayName>
     <IsEnable>true</IsEnable>

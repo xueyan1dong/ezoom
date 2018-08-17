@@ -36,6 +36,7 @@ namespace ezMESWeb.Tracking
     protected Button btnDo;
     protected ModalPopupExtender MessagePopupExtender;
     protected Panel MessagePanel;
+    protected Label lblLotStatus2;
 
     
     protected override void OnInit(EventArgs e)
@@ -201,8 +202,8 @@ namespace ezMESWeb.Tracking
 
         ezCmd.CommandText = "pass_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
-        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
-        ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
+        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Request.QueryString["lot_id"]));//Session["lot_id"]));
+        ezCmd.Parameters.AddWithValue("@_lot_alias", Request.QueryString["lot_alias"]);//Session["lot_alias"].ToString());
         ezCmd.Parameters.AddWithValue("@_operator_id", Convert.ToInt32(Session["UserID"]));
         ezCmd.Parameters.AddWithValue("@_quantity", Request.QueryString["quantity"]);
         ezCmd.Parameters.AddWithValue("@_equipment_id", DBNull.Value);
@@ -227,7 +228,7 @@ namespace ezMESWeb.Tracking
         {
             ezCmd.Parameters.AddWithValue("@_location_id", drpLocation.SelectedValue);
         }
-        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
+                ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]/*Session["process_id"]*/), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
         if (subProcessId.Length > 0)
@@ -262,7 +263,7 @@ namespace ezMESWeb.Tracking
           lblError.Text = response;
         else
         {
-          Session["lot_status"] = ezCmd.Parameters["@_lot_status"].Value.ToString();
+         /* Session["lot_status"]*/ lblLotStatus2.Text = ezCmd.Parameters["@_lot_status"].Value.ToString();
           lblStepStatus.Text = ezCmd.Parameters["@_step_status"].Value.ToString();
           lblStartTime.Text = ezCmd.Parameters["@_autostart_timecode"].Value.ToString();
           if (lblStartTime.Text.Length > 0)
@@ -301,14 +302,14 @@ namespace ezMESWeb.Tracking
       {
         lblError.Text = ex.Message;
       }
-      if (lblStartTime.Text.Length > 0)
-        //next step auto started
-        GoEndStep(Session["lot_id"].ToString(),
-                  Session["lot_alias"].ToString(),
-                  Session["lot_status"].ToString(),
+            if (lblStartTime.Text.Length > 0)
+                //next step auto started
+      GoEndStep(Request.QueryString["lot_id"],//Session["lot_id"].ToString(),
+                  Request.QueryString["lot_alias"],//Session["lot_alias"].ToString(),
+                  lblLotStatus2.Text,//Session["lot_status"].ToString(),
                   lblStartTime.Text,
                   lblStepStatus.Text,
-                  Session["process_id"].ToString(),
+                  Request.QueryString["process_id"],//Session["process_id"].ToString(),
                   lblSubProcessId.Text,
                   lblPositionId.Text,
                   lblSubPositionId.Text,
@@ -318,11 +319,11 @@ namespace ezMESWeb.Tracking
                   null);
       else
         //go to start form for next step
-        GoNextStep(Session["lot_id"].ToString(),
-                 Session["lot_alias"].ToString(),
-                 Session["lot_status"].ToString(),
+        GoNextStep(Request.QueryString["lot_id"],//Session["lot_id"].ToString(),
+                 Request.QueryString["lot_alias"],//Session["lot_alias"].ToString(),
+                 lblLotStatus2.Text,//Session["lot_status"].ToString(),
                  lblStepStatus.Text,
-                 Session["process_id"].ToString(),
+                 Request.QueryString["process_id"],//Session["process_id"].ToString(),
                  Request.QueryString["sub_process"],
                  Request.QueryString["position"],
                  Request.QueryString["sub_position"],

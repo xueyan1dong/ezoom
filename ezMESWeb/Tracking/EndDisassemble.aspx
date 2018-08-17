@@ -56,7 +56,7 @@ height="100%" scrollbars="Horizontal">
             <td align=left>
                 <font Style="font-family:Times New Roman;font-size:20px;">Equipment:</font> &nbsp; 
                 <asp:Label ID="lblEquipment" runat="server"  Style="font-family:Times New Roman;font-size:20px;"></asp:Label></td>
-                
+               <asp:Label ID="lblLotStatus2" runat="server"  Visible ="false"></asp:Label> 
             </td>
          </tr>
          <tr>

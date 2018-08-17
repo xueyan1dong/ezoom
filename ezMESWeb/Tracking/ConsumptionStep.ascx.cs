@@ -116,7 +116,7 @@ namespace ezMESWeb.Tracking
             }
             else
               ezCmd.CommandText = "SELECT  prompt, if_autostart, YN_need_approval, approve_emp_usage, approve_emp_name FROM view_process_step WHERE process_id="
-              + Session["process_id"].ToString() +" AND position_id=" + position;
+              + Request.QueryString["process_id"]/*Session["process_id"].ToString() */ + " AND position_id=" + position;
 
             ezCmd.CommandType = CommandType.Text;
 

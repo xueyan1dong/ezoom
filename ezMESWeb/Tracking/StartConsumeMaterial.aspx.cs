@@ -89,7 +89,6 @@ namespace ezMESWeb.Tracking
             //txtComment.Text = ezCmd.ExecuteScalar().ToString();
 
             
-
             //query location talbe, prepare query statement, get commandtype and get ezReader
             ezCmd.CommandText = "(SELECT null, 'N/A') UNION (SELECT id, name from location)";
             ezCmd.CommandType = CommandType.Text;
@@ -191,10 +190,10 @@ namespace ezMESWeb.Tracking
           ezCmd.Parameters.Clear();
           ezCmd.CommandText = "get_rework_count_for_lot";
           ezCmd.CommandType = CommandType.StoredProcedure;
-          
-          ezCmd.Parameters.AddWithValue("@_lot_id", Session["lot_id"].ToString());
-          ezCmd.Parameters.AddWithValue("@_process_id", Session["process_id"].ToString());
-          ezCmd.Parameters.AddWithValue("@_step_id", stepId);
+
+          ezCmd.Parameters.AddWithValue("@_lot_id", Request.QueryString["lot_id"]);//Session["lot_id"].ToString());
+          ezCmd.Parameters.AddWithValue("@_process_id", Request.QueryString["process_id"]);//Session["process_id"].ToString());
+                    ezCmd.Parameters.AddWithValue("@_step_id", stepId);
           subProcessId = Request.QueryString["sub_process"];
           if (subProcessId.Length > 0)
             ezCmd.Parameters.AddWithValue("@_sub_process_id", subProcessId);
@@ -273,10 +272,10 @@ namespace ezMESWeb.Tracking
        
         ezCmd.CommandText = "start_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
-        
 
-        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
-        ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
+
+        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Request.QueryString["lot_id"]));//Session["lot_id"]));
+        ezCmd.Parameters.AddWithValue("@_lot_alias", Request.QueryString["lot_alias"]);//Session["lot_alias"].ToString());
         ezCmd.Parameters.AddWithValue("@_operator_id", Convert.ToInt32(Session["UserID"]));
         ezCmd.Parameters.AddWithValue("@_check_autostart", 0);
         ezCmd.Parameters.AddWithValue("@_start_quantity", txtQuantity.Text.Trim());
@@ -286,7 +285,7 @@ namespace ezMESWeb.Tracking
           ezCmd.Parameters.AddWithValue("@_equipment_id", drpEquipment.SelectedValue);
         ezCmd.Parameters.AddWithValue("@_device_id", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
-        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
+        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
         if(subProcessId.Length > 0)
@@ -342,9 +341,12 @@ namespace ezMESWeb.Tracking
         + "&equipment=" + drpEquipment.SelectedValue
         + "&step_type=" + Request.QueryString["step_type"]
         + "&lot_id=" + Request.QueryString["lot_id"]
-        //+ "&location_id=" + drpLocation.SelectedValue
-        , true);// added 8/1/2018
-          else
+        //+ "&location_id=" + drpLocation.SelectedValue added 8/1/2018
+        + "&process_id=" + Request.QueryString["process_id"]
+        + "&lot_alias=" + Request.QueryString["lot_alias"]
+        + "&lot_status=" + ezCmd.Parameters["@_lot_status"].Value.ToString()
+        , true);
+        else
             Server.Transfer("EndConsumeMaterial.aspx?step_status=" + stepStatus
       + "&start_time="+ezCmd.Parameters["@_start_timecode"].Value.ToString()
       + "&sub_process=" + subProcessId
@@ -355,6 +357,9 @@ namespace ezMESWeb.Tracking
       + "&equipment=" + drpEquipment.SelectedValue
       + "&step_type=" + Request.QueryString["step_type"]
       + "&lot_id=" + Request.QueryString["lot_id"]
+      + "&process_id=" + Request.QueryString["process_id"]
+      + "&lot_alias=" + Request.QueryString["lot_alias"]
+      + "&lot_status=" + ezCmd.Parameters["@_lot_status"].Value.ToString()
       //+ "&location_id=" + drpLocation.SelectedValue
       , true);
           ezCmd.Dispose();

@@ -26,6 +26,23 @@ namespace ezMESWeb.Tracking.Inventory
        {
             DataView dv = (DataView)sdsInventoryGrid.Select(DataSourceSelectArguments.Empty);
             colc = dv.Table.Columns;
+                //while (colc.Count > 1)
+                //    colc.RemoveAt(colc.Count - 1);
+                //colc.Add(new DataColumn("source_type"));
+                //colc.Add(new DataColumn("pd_or_mt_id"));
+                //colc.Add(new DataColumn("lot_id"));
+                //colc.Add(new DataColumn("serial_no"));
+                //colc.Add(new DataColumn("out_order_id"));
+                //colc.Add(new DataColumn("in_order_id"));
+                //colc.Add(new DataColumn("original_quantity"));//[peiyu]
+                //colc.Add(new DataColumn("actual_quantity"));
+                //colc.Add(new DataColumn("location_id"));
+                //colc.Add(new DataColumn("uom_id"));
+                //colc.Add(new DataColumn("manufacture_date"));
+                //colc.Add(new DataColumn("expiration_date"));
+                //colc.Add(new DataColumn("arrive_date"));
+                //colc.Add(new DataColumn("contact_employee"));
+                //colc.Add(new DataColumn("comment"));
 
             //Initial insert template  
             FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"Inventory.xml"));
@@ -44,8 +61,8 @@ namespace ezMESWeb.Tracking.Inventory
          //modify the mode of form view
          FormView1.ChangeMode(FormViewMode.Edit);
          FormView1.Caption = "Copy An Inventory";
-
-      }
+            FormView1.DataBind();
+        }
 
       protected void btnCancel_Click(object sender, EventArgs e)
       {
@@ -76,8 +93,7 @@ namespace ezMESWeb.Tracking.Inventory
                ezCmd.CommandText = "insert_inventory";
                ezCmd.CommandType = CommandType.StoredProcedure;
 
-               
-
+              
                fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;
             }
 
