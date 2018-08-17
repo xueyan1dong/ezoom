@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*	 8/16/2018: Peiyu Ge: added location_id					
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS insert_inventory$
@@ -22,6 +23,7 @@ CREATE PROCEDURE insert_inventory (
   IN _in_order_id varchar(20),
   IN _original_quantity decimal(16,4) unsigned,
   IN _actual_quantity decimal(16,4) unsigned,
+  IN _location_id int(11) unsigned,
   IN _uom_id smallint(3) unsigned,
   IN _manufacture_date datetime,
   IN _expiration_date datetime,
@@ -64,6 +66,9 @@ BEGIN
   ELSEIF  _arrive_date IS NULL
   THEN 
     SET _response='Arrive Date is required. Please fill in an arrive date.';
+  ELSEIF  _location_id IS NULL
+  THEN 
+    SET _response='Location information is required. Please selecte a location.';   
   ELSEIF  _recorded_by IS NULL
   THEN 
     SET _response='Recorder information is missing.';   
@@ -72,7 +77,7 @@ BEGIN
     SET _response='The person who submit this inventory does not exist in database.';  
   ELSEIF _contact_employee IS NOT NULL AND NOT EXISTS (SELECT * FROM employee WHERE id=_contact_employee)
   THEN
-    SET _response='The person who submit this inventory does not exist in database.';    
+    SET _response='The person who submit this inventory does not exist in database.'; 	
   ELSE
   
 
@@ -115,7 +120,7 @@ BEGIN
                         AND serial_no = _serial_no
                      )
       THEN
-        SET _response = concat('The lot ', _lot_id , ' with serial number ', _serail_no, ' already exists in inventory.');
+        SET _response = concat('The lot ', _lot_id , ' with serial number ', _serial_no, ' already exists in inventory.');
       END IF;
       
       IF _response IS NULL THEN
@@ -136,7 +141,8 @@ BEGIN
           arrive_date,
           recorded_by,
           contact_employee,
-          comment 
+          comment,
+		  location_id
         )
         values (
               _source_type,
@@ -154,7 +160,8 @@ BEGIN
               _arrive_date,
               _recorded_by,
               _contact_employee,
-              _comment  
+              _comment,
+			  _location_id
             );
         SET _inventory_id = last_insert_id();
 

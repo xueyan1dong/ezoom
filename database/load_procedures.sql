@@ -123,6 +123,18 @@ BEGIN
 END$
 
 -- procedure insert_inventory
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : insert_inventory.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+*	 8/16/2018: Peiyu Ge: added location_id					
+*/
 
 DROP PROCEDURE IF EXISTS insert_inventory$
 CREATE PROCEDURE insert_inventory (
@@ -136,6 +148,7 @@ CREATE PROCEDURE insert_inventory (
   IN _in_order_id varchar(20),
   IN _original_quantity decimal(16,4) unsigned,
   IN _actual_quantity decimal(16,4) unsigned,
+  IN _location_id int(11) unsigned,
   IN _uom_id smallint(3) unsigned,
   IN _manufacture_date datetime,
   IN _expiration_date datetime,
@@ -178,6 +191,9 @@ BEGIN
   ELSEIF  _arrive_date IS NULL
   THEN 
     SET _response='Arrive Date is required. Please fill in an arrive date.';
+  ELSEIF  _location_id IS NULL
+  THEN 
+    SET _response='Location information is required. Please selecte a location.';
   ELSEIF  _recorded_by IS NULL
   THEN 
     SET _response='Recorder information is missing.';   
@@ -229,7 +245,7 @@ BEGIN
                         AND serial_no = _serial_no
                      )
       THEN
-        SET _response = concat('The lot ', _lot_id , ' with serial number ', _serail_no, ' already exists in inventory.');
+        SET _response = concat('The lot ', _lot_id , ' with serial number ', _serial_no, ' already exists in inventory.');
       END IF;
       
       IF _response IS NULL THEN
@@ -250,7 +266,8 @@ BEGIN
           arrive_date,
           recorded_by,
           contact_employee,
-          comment 
+          comment,
+		  location_id
         )
         values (
               _source_type,
@@ -268,7 +285,8 @@ BEGIN
               _arrive_date,
               _recorded_by,
               _contact_employee,
-              _comment  
+              _comment,
+			  _location_id
             );
         SET _inventory_id = last_insert_id();
 
@@ -4170,6 +4188,7 @@ END$
 *    Description            : db operations for ending a lot at a step
 *    Log                    :
 *    6/5/2018: xdong: adding handling to new step type -- disassemble
+*	 8/2/2018: peiyu: added an new variable location_id and added to call 'start_lot_step' 
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `end_lot_step`$
@@ -4183,6 +4202,7 @@ CREATE PROCEDURE `end_lot_step`(
   IN _approver_password varchar(20),
   IN _short_result varchar(255), -- for short result
   IN _result_comment text,  -- for long text result or comment
+  IN _location_id int(11) unsigned, 
   INOUT _process_id int(10) unsigned,
   INOUT _sub_process_id int(10) unsigned,
   INOUT _position_id int(5) unsigned,
@@ -4367,6 +4387,7 @@ BEGIN
                   _position_id_n,
                   _sub_position_id_n,
                   _step_id_n,
+				  _location_id,
                   _lot_status_n,
                   _step_status_n,
                   _autostart_timecode,
@@ -5587,7 +5608,7 @@ BEGIN
 *    Description            : db operations for starting and ending a step in one shot
 *    Log                    :
 *    6/6/2018: xdong: adding _location parameter to record batch location for certain ship steps
-*	 8/8/2018: peiyu: replaced _location nvarchar  to location_id int
+*	 8/2/2018: peiyu: replaced _location nvarchar  to location_id int
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `pass_lot_step`$

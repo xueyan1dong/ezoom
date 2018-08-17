@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*    8/16/2018: Peiyu Ge: added location info.					
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `inventory`$
@@ -29,6 +30,7 @@ CREATE TABLE `inventory` (
   `recorded_by` int(10) unsigned NOT NULL,
   `contact_employee` int(10) unsigned DEFAULT NULL,
   `comment` text,
+  `location_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inventory_un01` (`source_type`,`pd_or_mt_id`, `supplier_id`, `lot_id`, `serial_no`)
 ) ENGINE=InnoDB$

@@ -346,6 +346,18 @@ CREATE TABLE `ingredients_history` (
   PRIMARY KEY (`event_time`, `recipe_id`,`source_type`,`ingredient_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : load_tables.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 	
+*    8/16/2018: Peiyu Ge: added location info.					
+*/
 
 -- inventory table
 DROP TABLE IF EXISTS `inventory`$
@@ -367,6 +379,7 @@ CREATE TABLE `inventory` (
   `recorded_by` int(10) unsigned NOT NULL,
   `contact_employee` int(10) unsigned DEFAULT NULL,
   `comment` text,
+  `location_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inventory_un01` (`source_type`,`pd_or_mt_id`, `supplier_id`, `lot_id`, `serial_no`)
 ) ENGINE=InnoDB$

@@ -7,6 +7,7 @@
 *    Description            : db operations for starting and ending a step in one shot
 *    Log                    :
 *    6/6/2018: xdong: adding _location parameter to record batch location for certain ship steps
+*	 8/2/2018: peiyu: replaced _location nvarchar  to location_id int
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `pass_lot_step`$
