@@ -191,9 +191,6 @@ BEGIN
   ELSEIF  _arrive_date IS NULL
   THEN 
     SET _response='Arrive Date is required. Please fill in an arrive date.';
-  ELSEIF  _location_id IS NULL
-  THEN 
-    SET _response='Location information is required. Please selecte a location.';
   ELSEIF  _recorded_by IS NULL
   THEN 
     SET _response='Recorder information is missing.';   

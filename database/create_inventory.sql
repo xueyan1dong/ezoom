@@ -30,7 +30,7 @@ CREATE TABLE `inventory` (
   `recorded_by` int(10) unsigned NOT NULL,
   `contact_employee` int(10) unsigned DEFAULT NULL,
   `comment` text,
-  `location_id` int(11) unsigned NOT NULL,
+  `location_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inventory_un01` (`source_type`,`pd_or_mt_id`, `supplier_id`, `lot_id`, `serial_no`)
 ) ENGINE=InnoDB$
