@@ -117,8 +117,18 @@ namespace ezMESWeb.Tracking.Inventory
                 }
                 else
                   lbMaterial.Items[materialIndex].Text += "||";
+
+                //store location in lbMaterial
+                if (csvTable.Columns.Contains("Location"))
+                {
+                    field = csvTable.Rows[j]["Location"].ToString();
+                    lbMaterial.Items[materialIndex].Text += "||" + field;
+                    itemContent += "Location:" + field + "\n";
+                }
+                else
+                    lbMaterial.Items[materialIndex].Text += "||";
                 itemContent += "\n";
-                //an item in lbMaterial is: Material Name|| Quantity||Preferred Vendor||Price||MPN||Description
+                //an item in lbMaterial is: Material Name|| Quantity||Preferred Vendor||Price||MPN||Description||Location
                 materialIndex++;
               }
             }
@@ -149,7 +159,7 @@ namespace ezMESWeb.Tracking.Inventory
             ezCmd.CommandType = CommandType.StoredProcedure;
             ezCmd.Parameters.AddWithValue("@_client_id", DBNull.Value, ParameterDirection.Output);
             ezCmd.Parameters.AddWithValue("@_name", DBNull.Value);
-            ezCmd.Parameters.AddWithValue("@_tyoe", "supplier");
+            ezCmd.Parameters.AddWithValue("@_type", "supplier");
             ezCmd.Parameters.AddWithValue("@_internal_contact_id", Convert.ToInt32(Session["UserID"]));
             ezCmd.Parameters.AddWithValue("@_company_phone", DBNull.Value);
             ezCmd.Parameters.AddWithValue("@_address", DBNull.Value);
@@ -214,6 +224,7 @@ namespace ezMESWeb.Tracking.Inventory
               string[] spliter = {"||"};
               for (int i = 0; i < lbMaterial.Items.Count; i++)
               {
+                //an item in lbMaterial is: Material Name|| Quantity||Preferred Vendor||Price||MPN||Description||Location
                 fields = lbMaterial.Items[i].Text.Split(spliter, StringSplitOptions.None );
                 ezCmd.Parameters["@_name"].Value = fields[0];
                 if (fields[2].Length > 0)
@@ -251,6 +262,7 @@ namespace ezMESWeb.Tracking.Inventory
             //load inventory
             if (lblError.Text.Length == 0)
             {
+              //an item in lbMaterial is: Material Name|| Quantity||Preferred Vendor||Price||MPN||Description||Location
               string today =DateTime.UtcNow.Year + "-" + DateTime.UtcNow.Month + "-" + DateTime.UtcNow.Day;
               ezCmd.CommandText = "autoload_inventory";
               ezCmd.Parameters.Clear();
@@ -269,6 +281,7 @@ namespace ezMESWeb.Tracking.Inventory
               ezCmd.Parameters.AddWithValue("@_arrive_date", today);
               ezCmd.Parameters.AddWithValue("@_contact_employee", DBNull.Value);
               ezCmd.Parameters.AddWithValue("@_comment", DBNull.Value);
+              ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
               ezCmd.Parameters.AddWithValue("@_inventory_id", DBNull.Value, ParameterDirection.Output);
               ezCmd.Parameters.AddWithValue("@_response", DBNull.Value, ParameterDirection.Output);
 
@@ -293,6 +306,8 @@ namespace ezMESWeb.Tracking.Inventory
 
                     ezCmd.Parameters["@_original_quantity"].Value = fields[1];
 
+                    if (fields[6].Length > 0)
+                        ezCmd.Parameters["@_location_id"].Value = fields[6];
 
                     ezCmd.ExecuteNonQuery();
                     response = ezCmd.Parameters["@_response"].Value.ToString();
@@ -317,7 +332,13 @@ namespace ezMESWeb.Tracking.Inventory
           }
         }
        }
-      protected void btnInvForm_Click(object sender, EventArgs e)
+
+        protected void txtContent_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnInvForm_Click(object sender, EventArgs e)
       {
         MessagePopupExtender.Hide();
         Server.Transfer("InventoryConfig.aspx");

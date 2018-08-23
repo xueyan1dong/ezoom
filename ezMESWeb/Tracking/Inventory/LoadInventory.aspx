@@ -15,9 +15,9 @@
 <br />
 <asp:Label ID="lblError" runat="server" ForeColor="#FF3300" 
                 Height="60px" Width="350px"></asp:Label><br />
-    <p>Required columns: Type, Item, Description, Quantity On Hand, Preferred Vendor, Price, MPN</p><br />
-    <p><em>ezOOM is going to update following infromation in ezOOM, please review and click Submit button at bottom to start updating.</em></p>
- <br />   <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Height=1100px Width=800px></asp:TextBox>
+    <p>Required columns: Type, Item, Description, Quantity On Hand, Preferred Vendor, Price, MPN, Location.</p><br />
+    <p><em>ezOOM is going to update following information in ezOOM, please review and click Submit button at bottom to start updating.</em></p>
+ <br />   <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Height=1100px Width=800px OnTextChanged="txtContent_TextChanged"></asp:TextBox>
 <br />
  <asp:ListBox ID="lbVendor" runat="server" Visible="false"></asp:ListBox>
 <br />
