@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*	 8/23/2018: Peiyu Ge: added location info.					
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS autoload_inventory$
@@ -27,6 +28,7 @@ CREATE PROCEDURE autoload_inventory (
   IN _arrive_date datetime,
   IN _contact_employee int(10) unsigned,
   IN _comment text,
+  IN _location_id int(11) unsigned,
   OUT _inventory_id int(10) unsigned,
   OUT _response varchar(255)
 )
@@ -148,7 +150,8 @@ BEGIN
           arrive_date,
           recorded_by,
           contact_employee,
-          comment 
+          comment,
+		  location_id
         )
         values (
               _source_type,
@@ -166,7 +169,8 @@ BEGIN
               _arrive_date,
               _recorded_by,
               _contact_employee,
-              _comment  
+              _comment,
+			  _location_id
             );
         SET _inventory_id = last_insert_id();
 
