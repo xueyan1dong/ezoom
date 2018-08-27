@@ -420,6 +420,19 @@ CREATE TABLE `material_group` (
 
 
 -- material table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_material.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 	
+*	 8/26/2018: Peiyu Ge: added if_persistent flag to indicate if an item is an intermediate item/part 				
+*/
+
 DROP TABLE IF EXISTS `material`$
 CREATE TABLE `material` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -437,6 +450,7 @@ CREATE TABLE `material` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `description` text,
   `comment` text,
+  `if_persistent` boolean,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ma_un1` (`name`,`alias`,`mg_id`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$

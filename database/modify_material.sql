@@ -8,7 +8,8 @@
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 	
-*    6/29/2018: Xueyan Dong: added code to also record _alias into the alias column of material table.				
+*    6/29/2018: Xueyan Dong: added code to also record _alias into the alias column of material table.	
+*	 8/26/2018: Peiyu Ge: added a flag if_persistent to indicate if an item/part is intermediate 			
 */
 DELIMITER $
 
@@ -21,6 +22,7 @@ CREATE procedure modify_material (
   IN _mg_id int(10) unsigned,
   IN _material_form enum('solid','liquid','gas'),
   IN _status enum('inactive','production','frozen'),
+  IN _if_persistent boolean,
   IN _alert_quantity decimal(16,4) unsigned,
   IN _lot_size decimal(16,4) unsigned,
   IN _uom_id smallint(3) unsigned,
@@ -60,7 +62,8 @@ BEGIN
         enlist_time,
         enlisted_by,
         description,
-        comment
+        comment,
+		if_persistent
       )
       VALUES (
         _name,
@@ -74,7 +77,8 @@ BEGIN
         now(),
         _employee_id,
         _description,
-        _comment
+        _comment,
+		_if_persistent
       );
       SET _material_id = last_insert_id();
 
@@ -102,7 +106,8 @@ BEGIN
              update_time = now(),
              updated_by = _employee_id,
              description = _description,
-             comment = _comment
+             comment = _comment,
+			 if_persistent = _if_persistent
        WHERE id = _material_id;
     ELSE
       SET _response = concat('The material name ' , _name , ' is already used by another material in table.');

@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 	
+*	 8/26/2018: Peiyu Ge: added if_persistent flag to indicate if an item is an intermediate item/part 				
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `material`$
@@ -27,6 +28,7 @@ CREATE TABLE `material` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `description` text,
   `comment` text,
+  `if_persistent` boolean,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ma_un1` (`name`,`alias`,`mg_id`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
