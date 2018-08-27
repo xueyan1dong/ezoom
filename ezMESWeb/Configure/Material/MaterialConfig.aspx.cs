@@ -32,7 +32,7 @@ namespace ezMESWeb.Configure.Material
          "SELECT m.id, m.name, "+
          "(select supplier_id FROM material_supplier s WHERE s.material_id = m.id ORDER BY preference limit 1) AS alias, "+
          "(select name FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) vendor,"+
-         " m.mg_id, mg.name as group_name, u.name as uom_name, m.material_form, m.status, m.alert_quantity, "+                            
+         " m.mg_id, mg.name as group_name, u.name as uom_name, m.material_form, m.status, m.if_persistent, m.alert_quantity, "+                            
          " m.lot_size, m.uom_id, m.enlist_time,m.enlisted_by, concat(e1.firstname, ' ', e1.lastname) as enlisted_person,"+
          " m.update_time, m.updated_by, concat(e2.firstname, ' ', e2.lastname) as updated_person,"+
          " m.description, m.comment FROM material m LEFT JOIN material_group mg ON mg.id = m.mg_id"+
@@ -44,7 +44,7 @@ namespace ezMESWeb.Configure.Material
          "SELECT m.id, m.name, "+
          "(select supplier_id FROM material_supplier s WHERE s.material_id = m.id ORDER BY preference limit 1) AS alias, "+
          "(select name FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) vendor,"+
-         " m.mg_id, mg.name as group_name, u.name as uom_name, m.material_form, m.status, m.alert_quantity, "+                            
+         " m.mg_id, mg.name as group_name, u.name as uom_name, m.material_form, m.status, m.if_persistent, m.alert_quantity, "+                            
          " m.lot_size, m.uom_id, m.enlist_time,m.enlisted_by, concat(e1.firstname, ' ', e1.lastname) as enlisted_person,"+
          " m.update_time, m.updated_by, concat(e2.firstname, ' ', e2.lastname) as updated_person,"+
          " m.description, m.comment FROM material m LEFT JOIN material_group mg ON mg.id = m.mg_id"+
@@ -239,7 +239,7 @@ namespace ezMESWeb.Configure.Material
                ezCmd.CommandText = "delete_material";
                ezCmd.CommandType = CommandType.StoredProcedure;
 
-               ezCmd.Parameters.AddWithValue("@_material_id", gvTable.SelectedPersistedDataKey.Values["id"].ToString());
+               ezCmd.Parameters.AddWithValue("@_material_id", gvTable.SelectedDataKey.Value.ToString());//gvTable.SelectedPersistedDataKey.Values["id"].ToString());
                ezCmd.Parameters.AddWithValue("@_employee_id", Convert.ToInt32(Session["UserID"]));
 
                ezCmd.Parameters.AddWithValue("@_response", DBNull.Value, ParameterDirection.Output);
@@ -306,10 +306,10 @@ namespace ezMESWeb.Configure.Material
               }
               else
               {
-                if(FormView1.Caption.Contains("Clone")) //clone into new material id
-                  ezCmd.Parameters.AddWithValue("@_material_id", DBNull.Value);
-                else
-                 ezCmd.Parameters.AddWithValue("@_material_id", gvTable.SelectedPersistedDataKey.Values["id"].ToString());
+                 if (FormView1.Caption.Contains("Clone")) //clone into new material id
+                     ezCmd.Parameters.AddWithValue("@_material_id", DBNull.Value);
+                 else
+                     ezCmd.Parameters.AddWithValue("@_material_id", gvTable.SelectedDataKey.Value.ToString());//gvTable.SelectedPersistedDataKey.Values["id"].ToString());
                  ezCmd.Parameters["@_material_id"].Direction = ParameterDirection.InputOutput;
        
                  fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;

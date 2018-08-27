@@ -8,7 +8,7 @@
     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 <asp:Button ID="btnInsert" runat="server" Text="Insert Item/Part" Width="147px" OnClick="btn_Click"/> 
 <br />
-<asp:panel id="pnlScroll" runat="server" width="900px" BorderColor="ActiveBorder" 
+<asp:panel id="pnlScroll" runat="server" width="1024px" BorderColor="ActiveBorder" 
 scrollbars="Both" DefaultButton="Search">    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
    <ContentTemplate>
@@ -38,7 +38,7 @@ scrollbars="Both" DefaultButton="Search">
                AutoGenerateColumns="False"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  
                DataKeyNames="id" AllowPaging="True"  AllowSorting="true" PageSize="15" EnableTheming="False" 
-               Width="860px" Height="480px" AllowResizeColumn="true" 
+               Width="1024px" Height="480px" AllowResizeColumn="true" 
                PagerStyle-BackColor="#f2e8da" PagerSettings-Mode="NumericFirstLast" onpageindexchanging="gvTable_pageIndexChanging"
              >
              <Columns>
@@ -68,6 +68,7 @@ scrollbars="Both" DefaultButton="Search">
                  <asp:BoundField DataField="group_name" HeaderText="Group" SortExpression="group" />
                  <asp:BoundField DataField="material_form" HeaderText="Form" SortExpression="material_form" />
                  <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
+                 <asp:BoundField DataField="if_persistent" HeaderText="If Persistent" SortExpression="if_persistent" />
                  <asp:BoundField DataField="alert_quantity" HeaderText="Alert Quantity Level" SortExpression="alert_quantity" DataFormatString="{0:N0}"/>                 
                  <asp:BoundField DataField="lot_size" HeaderText="Lot Size" SortExpression="lot_size" DataFormatString="{0:N0}"/>
                  <asp:BoundField DataField="uom_name" HeaderText="Uom" SortExpression="uom_name" />
@@ -94,8 +95,8 @@ scrollbars="Both" DefaultButton="Search">
            DeleteCommand="DELETE FROM material WHERE id=?" 
            ProviderName="System.Data.Odbc" 
        SelectCommand="SELECT m.id, 
-                             m.name, 
-                             (select supplier_id FROM material_supplier s WHERE s.material_id = m.id ORDER BY preference limit 1) AS alias,
+                             m.name,
+                            (select convert(supplier_id, char(255)) FROM material_supplier s WHERE s.material_id = m.id ORDER BY preference limit 1) AS alias,
                            --  (select c.id FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) AS alias,
                              (select name FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) AS vendor,
                              m.mg_id, 
@@ -103,6 +104,7 @@ scrollbars="Both" DefaultButton="Search">
                              u.name as uom_name,
                              m.material_form,
                              m.status,
+                             Case m.if_persistent when 0 then 'False' when 1 then 'true' else 'N/A' end as if_persistent,
                              m.alert_quantity,                             
                              m.lot_size,
                              m.uom_id, 
@@ -113,7 +115,7 @@ scrollbars="Both" DefaultButton="Search">
                              m.updated_by,
                              concat(e2.firstname, ' ', e2.lastname) as updated_person,
                              m.description,
-                             m.comment   
+                             m.comment
                              FROM material m LEFT JOIN material_group mg ON mg.id = m.mg_id
                              LEFT JOIN uom u ON u.id = m.uom_id
                              LEFT JOIN employee e1 ON e1.id = m.enlisted_by
@@ -145,16 +147,17 @@ scrollbars="Both" DefaultButton="Search">
        ProviderName="System.Data.Odbc"  
        EnableCaching="false"
        SelectCommand="SELECT m.name,
-                             (select s.supplier_id FROM material_supplier s WHERE s.material_id = m.id ORDER BY s.preference limit 1) AS alias,
+                            (select convert(s.supplier_id, char(255)) FROM material_supplier s WHERE s.material_id = m.id ORDER BY s.preference limit 1) AS alias,
                             -- (select c.id FROM material_supplier s, client c WHERE s.material_id = m.id  and c.id = s.supplier_id ORDER BY preference limit 1) AS alias,
                              m.mg_id,
                              m.material_form,
                              m.status,
+                             m.if_persistent,
                              m.alert_quantity,                             
                              m.lot_size,
                              m.uom_id,
                              m.description,
-                             m.comment 
+                             m.comment
                         FROM material m
                        WHERE m.id = ?" 
         >

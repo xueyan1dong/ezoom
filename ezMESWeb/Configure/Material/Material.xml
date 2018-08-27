@@ -17,8 +17,7 @@
     <DisplayName>Group</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select name, id from material_group order by 1</DropdownQuery>
-    
+    <DropdownQuery dcol="0" vcol="1">Select name, id from material_group order by 1</DropdownQuery>  
   </Column>
   <Column name ="material_form">
     <DisplayName>Form</DisplayName>
@@ -31,6 +30,12 @@
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
     <EnumQuery>show columns from material like 'status'</EnumQuery>
+  </Column>
+  <Column name ="if_persistent">
+    <DisplayName>If Persistent</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'N/A', null union Select "false", false union Select "true", true</DropdownQuery>
   </Column>
   <Column name ="alert_quantity">
     <DisplayName>Alert Quantity Level</DisplayName>
