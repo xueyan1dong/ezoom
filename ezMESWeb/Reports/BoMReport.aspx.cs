@@ -19,8 +19,7 @@ namespace ezMESWeb.Reports
         protected EzSqlCommand ezCmd;
         protected ezDataAdapter ezAdapter;
         protected System.Data.Common.DbDataReader ezReader;
-
-
+        protected TextBox txtNumProduct;
         protected Panel pnMain;
 
         protected DropDownList  dpProcess;
@@ -41,7 +40,7 @@ namespace ezMESWeb.Reports
         private void InitializePage(object sender, EventArgs e)
         {
             string dbConnKey = ConfigurationManager.AppSettings.Get("DatabaseType");
-            string connStr = ConfigurationManager.ConnectionStrings["ezmesConnectionString"].ConnectionString; ;
+            string connStr = ConfigurationManager.ConnectionStrings["ezmesConnectionString"].ConnectionString;
             DbConnectionType ezType;
 
             if (dbConnKey.Equals("ODBC"))
@@ -115,8 +114,14 @@ namespace ezMESWeb.Reports
             rvProInvent.LocalReport.DataSources.Clear();
             
             showProcessBom(dpProcess.SelectedValue);
-            ReportParameter p2 = new ReportParameter("process_name", dpProcess.SelectedItem.Text);
-            rvProInvent.LocalReport.SetParameters(new ReportParameter[] { p2});
+            //ReportParameter p2 = new ReportParameter("process_name", dpProcess.SelectedItem.Text);
+            ReportParameter[] p2 = new ReportParameter[]
+            {
+                new ReportParameter("process_name", dpProcess.SelectedItem.Text),
+                new ReportParameter("num_finalProduct", txtNumProduct.Text.Length == 0? "1":txtNumProduct.Text)
+            };
+            
+            rvProInvent.LocalReport.SetParameters(p2);//new ReportParameter[] { p2});
 
             rvProInvent.LocalReport.Refresh();
             rvProInvent.Visible = true;

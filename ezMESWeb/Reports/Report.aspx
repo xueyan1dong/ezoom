@@ -21,5 +21,11 @@
 <div class="cssnav">
 <a href="/Reports/ProductInProcessReport.aspx"><span>Products Quickview</span></a>
 </div>
+<div class="cssnav">
+<a href="/Reports/OrderReport.aspx"><span>Order Status</span></a>
+</div>
+<div class="cssnav">
+<a href="/Reports/NewOrderDemandPrediction.aspx"><span>New Order Demand Prediction</span></a>
+</div>
 </div>
 </asp:Content>
