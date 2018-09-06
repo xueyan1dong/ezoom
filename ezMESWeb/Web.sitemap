@@ -60,7 +60,7 @@
       <siteMapNode url="~/Reports/LotHistoryReport.aspx" title="Batch Status/History" description="Batch Status and History Report" />
       <siteMapNode url="~/Reports/DispatchHistoryReport.aspx" title="Batch Dispatch/History" description="Batch Dsipatch History Report" />
       <siteMapNode url="~/Reports/ProductInProcessReport.aspx" title="Products Quickview" description="Quickview of Products" />
-
+      <siteMapNode url="~/Reports/NewOrderDemandPrediction.aspx" title="New Order Demand" description="New Order Demand Prediction Overview" />
     </siteMapNode>
 
   <siteMapNode url="ContactUs.aspx" title="Contact us"  description="Contact us page" />
