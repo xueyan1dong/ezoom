@@ -147,6 +147,11 @@ namespace ezMESWeb.Configure.Order
             txtID.Text = tcMain.ActiveTab.ID;
             fvMain.Caption = "General Purchase Order Information";
             fvMain.ChangeMode(FormViewMode.ReadOnly);
+
+            string strPONumber = tcMain.ActiveTab.HeaderText;
+            Image barcode = (Image)fvMain.FindControl("barcode_image");
+            barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strPONumber + "&h=60&w=400&il=true&t=Code 128-B";
+
             //fvMain.DataBind();
             //upMain.Update();
             btnDo.Text = "Update Order Info";

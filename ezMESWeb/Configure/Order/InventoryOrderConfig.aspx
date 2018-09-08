@@ -209,6 +209,9 @@
                               Text='<%# Bind("comment") %>' />
                           </td>
                         </tr>
+                            <tr>
+                                <td colspan="4" align="center"><asp:Image ID="barcode_image" runat="server" /></td>
+                            </tr>
                       </table>
                       </ItemTemplate>
                   </asp:FormView>

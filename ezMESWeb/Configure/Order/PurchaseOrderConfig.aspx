@@ -136,6 +136,7 @@
                           <td>Comment:</td>
                           <td><asp:TextBox ID="commentTextBox" runat="server" TextMode="MultiLine" 
                                   Height="50px" Width="200px" Text='<%# Eval("comment") %>' /></td>
+
                           </tr>
                          </table>
                       </EditItemTemplate>
@@ -299,6 +300,9 @@
                               Text='<%# Bind("comment") %>' />
                           </td>
                         </tr>
+                          <tr>
+                              <td colspan="4" align="center"><asp:Image ID="barcode_image" runat="server" /></td>
+                          </tr>
                       </table>
                       </ItemTemplate>
                   </asp:FormView>
@@ -440,113 +444,76 @@
                               </asp:TableCell>
                               <asp:TableCell ID="TableCell312" runat="server" Height="25px" HorizontalAlign="Left">
                               <asp:Label ID="productLabel1" runat="server" 
-                               Text='<%# Bind("material_name") %>' /></asp:TableCell>
-                            </asp:TableRow>
-                             <asp:TableRow ID="TableRow32" runat="server">
+                               Text='<%# Bind("material_name") %>' /></asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow32" runat="server">
                               <asp:TableCell ID="TableCell321" runat="server" Height="25px" HorizontalAlign="Right">
                               Requested Quantity: 
-                              </asp:TableCell>
-                                <asp:TableCell ID="TableCell322" runat="server" Height="25px" HorizontalAlign="Left">
+                              </asp:TableCell><asp:TableCell ID="TableCell322" runat="server" Height="25px" HorizontalAlign="Left">
                                     <asp:TextBox ID="requestedTextBox" runat="server" 
                                     Text='<%# Bind("quantity_requested") %>' />
-                                </asp:TableCell>
-                            </asp:TableRow>
-                            <asp:TableRow ID="TableRow33" runat="server">
+                                </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow33" runat="server">
                                 <asp:TableCell ID="TableCell331" runat="server" Height="25px" HorizontalAlign="Right">
-                                Unit of Measure:</asp:TableCell>
-                                <asp:TableCell ID="TableCell332" runat="server" Height="25px" HorizontalAlign="Left">
+                                Unit of Measure:</asp:TableCell><asp:TableCell ID="TableCell332" runat="server" Height="25px" HorizontalAlign="Left">
                                     <asp:Label ID="uomLabel" runat="server" 
                                     Text='<%# Bind("uom_name") %>' />                    
-                                </asp:TableCell>
-                            </asp:Tablerow>
-                             <asp:TableRow ID="TableRow50" runat="server">
+                                </asp:TableCell></asp:Tablerow><asp:TableRow ID="TableRow50" runat="server">
                               <asp:TableCell ID="TableCell501" runat="server" Height="25px" HorizontalAlign="Right">
                               Unit Price ($): 
-                              </asp:TableCell>
-                                <asp:TableCell ID="TableCell502" runat="server" Height="25px" HorizontalAlign="Left">
+                              </asp:TableCell><asp:TableCell ID="TableCell502" runat="server" Height="25px" HorizontalAlign="Left">
                                     <asp:TextBox ID="priceTextBox" runat="server" 
                                     Text='<%# Bind("unit_price") %>' />
-                                </asp:TableCell>
-                            </asp:TableRow>
-                             <asp:TableRow ID="TableRow53" runat="server">
+                                </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow53" runat="server">
                               <asp:TableCell ID="TableCell531" runat="server" Height="25px" HorizontalAlign="Right">
                               Quantity Shipped: 
-                              </asp:TableCell>
-                                <asp:TableCell ID="TableCell532" runat="server" Height="25px" HorizontalAlign="Left">
+                              </asp:TableCell><asp:TableCell ID="TableCell532" runat="server" Height="25px" HorizontalAlign="Left">
                                     <asp:TextBox ID="shippedTextBox" runat="server" 
                                     Text='<%# Bind("quantity_shipped") %>' />
-                                </asp:TableCell>
-                            </asp:TableRow>
-   
-                            <asp:TableRow ID="TableRow34" runat="server">
+                                </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow34" runat="server">
                                 <asp:TableCell ID="TableCell341" runat="server" Height="25px" HorizontalAlign="Right">
                                 Output Date:
-                                </asp:TableCell>
-                                <asp:TableCell ID="TableCell342" runat="server" Height="25px" HorizontalAlign="Left">
+                                </asp:TableCell><asp:TableCell ID="TableCell342" runat="server" Height="25px" HorizontalAlign="Left">
                                     <asp:TextBox ID="outputTextBox" runat="server" 
                                     Text='<%# Bind("output_date") %>' />
                                   <asp:CalendarExtender ID="output_CalendarExtender" runat="server" 
                                           Enabled="True" TargetControlID="outputTextBox" TodaysDateFormat="d" Animated="False" CssClass="amber__calendar">
                                   </asp:CalendarExtender>
-                                </asp:TableCell>
-                                
-                            </asp:TableRow>
-                            <asp:TableRow ID="TableRow35" runat="server">
+                                </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow35" runat="server">
                                 <asp:TableCell ID="TableCell351" runat="server" Height="25px" HorizontalAlign="Right">
                                 Expected Delivery Date:
-                                </asp:TableCell>
-                                <asp:TableCell ID="TableCell352" runat="server" Height="25px" HorizontalAlign="Left">
+                                </asp:TableCell><asp:TableCell ID="TableCell352" runat="server" Height="25px" HorizontalAlign="Left">
                                 <asp:TextBox ID="expectedTextBox" runat="server" 
                                Text='<%# Bind("expected_deliver_date") %>' />
                                <asp:CalendarExtender ID="expected_CalendarExtender" runat="server" 
                                       Enabled="True" TargetControlID="expectedTextBox" TodaysDateFormat="d" Animated="False" CssClass="amber__calendar">
                               </asp:CalendarExtender>
-                               </asp:TableCell>
-                            </asp:TableRow>   
-                            <asp:TableRow ID="TableRow36" runat="server">
+                               </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow36" runat="server">
                                 <asp:TableCell ID="TableCell361" runat="server" Height="25px" HorizontalAlign="Right">
                                 Actual Delivery Date::
-                                </asp:TableCell>
-                                <asp:TableCell ID="TableCell362" runat="server" Height="25px" HorizontalAlign="Left">
+                                </asp:TableCell><asp:TableCell ID="TableCell362" runat="server" Height="25px" HorizontalAlign="Left">
                                 <asp:TextBox ID="actualTextBox" runat="server" 
                                Text='<%# Bind("actual_deliver_date") %>' />
                                 <asp:CalendarExtender ID="actual_CalendarExtender" runat="server" 
                                       Enabled="True" TargetControlID="actualTextBox" TodaysDateFormat="d" Animated="False" CssClass="amber__calendar">
                               </asp:CalendarExtender>
-                               </asp:TableCell>
-                            </asp:TableRow>
-                            <asp:TableRow ID="TableRow39" runat="server">
+                               </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow39" runat="server">
                                 <asp:TableCell ID="TableCell391" runat="server" Height="25px" HorizontalAlign="Right">
                                 Comment:
-                                </asp:TableCell>
-                                <asp:TableCell ID="TableCell392" runat="server" Height="25px" HorizontalAlign="Left">
+                                </asp:TableCell><asp:TableCell ID="TableCell392" runat="server" Height="25px" HorizontalAlign="Left">
                                 <asp:TextBox ID="commentTextBox" runat="server" 
                                Text='<%# Bind("comment") %>' />
-                               </asp:TableCell>
-                            </asp:TableRow> 
-                       </asp:Table>    
-
-                     </EditItemTemplate>
-                     <InsertItemTemplate>
+                               </asp:TableCell></asp:TableRow></asp:Table></EditItemTemplate><InsertItemTemplate>
 
                      </InsertItemTemplate>
                      <ItemTemplate>
                      </ItemTemplate>
                  </asp:FormView>
-                 &nbsp;&nbsp;
-                 <div  align="center">
+                 &nbsp;&nbsp; <div  align="center">
                     <asp:LinkButton ID="btnSubmitUpdate" runat="server" CausesValidation="True" 
-                      OnClick="btnSubmitUpdate_Click" CommandName="Update" Text="Submit" />&nbsp;
-                    <asp:LinkButton ID="btnCancelUpdate" runat="server" 
+                      OnClick="btnSubmitUpdate_Click" CommandName="Update" Text="Submit" />&nbsp; <asp:LinkButton ID="btnCancelUpdate" runat="server" 
                          CausesValidation="False" CommandName="Cancel" OnClick="btnCancelUpdate_Click"
                          Text="Cancel" />
                  </div>
                <asp:Label ID="lblErrorUpdate" runat="server" ForeColor="#FF3300" 
-                  Height="60px" Width="350px"></asp:Label>
-                 </ContentTemplate>
-                 </asp:UpdatePanel>
-             </asp:Panel>
-             <asp:SqlDataSource ID="sdsUpdate" runat="server" 
+                  Height="60px" Width="350px"></asp:Label></ContentTemplate></asp:UpdatePanel></asp:Panel><asp:SqlDataSource ID="sdsUpdate" runat="server" 
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
                
                  ProviderName="System.Data.Odbc" 
@@ -643,9 +610,7 @@
            <asp:TableRow ID="TableRow1" runat="server">
                <asp:TableCell ID="TableCell1" runat="server" Height="30px" HorizontalAlign="Center">
                    Add Supply to Order
-               </asp:TableCell>
-           </asp:TableRow>
-           <asp:TableRow ID="TableRow2" runat="server">
+               </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow2" runat="server">
                <asp:TableCell ID="TableCell2" runat="server" HorizontalAlign="Right">
                <asp:Table ID="Table2" runat="server" CssClass="detailgrid">
                    <asp:TableRow ID="TableRow21" runat="server">
@@ -733,35 +698,14 @@
                     </asp:TableRow> 
  
                </asp:Table>
-               </asp:TableCell>
-           </asp:TableRow>
-           <asp:TableRow ID="TableRow3" runat="server">
+               </asp:TableCell></asp:TableRow><asp:TableRow ID="TableRow3" runat="server">
                <asp:TableCell ID="TableCell3" runat="server" HorizontalAlign="Center">
                <asp:LinkButton ID="btnSubmitInsert" runat="server" CausesValidation="False" CommandName="Insert" Text="Submit" onclick="btnSubmitInsert_Click" />    
                &nbsp;&nbsp;
                <asp:LinkButton ID="btnCancelInsert" runat="server" 
                          CausesValidation="False" CommandName="Cancel" Text="Cancel" onclick="btnCancelInsert_Click"/>
                
-               </asp:TableCell>
-           </asp:TableRow>
-           </asp:Table> 
-                        
- 
-               <asp:Label ID="lblErrorInsert" runat="server" ForeColor="#FF3300" 
-                  Height="60px" Width="350px"></asp:Label>
-               
-           
-       
-          </ContentTemplate>
-</asp:UpdatePanel>
-   </asp:Panel>      
-                    </td>
-                </tr>
-
-                 <tr>
+               </asp:TableCell></asp:TableRow></asp:Table><asp:Label ID="lblErrorInsert" runat="server" ForeColor="#FF3300" 
+                  Height="60px" Width="350px"></asp:Label></ContentTemplate></asp:UpdatePanel></asp:Panel></td></tr><tr>
                     <td style="width: 347px">
-                        &nbsp;</td>
-                </tr>               
-            </table>
-
-</asp:Content>
+                        &nbsp;</td></tr></table></asp:Content>
