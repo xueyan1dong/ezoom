@@ -10,6 +10,7 @@
     <siteMapNode  title="Supply vs. Product"  description="Material and Product Configuration" >
       <siteMapNode url="~/Configure/Product/UomConfig.aspx" title="UoM"  description="Unit of Measure Configuration" />
       <siteMapNode url="~/Configure/Product/UomConversionConfig.aspx" title="UoM Conversions"  description="Unit of Measure Conversions" />
+      <siteMapNode url="~/Configure/Product/ProductCategoryConfig.aspx" title="Product Group" description="Product Group Configuration" />
       <siteMapNode url="~/Configure/Product/ProductConfig.aspx" title="Product"  description="Product Configuration" />
       <siteMapNode url="~/Configure/Product/ProdProcConfig.aspx" title="Product vs. Workflow"  description="Product Workflow Association" />
       <siteMapNode url="~/Configure/Material/MaterialGroupConfig.aspx" title="Item/Part Group"  description="Item/Part Group Configuration" />
@@ -59,7 +60,7 @@
       <siteMapNode url="~/Reports/LotHistoryReport.aspx" title="Batch Status/History" description="Batch Status and History Report" />
       <siteMapNode url="~/Reports/DispatchHistoryReport.aspx" title="Batch Dispatch/History" description="Batch Dsipatch History Report" />
       <siteMapNode url="~/Reports/ProductInProcessReport.aspx" title="Products Quickview" description="Quickview of Products" />
-
+      <siteMapNode url="~/Reports/NewOrderDemandPrediction.aspx" title="New Order Demand" description="New Order Demand Prediction Overview" />
     </siteMapNode>
 
   <siteMapNode url="ContactUs.aspx" title="Contact us"  description="Contact us page" />
