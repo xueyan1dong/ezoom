@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="product">
+  <Header>Product Group Configuration</Header>
+  <Column name ="name">
+    <DisplayName>Product Group Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="if_active">
+    <DisplayName>If Active</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Checkbox</UI>
+  </Column>
+
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+   <Column name ="prefix">
+    <DisplayName>Prefix</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="surfix">
+    <DisplayName>Surfix</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comments</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>

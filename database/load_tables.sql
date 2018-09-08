@@ -514,16 +514,29 @@ CREATE TABLE `order_state_history` (
 
 
 -- product_group table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_product_group.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : This table host the grouping infor of products
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+*    09/07/2018: Xueyan Dong: added default_location_id to the table					
+*/
 DROP TABLE IF EXISTS `product_group`$
 CREATE TABLE `product_group` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `prefix` varchar(20) DEFAULT NULL,
-  `surfix` varchar(20) DEFAULT NULL,
-  `create_time` datetime NOT NULL,
-  `created_by` int(10) unsigned NOT NULL,
-  `description` text,
-  `comment` text,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,  --unique identifier automatcially generated
+  `name` varchar(255) NOT NULL,     -- name of the product group
+  `prefix` varchar(20) DEFAULT NULL,  -- prefix used in the name of products belonging to the group
+  `surfix` varchar(20) DEFAULT NULL,  -- surfix used in the name of products belonging to the group
+  `create_time` datetime NOT NULL,  -- time of the group created
+  `created_by` int(11) unsigned NOT NULL,  -- user id who created this group
+  `description` text,  -- description of the product group
+  `comment` text,  -- any comment for the group
+  `default_location_id` int(11) DEFAULT NULL,  -- id of default location for the product group
   PRIMARY KEY (`id`),
   UNIQUE KEY `pg_un1` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8$
