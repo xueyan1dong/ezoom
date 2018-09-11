@@ -480,11 +480,26 @@ CREATE TABLE `order_general` (
 
 
 -- order_detail table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_order_detail.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : record products being ordered
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+*    09/10/2018: Xueyan Dong: added new column line_num. also changed some int column size
+				
+*/
+DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `order_detail`$
 CREATE TABLE `order_detail` (
-  `order_id` int(10) unsigned NOT NULL,
+  `order_id` int(11) unsigned NOT NULL,
   `source_type` enum('product', 'material') NOT NULL,
-  `source_id` int(10) unsigned NOT NULL,
+  `source_id` int(11) unsigned NOT NULL,
+  `line_num` smallint(5) unsigned NOT NULL DEFAULT 1,
   `quantity_requested` decimal(16,4) unsigned NOT NULL,
   `unit_price` decimal(10,2) unsigned DEFAULT NULL,
   `quantity_made` decimal(16,4) unsigned NOT NULL DEFAULT '0',
@@ -494,10 +509,10 @@ CREATE TABLE `order_detail` (
   `output_date` datetime DEFAULT NULL,
   `expected_deliver_date` datetime DEFAULT NULL,  
   `actual_deliver_date` datetime DEFAULT NULL,
-  `recorder_id` int(10) unsigned NOT NULL,
+  `recorder_id` int(11) unsigned NOT NULL,
   `record_time` datetime NOT NULL,
   `comment` text,
-  PRIMARY KEY (`order_id`, `source_type`, `source_id`)
+  PRIMARY KEY (`order_id`, `source_type`, `source_id`, `line_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 
@@ -514,16 +529,29 @@ CREATE TABLE `order_state_history` (
 
 
 -- product_group table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_product_group.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : This table host the grouping infor of products
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+*    09/07/2018: Xueyan Dong: added default_location_id to the table					
+*/
 DROP TABLE IF EXISTS `product_group`$
 CREATE TABLE `product_group` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `prefix` varchar(20) DEFAULT NULL,
-  `surfix` varchar(20) DEFAULT NULL,
-  `create_time` datetime NOT NULL,
-  `created_by` int(10) unsigned NOT NULL,
-  `description` text,
-  `comment` text,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,  --unique identifier automatcially generated
+  `name` varchar(255) NOT NULL,     -- name of the product group
+  `prefix` varchar(20) DEFAULT NULL,  -- prefix used in the name of products belonging to the group
+  `surfix` varchar(20) DEFAULT NULL,  -- surfix used in the name of products belonging to the group
+  `create_time` datetime NOT NULL,  -- time of the group created
+  `created_by` int(11) unsigned NOT NULL,  -- user id who created this group
+  `description` text,  -- description of the product group
+  `comment` text,  -- any comment for the group
+  `default_location_id` int(11) DEFAULT NULL,  -- id of default location for the product group
   PRIMARY KEY (`id`),
   UNIQUE KEY `pg_un1` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8$

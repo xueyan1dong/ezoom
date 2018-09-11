@@ -130,8 +130,20 @@ namespace ezMESWeb
               else
                 ezCmd.Parameters.AddWithValue(param, "0");
             }
-            else // not used in this form
-            { }
+            else if (name.IndexOf("cbx") == 0)
+            {
+              string param = "@_" + theItem.Value;
+              DataColumn _dc = fTemp._dccol[theItem.Value];
+              if (_dc != null)
+              {
+                CheckBox cbxTemp = (CheckBox)FormView1.Row.FindControl(name);
+              if (cbxTemp.Checked)
+                ezCmd.Parameters.AddWithValue(param, "1");
+              else
+                ezCmd.Parameters.AddWithValue(param, "0");
+              }
+
+            }
           }
         }
         protected void Page_Load(object sender, EventArgs e)

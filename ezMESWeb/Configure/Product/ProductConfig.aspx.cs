@@ -1,4 +1,18 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current IT Helps LLC
+*    Source File            : ProductConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 09/06/2018
+*    Platform Dependencies  : .NET 4.5
+*    Description            : Config product information
+*    Log: 
+*    09/06/2009: Xueyan Dong: First Created. Note: In the xml for dynamically creating formview for 
+*                             inserting and editing popup, the columns have to have the same order as they shown in the grid
+*    09/10/2018: Xueyan Dong: replace gvTable.SelectedPersistedDataKey.Values["id"].ToString() with 
+*                             gvTable.SelectedDataKey.Values["id"].ToString() for former doesn't work anymore
+*                           
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -72,7 +86,7 @@ namespace ezMESWeb.Configure
               }
               else
               {
-                 ezCmd.Parameters.AddWithValue("@_product_id", gvTable.SelectedPersistedDataKey.Values["id"].ToString());
+                 ezCmd.Parameters.AddWithValue("@_product_id", gvTable.SelectedDataKey.Values["id"].ToString());
                  ezCmd.Parameters["@_product_id"].Direction = ParameterDirection.InputOutput;
        
                  fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;
