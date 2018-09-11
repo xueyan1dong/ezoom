@@ -29,6 +29,7 @@ DELIMITER $  -- for escaping purpose
           expected_deliver_date datetime,
           priority varchar(20),
 		  ponumber varchar(40),
+          product_id int(10),
 		  product_name varchar(255),
           product_description varchar(255),
 		  product_group_name varchar(255),
@@ -43,11 +44,12 @@ DELIMITER $  -- for escaping purpose
 	  
 	  -- collect information of order, product, 
 		INSERT INTO new_order_demand_temp
-		SELECT 
+		SELECT  distinct
 				g.id,
                 g.expected_deliver_date,
                 pr.name,
 				g.ponumber, 
+                p.id,
 				p.name, 
                 p.description,
 				pg.name, 
@@ -72,6 +74,7 @@ DELIMITER $  -- for escaping purpose
         
     CREATE TEMPORARY TABLE IF NOT EXISTS process_bom 
     (
+      product_id int(10) unsigned,
       process_id int(10) unsigned,
 	  source_type varchar(20),
       ingredient_id int(10) unsigned,
@@ -83,45 +86,49 @@ DELIMITER $  -- for escaping purpose
     
     -- collect recipe and ingredient information from steps in the flow
     INSERT INTO process_bom
-    SELECT
+    SELECT pr.id,
 		  p.process_id,
           i.source_type ,
           i.ingredient_id,
           ' ',
           i.quantity,
           i.uom_id
-      FROM process_step p, step s, step_type t, recipe r, ingredients i, new_order_demand_temp o
-      WHERE p. process_id = o.process_id
+      FROM process_step p, step s, step_type t, recipe r, ingredients i, product pr, product_process pp
+      WHERE pr.id = pp.product_id
+      And pp.process_id = p.process_id
       AND if_sub_process = 0 -- for process with no sub_process
       AND s.id = p.step_id
       AND s.step_type_id = t.id
       AND t.name = 'consume material'
       AND r.id = s.recipe_id
-      AND i.recipe_id = r.id ;
+      AND i.recipe_id = r.id 
+      ANd pr.id in (select product_id from new_order_demand_temp);
     
     -- collect recipe and ingredient information from sub process in the flow. 
     -- Note that we only deal with one level sub process, e.g. if the sub process contains sub process, we will not see.
     INSERT INTO process_bom
     SELECT  
-			p.process_id,
+			pr.id,
+            p.process_id,
             i.source_type,
             i.ingredient_id,
             ' ',
             i.quantity,
             i.uom_id
-      FROM process_step p, process_step p1, step s, step_type t, recipe r, ingredients i, new_order_demand_temp o
-      WHERE p.process_id = o.process_id
+      FROM process_step p, process_step p1, step s, step_type t, recipe r, ingredients i, product pr, product_process pp
+      WHERE pr.id = pp.product_id
+      And pp.process_id = p.process_id
       AND p.if_sub_process = 1 -- for process with subprocess
       AND p.step_id = p1.process_id
       AND s.id = p1.step_id
       AND t.id = s.step_type_id
       AND t.name = 'consume material'
       AND r.id = s.recipe_id
-      AND i.recipe_id = r.id;
- 
+      AND i.recipe_id = r.id
+	  ANd pr.id in (select product_id from new_order_demand_temp);
 
       CREATE TEMPORARY TABLE IF NOT EXISTS process_bom_total 
-    (
+    (product_id int(10) unsigned,
       process_id int(10) unsigned,
 	  source_type varchar(20),
       ingredient_id int(10) unsigned,
@@ -135,15 +142,17 @@ DELIMITER $  -- for escaping purpose
     ) DEFAULT CHARSET=utf8; 
     
      INSERT INTO process_bom_total 
-     (process_id,
+     (product_id,
+     process_id,
 	 source_type,
      ingredient_id,
      quantity,
      uomid,
      uom,
 	 if_persistent)
-    SELECT 
-		   process_id,
+    SELECT distinct
+		   product_id,
+           process_id,
 		   source_type,
            ingredient_id,
            sum(quantity),
@@ -153,7 +162,7 @@ DELIMITER $  -- for escaping purpose
            
       FROM process_bom pb, uom u, material m
      WHERE u.id = pb.uomid And pb.ingredient_id = m.id
-     GROUP BY process_id, source_type, ingredient_id, ingredient_name, pb.uomid;
+     GROUP BY product_id, process_id, source_type, ingredient_id, ingredient_name, pb.uomid;
      
     DROP TABLE process_bom;
     
@@ -172,6 +181,7 @@ DELIMITER $  -- for escaping purpose
     
       CREATE TEMPORARY TABLE IF NOT EXISTS process_bom_temp 
     (
+      
       process_id int(10) unsigned,
 	  source_type varchar(20),
       ingredient_id int(10) unsigned,
@@ -185,7 +195,8 @@ DELIMITER $  -- for escaping purpose
     INSERT INTO process_bom_temp
     (process_id, source_type, ingredient_id, unassigned_quantity_raw, assigned_quantity_show, ifalert)
     SELECT 
-		   process_id,
+		   
+           process_id,
 		   source_type,
            ingredient_id,
            ifnull((SELECT concat(sum(inv.actual_quantity), ',', max(inv.uom_id))
