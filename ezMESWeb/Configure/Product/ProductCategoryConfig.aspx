@@ -32,8 +32,8 @@ height="100%" scrollbars="Horizontal">
                 <asp:BoundField DataField="ID" HeaderText="id" ReadOnly="True" SortExpression="ID" />
                 <asp:BoundField DataField="name" HeaderText="Name" SortExpression="name" />
                 <asp:BoundField DataField="if_active" HeaderText="If Active" SortExpression="if_active" />
-                <asp:BoundField DataField="default_location" HeaderText="Default Location" SortExpression="default_location" />
                 <asp:BoundField DataField="description" HeaderText="Description" SortExpression="description" />
+                <asp:BoundField DataField="default_location" HeaderText="Default Location" SortExpression="default_location" />
                 <asp:BoundField DataField="no_products" HeaderText="No. of Products" SortExpression="no_products" />
                 <asp:BoundField DataField="prefix" HeaderText="Prefix"  SortExpression="prefix" />
                 <asp:BoundField DataField="surfix" HeaderText="Surfix" SortExpression="surfix" />  
@@ -51,16 +51,18 @@ height="100%" scrollbars="Horizontal">
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            DeleteCommand="DELETE FROM product WHERE id=?" 
            ProviderName="System.Data.Odbc" 
-           SelectCommand="SELECT pg.id, 
+           SelectCommand="SELECT pg.id AS ID, 
                                  pg.name, 
-                                 pg.if_active, 
+                                 pg.if_active,
+                                 pg.description, 
+                                 l.name as default_location,
+                                 pg.default_location_id,
                                  count(pd.id) AS no_products, 
                                  pg.prefix, 
-                                 pg.surfix, 
+                                 pg.surfix,
                                  pg.create_time, 
-                                 CONCAT(e.firstname, ' ', e.lastname) AS created_people, 
-                                 pg.description, pg.comment, 
-                                 l.name as default_location
+                                 CONCAT(e.firstname, ' ', e.lastname) AS created_people,  
+                                 pg.comment 
   FROM product_group pg
   LEFT JOIN product pd ON pd.pg_id = pg.id
   LEFT JOIN employee e
@@ -89,15 +91,13 @@ height="100%" scrollbars="Horizontal">
        ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
        EnableCaching="false"
        ProviderName="System.Data.Odbc" 
-       SelectCommand="SELECT pg.id, 
-                                 pg.name, 
-                                 pg.if_active, 
-                                 pg.default_location_id, 
-                                 pg.description, 
+       SelectCommand="SELECT pg.name, 
+                                 pg.if_active,  
+                                 pg.description,
+                                 pg.default_location_id,
                                  pg.prefix, 
                                  pg.surfix,
                                  pg.comment
-
   FROM product_group pg
   WHERE pg.id = ?" 
         >

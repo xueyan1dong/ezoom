@@ -1,11 +1,14 @@
 ﻿/*--------------------------------------------------------------
-*    Copyright 2009 Ambersoft LLC.
+*    Copyright 2009 ~ Current IT Helps LLC
 *    Source File            : ProductCategoryConfig.aspx.cs
-*    Created By             : Fei Xue
-*    Date Created           : 11/03/2009
-*    Platform Dependencies  : .NET 2.0
-*    Description            : 
-*
+*    Created By             : Xueyan Dong
+*    Date Created           : 09/06/2018
+*    Platform Dependencies  : .NET 4.5
+*    Description            : Config product group information
+*    Log: 
+*    09/06/2018: Xueyan Dong: First Created. Note: In the xml for dynamically creating formview for 
+*                             inserting and editing popup, the columns have to have the same order as they shown in the grid
+*                           
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;
@@ -65,36 +68,32 @@ namespace ezMESWeb.Configure
                 ConnectToDb();
                 ezCmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
                 ezCmd.Connection = ezConn;
-                ezCmd.CommandText = "modify_product";
+                ezCmd.CommandText = "modify_product_group";
                 ezCmd.CommandType = CommandType.StoredProcedure;
                 ezMES.ITemplate.FormattedTemplate fTemp;
 
 
                 if (FormView1.CurrentMode == FormViewMode.Insert)
                 {
-                    ezCmd.Parameters.AddWithValue("@_product_id", DBNull.Value);
+                    ezCmd.Parameters.AddWithValue("@_product_group_id", DBNull.Value);
 
                     fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.InsertItemTemplate;
 
-                    ezCmd.Parameters["@_product_id"].Direction = ParameterDirection.InputOutput;
+                    ezCmd.Parameters["@_product_group_id"].Direction = ParameterDirection.InputOutput;
 
 
                 }
                 else
                 {
-                    ezCmd.Parameters.AddWithValue("@_product_id", gvTable.SelectedPersistedDataKey.Values["id"].ToString());
-                    ezCmd.Parameters["@_product_id"].Direction = ParameterDirection.InputOutput;
+                    ezCmd.Parameters.AddWithValue("@_product_group_id", gvTable.SelectedDataKey.Values["id"].ToString());
+                    ezCmd.Parameters["@_product_group_id"].Direction = ParameterDirection.InputOutput;
 
                     fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;
                 }
                 ezCmd.Parameters.AddWithValue("@_created_by", Convert.ToInt32(Session["UserID"]));
-                ezCmd.Parameters.AddWithValue("@_version", 1);
-                ezCmd.Parameters.AddWithValue("@_state", "production");
+          
 
                 LoadSqlParasFromTemplate(ezCmd, fTemp);
-
-                if (ezCmd.Parameters["@_lifespan"].Value == DBNull.Value)
-                    ezCmd.Parameters["@_lifespan"].Value = 0;
 
                 ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                 ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;

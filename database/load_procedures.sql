@@ -7585,15 +7585,16 @@ END$
 *    Description            : Insert or edit product_group records
 *    example	            : 
 *    Log                    :
-*    09/06/2018: Xueyan Dong: First Created. 					
+*    09/06/2018: Xueyan Dong: First Created. 	
+*    09/10/2018: Xueyan Dong: fixed all typos and bugs
 */
 DELIMITER $  -- for escaping purpose
-	DROP PROCEDURE IF EXISTS `modify_product_group`$
+DROP PROCEDURE IF EXISTS `modify_product_group`$
 CREATE PROCEDURE `modify_product_group`(
   INOUT _product_group_id int(11) unsigned,
   IN _created_by int(11)unsigned,
   IN _name varchar(255),
-  IN if_active tinyint(1) unsigned,
+  IN _if_active tinyint(1) unsigned,
   IN _description text,  
   IN _default_location_id int(11) unsigned,
   IN _prefix varchar(20),
@@ -7623,7 +7624,7 @@ BEGIN
         INSERT INTO product_group (
 		name,
         created_by,
-        created_time,
+        create_time,
         if_active,
         description,
         default_location_id,
@@ -7663,7 +7664,7 @@ BEGIN
               concat('product group', name, ' is created'),
               concat('<PRODUCT_GTOUP><ID>',id, '</ID><NAME>', name,'</NAME><IF_ACTIVE>',if_active,
                 '</IF_ACTIVE><DESCRIPTION>',IFNULL(description,''),
-                '</DESCRIPTION><DEFAULT_LOCATION_ID>', uomid,
+                '</DESCRIPTION><DEFAULT_LOCATION_ID>', default_location_id,
                 '</DEFAULT_LOCATION_ID><PREFIX>',IFNULL(prefix, ''), 
                 '</PREFIX><SURFIX>', IFNULL(surfix, ''),
                 '</SURFIX><CREATE_TIME>',create_time,
@@ -7711,7 +7712,7 @@ BEGIN
             comment,
             new_record
           )
-          SELECT state_change_time,
+          SELECT now(),
                 'product_group',
                 id,
                 _oldstate,
@@ -7720,7 +7721,7 @@ BEGIN
 				concat('product group', name, ' is updated'),
 				concat('<PRODUCT_GTOUP><ID>',id, '</ID><NAME>', name,'</NAME><IF_ACTIVE>',if_active,
                 '</IF_ACTIVE><DESCRIPTION>',IFNULL(description,''),
-                '</DESCRIPTION><DEFAULT_LOCATION_ID>', uomid,
+                '</DESCRIPTION><DEFAULT_LOCATION_ID>', default_location_id,
                 '</DEFAULT_LOCATION_ID><PREFIX>',IFNULL(prefix, ''), 
                 '</PREFIX><SURFIX>', IFNULL(surfix, ''),
                 '</SURFIX><CREATE_TIME>',create_time,
@@ -7735,5 +7736,6 @@ BEGIN
     END IF;
   END IF; 
  END IF;
-END $
+END$
+
 
