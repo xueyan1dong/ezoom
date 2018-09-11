@@ -43,6 +43,8 @@ scrollbars=Both>
                  <asp:BoundField DataField="source_id" HeaderText="source_id" SortExpression="source_id" visible=false/>
                  <asp:BoundField DataField="ProductName" HeaderText="Product" SortExpression="ProductName" />
                  <asp:BoundField DataField="ClientName" HeaderText="Client" SortExpression="ClientName" />
+                 <asp:BoundField DataField="expected_deliver_date" HeaderText="Expected Deliver Date"
+                     SortExpression="expected_deliver_date" DataFormatString="{0:d}" />
                  <asp:BoundField DataField="PriName" HeaderText="Priority" SortExpression="PriName" />
                  <asp:BoundField DataField="quantity_requested" HeaderText="Qty Requested" 
                      SortExpression="quantity_requested" DataFormatString="{0:N0}" />
@@ -56,14 +58,13 @@ scrollbars=Both>
                  <asp:BoundField DataField="uom" HeaderText="Unit" SortExpression="uom" />
                  <asp:BoundField DataField="order_date" HeaderText="Order Date" SortExpression="order_date" DataFormatString="{0:d}"/>
                  <asp:BoundField DataField="output_date" HeaderText="Output Date" SortExpression="output_date" DataFormatString="{0:d}"/>
-                 <asp:BoundField DataField="expected_deliver_date" HeaderText="Expected Deliver Date"
-                     SortExpression="expected_deliver_date" DataFormatString="{0:d}" />
+                 
                  <asp:BoundField DataField="actual_deliver_date" HeaderText="Actual Deliver Date"
                      SortExpression="actual_deliver_date" Visible="False" DataFormatString="{0:d}"/>
                  <asp:BoundField DataField="internal_contact_name" HeaderText="Internal Contact" SortExpression="internal_contact_name" />
                  <asp:BoundField DataField="external_contact" HeaderText="External Contact" SortExpression="external_contact" />
                  <asp:BoundField DataField="comment" HeaderText="Comment" SortExpression="comment" />
-                   	
+                 <asp:BoundField DataField="product_demand_prediction" HeaderText="Product Prediction" SortExpression="product_demand_prediction" />
 			   </Columns>
                <SelectedRowStyle  BackColor="#FFFFCC"/>
                 <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>
@@ -110,44 +111,8 @@ scrollbars=Both>
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            DeleteCommand="{call delete_order( ?)}" 
            ProviderName="System.Data.Odbc" 
-       SelectCommand="
- SELECT g.id, 
-  g.order_type, 
-  g.ponumber, 
-  g.client_id,
-  c.name as ClientName,
-  g.priority,
-  pr.Name as PriName,
-  d.source_id, 
-  p.name as ProductName,
-  d.quantity_requested, 
-  d.quantity_made, 
-  d.quantity_in_process, 
-  d.quantity_shipped, 
-  d.uomid,
-  u.Name as uom,
-  (SELECT max(state_date) FROM order_state_history h WHERE h.order_id = g.id) AS order_date,
-  d.output_date, 
-  d.expected_deliver_date, 
-  d.actual_deliver_date, 
-  g.internal_contact,
-  CONCAT(e.firstname,' ',e.lastname) as internal_contact_name,
-  g.external_contact, 
-  d.comment ,
-  g.id as order_id
-  FROM order_general g
-  INNER JOIN order_detail d ON d.order_id = g.id AND d.source_type = 'product'
-  AND (d.quantity_in_process + d.quantity_made + d.quantity_shipped )< d.quantity_requested
-  INNER JOIN product p ON d.source_type = 'product' AND d.source_id = p.id
-  LEFT JOIN client c ON g.client_id = c.id 
-  LEFT JOIN priority pr ON g.priority = pr.id 
-  LEFT JOIN uom u ON d.uomid = u.id 
-  LEFT JOIN employee e ON g.internal_contact = e.id
-  WHERE g.order_type in ('inventory', 'customer')
-    
-       " 
-       InsertCommand="insert_order" InsertCommandType="StoredProcedure"
-        EnableCaching="false">
+       SelectCommand="{call order_dispatch_display_per_product()}"
+       InsertCommand="insert_order" InsertCommandType="StoredProcedure" OnSelecting="sdsPDGrid_Selecting" SelectCommandType="StoredProcedure">
         </asp:SqlDataSource>
   
   <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 
