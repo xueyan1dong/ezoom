@@ -8,7 +8,7 @@
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 
-*    09/10/2018: Xueyan Dong: added new column line_num
+*    09/10/2018: Xueyan Dong: added new column line_num. also changed some int column size
 				
 */
 DELIMITER $  -- for escaping purpose
