@@ -27,8 +27,8 @@ namespace ezMESWeb.Tracking
       //lblUom1,
       //lblStepStatus1,
       //lblLocation1,
-      lblName, 
-      lblProduct, 
+      //lblName, 
+      //lblProduct, 
       lblProcess, 
       lblPriority, 
       lblLotStatus,
@@ -37,7 +37,6 @@ namespace ezMESWeb.Tracking
       lblStepStatus,
       lblLocation,
       lblError;
-   
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -93,13 +92,30 @@ namespace ezMESWeb.Tracking
                     //if location_id is null
 
                 
-                    ezCmd.CommandText = "SELECT alias, product, process, priority_name, lot_status, step_status, uom, ROUND(actual_quantity, 0) as actual_quantity, location_id from view_lot_in_process where id = " + Request.QueryString["lot_id"];
+                    ezCmd.CommandText = "SELECT alias, product, process, priority_name, lot_status, step_status, uom, ROUND(actual_quantity, 0) as actual_quantity, location_id, ponumber from view_lot_in_process where id = " + Request.QueryString["lot_id"];
                     ezCmd.CommandType = CommandType.Text;
                     ezReader = ezCmd.ExecuteReader();
                     if (ezReader.Read())
                     {
-                        lblName.Text = String.Format("{0}", ezReader[0]);
-                        lblProduct.Text = String.Format("{0}", ezReader[1]);
+                        //po number
+                        string strPONumber = String.Format("{0}", ezReader[9]);
+
+                        Image po_barcode = (Image)FindControl("po_barcode");
+                        po_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strPONumber + "&h=60&w=400&il=true&t=Code 128-A";
+                        
+                        //name
+                        string strName = String.Format("{0}", ezReader[0]);
+                        //lblName.Text = strName;
+                        //barcode
+                        Image name_barcode = (Image)FindControl("name_barcode");
+                        name_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strName + "&h=60&w=400&il=true&t=Code 128-A";
+
+                        //product
+                        string strProduct = String.Format("{0}", ezReader[1]);
+                        Image product_barcode = (Image)FindControl("product_barcode");
+                        product_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strProduct + "&h=60&w=400&il=true&t=Code 128-B";
+
+                        //lblProduct.Text = strProduct;
                         lblProcess.Text = String.Format("{0}", ezReader[2]);
                         lblPriority.Text = String.Format("{0}", ezReader[3]);
                         lblLotStatus.Text = String.Format("{0}", ezReader[4]);
@@ -120,7 +136,6 @@ namespace ezMESWeb.Tracking
                                 ezReader.Dispose();
                             }
                         }
-                        
                     } 
                 }catch (Exception ex)
                 {

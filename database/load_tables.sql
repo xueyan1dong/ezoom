@@ -1013,8 +1013,11 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
         h.result,
         st.emp_usage,
         st.emp_id,
-		h.location_id
+		h.location_id,
+		og.ponumber
    FROM lot_status s 
+	JOIN order_general as og ON s.order_id = og.id
+        INNER JOIN lot_history h ON h.lot_id = s.id
         INNER JOIN lot_history h ON h.lot_id = s.id
                                  AND h.process_id = s.process_id
                                  AND h.start_timecode = (SELECT max(h1.start_timecode)
