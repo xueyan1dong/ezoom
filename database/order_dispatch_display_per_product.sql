@@ -88,7 +88,7 @@ BEGIN
 
       AND r.id = s.recipe_id
 
-      AND i.recipe_id = r.id ;
+      AND i.recipe_id = r.id;
 
     
 
