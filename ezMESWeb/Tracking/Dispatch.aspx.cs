@@ -24,25 +24,26 @@ namespace ezMESWeb.Tracking
          base.OnInit(e);
 
          {
-            DataView dv = (DataView)sdsPDGrid.Select(DataSourceSelectArguments.Empty);
-            colc = dv.Table.Columns;
-            while (colc.Count > 1)
-                colc.RemoveAt(colc.Count - 1);
-            colc.Add(new DataColumn("ProductName")); 
-            colc.Add(new DataColumn("process_id"));
-            colc.Add(new DataColumn("lot_size"));
-            colc.Add(new DataColumn("uom"));
-            colc.Add(new DataColumn("num_lots"));
-            colc.Add(new DataColumn("alias_prefix"));
-            colc.Add(new DataColumn("location_id"));//[peiyu]
-            colc.Add(new DataColumn("lot_contact"));
-            colc.Add(new DataColumn("lot_priority"));
-            //colc.Add(new DataColumn("dispatcher"));
-            colc.Add(new DataColumn("comment"));
-            
 
-            //Initial insert template  
-            FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"Dispatch.xml"));
+                DataView dv = (DataView)sdsPDGrid.Select(DataSourceSelectArguments.Empty);
+                colc = dv.Table.Columns;
+                while (colc.Count > 1)
+                    colc.RemoveAt(colc.Count - 1);
+                colc.Add(new DataColumn("ProductName"));
+                colc.Add(new DataColumn("process_id"));
+                colc.Add(new DataColumn("lot_size"));
+                colc.Add(new DataColumn("uom"));
+                colc.Add(new DataColumn("num_lots"));
+                colc.Add(new DataColumn("alias_prefix"));
+                colc.Add(new DataColumn("location_id"));//[peiyu]
+                colc.Add(new DataColumn("lot_contact"));
+                colc.Add(new DataColumn("lot_priority"));
+                //colc.Add(new DataColumn("dispatcher"));
+                colc.Add(new DataColumn("comment"));
+
+
+                //Initial insert template  
+                FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"Dispatch.xml"));
 
             //Initial Edit template           
             FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Dispatch_Order.xml"));
@@ -196,7 +197,12 @@ namespace ezMESWeb.Tracking
         
       }
 
-      protected void btn_Click(object sender, EventArgs e)
+        protected void sdsPDGrid_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
+        {
+
+        }
+
+        protected void btn_Click(object sender, EventArgs e)
       {
          //  set it to true so it will render
          this.FormView1.Visible = true;
