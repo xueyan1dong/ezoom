@@ -124,6 +124,7 @@
     <Content Include="Images\bg.gif" />
     <Content Include="Images\bg_preamble.jpg" />
     <Content Include="Images\Logo.gif" />
+    <Content Include="Reports\NewOrderDemandPrediction.aspx" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -165,6 +166,13 @@
     <Compile Include="Configure\Process\ProcessSegmentConfig.aspx.cs">
       <DependentUpon>ProcessSegmentConfig.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\NewOrderDemandPrediction.aspx.cs">
+      <DependentUpon>NewOrderDemandPrediction.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\NewOrderDemandPrediction.aspx.designer.cs">
+      <DependentUpon>NewOrderDemandPrediction.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\OrderReport.aspx.cs">
       <DependentUpon>OrderReport.aspx</DependentUpon>
@@ -433,6 +441,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Report1.rdlc" />
+    <EmbeddedResource Include="Reports\report_templates\rpNewOrderDemandPrediction.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpOrder.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpDispatchHistory.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpProductInProcess.rdlc" />

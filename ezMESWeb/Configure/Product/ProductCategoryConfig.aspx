@@ -53,7 +53,7 @@ height="100%" scrollbars="Horizontal">
            ProviderName="System.Data.Odbc" 
            SelectCommand="SELECT pg.id AS ID, 
                                  pg.name, 
-                                 pg.if_active,
+                                 if(pg.if_active=1, 'Y', 'N') AS if_active,
                                  pg.description, 
                                  l.name as default_location,
                                  pg.default_location_id,
