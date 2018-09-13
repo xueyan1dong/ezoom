@@ -30,13 +30,6 @@
       <siteMapNode url="~/Configure/Equipment/EquipmentConfig.aspx" title="Equipment"  description="Equipment Configuration" />
     </siteMapNode>  
 
-    <siteMapNode  title="Order"  description="Order Configuration" >
-      <siteMapNode url="~/Configure/Order/ClientConfig.aspx" title="Customers/Suppliers"  description="Customer and Supplier Configuration" />
-      <siteMapNode url="~/Configure/Order/ClientDocConfig.aspx" title="Customer Documents"  description="Customer Documents" />
-      <siteMapNode url="~/Configure/Order/SalesOrderConfig.aspx" title="Sales Order"  description="Customer Incoming Order" />
-      <siteMapNode url="~/Configure/Order/InventoryOrderConfig.aspx" title="Inventory Order"  description="Inventory Product Order" />
-      <siteMapNode url="~/Configure/Order/PurchaseOrderConfig.aspx" title="Purchase Order"  description="Supplier Outgoing Order" />
-    </siteMapNode>
   </siteMapNode>
 
     <siteMapNode url="~/Tracking/Tracking.aspx"  title="Tracking" description="Tracking">
@@ -45,6 +38,15 @@
         <siteMapNode url="~/Tracking/Inventory/LoadInventory.aspx" title="Load Inventory"  description="Inventory Loading" />
       </siteMapNode>
 
+      
+      <siteMapNode  title="Order"  description="Order Configuration" >
+        <siteMapNode url="~/Configure/Order/ClientConfig.aspx" title="Customers/Suppliers"  description="Customer and Supplier Configuration" />
+        <siteMapNode url="~/Configure/Order/ClientDocConfig.aspx" title="Customer Documents"  description="Customer Documents" />
+        <siteMapNode url="~/Configure/Order/SalesOrderConfig.aspx" title="Sales Order"  description="Customer Incoming Order" />
+        <siteMapNode url="~/Configure/Order/InventoryOrderConfig.aspx" title="Inventory Order"  description="Inventory Product Order" />
+        <siteMapNode url="~/Configure/Order/PurchaseOrderConfig.aspx" title="Purchase Order"  description="Supplier Outgoing Order" />
+      </siteMapNode>
+      
       <siteMapNode  title="Shopfloor"  description="Shopfloor Tracking" >
         <siteMapNode  url="~/Tracking/Dispatch.aspx" title="Dispatch Product"  description="Dispatch Product" />
         <siteMapNode  url="~/Tracking/MoveLot.aspx" title="Move Product"  description="Move Product" />

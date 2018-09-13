@@ -13,6 +13,7 @@
     <link rel="Stylesheet" href="/CSS/general.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="/CSS/datagrid.css" type="text/css" media="screen" /> 
   <link rel="stylesheet" href="/CSS/detailgrid.css" type="text/css" media="screen" /> 
+    <link rel="stylesheet" href="/CSS/tab.css" type="text/css" media="screen" /> 
     <link rel="stylesheet" href="/CSS/calendar.css" type="text/css" media="screen" /> 
     <link media="screen" rel="stylesheet" href="/CSS/master.css" type="text/css" />
     <asp:contentPlaceholder id="head" runat="server" />  

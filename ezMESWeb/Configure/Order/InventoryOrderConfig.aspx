@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="../ConfigureModule.master" AutoEventWireup="true" CodeBehind="InventoryOrderConfig.aspx.cs" Inherits="ezMESWeb.Configure.Order.InventoryOrderConfig"
+﻿<%@ Page Language="C#" MasterPageFile="../../Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="InventoryOrderConfig.aspx.cs" Inherits="ezMESWeb.Configure.Order.InventoryOrderConfig"
  Title="Inventory Order Configuration -- ezOOM" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>

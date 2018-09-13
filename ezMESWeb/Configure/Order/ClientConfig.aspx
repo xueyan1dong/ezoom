@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ClientConfig.aspx.cs" Inherits="ezMESWeb.Configure.Client.ClientConfig" Title="Client Configuration -- ezOOM" %>
+<%@ Page Language="C#" MasterPageFile="../../Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="ClientConfig.aspx.cs" Inherits="ezMESWeb.Configure.Client.ClientConfig" Title="Client Configuration -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Assembly="IdeaSparx.CoolControls.Web" Namespace="IdeaSparx.CoolControls.Web" TagPrefix="asp" %>
 
