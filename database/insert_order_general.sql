@@ -4,10 +4,11 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : insert general information for a new order
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*    09/25/2018: Xueyan Dong: added check for entries violating unique key					
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `insert_order_general`$
@@ -41,14 +42,13 @@ BEGIN
   ELSEIF  _internal_contact is NULL OR length(_internal_contact) < 1
   THEN 
     SET _response='The internal contact is required. Please fill the contact info.';
-  ELSEIF  _internal_contact is NULL OR length(_internal_contact) < 1
-  THEN 
-    SET _response='The internal contact is required. Please fill the contact info.';
   ELSEIF _state IS NULL OR _state NOT IN ('quoted', 'POed', 'scheduled', 'produced', 'shipped', 'delivered', 'invoiced', 'paid')
   THEN
     SET _response='The value for state is not valid. Please select one state from following: quoted, POed, scheduled, produced, shipped, delivered, invoiced, paid.';
+  ELSEIF EXISTS (SELECT id FROM order_general WHERE order_type = _order_type AND IFNULL(client_id,0) = IFNULL(_client_id,0) AND IFNULL(ponumber,'') = IFNULL(_ponumber, ''))
+  THEN
+	SET _response = 'There is another order with the same type, PO and client (or missing both). Please correct them';
   ELSE
-  
     INSERT INTO `order_general` (
          order_type,
          ponumber,
@@ -100,4 +100,4 @@ BEGIN
           );
         END IF;
   END IF;
-END$
+END $

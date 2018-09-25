@@ -471,6 +471,19 @@ END$
 
 
 -- procedure modify_order_general
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : modify_order_general.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : Modify certain order general information
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+*    09/25/2018: Xueyan Dong: added check for duplicate PO number					
+*/
+DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_order_general`$
 CREATE PROCEDURE `modify_order_general`(
   IN _order_id int(10) unsigned,
@@ -496,6 +509,16 @@ BEGIN
   IF  _internal_contact is NULL OR length(_internal_contact) < 1
   THEN 
     SET _response='The internal contact is required. Please fill the contact info.';
+  ELSEIF EXISTS (SELECT o2.id
+                   FROM order_general o1
+                   JOIN order_general o2
+                     ON IFNULL(o2.client_id,0) = IFNULL(o1.client_id,0)
+                        AND o2.order_type = o1.order_type
+                        AND o2.id != o1.id
+                        AND IFNULL(o2.ponumber,'') = IFNULL(_ponumber,'')
+				  WHERE o1.id = _order_id)
+  THEN
+	SET _response = 'The po number is already used by another order of the same order type and client';
   ELSE
     SELECT state INTO _old_state
       FROM order_general
@@ -558,12 +581,28 @@ END$
 
 
 -- procedure modify_order_detail
-DROP PROCEDURE IF EXISTS `modify_order_detail`$
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : modify_order_detail.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : Insert new order detail/product record or modify existing order detail record. Note that when modifying
+*                             Order Id, Source Type, Source Id, Line Number are acting as anchor for finding the record
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 		
+*    09/25/2018: Xueyan Dong: removed input parameter _order_type and added input parameters: _source_type, _line_num, and _uomid
+*                             added logic for checking against unique key
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `modify_order_detail` $
 CREATE PROCEDURE `modify_order_detail`(
   IN _operation enum('insert', 'update'),
   IN _order_id int(10) unsigned,
-  IN _order_type enum('inventory', 'customer', 'supplier'),
+  IN _source_type enum('product', 'material'),
   IN _source_id int(10) unsigned,
+  IN _line_num smallint(5) unsigned,
   IN _quantity_requested decimal(16,4) unsigned,
   IN _unit_price decimal(10,2) unsigned,
   IN _quantity_made decimal(16,4) unsigned,
@@ -574,11 +613,11 @@ CREATE PROCEDURE `modify_order_detail`(
   IN _actual_deliver_date datetime,
   IN _recorder_id int(10) unsigned,
   IN _comment text,
+  IN _uomid smallint(3) unsigned,
   OUT _response varchar(255)
 )
 BEGIN
-  DECLARE _source_type enum('product', 'material');
-  DECLARE _uomid smallint(3) unsigned;
+  DECLARE _origin_uomid smallint(3) unsigned;
   
   IF _operation IS NULL OR length(_operation) < 1
   THEN
@@ -595,34 +634,49 @@ BEGIN
   ELSEIF  _quantity_requested is NULL OR _quantity_requested <= 0
   THEN 
     SET _response='Quantity requested is required. Please fill the quantity requested.';
-   
+  ELSEIF EXISTS (SELECT line_num 
+				   FROM order_detail 
+				  WHERE order_id = _order_id
+                    AND source_type = _source_type
+                    AND source_id = _source_id
+                    AND line_num = _line_num)
+  THEN
+	SET _response = CONCAT('The same detail line ', _line_num , ' has been recorded'); 
   ELSE
-  
-    IF _order_type IN ('inventory', 'customer')
+	IF _source_type IS NULL  -- if source type is null, pull default by order type
     THEN
-      SET _source_type = 'product';
-      SELECT uomid INTO _uomid
+		IF _order_type IN ('inventory', 'customer')
+		THEN
+		  SET _source_type = 'product';
+		ELSE
+		  SET _source_type = 'material';
+		END IF;
+    END IF;
+    
+    -- pull out original uomid
+    IF _source_type = 'product'
+    THEN
+      SELECT uomid INTO _origin_uomid
         FROM product
        WHERE id = _source_id;
-       
     ELSE
-      SET _source_type = 'material';
-      SELECT uom_id INTO _uomid
+      SELECT uom_id INTO _origin_uomid
         FROM material
        WHERE id = _source_id;
     END IF;
     
-    IF _uomid IS NULL
+    IF _origin_uomid IS NULL
     THEN
       SET _response = 'THE product or material selected does not exist in database.';
     ELSE
-    
+
       IF _operation = 'insert'
       THEN
         INSERT INTO `order_detail` (
           order_id,
           source_type,
           source_id,
+          line_num,
           quantity_requested,
           unit_price,
           quantity_made,
@@ -640,11 +694,12 @@ BEGIN
           _order_id,
           _source_type,
           _source_id,
-          _quantity_requested,
+          _line_num,
+	      _quantity_requested, -- IFNULL(_quantity_requested, (_quantity_requested, _uomid, _origin_uomid)),
           _unit_price,
-          _quantity_made,
-          _quantity_in_process,
-          _quantity_shipped,
+          _quantity_made, -- IFNULL(_quantity_made, (_quantity_made, _uomid, _origin_uomid)),
+          _quantity_in_process, -- IFNULL(_quantity_in_process, (_quantity_in_process, _uomid, _origin_uomid)),
+          _quantity_shipped, -- ifNULL(_quantity_shipped, (_quantity_shipped, _uomid, _origin_uomid)),
           _uomid,
           _output_date,
           _expected_deliver_date,
@@ -670,7 +725,8 @@ BEGIN
               comment = _comment
         WHERE order_id = _order_id
           AND source_type = _source_type
-          AND source_id = _source_id;
+          AND source_id = _source_id
+          AND line_num = _line_num;
       END IF;
     END IF;
   END IF;
@@ -8237,6 +8293,109 @@ BEGIN
   END IF; 
  END IF;
 END$
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : insert_order_general.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : insert general information for a new order
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+*    09/25/2018: Xueyan Dong: added check for entries violating unique key					
+*/
+DELIMITER $  -- for escaping purpose
+DROP PROCEDURE IF EXISTS `insert_order_general`$
+CREATE PROCEDURE `insert_order_general`(
+  IN _order_type enum('inventory', 'customer', 'supplier'),
+  IN _ponumber varchar(40),
+  IN _client_id int(10) unsigned,
+  IN _priority tinyint(2) unsigned,
+  IN _state varchar(10),
+  IN _state_date datetime,
+  IN _net_total decimal(16,2) unsigned,
+  IN _tax_percentage tinyint(2) unsigned,
+  IN _tax_amount decimal(14,2) unsigned,
+  IN _other_fees decimal(16,2) unsigned,
+  IN _total_price decimal(16,2) unsigned,
+  IN _expected_deliver_date datetime,
+  IN _internal_contact int(10) unsigned,
+  IN _external_contact varchar(255),
+  IN _recorder_id int(10) unsigned,
+  IN _comment text,
+  OUT _order_id int(10) unsigned,
+  OUT _response varchar(255)
+)
+BEGIN
+  IF _order_type IS NULL OR length(_order_type )< 1
+  THEN
+    SET _response='Order type is required. Please select an order type.';
+  ELSEIF  _state_date is NULL OR length(_state_date) < 1
+  THEN 
+    SET _response='Date when the state happened is required. Please fill the state date.';
+  ELSEIF  _internal_contact is NULL OR length(_internal_contact) < 1
+  THEN 
+    SET _response='The internal contact is required. Please fill the contact info.';
+  ELSEIF _state IS NULL OR _state NOT IN ('quoted', 'POed', 'scheduled', 'produced', 'shipped', 'delivered', 'invoiced', 'paid')
+  THEN
+    SET _response='The value for state is not valid. Please select one state from following: quoted, POed, scheduled, produced, shipped, delivered, invoiced, paid.';
+  ELSEIF EXISTS (SELECT id FROM order_general WHERE order_type = _order_type AND IFNULL(client_id,0) = IFNULL(_client_id,0) AND IFNULL(ponumber,'') = IFNULL(_ponumber, ''))
+  THEN
+	SET _response = 'There is another order with the same type, PO and client (or missing both). Please correct them';
+  ELSE
+    INSERT INTO `order_general` (
+         order_type,
+         ponumber,
+         client_id,
+         priority,
+         state,
+         net_total,
+         tax_percentage,
+         tax_amount,
+         other_fees,
+         total_price,
+         expected_deliver_date,
+         internal_contact,
+         external_contact,
+         comment)
+    values (
+          _order_type,
+          _ponumber,
+          _client_id,
+          _priority,
+          _state,
+          _net_total,
+          _tax_percentage,
+          _tax_amount,
+          _other_fees,
+          _total_price,
+          _expected_deliver_date,
+          _internal_contact,
+          _external_contact,
+          _comment
+         );
+        SET _order_id = last_insert_id();
+        IF _order_id IS NOT NULL
+        THEN
+          INSERT INTO order_state_history
+          (order_id,
+          state,
+          state_date,
+          recorder_id,
+          comment
+          )
+          VALUES
+          (
+            _order_id,
+            _state,
+            _state_date,
+            _recorder_id,
+            _comment
+          );
+        END IF;
+  END IF;
+END $
 
 
 
