@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BarcodeImage.aspx" />
+    <Content Include="Configure\Order\LoadOrder.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -162,6 +163,13 @@
     <Compile Include="Configure\Equipment\EquipmentConfig.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EquipmentConfig.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configure\Order\LoadOrder.aspx.cs">
+      <DependentUpon>LoadOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Configure\Order\LoadOrder.aspx.designer.cs">
+      <DependentUpon>LoadOrder.aspx</DependentUpon>
     </Compile>
     <Compile Include="Configure\Process\ProcessSegmentConfig.aspx.cs">
       <DependentUpon>ProcessSegmentConfig.aspx</DependentUpon>

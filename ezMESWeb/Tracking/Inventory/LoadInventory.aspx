@@ -11,7 +11,7 @@
 <br />
     <asp:FileUpload ID="fuLoad" runat="server" Width=500px Height=30px />
 <br /><br />
-<asp:Button ID="btnInsert" runat="server" Text="Read" Width="147px" OnClick="btn_Click"/>     
+<asp:Button ID="btnInsert" runat="server" Text="Preview" Width="147px" OnClick="btn_Click"/>     
 <br />
 <asp:Label ID="lblError" runat="server" ForeColor="#FF3300" 
                 Height="60px" Width="350px"></asp:Label><br />
