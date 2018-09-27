@@ -227,12 +227,15 @@ namespace ezMESWeb.Configure.Order
             }
 
             //verify uniqueness
-            stop.....
+//            stop.....
 
             return "";
         }
         protected bool loadFile(FileUpload fileCtrl, string strFileSrc, ListBox lstData, TextBox txtBox)
         {
+            return true;
+
+/*
             DataRow newRow;
             DataTable csvTable = new DataTable();
 
@@ -366,7 +369,7 @@ namespace ezMESWeb.Configure.Order
             txtBox.Visible = true;
             
             return bResult;
-        }
+*/        }
 
         protected int getID(string strSQL)
         {
