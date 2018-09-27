@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : RecipeConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for configuring recipes
+*    Log                    :
+*    2009: xdong: first created
+  *  09/26/2018:xdong: attempt to solve problem related to server.transfer call in btnDo_Click, but no result
+----------------------------------------------------------------*/
+using System;
 using System.IO;
 using System.Collections;
 using System.Configuration;
@@ -643,9 +654,9 @@ namespace ezMESWeb.Configure.Process
                             }
                         }
                     }
-
-                    if (lblMainError.Text.Length == 0)
-                        Server.Transfer("RecipeConfig.aspx?Id=" + txtID.Text, true);
+                    //*** xdong 9/24/2018: this cause error, comment out for now
+                    //if (lblMainError.Text.Length == 0)
+                    //    Server.Transfer("RecipeConfig.aspx?Id=" + txtID.Text, true);
                 }
             }
             else

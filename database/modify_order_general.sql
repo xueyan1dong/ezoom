@@ -4,10 +4,11 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : Modify certain order general information
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*    09/25/2018: Xueyan Dong: added check for duplicate PO number					
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_order_general`$
@@ -35,6 +36,16 @@ BEGIN
   IF  _internal_contact is NULL OR length(_internal_contact) < 1
   THEN 
     SET _response='The internal contact is required. Please fill the contact info.';
+  ELSEIF EXISTS (SELECT o2.id
+                   FROM order_general o1
+                   JOIN order_general o2
+                     ON IFNULL(o2.client_id,0) = IFNULL(o1.client_id,0)
+                        AND o2.order_type = o1.order_type
+                        AND o2.id != o1.id
+                        AND IFNULL(o2.ponumber,'') = IFNULL(_ponumber,'')
+				  WHERE o1.id = _order_id)
+  THEN
+	SET _response = 'The po number is already used by another order of the same order type and client';
   ELSE
     SELECT state INTO _old_state
       FROM order_general

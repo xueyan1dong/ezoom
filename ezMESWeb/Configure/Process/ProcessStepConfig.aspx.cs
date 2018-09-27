@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : ProcessStepConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for creating, editing and delete steps
+*    Log                    :
+*    2009: xdong: first created
+*    09/26/2018: xdong: change the use of gvTable.SelectedPersistedDataKey to gvTable.SelectedDataKey, for the former no longer have data
+----------------------------------------------------------------*/
 using System;
 using System.Data;
 using System.Web.UI;
@@ -96,7 +107,8 @@ namespace ezMESWeb.Configure.Process
              }
              else
              {
-               ezCmd.Parameters.AddWithValue("@_step_id", Convert.ToInt32(gvTable.SelectedPersistedDataKey.Values["id"]));
+
+               ezCmd.Parameters.AddWithValue("@_step_id", gvTable.SelectedDataKey.Values["id"]);
                ezCmd.Parameters["@_step_id"].Direction = ParameterDirection.InputOutput;
 
                fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;

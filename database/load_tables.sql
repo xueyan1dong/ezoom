@@ -457,6 +457,20 @@ CREATE TABLE `material` (
 
 
 -- order_general table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_order_general.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : Stores general header information of orders.
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 	
+*    09/25/2018: Xueyan Dong: removed id from the defined key, so that orders have to have unique po number within the same 
+*                             type, client
+*/
+DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `order_general`$
 CREATE TABLE `order_general` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -475,9 +489,8 @@ CREATE TABLE `order_general` (
   `external_contact` varchar(255) DEFAULT NULL,
   `comment` text,
   PRIMARY KEY (`id`),
-  KEY `order_in01` (`order_type`,`client_id`,`ponumber`,`id`)
+  KEY `order_in01` (`order_type`,`client_id`,`ponumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
-
 
 -- order_detail table
 /*
