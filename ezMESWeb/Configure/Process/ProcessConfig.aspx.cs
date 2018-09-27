@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : ProcessConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for configuring workflows
+*    Log                    :
+*    2009: xdong: first created
+  *  09/26/2018:xdong: attempt to solve problem related to server.transfer call in btnDo_Click, but no result
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -44,7 +55,7 @@ namespace ezMESWeb
 
                 string id=Request.QueryString["Id"];
                 short actTab;
-                
+                //actTab = 0;//**** 9/24/2018
                 //MySqlDataReader sqlReader;
                 TabPanel temp;
                 short count = 0;
@@ -80,6 +91,7 @@ namespace ezMESWeb
                         tcMain.Controls.Add(temp);
                         if ((id != null) && (temp.ID.Equals(id)))
                         {
+                            // actTab = count;  //*****9/24/2018 sdong
                             show_ExistProcess(count);
 
                         }
@@ -95,17 +107,18 @@ namespace ezMESWeb
                     tcMain.DataBind();
                     if (id == null)
                     {
-                        if (Request.QueryString["Tab"] != null)
-                        {
-                            actTab = Convert.ToInt16(Request.QueryString["Tab"]);
-                            if (actTab < count)
-                                show_ExistProcess(actTab);
-                            else
-                                show_NewProcess(count);
-                        }
+                      if (Request.QueryString["Tab"] != null)
+                      {
+                        actTab = Convert.ToInt16(Request.QueryString["Tab"]);
+                        if (actTab < count)
+                          show_ExistProcess(actTab);
                         else
-                            show_NewProcess(count);
+                          show_NewProcess(count);
+                      }
+                      else
+                        show_NewProcess(count);
                     }
+
                     //toggle the step or sub process dropdownlist on Step Insertion popup form
                     rblStepOrProcess.Attributes.Add("OnClick", "showDropDown('" +
                         rblStepOrProcess.ClientID + "','"
@@ -496,8 +509,9 @@ namespace ezMESWeb
 
         protected void btnDo_Click(object sender, EventArgs e)
         {
-            string response, process_name, newId;
-            if (fvMain.CurrentMode==FormViewMode.Insert)
+            string response, process_name, theId="";
+
+      if (fvMain.CurrentMode==FormViewMode.Insert)
             {
                 try
                 {
@@ -553,15 +567,17 @@ namespace ezMESWeb
                       if (result.GetType().ToString().Contains("System.Byte"))
                       {
                         System.Text.ASCIIEncoding asi = new System.Text.ASCIIEncoding();
-                        newId = asi.GetString((byte[])result);
+                        theId = asi.GetString((byte[])result);
                       }
                       else
                       {
-                        newId = result.ToString();
+                        theId = result.ToString();
                       }
-                        Server.Transfer(Request.CurrentExecutionFilePath+"?Id=" + newId, true);
+                      
+                     // Server.Transfer(Request.CurrentExecutionFilePath+"?Id=" + newId, true);
+            
 
-                    }
+          }
                     ezCmd.Dispose();
                     ezConn.Dispose();
                 }
@@ -569,8 +585,7 @@ namespace ezMESWeb
                 {
                     lblMainError.Text = ex.Message;
                 }
-
-            }
+      }
             else if (fvMain.CurrentMode == FormViewMode.Edit)
             {
 
@@ -628,12 +643,12 @@ namespace ezMESWeb
 
 
                 }
-                else
-                {
-
-                    Server.Transfer(Request.CurrentExecutionFilePath+"?Id=" + txtID.Text, true);
-                }
-            }
+        else
+        {
+          theId = txtID.Text;
+          //Server.Transfer(Request.CurrentExecutionFilePath + "?Id=" + txtID.Text, true);
+        }
+      }
             else
             {
                 fvMain.ChangeMode(FormViewMode.Edit);
@@ -659,8 +674,10 @@ namespace ezMESWeb
                 btnDo.Text = "Submit";
                 btnCancel.Text = "Cancel";
             }
+      if (theId.Length > 0)
+        Server.Transfer(Request.CurrentExecutionFilePath + "?Id=" + theId, true);
 
-        }
+    }
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
