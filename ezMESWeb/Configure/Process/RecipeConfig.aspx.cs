@@ -552,8 +552,8 @@ namespace ezMESWeb.Configure.Process
                   else
                     Server.Transfer("RecipeConfig.aspx?Error=" + lblMainError.Text, true);
                 }
-                else
-                  Server.Transfer("RecipeConfig.aspx?Id=" + recipeId, true);              
+                //else  //*****09/26/2018 xdong: this call cause error, comment out for now
+                //  Server.Transfer("RecipeConfig.aspx?Id=" + recipeId, true);              
             }
             else if (fvMain.CurrentMode == FormViewMode.Edit)
             {

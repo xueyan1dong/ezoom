@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.master" AutoEventWireup="true" CodeBehind="ToWarehouseStep.aspx.cs" Inherits="ezMESWeb.Tracking.ToWarehouseStep" Title="Ship to Warehouse Step -- ezOOM" %>
+<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.master" AutoEventWireup="true" CodeBehind="ToWarehouseStep.aspx.cs" Inherits="ezMESWeb.Tracking.ToWarehouseStep" Title="Ship to Location Step -- ezOOM" %>
 <%@ Register TagPrefix="asp" TagName="lot" Src="~/Tracking/lot.ascx" %>
 <%@ Register TagPrefix="asp" TagName="ConsumptionStep" Src="~/Tracking/ConsumptionStep.ascx" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
@@ -30,7 +30,7 @@ height="100%" scrollbars="Horizontal">
         <tr>
             <td colspan="2" align="left">
             <font Style="font-family:'Times New Roman';font-size:20px;">
-              Please fill the warehouse location and optional comment, then click button</font>&nbsp;
+              Please fill the location and optional comment, then click button</font>&nbsp;
               <asp:Button ID="btnDo" runat="server" Text="Ship to Warehouse" 
                     Style="font-family:Times New Roman;font-size:22px; width:180px;" 
                     onclick="btnDo_Click" BackColor="Green" ForeColor="White"/>  

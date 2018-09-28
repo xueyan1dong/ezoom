@@ -4,12 +4,12 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 06/05/2018
 *    Platform Dependencies  : .NET 
-*    Description            : UI for ending disassemble step
+*    Description            : UI for shipping product to a new location
 *    Log                    :
 *    06/05/2018: xdong: first created
 *    06/06/2018: xdong: fixed the issue that step name now showing
 *                       Add _location parameter to call to db stored procedure pass_lot_step
-*
+*    09/27/2018: xdong: change ui wording so that this step is not limited to warehouse locations
 ----------------------------------------------------------------*/
 
 using System;
