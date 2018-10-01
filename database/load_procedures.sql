@@ -580,7 +580,6 @@ BEGIN
 END$
 
 
--- procedure modify_order_detail
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
 *    Source File            : modify_order_detail.sql
@@ -594,6 +593,7 @@ END$
 *    6/19/2018: Peiyu Ge: added header info. 		
 *    09/25/2018: Xueyan Dong: removed input parameter _order_type and added input parameters: _source_type, _line_num, and _uomid
 *                             added logic for checking against unique key
+*    10/01/2018: Junlu Luo: fixed bugs caused by last change
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_order_detail` $
@@ -625,9 +625,9 @@ BEGIN
   ELSEIF _order_id IS NULL
   THEN
     SET _response = 'You must select an order for adding details. Please select an order.';
-  ELSEIF _order_type IS NULL OR length(_order_type) <1
+  ELSEIF _source_type IS NULL OR length(_source_type) <1
   THEN
-    SET _response='Order type is required. Please select an order type.';
+    SET _response='Source type is required. Please select an order type.';
   ELSEIF  _source_id is NULL
   THEN 
     SET _response='No item selected for ordering. Please select an item.';
@@ -642,17 +642,7 @@ BEGIN
                     AND line_num = _line_num)
   THEN
 	SET _response = CONCAT('The same detail line ', _line_num , ' has been recorded'); 
-  ELSE
-	IF _source_type IS NULL  -- if source type is null, pull default by order type
-    THEN
-		IF _order_type IN ('inventory', 'customer')
-		THEN
-		  SET _source_type = 'product';
-		ELSE
-		  SET _source_type = 'material';
-		END IF;
-    END IF;
-    
+  ELSE    
     -- pull out original uomid
     IF _source_type = 'product'
     THEN
@@ -731,7 +721,6 @@ BEGIN
     END IF;
   END IF;
 END$
-
 
 -- procedure delete_order
 
