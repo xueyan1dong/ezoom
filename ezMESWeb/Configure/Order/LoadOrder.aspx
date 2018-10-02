@@ -36,7 +36,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3">Required columns: PO Number, Order Type, Line  Number, Item  Number, Requested Quantity, Unit Price, Unit of Measure, Expected Delivery Date, Comment</td>
+                <td colspan="3">Required columns: Client, PO Number, Order Type, Line  Number, Item  Number, Requested Quantity, Unit Price, Unit of Measure, Expected Delivery Date, Comment</td>
             </tr>
             <tr>
                 <td colspan="3" class="auto-style8">
