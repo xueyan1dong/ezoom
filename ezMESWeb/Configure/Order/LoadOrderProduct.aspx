@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="LoadOrder.aspx.cs" Inherits="ezMESWeb.Configure.Order.LoadOrder" Title="Load Order -- ezOOM"%>
+﻿<%@ Page Language="C#" MasterPageFile="~/Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="LoadOrderProduct.aspx.cs" Inherits="ezMESWeb.Configure.Order.LoadOrderProduct" Title="Load Order Products -- ezOOM"%>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 
@@ -12,18 +12,18 @@
     <p>
         <table class="auto-style1">
             <tr>
-                <td width="30"></td>
-                <td class="auto-style2"><b>Order file:</b></td>
-                <td class="auto-style4">
-                    <asp:FileUpload ID="inputFile" runat="server" Width="326px" Height="25px" />
+                <td class="auto-style10"></td>
+                <td class="auto-style6"><b>Product file:</b></td>
+                <td class="auto-style5">
+                    <asp:FileUpload ID="inputFile" runat="server" Width="327px" Height="25px" ToolTip="Select order file" />
                 </td>
             </tr>
             <tr>
-                <td colspan="3" class="auto-style7">Required columns: Client, PO Number, Order Type, Order State, State Date, Priority, Net Total, Tax Percentage, Tax Amount, Other Fees, Total Price, Expected Delivery Date, Internal Contact UserName, External Contact,Comment</td>
+                <td colspan="3">Required columns: Client, PO Number, Order Type, Line  Number, Item  Number, Requested Quantity, Unit Price, Unit of Measure, Expected Delivery Date, Comment</td>
             </tr>
             <tr>
-                <td colspan="3">
-    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Visible="False" Width="600px"></asp:TextBox>
+                <td colspan="3" class="auto-style8">
+                    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Visible="False" Width="600px"></asp:TextBox>
                     <br />
                     <asp:ListBox ID="lstContent" runat="server" Visible="False"></asp:ListBox>
                 </td>
@@ -74,19 +74,22 @@
             width: 59%;
             height: 87px;
         }
-        .auto-style2 {
-            height: 42px;
-            width: 75px;
-        }
-        .auto-style4 {
-            height: 42px;
+        .auto-style5 {
             width: 347px;
+            height: 46px;
         }
-        .auto-style7 {
-            height: 44px;
+        .auto-style6 {
+            width: 85px;
+            height: 46px;
+        }
+        .auto-style8 {
+            height: 41px;
         }
         .auto-style9 {
             height: 36px;
+        }
+        .auto-style10 {
+            width: 29px;
         }
     </style>
 </asp:Content>

@@ -10,7 +10,7 @@
 namespace ezMESWeb.Configure.Order {
     
     
-    public partial class LoadOrder {
+    public partial class LoadOrderProduct {
         
         /// <summary>
         /// ToolkitScriptManager1 control.
