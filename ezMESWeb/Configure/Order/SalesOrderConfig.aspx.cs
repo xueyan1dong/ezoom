@@ -542,7 +542,7 @@ namespace ezMESWeb.Configure.Order
                 else
                 {
 
-                    Server.Transfer("SalesOrderConfig.aspx?Id=" + txtID.Text, true);
+                    Server.Transfer("SalesOrderConfig.aspx?Id=" + txtID.Text, false);
                 }
             }
             else
@@ -586,7 +586,7 @@ namespace ezMESWeb.Configure.Order
 
 
                     ezCmd.ExecuteNonQuery();
-                    Server.Transfer("SalesOrderConfig.aspx?Tab=" + tcMain.ActiveTabIndex, true);
+                    Server.Transfer("SalesOrderConfig.aspx?Tab=" + tcMain.ActiveTabIndex, false);
                     ezCmd.Dispose();
                     ezConn.Dispose();
                 }

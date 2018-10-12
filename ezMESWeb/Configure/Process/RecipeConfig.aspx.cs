@@ -548,9 +548,9 @@ namespace ezMESWeb.Configure.Process
                 if (lblMainError.Text.Length > 0)
                 {
                   if (Int32.Parse(recipeId) > 0)
-                    Server.Transfer("RecipeConfig.aspx?Id=" + recipeId + "&Error=" + lblMainError.Text, true);
+                    Server.Transfer("RecipeConfig.aspx?Id=" + recipeId + "&Error=" + lblMainError.Text, false);
                   else
-                    Server.Transfer("RecipeConfig.aspx?Error=" + lblMainError.Text, true);
+                    Server.Transfer("RecipeConfig.aspx?Error=" + lblMainError.Text, false);
                 }
                 //else  //*****09/26/2018 xdong: this call cause error, comment out for now
                 //  Server.Transfer("RecipeConfig.aspx?Id=" + recipeId, true);              
@@ -753,7 +753,7 @@ namespace ezMESWeb.Configure.Process
                     }
                     else
                     {
-                        Server.Transfer("RecipeConfig.aspx?Tab=" + tcMain.ActiveTabIndex, true);
+                        Server.Transfer("RecipeConfig.aspx?Tab=" + tcMain.ActiveTabIndex, false);
                     }
                 }
                 else

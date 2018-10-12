@@ -461,7 +461,7 @@ namespace ezMESWeb.Configure.Order
                        {
                          newId = result.ToString();
                        }
-                        Server.Transfer("InventoryOrderConfig.aspx?Id=" + newId, true);
+                        Server.Transfer("InventoryOrderConfig.aspx?Id=" + newId, false);
 
                     }
                     ezCmd.Dispose();
@@ -545,7 +545,7 @@ namespace ezMESWeb.Configure.Order
                 else
                 {
 
-                    Server.Transfer("InventoryOrderConfig.aspx?Id=" + txtID.Text, true);
+                    Server.Transfer("InventoryOrderConfig.aspx?Id=" + txtID.Text, false);
                 }
             }
             else
@@ -588,7 +588,7 @@ namespace ezMESWeb.Configure.Order
 
 
                     ezCmd.ExecuteNonQuery();
-                    Server.Transfer("InventoryOrderConfig.aspx?Tab=" + tcMain.ActiveTabIndex, true);
+                    Server.Transfer("InventoryOrderConfig.aspx?Tab=" + tcMain.ActiveTabIndex, false);
                     ezCmd.Dispose();
                     ezConn.Dispose();
                 }

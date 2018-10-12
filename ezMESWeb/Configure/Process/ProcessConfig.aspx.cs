@@ -675,7 +675,7 @@ namespace ezMESWeb
                 btnCancel.Text = "Cancel";
             }
       if (theId.Length > 0)
-        Server.Transfer(Request.CurrentExecutionFilePath + "?Id=" + theId, true);
+        Server.Transfer(Request.CurrentExecutionFilePath + "?Id=" + theId, false);
 
     }
 
@@ -718,7 +718,7 @@ namespace ezMESWeb
 
 
                     ezCmd.ExecuteNonQuery();
-                    Server.Transfer(Request.CurrentExecutionFilePath+"?Tab=" + tcMain.ActiveTabIndex, true);
+                    Server.Transfer(Request.CurrentExecutionFilePath+"?Tab=" + tcMain.ActiveTabIndex, false);
                     ezCmd.Dispose();
                     ezConn.Dispose();
                 }
