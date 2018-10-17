@@ -348,18 +348,18 @@ CREATE TABLE `ingredients_history` (
 
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : load_tables.sql
+*    Source File            : create_inventory.sql
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 	
-*    8/16/2018: Peiyu Ge: added location info.					
+*    6/19/2018: Peiyu Ge: added header info. 
+*    8/16/2018: Peiyu Ge: added location info.		
+*    10/17/2018: xdong: added location_id to unique key index			
 */
-
--- inventory table
+DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `inventory`$
 CREATE TABLE `inventory` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -381,7 +381,7 @@ CREATE TABLE `inventory` (
   `comment` text,
   `location_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `inventory_un01` (`source_type`,`pd_or_mt_id`, `supplier_id`, `lot_id`, `serial_no`)
+  UNIQUE KEY `inventory_un01` (`source_type`,`pd_or_mt_id`, `supplier_id`, `lot_id`, `serial_no`, `location_id`)
 ) ENGINE=InnoDB$
 
 
