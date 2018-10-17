@@ -40,17 +40,17 @@ namespace ezMESWeb.Configure.Order
             ezCmd.Connection = ezConn;
 
 
-            ezCmd.CommandText = "SELECT p.id, p.name, u.name as uom_name  FROM product p, uom u WHERE p.uomid = u.id";
+            ezCmd.CommandText = "SELECT p.id, p.name, u.id as uom_id, u.name as uom_name  FROM product p, uom u WHERE p.uomid = u.id";
             ezCmd.CommandType = CommandType.Text;
 
             ezReader = ezCmd.ExecuteReader();
             while (ezReader.Read())
             {
               ddProduct.Items.Add(new ListItem(String.Format("{0}", ezReader[1]), String.Format("{0}", ezReader[0])));
-              ddUom.Items.Add(new ListItem(String.Format("{0}", ezReader[2]), String.Format("{0}", ezReader[2])));
+              ddUom.Items.Add(new ListItem(String.Format("{0}", ezReader[2]), String.Format("{0}", ezReader[3])));
             }
             if (ddUom.Items.Count > 0)
-              lblUom.Text = ddUom.Items[0].Value;
+              lblUom.Text = ddUom.Items[0].Value;  
             ezReader.Close();
             ezReader.Dispose();
             ezCmd.Dispose();
@@ -203,8 +203,9 @@ namespace ezMESWeb.Configure.Order
                 
                 ezCmd.Parameters.AddWithValue("@_operation", "insert");
                 ezCmd.Parameters.AddWithValue("@_order_id", txtID.Text);
-                ezCmd.Parameters.AddWithValue("@_order_type", "customer");
+                ezCmd.Parameters.AddWithValue("@_source_type", "product");
                 ezCmd.Parameters.AddWithValue("@_source_id", ddProduct.SelectedValue);
+                ezCmd.Parameters.AddWithValue("@_line_num", DBNull.Value);
                 ezCmd.Parameters.AddWithValue("@_quantity_requested", requestedTextBox.Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_unit_price", priceTextBox.Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_quantity_made", madeTextBox.Text.Trim());
@@ -242,6 +243,7 @@ namespace ezMESWeb.Configure.Order
 
                 ezCmd.Parameters.AddWithValue("@_recorder_id", Convert.ToInt32(Session["UserID"]));
                 ezCmd.Parameters.AddWithValue("@_comment", commentTextBox.Text.Trim());
+                ezCmd.Parameters.AddWithValue("@_uomid", ddUom.Items[ddProduct.SelectedIndex].Text);
                 ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                 ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
 
@@ -458,7 +460,7 @@ namespace ezMESWeb.Configure.Order
                       {
                         newId = result.ToString();
                       } 
-                      Server.Transfer("SalesOrderConfig.aspx?Id=" + newId, true);
+                      Server.Transfer("SalesOrderConfig.aspx?Id=" + newId, false);
 
                     }
                     ezCmd.Dispose();

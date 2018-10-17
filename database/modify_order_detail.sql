@@ -7,11 +7,14 @@
 *    Description            : Insert new order detail/product record or modify existing order detail record. Note that when modifying
 *                             Order Id, Source Type, Source Id, Line Number are acting as anchor for finding the record
 *    example	            : 
+CALL modify_order_detail ('insert',  7, 'product', 5, NULL, 30, 150, 0, 0, 0, NULL, NULL, NULL, 2, '', 1, @response);
+select @response
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 		
 *    09/25/2018: Xueyan Dong: removed input parameter _order_type and added input parameters: _source_type, _line_num, and _uomid
 *                             added logic for checking against unique key
 *    10/01/2018: Junlu Luo: fixed bugs caused by last change
+*    10/16/2018: Xueyan Dong: added code to auto assign _line_num, if it is inputed as null
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_order_detail` $
@@ -20,7 +23,7 @@ CREATE PROCEDURE `modify_order_detail`(
   IN _order_id int(10) unsigned,
   IN _source_type enum('product', 'material'),
   IN _source_id int(10) unsigned,
-  IN _line_num smallint(5) unsigned,
+  IN _line_num smallint(5) unsigned,  -- line number of the detail line. If not supplied (null), assign the next line number of the order
   IN _quantity_requested decimal(16,4) unsigned,
   IN _unit_price decimal(10,2) unsigned,
   IN _quantity_made decimal(16,4) unsigned,
@@ -52,7 +55,7 @@ BEGIN
   ELSEIF  _quantity_requested is NULL OR _quantity_requested <= 0
   THEN 
     SET _response='Quantity requested is required. Please fill the quantity requested.';
-  ELSEIF EXISTS (SELECT line_num 
+  ELSE IF EXISTS (SELECT line_num 
 				   FROM order_detail 
 				  WHERE order_id = _order_id
                     AND source_type = _source_type
@@ -60,8 +63,17 @@ BEGIN
                     AND line_num = _line_num)
   THEN
 	SET _response = CONCAT('The same detail line ', _line_num , ' has been recorded'); 
-  ELSE    
+  ELSE 
+   -- if _line_num is entered as null, assign a line number from highest line number + 1
+    IF _line_num IS NULL
+	THEN 
+		SELECT IFNULL(MAX(line_num),0) + 1
+		INTO _line_num
+		FROM order_detail
+	   WHERE order_id = _order_id;
+	END IF;
     -- pull out original uomid
+    
     IF _source_type = 'product'
     THEN
       SELECT uomid INTO _origin_uomid
@@ -80,6 +92,7 @@ BEGIN
 
       IF _operation = 'insert'
       THEN
+ 
         INSERT INTO `order_detail` (
           order_id,
           source_type,
@@ -136,6 +149,7 @@ BEGIN
           AND source_id = _source_id
           AND line_num = _line_num;
       END IF;
-    END IF;
+	  END IF;
+     END IF;
   END IF;
-END$
+END $
