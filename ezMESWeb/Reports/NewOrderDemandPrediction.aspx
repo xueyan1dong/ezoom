@@ -29,16 +29,15 @@
         </tr>
         <tr><td>&nbsp;</td></tr>
         <tr>
-        <td style="font-family:Times New Roman; font-size:18px;" align="left" valign="bottom">Please Select An Order:</td>
-        <td><font Style="font-family:Times New Roman;font-size:18px;" align ="left">Please Input The Number Of Final Product Units:</font></td>
+            <td style="font-family:Times New Roman; font-size:18px;" align="left" valign="bottom" colspan ="1">Please Select An Order:</td>
         </tr>
         <tr>
-        <td align=left><asp:DropDownList ID="dpOrder1" runat="server" Width="300px" Height="25px">
-        </asp:DropDownList> 
-       <asp:Button ID="btnView" runat="server" Text="View Report" 
-               onclick="btnView_Click" Height="35px" Width="100px" /></td>
-<td align ="left"><asp:TextBox ID="txtNumProduct1" runat="server" Width="180px" Style="font-family:Times New Roman;font-size:18px;" Text ="1"></asp:TextBox></td>
+            <td>
+                <asp:DropDownList ID="dpOrder1" runat="server" Width="300px" Height="25px"></asp:DropDownList>
+                <asp:Button ID="btnView" runat="server" Text="View Report" onclick="btnView_Click" Height="35px" Width="100px" />
+            </td>
         </tr>
+        
         </table>      
 </td></tr>
 <tr><td>

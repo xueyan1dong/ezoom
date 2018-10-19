@@ -120,8 +120,8 @@ namespace ezMESWeb.Reports
             //ReportParameter p2 = new ReportParameter("order", dpOrder.SelectedItem.Text);
             //ReportParameter p2 = new ReportParameter("order_id", dpOrder1.SelectedItem.Value);
             //rvProInvent1.LocalReport.SetParameters(new ReportParameter[] { p2 });
-            ReportParameter p2 = new ReportParameter("num_finalProduct", txtNumProduct1.Text.Length == 0 ? "1" : txtNumProduct1.Text);
-            rvProInvent1.LocalReport.SetParameters(new ReportParameter[] { p2 });
+            //ReportParameter p2 = new ReportParameter("num_finalProduct", txtNumProduct1.Text.Length == 0 ? "1" : txtNumProduct1.Text);
+            //rvProInvent1.LocalReport.SetParameters(new ReportParameter[] { p2 });
 
             rvProInvent1.LocalReport.Refresh();
             rvProInvent1.Visible = true;

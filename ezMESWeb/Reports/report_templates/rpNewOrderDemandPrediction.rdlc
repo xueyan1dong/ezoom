@@ -941,7 +941,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Fields!quantity.Value * Parameters!num_finalProduct.Value, 1)&amp;" " &amp; Fields!uom.Value</Value>
+                                  <Value>=FormatNumber(Fields!quantity.Value * Fields!quantity_requested.Value, 1)&amp;" " &amp; Fields!uom.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -961,7 +961,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
