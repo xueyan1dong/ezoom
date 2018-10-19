@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Table name="inventory_relocate">
+  <Header>Relocating Inventory</Header>
+  <Column name ="id">
+    <DisplayName>Inventory Id</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="name">
+    <DisplayName>Product Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="actual_quantity">
+    <DisplayName>Quantity To Relocate</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="location_id">
+    <DisplayName>Where To Relocate</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select name, id from location</DropdownQuery>
+  </Column>
+  <Column name ="uom_id">
+    <DisplayName>Unit of Measure</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>10</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
