@@ -28,7 +28,7 @@ namespace ezMESWeb.Tracking
 {
   public partial class EndDisassemble : TrackTemplate
   {
-    protected Label lblStep, lblUom,  lblError2, lblEquipment, lblStartTime, lblStepStatus, lblMessage;
+    protected Label lblStep, lblUom,  lblError2, lblEquipment, lblStartTime, lblStepStatus, lblMessage, lblProcess, stepStatus;
     protected Label lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblApprover, lblResult;
     protected TextBox txtQuantity, txtComment, txtPassword;
     protected DropDownList drpEquipment, drpApprover;
@@ -39,11 +39,11 @@ namespace ezMESWeb.Tracking
     public DataColumnCollection colc;
     protected ModalPopupExtender MessagePopupExtender;
     protected RadioButtonList rbResult;
-        //protected Panel MessagePanel;
+    //protected Panel MessagePanel;
     protected Label lblLotStatus2; //record lotstatus in a label separately 8/12
 
-    protected override void OnInit(EventArgs e)
-    {
+     protected override void OnInit(EventArgs e)
+     {
       base.OnInit(e);
 
       {
@@ -199,6 +199,7 @@ namespace ezMESWeb.Tracking
               ezReader.Dispose();
             }
           }
+            
         }
         catch (Exception ex)
         {
@@ -676,5 +677,6 @@ namespace ezMESWeb.Tracking
     protected void btnCancel_Click(object sender, EventArgs e)
     {
     }
-  }
+
+    }
 }

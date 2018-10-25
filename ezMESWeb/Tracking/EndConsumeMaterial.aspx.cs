@@ -25,7 +25,7 @@ namespace ezMESWeb.Tracking
 {
   public partial class EndConsumeMaterial : TrackTemplate
   {
-    protected Label lblStep, lblUom,  lblError2, lblEquipment, lblStartTime, lblStepStatus, lblMessage, lblLotStatus2;
+    protected Label lblStep, lblUom,  lblError2, lblEquipment, lblStartTime, lblStepStatus, lblMessage, lblLotStatus2,stepPrint,lblProcess;
     protected Label lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblApprover, lblResult;
     protected TextBox txtQuantity, txtComment, txtPassword;
     protected DropDownList drpEquipment, drpApprover;
@@ -36,7 +36,8 @@ namespace ezMESWeb.Tracking
     public DataColumnCollection colc;
     protected ModalPopupExtender MessagePopupExtender;
     protected RadioButtonList rbResult;
-    //protected Panel MessagePanel;
+        //protected Panel MessagePanel;
+    protected Image po_barcode, name_barcode, product_barcode;
 
     protected override void OnInit(EventArgs e)
     {
@@ -64,7 +65,7 @@ namespace ezMESWeb.Tracking
         if (!tLabel.Text.StartsWith("Welcome"))
           tLabel.Text = "Welcome " + (string)(Session["FirstName"]) + "!";
       }
-
+      
       if (!IsPostBack)
       {
         stepId = Request.QueryString["step"];
@@ -103,7 +104,7 @@ namespace ezMESWeb.Tracking
           if (ezReader.Read())
           {
             lblStep.Text = String.Format("{0}", ezReader[0]);
-
+            stepPrint.Text = String.Format("{0}", ezReader[0]);//load step for print
             string empUsage = String.Format("{0}", ezReader[1]);
             string empId = String.Format("{0}", ezReader[2]);
             ezReader.Close();
@@ -208,11 +209,16 @@ namespace ezMESWeb.Tracking
         ezConn.Dispose();
       }
     }
-    //protected override void Page_Load(object sender, EventArgs e)
-    //{
+        //protected override void Page_Load(object sender, EventArgs e)
+        //{
 
-    //}
-    protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
+        //}
+    private void LotLocalPrintEvent(object sender, EventArgs e)
+    {
+        
+        
+    }
+        protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
     {
       string partName = gvTable.SelectedDataKey.Values["name"].ToString();
       
@@ -671,6 +677,18 @@ namespace ezMESWeb.Tracking
     }
     protected void btnCancel_Click(object sender, EventArgs e)
     {
+
     }
-  }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            //load user control lot
+            var lotControl = Page.LoadControl("lot.ascx") as lot;
+            lblProcess.Text = lotControl.process;
+            po_barcode.ImageUrl = lotControl.po_barcode;
+            name_barcode.ImageUrl = lotControl.name_barcode;
+            product_barcode.ImageUrl = lotControl.product_barcode;
+        }
+        
+    }
 }

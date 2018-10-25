@@ -11,24 +11,12 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using CommonLib.Data.EzSqlClient;//added for pulling data from db
-
+using Microsoft.Reporting.WebForms;
 namespace ezMESWeb.Tracking
 {
   public partial class lot : System.Web.UI.UserControl
   {
-    protected Label 
-      
-      //lblName1, 
-      //lblProduct1, 
-      //lblProcess1, 
-      //lblPriority1, 
-      //lblLotStatus1,
-      //lblQuantity1,
-      //lblUom1,
-      //lblStepStatus1,
-      //lblLocation1,
-      //lblName, 
-      //lblProduct, 
+      protected Label 
       lblProcess, 
       lblPriority, 
       lblLotStatus,
@@ -37,11 +25,13 @@ namespace ezMESWeb.Tracking
       lblStepStatus,
       lblLocation,
       lblError;
+      
 
-    protected void Page_Load(object sender, EventArgs e)
-    {
+      protected void Page_Load(object sender, EventArgs e)
+      {
       string stepStatus1 = Request.QueryString["step_status"];
-            
+   
+      
             if (!IsPostBack)
             {
                 //lblName1.Text = Session["lot_alias"].ToString();
@@ -102,7 +92,7 @@ namespace ezMESWeb.Tracking
 
                         Image po_barcode = (Image)FindControl("po_barcode");
                         po_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strPONumber + "&h=60&w=400&il=true&t=Code 128-A";
-                        
+
                         //name
                         string strName = String.Format("{0}", ezReader[0]);
                         //lblName.Text = strName;
@@ -115,9 +105,15 @@ namespace ezMESWeb.Tracking
                         Image product_barcode = (Image)FindControl("product_barcode");
                         product_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strProduct + "&h=60&w=400&il=true&t=Code 128-B";
 
+                        Session["po_image"] = po_barcode.ImageUrl.ToString();
+                        Session["name_image"] = name_barcode.ImageUrl.ToString();
+                        Session["product_image"] = po_barcode.ImageUrl.ToString();
                         //lblProduct.Text = strProduct;
                         lblProcess.Text = String.Format("{0}", ezReader[2]);
+                        Session["process"] = lblProcess.Text;
+                        
                         lblPriority.Text = String.Format("{0}", ezReader[3]);
+                        
                         lblLotStatus.Text = String.Format("{0}", ezReader[4]);
                         lblStepStatus.Text = String.Format("{0}", ezReader[5]);
                         lblUom.Text = String.Format("{0}", ezReader[6]);
@@ -143,8 +139,48 @@ namespace ezMESWeb.Tracking
                     ezCmd.Dispose();
                     ezConn.Dispose();
                 }
+                ezCmd.Dispose();
+                ezConn.Dispose();
             }
-    }
+        }
 
-  }
+        public string process
+        {
+            get { return Session["process"].ToString(); }
+        }
+        public string po_barcode
+        {
+            get { return Session["po_image"].ToString(); }
+        }
+        public string name_barcode
+        {
+            get { return Session["name_image"].ToString(); }
+        }
+        public string product_barcode
+        {
+            get { return Session["product_image"].ToString(); }
+        }
+
+
+        //if fire from user control
+        //public void btnPrint_Click(Object sender, EventArgs e)
+        //{
+
+        //    Image po_barcode = (Image)FindControl("po_barcode");
+        //    Image name_barcode = (Image)FindControl("name_barcode");
+        //    Image product_barcode = (Image)FindControl("product_barcode");
+
+        //    Server.Transfer("BatchInfoPrint.aspx?process=" + lblProcess.Text
+        //        + "&quantity=" + lblQuantity.Text
+        //        + "&priority=" + lblPriority.Text
+        //        + "&stepStatus=" + lblStepStatus.Text
+        //        + "&lotStatus=" + lblLotStatus.Text
+        //        + "&location=" + lblLocation.Text
+        //        + "&uom=" + lblUom.Text
+        //        + "&po_barcode=" + Server.UrlEncode(po_barcode.ImageUrl)
+        //        + "&name_barcode=" + Server.UrlEncode(name_barcode.ImageUrl)
+        //        + "&product_barcode=" + Server.UrlEncode(product_barcode.ImageUrl), true);
+        //}
+
+    }
 }

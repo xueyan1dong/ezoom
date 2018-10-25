@@ -65,7 +65,7 @@ height="100%" scrollbars="Horizontal">
 </tr>
  </table>   
 </div>
-    
+   <asp:Button ID="btnPrint" runat="server" Text = "Print StartConsume"></asp:Button> 
 </asp:panel>
 </asp:Content>
 

@@ -17,10 +17,10 @@
     
     document.getElementById(sourceID + ctr1name).innerHTML = value_array[1];;
     document.getElementById(sourceID + ctr2name).innerHTML = value_array[4];
-   
          
-  }
- </script> 
+    }
+
+</script> 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" /> 

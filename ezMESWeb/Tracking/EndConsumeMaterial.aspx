@@ -4,6 +4,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+
 <script type="text/javascript" language="javascript">
    function showInfo(source, ctr1name, ctr2name)
   {
@@ -19,7 +20,50 @@
     document.getElementById(sourceID + ctr2name).innerHTML = value_array[4];
    
          
-  }
+    }
+     function SetTarget() {
+
+            document.forms[0].target = "_blank";
+
+     }
+     function printPage()
+     {
+         var styleToPrint = '' +
+        '<style type="text/css">' +
+        'table th, table td {' +
+        'border:1px solid #000;' +
+        'padding;0.1em;' +
+        '}' +
+        '</style>';
+         var div1 = document.getElementById("<%=printPanel.ClientID%>");
+         rows = document.getElementById("<%=gvTable.ClientID%>").rows;
+         var col_num = [0, 1, 2, 4, 5, 9];
+         for (i = 0; i < rows.length; i++) {
+            for (j = 0; j < col_num.length; j++) {
+                rows[i].cells[col_num[j]].style.display = "none";
+            }
+
+         }
+         var div2 = document.getElementById("<%=gvTablePanel.ClientID%>");
+         var MainWindow = window.open('', '', 'height=500,width=800');
+         MainWindow.document.write('<html><head><title>Print Page</title>')
+         MainWindow.document.write(styleToPrint);
+         MainWindow.document.write('</head><body>');
+         MainWindow.document.write(div1.innerHTML);
+         MainWindow.document.write('<div><h1></h1><div><div><h1></h1><div>');
+         MainWindow.document.write(div2.innerHTML);
+         MainWindow.document.write('</body></html>');
+         MainWindow.document.close();
+         setTimeout(function () {
+           MainWindow.print();
+         }, 500);
+         for (i = 0; i < rows.length; i++) {
+           
+            for (j = 0; j < col_num.length; j++)
+                rows[i].cells[col_num[j]].style.display = "table-cell";
+         }
+         return false;
+     }
  </script> 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -30,10 +74,13 @@ height="100%" scrollbars="Horizontal">
 <table width=98% align="center">
 <tr>
     <td>   
-        <asp:lot runat="server" />
+        <asp:lot runat="server" id ="childCtlLot"/>
     </td>
 </tr>
+<tr>
+</tr>
 <tr><td><asp:Label ID="lblError" Style="font-family:Times New Roman;font-size:20px;" ForeColor="Red" runat="server" /></td></tr>
+
 <tr>
 <td>
 <table style="width: 95%; height: 137px;" align="center" cellspacing=10px>
@@ -44,7 +91,6 @@ height="100%" scrollbars="Horizontal">
                     onclick="btnDo_Click" BackColor="Green" ForeColor="White" />
               <asp:Label ID="lblCaption" runat="server"  Width="362px" Style="font-family:Times New Roman;font-size:22px;"></asp:Label>  
             </td>
-
         </tr>
         <tr>
             <td align=left>
@@ -73,7 +119,7 @@ height="100%" scrollbars="Horizontal">
                EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged" EnableModelValidation="True"
              >
              <Columns>
-             <asp:TemplateField HeaderText="Consume">
+             <asp:TemplateField HeaderText="Consume" >
 			   <ItemTemplate>
 			       <asp:LinkButton ID="btnConsume" runat="server" Text="from Inventory" CommandName="Select" />
 			     </ItemTemplate>  
@@ -89,22 +135,22 @@ height="100%" scrollbars="Horizontal">
 			         <ControlStyle Width="12%" />
                </asp:BoundField>
 			     <asp:BoundField DataField="ingredient_id" HeaderText="ingredient_id" Visible="false" /> 
-			     <asp:BoundField DataField="name" HeaderText="Part #"  > 
+			     <asp:BoundField DataField="name" HeaderText="Part #" ItemStyle-HorizontalAlign="Center" > 
 			         <ControlStyle Width="20%" />
                </asp:BoundField>
 			     <asp:BoundField DataField="order" HeaderText="Consumption Order"  > 
 			         <ControlStyle Width="4%" />
                </asp:BoundField>
-			     <asp:BoundField DataField="description" HeaderText="Description" > 
+			     <asp:BoundField DataField="description" HeaderText="Description" ItemStyle-HorizontalAlign="Center"> 
 			         <ControlStyle Width="30%" />
                </asp:BoundField>
-			     <asp:BoundField DataField="required_quantity" HeaderText="Required Quantity" DataFormatString="{0:N0}" > 
+			     <asp:BoundField DataField="required_quantity" HeaderText="Required Quantity" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Center"> 
 			         <ControlStyle Width="3%" />
                </asp:BoundField>
-			     <asp:BoundField DataField="used_quantity" HeaderText="Quantity Used" DataFormatString="{0:N0}"> 			     
+			     <asp:BoundField DataField="used_quantity" HeaderText="Quantity Used" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Center"> 			     
 			         <ControlStyle Width="3%" />
                </asp:BoundField>
-			     <asp:BoundField DataField="uom_name" HeaderText="Unit" > 
+			     <asp:BoundField DataField="uom_name" HeaderText="Unit" ItemStyle-HorizontalAlign="Center"> 
 			         <ControlStyle Width="2%" />
                </asp:BoundField>
 			     <asp:BoundField DataField="restriction" HeaderText="Time Restriction" /> 
@@ -116,6 +162,24 @@ height="100%" scrollbars="Horizontal">
                 </asp:UpdatePanel>        
          </td>
          </tr>
+        <tr>
+        <td>
+        <asp:Panel ID="printPanel" BorderColor="white" BorderStyle="Solid" BorderWidth="1px" Width="100%" runat="server" Visible ="true" style ="display:none;">  
+            <table border="1" style="width:50%; margin: auto; text-align: center;" cellspacing="0" cellpadding="15px">
+                <tr><th align="center" colspan="2" style ="font-size:30px; width: 50px;">Print Batch Information</th></tr>
+                <tr><td>PONumber:</td><td style="vertical-align:middle; padding:15px;"><asp:Image ID="po_barcode" runat="server" /></tdstyle="vertical-align:middle;></tr>
+                <tr><td>Name:</td><td style="vertical-align:middle; padding:15px;"><asp:Image ID="name_barcode" runat="server" /></td></tr>
+                <tr><td>Product:</td><td style="vertical-align:middle; padding:15px;"><asp:Image ID="product_barcode" runat="server" /></td></tr>
+                <tr><td>Workflow:</td><td><asp:Label ID="lblProcess" runat="server" /></td></tr>
+                <tr><td>Step</td><td><asp:Label ID="stepPrint" runat="server" /></td></tr>
+            </table>          
+        </asp:Panel>
+            <p style="height:10px; background-color:#FFFFFF;"></p>
+            <div align ="right">
+                <asp:Button OnClientClick="return printPage()" Text="Print Packing Page" runat="server"/>
+            </div> 
+        </td>
+        </tr>
          <tr><td colspan=3>&nbsp;</td></tr>
          <tr>
          <td align="left"  colspan=3><asp:Label ID="lblResult" runat="server"  Style="font-family:Times New Roman;font-size:20px;" Visible=false>Final Result:</asp:Label>
