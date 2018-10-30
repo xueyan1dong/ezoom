@@ -7625,10 +7625,13 @@ END$
 *    Platform Dependencies  : MySql
 *    Description            : 
 *    example	            : 
-*    Log                    :		
+*    Log                    :	
+*    09/10/2018:Peiyu Ge: Created
+*    10/29/2018:Xueyan Dong: Added some scripts for easy recompile
 */
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `order_dispatch_display_per_product`()
+DELIMITER $
+DROP PROCEDURE IF EXISTS order_dispatch_display_per_product$
+CREATE PROCEDURE order_dispatch_display_per_product()
 BEGIN
 
 -- This procedure assume that all same product or material will use the same uom. and the UOM
@@ -7707,7 +7710,7 @@ BEGIN
 
       AND r.id = s.recipe_id
 
-      AND i.recipe_id = r.id ;
+      AND i.recipe_id = r.id;
 
     
 
