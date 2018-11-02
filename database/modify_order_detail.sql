@@ -15,10 +15,12 @@ select @response
 *                             added logic for checking against unique key
 *    10/01/2018: Junlu Luo: fixed bugs caused by last change
 *    10/16/2018: Xueyan Dong: added code to auto assign _line_num, if it is inputed as null
+*    11/01/2018: Xueyan Dong: fixed a bug that would block update
 */
-DELIMITER $  -- for escaping purpose
-DROP PROCEDURE IF EXISTS `modify_order_detail` $
-CREATE PROCEDURE `modify_order_detail`(
+DELIMITER $
+
+DROP PROCEDURE IF EXISTS modify_order_detail$
+CREATE PROCEDURE modify_order_detail (
   IN _operation enum('insert', 'update'),
   IN _order_id int(10) unsigned,
   IN _source_type enum('product', 'material'),
@@ -55,7 +57,7 @@ BEGIN
   ELSEIF  _quantity_requested is NULL OR _quantity_requested <= 0
   THEN 
     SET _response='Quantity requested is required. Please fill the quantity requested.';
-  ELSE IF EXISTS (SELECT line_num 
+  ELSE IF _operation = 'insert' AND EXISTS (SELECT line_num 
 				   FROM order_detail 
 				  WHERE order_id = _order_id
                     AND source_type = _source_type

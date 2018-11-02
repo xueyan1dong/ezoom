@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : SalesOrderConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for creating/editing sales orders with general order header and detail ordered product lines
+*    Log                    :
+*    2009: xdong: first created
+*   11/01/2018: xdong: adjusted code to adopt line numbers in order detail
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -296,8 +307,9 @@ namespace ezMESWeb.Configure.Order
 
                 ezCmd.Parameters.AddWithValue("@_operation", "update");
                 ezCmd.Parameters.AddWithValue("@_order_id", txtID.Text);
-                ezCmd.Parameters.AddWithValue("@_order_type", "customer");
-                ezCmd.Parameters.AddWithValue("@_source_id", gvTable.SelectedValue.ToString());
+                ezCmd.Parameters.AddWithValue("@_source_type", "product");
+                ezCmd.Parameters.AddWithValue("@_source_id", ((Label)fvUpdate.FindControl("productIDLabel")).Text.Trim());
+                ezCmd.Parameters.AddWithValue("@_line_num", ((Label)fvUpdate.FindControl("LineNumber1")).Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_quantity_requested", ((TextBox)fvUpdate.FindControl("requestedTextBox")).Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_unit_price", ((TextBox)fvUpdate.FindControl("priceTextBox")).Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_quantity_made", ((TextBox)fvUpdate.FindControl("madeTextBox")).Text.Trim());
@@ -338,6 +350,7 @@ namespace ezMESWeb.Configure.Order
 
                 ezCmd.Parameters.AddWithValue("@_comment", ((TextBox)fvUpdate.FindControl("commentTextBox")).Text.Trim());
 
+                ezCmd.Parameters.AddWithValue("@_uomid", ((Label)fvUpdate.FindControl("uomidLabel")).Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                 ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
 
