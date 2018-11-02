@@ -4884,6 +4884,20 @@ BEGIN
 END$
 
 -- procedure report_process_bom_total
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : report_process_bom_total.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 	
+*    8/30/2018: Peiyu Ge: added if_persistent to output	
+*    11/02/2018: Xdong: added persistent ingredients into the bom			
+*/
+DELIMITER $
 DROP PROCEDURE IF EXISTS `report_process_bom_total`$
 CREATE PROCEDURE `report_process_bom_total`(
   IN _process_id int(10) unsigned
@@ -4954,7 +4968,8 @@ BEGIN
       uomid smallint(3) unsigned,
       uom varchar(20),
       alert_quantity decimal(16,4) unsigned,
-      description text
+      description text,
+	  if_persistent boolean
     ) DEFAULT CHARSET=utf8; 
     
      INSERT INTO process_bom_total 
@@ -4962,23 +4977,25 @@ BEGIN
      ingredient_id,
      quantity,
      uomid,
-     uom)
+     uom,
+	 if_persistent)
     SELECT source_type,
            ingredient_id,
            sum(quantity),
            pb.uomid,
-           u.name
-           
+           u.name,
+		   1
       FROM process_bom pb, uom u
      WHERE u.id = pb.uomid
-     GROUP BY source_type, ingredient_id, ingredient_name, pb.uomid;
+     GROUP BY source_type, ingredient_id, pb.uomid;
      
     DROP TABLE process_bom;
     
     UPDATE process_bom_total pb, material m
        SET pb.ingredient_name = m.name,
            pb.alert_quantity = m.alert_quantity,
-           pb.description = m.description
+           pb.description = m.description,
+           pb.if_persistent =m.if_persistent
      WHERE pb.source_type = 'material'
        AND pb.ingredient_id = m.id;
        
@@ -5062,6 +5079,7 @@ BEGIN
            ,u.name AS unassigned_uom
            ,pb.assigned_quantity_show
            ,pb.ifalert
+		   ,pt.if_persistent
            FROM process_bom_total pt 
            JOIN process_bom_temp pb ON pt.source_type = pb.source_type AND pt.ingredient_id = pb.ingredient_id
            LEFT JOIN uom u ON u.id = pb.unassigned_uomid;

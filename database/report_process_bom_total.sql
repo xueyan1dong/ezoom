@@ -8,9 +8,10 @@
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 	
-*    8/30/2018: Peiyu Ge: added if_persistent to output				
+*    8/30/2018: Peiyu Ge: added if_persistent to output	
+*    11/02/2018: Xdong: added persistent ingredients into the bom			
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $
 DROP PROCEDURE IF EXISTS `report_process_bom_total`$
 CREATE PROCEDURE `report_process_bom_total`(
   IN _process_id int(10) unsigned
@@ -97,18 +98,18 @@ BEGIN
            sum(quantity),
            pb.uomid,
            u.name,
-		   m.if_persistent
-           
-      FROM process_bom pb, uom u, material m
-     WHERE u.id = pb.uomid And pb.ingredient_id = m.id
-     GROUP BY source_type, ingredient_id, ingredient_name, pb.uomid;
+		   1
+      FROM process_bom pb, uom u
+     WHERE u.id = pb.uomid
+     GROUP BY source_type, ingredient_id, pb.uomid;
      
     DROP TABLE process_bom;
     
     UPDATE process_bom_total pb, material m
        SET pb.ingredient_name = m.name,
            pb.alert_quantity = m.alert_quantity,
-           pb.description = m.description
+           pb.description = m.description,
+           pb.if_persistent =m.if_persistent
      WHERE pb.source_type = 'material'
        AND pb.ingredient_id = m.id;
        
