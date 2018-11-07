@@ -4,453 +4,220 @@
 *    Created By             : Peiyu Ge & Xueyan Dong
 *    Date Created           : 9/10/2018
 *    Platform Dependencies  : MySql
-*    Description            : 
-*    example	            : 
+*    Description            : This stored procedure serves the grid of the dispatch page, which display orders that
+*                             haven't been fully dispatched. 
+*                             Note: dispatch only dispatch order detail lines for source_type = product. No need to dispatch material lines
+*    example	            : CALL order_dispatch_display_per_product
 *    Log                    :	
 *    09/10/2018:Peiyu Ge: Created
 *    10/29/2018:Xueyan Dong: Added some scripts for easy recompile
+*    11/06/2018: Xueyan Dong: rewrite the logics to narrow down data volume processed and add line_num to the resultset.
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS order_dispatch_display_per_product$
 CREATE PROCEDURE order_dispatch_display_per_product()
 BEGIN
-
--- This procedure assume that all same product or material will use the same uom. and the UOM
-
--- may not be the same as the uom used in recipe.
-
--- Practically, same product or material may use different uoms depending on order or supplier.
-
--- will need to deal with this later (Xueyan 10/5/2010)
-
-
-
-  -- IF _product_id IS NOT NULL
-
-  -- THEN
-
-
-   -- table record infor for a process
-    CREATE TEMPORARY TABLE IF NOT EXISTS process_bom 
-
-    (
-      product_id int(10) unsigned,
-      
-	  process_id int(10) unsigned,
-
-      source_type varchar(20),
-
-      ingredient_id int(10) unsigned,
-
-      ingredient_name varchar(255),
-
-      quantity decimal(16,4) unsigned,
-
-      uomid smallint(3) unsigned
-
-    ) DEFAULT CHARSET=utf8;
-
-  
-
-    
-
-    -- collect recipe and ingredient information from steps in the flow: 
-    -- for a specific flow/process, the ingrediens (source_type, id, quantity and uom_id)
-    -- used in all contained receipts were extracted into process_bom
-
-    INSERT INTO process_bom
-
-    SELECT
-          pp.product_id,
-          
-		  p.process_id,
-        
-          i.source_type ,
-
-          i.ingredient_id,
-
-          ' ',
-
-          i.quantity,
-
-          i.uom_id
-
-      FROM product_process pp, ingredients i, step s, step_type t, recipe r, process_step p
-      
-      -- inner join (select process_id from product_process where product_id = _product_id order by priority asc limit 3) as temp on p.process_id = temp.process_id
-      
-      WHERE pp.process_id = p.process_id
-      
-      AND p.if_sub_process = 0 -- no subprocess
-
-      AND s.id = p.step_id
-
-      AND s.step_type_id = t.id
-
-      AND t.name = 'consume material'
-
-      AND r.id = s.recipe_id
-
-      AND i.recipe_id = r.id;
-
-    
-
-    -- collect recipe and ingredient information from sub process in the flow. 
-
-    -- Note that we only deal with one level sub process, e.g. if the sub process contains sub process, we will not see.
-
-    INSERT INTO process_bom
-
-    SELECT  
-			product_id,
-            
-			p.process_id,
-            
-            i.source_type,
-
-            i.ingredient_id,
-
-            ' ', -- what is this?
-
-            i.quantity,
-
-            i.uom_id
-
-      FROM  product_process pp, ingredients i, process_step p1, step s, step_type t, recipe r, process_step p
-
-    -- inner join (select process_id from product_process where product_id = _product_id order by priority asc limit 3) as temp on p.process_id = temp.process_id
-
-      where pp.process_id = p.process_id
-      
-      AND p.if_sub_process = 1 -- subprocss
-
-      AND p.step_id = p1.process_id -- parent process's step_id is the sub_process's process_id
+   DECLARE _consume_step_type_id INT UNSIGNED;
+   
+  -- pull out distinct products from order lines to be dispatched
+  DROP TEMPORARY TABLE IF EXISTS ordered_products;
+  CREATE TEMPORARY TABLE IF NOT EXISTS ordered_products
+  (product_id INT UNSIGNED);
+  INSERT INTO ordered_products
+  (product_id)
+  SELECT distinct source_id
+  FROM order_general og
+  JOIN order_detail od
+    ON od.order_id = og.id
+       AND od.source_type = 'product'
+       AND od.quantity_requested > IFNULL(quantity_made, 0) + IFNULL(quantity_in_process, 0) + IFNULL(quantity_shipped, 0)
+ WHERE og.order_type !='supplier'
+   AND og.state NOT IN ('shipped', 'delivered');  
  
-      AND s.id = p1.step_id
-
-      AND t.id = s.step_type_id
-
-      AND t.name = 'consume material'
-
-      AND r.id = s.recipe_id
-
-      AND i.recipe_id = r.id;
-
- 
-
-	-- record bill or material (ingredient related) information for current process
-	-- added if_persistent 8/29/2028 Peiyu
-      CREATE TEMPORARY TABLE IF NOT EXISTS process_bom_total 
-
-    (
-      product_id int(10) unsigned,
-      
-	  process_id int(10) unsigned,
-
-      source_type varchar(20),
-
-      ingredient_id int(10) unsigned,
-
-      ingredient_name varchar(255),
-
-      quantity decimal(16,4) unsigned,
-
-      uomid smallint(3) unsigned,
-
-      uom varchar(20),
-
-      alert_quantity decimal(16,4) unsigned,
-
-      description text,
-      
-      if_persistent boolean
-
-    ) DEFAULT CHARSET=utf8; 
-
-    
-	-- insert into table 5/8 
-    -- by inserting all information stored in process_bom into process_bom_total and process_bom gets dropped
-    -- left 3/8 columns will be added later
-     INSERT INTO process_bom_total 
-
-     (product_id,
-     
-     process_id,
-     
-     source_type,
-
-     ingredient_id,
-
-     quantity,
-
-     uomid,
-
-     uom,
-     
-     if_persistent)
-
-    SELECT pb.product_id,
-    
-           pb.process_id,
-			
-		   source_type,
-
-           ingredient_id,
-
-           sum(quantity), -- note here is the sum of quantity group by sourcetype i.id, i.name, uomid
-
-           pb.uomid,
-
-           u.name,
-           
-           m.if_persistent
-
-           
-	 FROM process_bom pb, uom u, material m
-
-     WHERE u.id = pb.uomid
-     
-     AND pb.ingredient_id = m.id
-
-     GROUP BY pb.product_id, pb.process_id, source_type, ingredient_id, ingredient_name, pb.uomid;
-
-     
-
-    DROP TABLE process_bom;
-
-    
-	-- added left 3/8 columns: 
-    -- bring in information on ingredient name, alert_quantity, description from material
-    -- for 'material' source_type of ingredients
-    UPDATE process_bom_total pb, material m
-
-       SET pb.ingredient_name = m.name,
-
-           pb.alert_quantity = m.alert_quantity,
-
-           pb.description = m.description
-           
-     WHERE pb.source_type = 'material'
-
-       AND pb.ingredient_id = m.id;
-
-       
-	-- for 'product' source_type of ingredients. alert_quantity will not be updated
-    UPDATE process_bom_total pb, product p
-
-       SET pb.ingredient_name = p.name,
-
-           pb.description = p.description
-           
-     WHERE pb.source_type = 'product'
-
-       AND pb.ingredient_id = p.id;
-
-    
-	-- merge information on all kinds of quantity variables
-      CREATE TEMPORARY TABLE IF NOT EXISTS process_bom_temp 
-
-    (
-      product_id int(10) unsigned,
-      
-      process_id int(10) unsigned,
-      
-      source_type varchar(20),
-
-      ingredient_id int(10) unsigned,
-
-      unassigned_quantity_raw varchar(31), 
-
-      assigned_quantity_show varchar(31), -- ?
-
-      unassigned_quantity decimal(16,4) unsigned, -- ?
-
-      unassigned_uomid smallint(3) unsigned, -- ?
-
-      ifalert tinyint(1) unsigned
-
-    ) DEFAULT CHARSET=utf8;  
-
-    
-
-    INSERT INTO process_bom_temp
-
-    (product_id, process_id, source_type, ingredient_id, unassigned_quantity_raw, assigned_quantity_show, ifalert)
-
-    SELECT product_id,
-           
-           process_id,
-           
-           source_type,
-
-           ingredient_id,
-           
-		-- unassigned_quantity_raw: contained total ingreditent quantity for both sourcetype ('material', 'product')
-        -- without in_order_id
-        -- or with in_order_id existing in order_general and 'inventory' order_type and state of 'produced'
-        
-           ifnull((SELECT concat(sum(inv.actual_quantity), ',', max(inv.uom_id)) -- ?
-
-              FROM inventory inv 
-
-            WHERE inv.source_type = pb.source_type
-
-              AND inv.pd_or_mt_id = pb.ingredient_id
-
-              AND 
-
-                (EXISTS (SELECT * 
-
-                           FROM `order_general` o, order_state_history os
-
-                          WHERE o.id = inv.in_order_id
-
-                            AND o.order_type = 'inventory'
-
-                            AND os.order_id = o.id
-
-                            AND os.state='produced'
-
-                            ) 
-
-                 OR
-
-                  (inv.in_order_id IS NULL))), 0)  ,
-		
-           -- assigned_quantity_show: contained total ingreditent quantity for both sourcetype ('material', 'product')
-           -- with in_order_id existing in order_general and ('inventory', 'customer') order_type 
-           -- and state not in 'produced'
-           
-           ifnull((SELECT concat(format(sum(inv.actual_quantity),1), ' ', max(u3.name))
-
-              FROM inventory inv LEFT JOIN uom u3 ON u3.id = inv.uom_id
-
-            WHERE inv.source_type = pb.source_type
-
-              AND inv.pd_or_mt_id = pb.ingredient_id
-
-              AND EXISTS (SELECT *
-
-                            FROM `order_general` o
-
-                           WHERE o.id = inv.in_order_id
-
-                              AND o.order_type in( 'customer','inventory')
-
-                              AND NOT EXISTS (SELECT *
-
-                                                FROM order_state_history os
-
-                                               WHERE os.order_id = o.id
-
-                                                 AND os.state = 'produced'))),0),
-
-             0 -- ifalert
-
-     
-
-      FROM process_bom_total pb 
-      
-      Where pb.if_persistent = 1;
+  DROP TEMPORARY TABLE IF EXISTS product_process_capability;
+  CREATE TEMPORARY TABLE product_process_capability
+  (product_id INT UNSIGNED,
+   process_id INT UNSIGNED,
+   process_name VARCHAR(255),
+   process_priority TINYINT(2) UNSIGNED,
+   final_product_qty INT UNSIGNED);
+   
+  INSERT INTO product_process_capability (product_id, process_id, process_name, process_priority)
+  SELECT pp.product_id, pp.process_id, p.name, pp.priority
+    FROM ordered_products op
+    JOIN product_process pp
+      ON pp.product_id = op.product_id
+    JOIN `process` p 
+      ON p.id = pp.process_id;
+  -- table for holding the capability of each process, which is determined by the scacity of peristent ingredients,
+  -- e.g. the ingredient, whose inventory allows the minimum quantity of final product produced
+  DROP TEMPORARY TABLE IF EXISTS process_bom_final;
+  CREATE TEMPORARY TABLE process_bom_final
+  ( process_id INT UNSIGNED,
+    ingredient_id INT UNSIGNED,
+    ingredient_name VARCHAR(255),
+    source_type ENUM('product','material'),    
+    recipe_quantity DECIMAL(16,4) UNSIGNED,
+    uom_id SMALLINT(2) UNSIGNED,
+    inventory_quantity DECIMAL(16,4) UNSIGNED,
+    final_product_qty DECIMAL(16,4) UNSIGNED -- store how many final product the inventory can support = inventory_quantity / recipe_quantity
+    );
+  -- peel out unique processes used by the ordered products
+  INSERT INTO process_bom_final (process_id)
+  SELECT DISTINCT process_id
+    FROM product_process_capability;
 
       
+  SELECT id INTO _consume_step_type_id
+    FROM step_type
+   WHERE name='consume material';
 
-    UPDATE process_bom_temp
-
-       SET unassigned_quantity = CAST(LEFT(unassigned_quantity_raw, INSTR(unassigned_quantity_raw, ',')) AS DECIMAL),
-
-           unassigned_uomid =SUBSTRING(unassigned_quantity_raw, INSTR(unassigned_quantity_raw, ',')+1)
-
-     WHERE unassigned_quantity_raw != '0';
-
- 
-
-     UPDATE process_bom_temp
-
-       SET unassigned_quantity = 0,
-
-           unassigned_uomid =0
-
-     WHERE unassigned_quantity_raw = '0';
-
+  DROP TEMPORARY TABLE IF EXISTS process_bom_temp;
+  CREATE TEMPORARY TABLE process_bom_temp
+  ( process_id INT UNSIGNED,
+    ingredient_id INT UNSIGNED,
+    ingredient_name VARCHAR(255),
+    source_type ENUM('product','material'),    
+    recipe_quantity DECIMAL(16,4) UNSIGNED,
+    uom_id SMALLINT(2) UNSIGNED,
+    inventory_quantity DECIMAL(16,4) UNSIGNED,
+    final_product_qty DECIMAL(16,4) UNSIGNED -- store how many final product the inventory can support = inventory_quantity / recipe_quantity
+    );
     
-
-    -- unassigned inventory is empty or below alert level will raise the ifalert flag
-
-    UPDATE process_bom_temp pt, process_bom_total pb
-
-      SET pt.ifalert =if(pt.unassigned_quantity=0 OR convert_quantity(pt.unassigned_quantity, pt.unassigned_uomid, pb.uomid)<pb.alert_quantity, 1, 0) -- ? convert_quantity
-
-     WHERE pb.source_type = pt.source_type
-
-       AND pb.ingredient_id = pt.ingredient_id;
-       
-       
-    CREATE TEMPORARY TABLE IF NOT EXISTS new_order_demand_prediction_temp
-    (
-        product_id int(10) unsigned,
-        
-        process_id int(10) unsigned,
-        
-        process_name varchar(255), 
-        
-        final_product_quantity int(10) unsigned
-        
-    )DEFAULT CHARSET=utf8;  
-    
-    
-    Insert Into new_order_demand_prediction_temp
-    
-    SELECT 
-           pt.product_id,
-           
-           pt.process_id,
-           
-           p.name,
-           
-           min(pb.unassigned_quantity / pt.quantity)
-           
-           FROM process p, process_bom_total pt 
-
-           JOIN process_bom_temp pb ON pt.source_type = pb.source_type AND pt.ingredient_id = pb.ingredient_id
-
-           where p.id = pt.process_id and pt.if_persistent = 1
-           
-           group by product_id, process_id;
-           
-           
-    CREATE TEMPORARY TABLE IF NOT EXISTS new_order_demand_prediction
-    (
-        product_id int(10) unsigned,
-        
-        product_demand_prediction varchar(255)
-		
-        
-    )DEFAULT CHARSET=utf8;  
-    
-    
-    Insert Into new_order_demand_prediction
-    
-    SELECT 
-           p.product_id,
-           
-           Group_concat(concat(p.process_name, ": ", p.final_product_quantity) separator ' / ' ) -- Into _final_product_qtypt.process_id,
-           
-           FROM  new_order_demand_prediction_temp p
-
-           group by product_id;
-           
-           
-           
-           
+  -- find persistant ingredients of the processes none sub process steps of the processes
+  INSERT INTO process_bom_temp
+  (process_id,
+   ingredient_id,
+   source_type,
+   recipe_quantity,
+   uom_id
+   )
+  SELECT 
+         pp.process_id,
+         ing.ingredient_id,
+         ing.source_type,
+         ing.quantity,
+         ing.uom_id
+    FROM process_bom_final pp
+    JOIN process_step ps  -- non sub process steps
+      ON ps.process_id = pp.process_id
+         AND if_sub_process = 0
+    JOIN step s  -- find consume material steps
+      ON s.id = ps.step_id
+         AND step_type_id = _consume_step_type_id
+    JOIN ingredients ing
+      ON ing.recipe_id  = s.recipe_id;
+      
+   -- find persistant ingredients of the processes none sub process steps of the processes     
+  INSERT INTO process_bom_temp
+  (process_id,
+   ingredient_id,
+   source_type,
+   recipe_quantity,
+   uom_id
+   )  
    SELECT 
-           
-g.id, 
+         pp.process_id,
+         ing.ingredient_id,
+         ing.source_type,
+         ing.quantity,
+         ing.uom_id
+    FROM process_bom_final pp
+    JOIN process_step ps  -- sub process steps
+      ON ps.process_id = pp.process_id
+         AND if_sub_process = 1
+    JOIN process_step pss -- sub process only allowed 1 depth
+      ON pss.process_id = ps.step_id
+         AND pss.if_sub_process = 0
+    JOIN step s  -- find consume material steps
+      ON s.id = pss.step_id
+         AND step_type_id = _consume_step_type_id
+    JOIN ingredients ing
+      ON ing.recipe_id  = s.recipe_id; 
+
+  -- same ingredient can appear in the same process multiple times. 
+  -- combine the same ingredients and calculated the total quantity needed in the process
+  DELETE FROM process_bom_final;
+    
+  INSERT INTO process_bom_final
+  (
+   process_id,
+   ingredient_id,
+   source_type,
+   recipe_quantity,
+   uom_id
+   )
+  SELECT 
+          process_id,
+          ingredient_id,
+          source_type,
+          sum(recipe_quantity),
+          uom_id
+    FROM process_bom_temp pb
+   GROUP BY process_id, ingredient_id, source_type, uom_id;
+  
+  -- remove none persistent material
+  DELETE pb
+    FROM process_bom_final pb
+    JOIN material m
+      ON m.id = pb.ingredient_id
+         AND m.if_persistent = 0
+   WHERE pb.source_type = 'material';
+  
+  -- mysql limit the use of same temporary table in a query to only once. thus, use process_bom_temp and process_bom_final
+  -- to shuffle data during quantity calculation
+  
+  -- use process_bom_temp to temporarily store intermediate data: inventory quantities of each process/ingredient
+  DELETE FROM process_bom_temp;
+  INSERT INTO process_bom_temp
+  (process_id,
+   ingredient_id,
+   source_type,
+   recipe_quantity,
+   uom_id,
+   inventory_quantity
+   )
+  SELECT pbf.process_id,
+         pbf.ingredient_id,
+         pbf.source_type,
+         pbf.recipe_quantity,
+         pbf.uom_id,
+         SUM(IFNULL(CONVERT_QUANTITY(inv.actual_quantity,inv.uom_id, pbf.uom_id),0))
+    FROM process_bom_final pbf
+    LEFT JOIN inventory inv  -- **** will need to only pull out from designated location
+      ON pbf.source_type = inv.source_type
+         AND pbf.ingredient_id = inv.pd_or_mt_id
+    GROUP BY pbf.process_id,pbf.source_type, pbf.ingredient_id, pbf.recipe_quantity, pbf.uom_id;
+   
+   -- calculate number of final product capable to produce with inventory in hand
+   UPDATE process_bom_temp
+      SET final_product_qty = inventory_quantity / recipe_quantity;
+    
+
+   -- identify the minimum final product count that inventory can produce
+   DELETE FROM process_bom_final;
+   INSERT INTO process_bom_final (process_id, final_product_qty)
+   SELECT process_id,
+          min(final_product_qty)
+     FROM process_bom_temp
+     GROUP BY process_id;
+  
+  -- save capability to product vs process table
+  UPDATE product_process_capability ppc
+    JOIN process_bom_final pbf
+      ON pbf.process_id = ppc.process_id
+     SET ppc.final_product_qty = pbf.final_product_qty;
+      
+ -- produce final result, which is one record per ordered detail line with capabilities of multiple process combined into
+ -- one text as product_demand_prediction
+ SELECT 
+  g.id, 
   g.order_type, 
   g.ponumber, 
   g.client_id,
   c.name as ClientName,
   g.priority,
+  d.line_num,
   pr.Name as PriName,
   d.source_id, 
   p.name as ProductName,
@@ -462,37 +229,40 @@ g.id,
   u.Name as uom,
   (SELECT max(state_date) FROM order_state_history h WHERE h.order_id = g.id) AS order_date,
   d.output_date, 
-  d.expected_deliver_date, 
+  g.expected_deliver_date, 
   d.actual_deliver_date, 
   g.internal_contact,
   CONCAT(e.firstname,' ',e.lastname) as internal_contact_name,
   g.external_contact, 
   d.comment ,
   g.id as order_id,
-  np.product_demand_prediction
-  FROM new_order_demand_prediction np, order_general g
-  INNER JOIN order_detail d ON d.order_id = g.id AND d.source_type = 'product'
-  AND (d.quantity_in_process + d.quantity_made + d.quantity_shipped )< d.quantity_requested
-  INNER JOIN product p ON d.source_type = 'product' AND d.source_id = p.id
-  LEFT JOIN client c ON g.client_id = c.id 
-  LEFT JOIN priority pr ON g.priority = pr.id 
-  LEFT JOIN uom u ON d.uomid = u.id 
-  LEFT JOIN employee e ON g.internal_contact = e.id
-  WHERE g.order_type in ('inventory', 'customer') AND np.product_id = d.source_id
-   order by d.expected_deliver_date asc
-    ;
+  (SELECT GROUP_CONCAT(CONCAT(ppc.process_name, ':', ppc.final_product_qty) SEPARATOR '| ') 
+          FROM product_process_capability ppc 
+          WHERE ppc.product_id = d.source_id
+          ORDER BY ppc.process_priority desc) AS product_demand_prediction
+  FROM order_general g
+  JOIN order_detail d
+    ON d.order_id = g.id
+       AND d.source_type = 'product'
+       AND d.quantity_requested > IFNULL(d.quantity_made, 0) + IFNULL(d.quantity_in_process, 0) + IFNULL(d.quantity_shipped, 0)
+  JOIN product p
+    ON p.id = d.source_id
+  LEFT JOIN `client` c
+    ON c.id = g.client_id
+  LEFT JOIN uom u 
+    ON u.id = d.uomid
+  LEFT JOIN employee e
+    ON e.id = g.internal_contact
+  LEFT JOIN priority pr
+    ON pr.id = g.priority
+ WHERE g.order_type !='supplier'
+   AND g.state NOT IN ('shipped', 'delivered') 
+ORDER BY g.expected_deliver_date desc, g.priority desc, d.line_num;
 
-    
+  DROP TEMPORARY TABLE ordered_products;
+  DROP TEMPORARY TABLE product_process_capability;
+  DROP TEMPORARY TABLE process_bom_temp;
+  DROP TEMPORARY TABLE process_bom_final;
 
-    DROP TABLE process_bom_total;
-
-    DROP TABLE process_bom_temp;
-
-	DROP TABLE new_order_demand_prediction_temp;
-    
-    DROP TABLE new_order_demand_prediction;
---  END IF;
-
-  
 
 END$

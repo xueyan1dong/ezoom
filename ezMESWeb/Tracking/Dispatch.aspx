@@ -26,28 +26,29 @@ scrollbars=Both>
                AutoGenerateColumns="False"  
                onselectedindexchanged="gvTable_SelectedIndexChanged" 
                 DataKeyNames="id,source_id" AllowPaging="True"  AllowSorting="True" PageSize="5" 
-               EnableTheming="False" Width="1280px" Height="280px" AllowResizeColumn="true" 
+               EnableTheming="False" Width="1280px" Height="500px" AllowResizeColumn="true" 
                PagerStyle-BackColor="#f2e8da" PagerSettings-Mode="NumericFirstLast" 
-               onpageindexchanged="gvTable_PageIndexChanged"
+               onpageindexchanged="gvTable_PageIndexChanged" HeaderStyle-Wrap="true" RowStyle-Wrap="true"
              >
              <Columns>
              <asp:TemplateField>
 			   <ItemTemplate>
-			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Dispatch" CommandName="Select" />
+			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Dispatch" CommandName="Select" Width="10px" />
 			     </ItemTemplate>                 
                  </asp:TemplateField>
-                 <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" />
-                 <asp:BoundField DataField="order_type" HeaderText="Order Type" SortExpression="order_type" />
-                 <asp:BoundField DataField="ponumber" HeaderText="PO Num" 
-                     SortExpression="ponumber" />
-                 <asp:BoundField DataField="source_id" HeaderText="source_id" SortExpression="source_id" visible=false/>
-                 <asp:BoundField DataField="ProductName" HeaderText="Product" SortExpression="ProductName" />
+                 <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="false" />
+                 <asp:BoundField DataField="order_type" HeaderText="Order Type" SortExpression="order_type" ItemStyle-Width="25px"></asp:BoundField>
+                 <asp:BoundField DataField="ponumber" HeaderText="PO Num" SortExpression="ponumber" ><ItemStyle Width="40px" /></asp:BoundField>
+                 <asp:BoundField DataField="line_num" HeaderText="Line No." SortExpression="line_num" ><ItemStyle Width="25px" /></asp:BoundField>
+                 <asp:BoundField DataField="source_id" HeaderText="source_id" SortExpression="source_id" visible="false" />
+                 <asp:BoundField DataField="ProductName" HeaderText="Product" SortExpression="ProductName" ><ItemStyle Width="40px" /></asp:BoundField>
                  <asp:BoundField DataField="ClientName" HeaderText="Client" SortExpression="ClientName" />
                  <asp:BoundField DataField="expected_deliver_date" HeaderText="Expected Deliver Date"
                      SortExpression="expected_deliver_date" DataFormatString="{0:d}" />
                  <asp:BoundField DataField="PriName" HeaderText="Priority" SortExpression="PriName" />
                  <asp:BoundField DataField="quantity_requested" HeaderText="Qty Requested" 
                      SortExpression="quantity_requested" DataFormatString="{0:N0}" />
+                 <asp:BoundField DataField="product_demand_prediction" HeaderText="Product Prediction" SortExpression="product_demand_prediction" />
                  <asp:BoundField DataField="quantity_made" HeaderText="Qty Made" 
                      SortExpression="quantity_made" DataFormatString="{0:N0}" />
                <asp:HyperLinkField DataNavigateUrlFields="source_id,order_id" 
@@ -57,14 +58,14 @@ scrollbars=Both>
                      SortExpression="quantity_shipped" DataFormatString="{0:N0}" />
                  <asp:BoundField DataField="uom" HeaderText="Unit" SortExpression="uom" />
                  <asp:BoundField DataField="order_date" HeaderText="Order Date" SortExpression="order_date" DataFormatString="{0:d}"/>
-                 <asp:BoundField DataField="output_date" HeaderText="Output Date" SortExpression="output_date" DataFormatString="{0:d}"/>
+                 <asp:BoundField DataField="output_date" HeaderText="Output Date" SortExpression="output_date" DataFormatString="{0:d}" Visible="false" />
                  
                  <asp:BoundField DataField="actual_deliver_date" HeaderText="Actual Deliver Date"
                      SortExpression="actual_deliver_date" Visible="False" DataFormatString="{0:d}"/>
                  <asp:BoundField DataField="internal_contact_name" HeaderText="Internal Contact" SortExpression="internal_contact_name" />
-                 <asp:BoundField DataField="external_contact" HeaderText="External Contact" SortExpression="external_contact" />
+                 <asp:BoundField DataField="external_contact" HeaderText="External Contact" SortExpression="external_contact" Visible="false"/>
                  <asp:BoundField DataField="comment" HeaderText="Comment" SortExpression="comment" />
-                 <asp:BoundField DataField="product_demand_prediction" HeaderText="Product Prediction" SortExpression="product_demand_prediction" />
+
 			   </Columns>
                <SelectedRowStyle  BackColor="#FFFFCC"/>
                 <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>

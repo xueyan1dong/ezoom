@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : SalesOrderConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for dispatching work from order detail lines (products) into workflow
+*    Log                    :
+*    2009: xdong: first created
+*   11/06/2018: xdong: add line number of order details into the dispatch logics
+----------------------------------------------------------------*/
 using System;
 using System.Data;
 using System.Web.UI;
