@@ -4,10 +4,11 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : This table records snapshots of process_step, so that to track changes made to processes
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info.
+*    11/09/2018: xdong: added new column product_made to mark whether a final step produces the product desired	 					
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `process_step_history`$
@@ -29,5 +30,6 @@ CREATE TABLE `process_step_history` (
   `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `approve_emp_usage` enum('employee group','employee category','employee') DEFAULT NULL,
   `approve_emp_id` int(10) unsigned DEFAULT NULL,  
+  `product_made` tinyint(1) unsigned NOT NULL DEFAULT 0,  -- it will only be 1 if completion of the step produce the final product ordered
   PRIMARY KEY (`event_time`, process_id, position_id)
 ) ENGINE=InnoDB$

@@ -717,22 +717,43 @@ CREATE TABLE `process_segment` (
 ) ENGINE=InnoDB$
 
 -- process_step table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_process_step.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : This table holds the relationship between process and its contained steps or sub processes.
+*                             If if_sub_process=1, the step_id correspond to a process_id that constitutes the sub process at the position
+*                             Recursive process only limit to 1 level deep in this software
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 	
+*    11/09/2018: xdong: added new column product_made to mark whether a final step produces the product desired				
+*/
+DELIMITER $ 
 DROP TABLE IF EXISTS `process_step`$
 CREATE TABLE `process_step` (
-  `process_id` int(10) unsigned NOT NULL,
-  `position_id` int(5) unsigned NOT NULL,
-  `step_id` int(10) unsigned NOT NULL,
-  `prev_step_pos` int(5) unsigned DEFAULT NULL,
-  `next_step_pos` int(5) unsigned DEFAULT NULL,
-  `false_step_pos` int(5) unsigned DEFAULT NULL,
-  `segment_id` int(5) unsigned DEFAULT NULL,
-  `rework_limit` smallint(2) unsigned NOT NULL DEFAULT '0',
-  `if_sub_process` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `prompt` varchar(255) DEFAULT NULL,
-  `if_autostart` tinyint(1) unsigned NOT NULL default '1',
-  `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `approve_emp_usage` enum('employee group','employee category','employee') DEFAULT NULL,
-  `approve_emp_id` int(10) unsigned DEFAULT NULL,
+  `process_id` int(10) unsigned NOT NULL,  -- id of the workflow/process
+  `position_id` int(5) unsigned NOT NULL,  -- position of the step, starting from 1, unique within a process
+  `step_id` int(10) unsigned NOT NULL,   -- id of the step or sub process at the position
+  `prev_step_pos` int(5) unsigned DEFAULT NULL,  -- previous step position id
+  `next_step_pos` int(5) unsigned DEFAULT NULL, -- next step position id
+  `false_step_pos` int(5) unsigned DEFAULT NULL,  -- for condition step, if failed condition, the step/position id to go
+  `segment_id` int(5) unsigned DEFAULT NULL,  -- process can be dividied into segments. The segment that the position/step belong to.
+  `rework_limit` smallint(2) unsigned NOT NULL DEFAULT '0', -- the max number of times that the position/step can be revisited by a batch. 0 means no limit
+  `if_sub_process` tinyint(1) unsigned NOT NULL DEFAULT '0', -- if the step points to a sub process. If 1, step_id corresponds to an id in process table. 
+                                                             -- otherwise, it correpsonds to an id in step table
+  `prompt` varchar(255) DEFAULT NULL,  -- prompt for user when batch comes to the step/position
+  `if_autostart` tinyint(1) unsigned NOT NULL default '1', -- whether to automatically start this step after previous step finished
+  `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0', -- whether need another employee or employee group or employ category to approve when ending the step
+  `approve_emp_usage` enum('employee group','employee category','employee') DEFAULT NULL, -- if need_approval = 1, this field determine whether a particular employee
+                                                                                          -- or a particular employee category or a partcular employee group can
+                                                                                          -- approve the execution of the step
+  `approve_emp_id` int(10) unsigned DEFAULT NULL, -- approved employee or group or category id
+  `product_made` tinyint(1) unsigned NOT NULL DEFAULT 0,  -- it will only be 1 if completion of the step produce the final product ordered
+                                                          -- however, even at the step, the product is made, the process may not finish,
+                                                          -- there can still be more steps after product made as post processing, such as ship or warranty etc
   PRIMARY KEY (`process_id`,`position_id`,`step_id`)
 ) ENGINE=InnoDB$
 
@@ -807,27 +828,46 @@ CREATE TABLE `product_process` (
 *    Description            : table to hold current lot/batch status information
 *    Log                    :
 *    6/5/2018: xdong: add a new column, location, to record batch/lot location
-*	 7/16/2018 peiyu: modified column `location` nvarchar to `location_id` int(11)
+*    7/16/2018 peiyu: modified column `location` nvarchar to `location_id` int(11)
+*    11/09/2018: xdong: added a column, quantity_status to indicate whether the lot/batch's quantity goes to quantity_in_process
+*                       or quantity_made or quantity_shipped in the corresponding line in order general
+*                       added a column, order_line_num to hold the line_num that the batch is dispatched from in order_detail table
+*                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
+*                       e.g. a final status for a batch can be: shipped or scrapped or done.
 */
+DELIMITER $  
 DROP TABLE IF EXISTS `lot_status`$
 CREATE TABLE `lot_status` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `alias` varchar(20) DEFAULT NULL,
-  `order_id` int(10) unsigned DEFAULT NULL,
-  `product_id` int(10) unsigned NOT NULL,
-  `process_id` int(10) unsigned NOT NULL,
-  `status` enum('dispatched','in process','in transit', 'hold', 'to warehouse', 'shipped', 'scrapped') NOT NULL,
-  `start_quantity` decimal(16,4) unsigned NOT NULL,
-  `actual_quantity` decimal(16,4) unsigned DEFAULT NULL,
-  `uomid` smallint(5) unsigned NOT NULL,
-  `update_timecode` char(15) DEFAULT NULL,  
-  `contact` int(10) unsigned DEFAULT NULL,
-  `priority` tinyint(2) unsigned NOT NULL DEFAULT '0',
-  `dispatcher` int(10) unsigned NOT NULL,
-  `dispatch_time` datetime NOT NULL,
-  `output_time` datetime DEFAULT NULL,
-  `comment` text,
-  `location_id` int(11) unsigned DEFAULT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- the id of the batch
+  `alias` varchar(20) DEFAULT NULL,  -- the unique alias of the batch. This is to hold user viewable batch number. Can be customized to specific format that user require
+  `order_id` int(10) unsigned DEFAULT NULL,  -- the id of the order that the batch/lot is dispatched from
+  `product_id` int(10) unsigned NOT NULL, -- the id of the product that the batch is to produce
+  `process_id` int(10) unsigned NOT NULL,  -- the id of the process that the batch is to follow
+  `status` enum('dispatched','in process','in transit', 'hold', 'to warehouse', 'shipped', 'scrapped', 'done') NOT NULL, -- the status of the batch. 
+  -- dispatched: when batch was just created and haven't started any process step
+  -- in process: batch is at at a step, has started, but not finished the step
+  -- in transit: batch has gone through some steps, but now is in between steps
+  -- hold: batch is put on hold from going into next step. Has to be explicitly unhold, in order to continue its process
+  -- to warehouse: batch has been relocated into warehouse
+  -- shipped: batch has been shipped to customer. Batch can not change to other status after this status, e.g. this is a final status.
+  -- scrapped: batch has been scrapped. Batch can not change to other status after this status, e.g. this is a final status.
+  -- done: batch has completed it is process, but not shipped, neigher scrapped. Batch can not change to other status after this status, e.g. this is a final status.
+  `start_quantity` decimal(16,4) unsigned NOT NULL,  -- quantity that the batch starts with
+  `actual_quantity` decimal(16,4) unsigned DEFAULT NULL,  -- actually quantity at current position
+  `uomid` smallint(5) unsigned NOT NULL,  -- id of its unit of measure
+  `update_timecode` char(15) DEFAULT NULL,   -- time code for latest update time, using code for faster sorting and data manipulation
+  `contact` int(10) unsigned DEFAULT NULL,  -- contact employee id
+  `priority` tinyint(2) unsigned NOT NULL DEFAULT '0',  -- priority of the batch. 
+  `dispatcher` int(10) unsigned NOT NULL,  -- employee id who dispatched the batch
+  `dispatch_time` datetime NOT NULL,  -- datetime the batch was dispatched
+  `output_time` datetime DEFAULT NULL,  --  time when batch is done
+  `comment` text,  -- comment put in at current step
+  `location_id` int(11) unsigned DEFAULT NULL, -- id of its current location
+  `order_line_num` smallint(5) unsigned NOT NULL DEFAULT 1, -- line number in the order_detail, from which the batch is dispatched from
+  `quantity_status` enum('in process', 'made', 'shipped') DEFAULT 'in process',  -- quantity accounting status: 
+   -- in process: quantity is counted toward quantity_in_process in order_detail record
+   -- made: quantity is counted toward quantity_made in order_detail record
+   -- shipped: quantity is counted toward quantity_shipped in order_detail record
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB$
 
@@ -842,8 +882,14 @@ CREATE TABLE `lot_status` (
 *    Description            : table to hold historical lot/batch information
 *    Log                    :
 *    6/5/2018: xdong: add a new column, location, to log batch/lot location
-*	 7/16/2018 peiyu: modified column `location` nvarchar to `location_id` int(11)
+*    7/16/2018 peiyu: modified column `location` nvarchar to `location_id` int(11)
+*    11/09/2018: xdong: added a column, quantity_status to indicate whether the lot/batch's quantity goes to quantity_in_process
+*                       or quantity_made or quantity_shipped in the corresponding line in order general
+*                       added a column, order_line_num to hold the line_num that the batch is dispatched from in order_detail table
+*                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
+*                       e.g. a final status for a batch can be: shipped or scrapped or done.
 */
+DELIMITER $  
 DROP TABLE IF EXISTS `lot_history`$
 CREATE TABLE `lot_history` (
   `lot_id` int(10) unsigned NOT NULL,
@@ -857,7 +903,7 @@ CREATE TABLE `lot_history` (
   `step_id` int(10) unsigned NOT NULL,
   `start_operator_id` int(10) unsigned NOT NULL,
   `end_operator_id` int(10) unsigned DEFAULT NULL,
-  `status` enum('dispatched', 'started', 'restarted','ended','error','stopped','scrapped','shipped') NOT NULL,
+  `status` enum('dispatched', 'started', 'restarted','ended','error','stopped','scrapped','shipped', 'done') NOT NULL,
   `start_quantity` decimal(16,4) unsigned DEFAULT NULL,
   `end_quantity` decimal(16,4) unsigned DEFAULT NULL,
   `uomid` smallint(3) unsigned DEFAULT NULL,
@@ -866,7 +912,12 @@ CREATE TABLE `lot_history` (
   `approver_id` int(10) unsigned DEFAULT NULL,
   `result` text,
   `comment` text,
-  `location_id` int(11) unsigned DEFAULT NULL,
+  `location_id` int(11) unsigned DEFAULT NULL,  
+  `order_line_num` smallint(5) unsigned NOT NULL DEFAULT 1, -- line number in the order_detail, from which the batch is dispatched from
+  `quantity_status` enum('in process', 'made', 'shipped') DEFAULT 'in process',  -- quantity accounting status: 
+   -- in process: quantity is counted toward quantity_in_process in order_detail record
+   -- made: quantity is counted toward quantity_made in order_detail record
+   -- shipped: quantity is counted toward quantity_shipped in order_detail record
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
 ) ENGINE=InnoDB$
 
