@@ -2,6 +2,12 @@
 <!-- If the column shouldn't be displayed, don't put it into xml file -->
 <Table name="order">
   <Header>Start New Batch(es)</Header>
+  <Column name ="line_num">
+    <DisplayName>Line Number</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>30</TextBoxLength>
+  </Column>
   <Column name ="ProductName">
     <DisplayName>Product</DisplayName>
     <IsEnable>true</IsEnable>

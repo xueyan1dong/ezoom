@@ -25,7 +25,7 @@ scrollbars=Both>
                EmptyDataText="There is no outstanding order currently" 
                AutoGenerateColumns="False"  
                onselectedindexchanged="gvTable_SelectedIndexChanged" 
-                DataKeyNames="id,source_id" AllowPaging="True"  AllowSorting="True" PageSize="5" 
+                DataKeyNames="id,line_num,source_id" AllowPaging="True"  AllowSorting="True" PageSize="5" 
                EnableTheming="False" Width="1280px" Height="500px" AllowResizeColumn="true" 
                PagerStyle-BackColor="#f2e8da" PagerSettings-Mode="NumericFirstLast" 
                onpageindexchanged="gvTable_PageIndexChanged" HeaderStyle-Wrap="true" RowStyle-Wrap="true"
@@ -136,7 +136,8 @@ scrollbars=Both>
        ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        SelectCommand="
-       SELECT  p.name as ProductName,
+       SELECT d.line_num,
+            p.name as ProductName,
             (SELECT PP.process_id 
            FROM product_process pp 
            WHERE PP.product_id = p.id ORDER BY pp.priority desc LIMIT 1) as process_id, 
@@ -150,7 +151,7 @@ scrollbars=Both>
           substr(o.comment,0,0) as comment
           
   FROM `order_general` o
-  INNER JOIN order_detail d ON d.order_id = o.id
+  INNER JOIN order_detail d ON d.order_id = o.id AND d.line_num=?
   INNER JOIN product p ON d.source_type = 'product' AND d.source_id=? AND p.id = d.source_id
   LEFT JOIN uom u ON p.uomid =u.id
  WHERE o.id= ? " 
@@ -158,6 +159,8 @@ scrollbars=Both>
              
         >
          <SelectParameters>
+           <asp:ControlParameter ControlID="gvTable" Name="lid" 
+            PropertyName='SelectedDataKey.Values["line_num"]' />
            <asp:ControlParameter ControlID="gvTable" Name="pid" 
             PropertyName='SelectedDataKey.Values["source_id"]' />
              <asp:ControlParameter ControlID="gvTable" Name="vid" 

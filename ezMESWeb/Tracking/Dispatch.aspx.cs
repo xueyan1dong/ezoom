@@ -8,6 +8,7 @@
 *    Log                    :
 *    2009: xdong: first created
 *   11/06/2018: xdong: add line number of order details into the dispatch logics
+*   11/11/2018: xdong: added line number in dispatch popup and action
 ----------------------------------------------------------------*/
 using System;
 using System.Data;
@@ -40,6 +41,7 @@ namespace ezMESWeb.Tracking
                 colc = dv.Table.Columns;
                 while (colc.Count > 1)
                     colc.RemoveAt(colc.Count - 1);
+                colc.Add(new DataColumn("line_num"));
                 colc.Add(new DataColumn("ProductName"));
                 colc.Add(new DataColumn("process_id"));
                 colc.Add(new DataColumn("lot_size"));
@@ -64,7 +66,9 @@ namespace ezMESWeb.Tracking
          }
 
       }
-
+    /*
+     * correspond to the dispatch link button on the grid
+     */
       protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
       {
          //modify the mode of form view
@@ -80,7 +84,7 @@ namespace ezMESWeb.Tracking
 
         base.gvTable_SelectedIndexChanged(sender, e);
         DropDownList dpProcess =((DropDownList)FormView1.FindControl("drpprocess_id"));
-        string selVal = dpProcess.SelectedValue;
+       // string selVal = dpProcess.SelectedValue;
 
         dpProcess.Items.Clear();
 
@@ -97,7 +101,8 @@ namespace ezMESWeb.Tracking
 
           dpProcess.Items.Add(new ListItem(String.Format("{0}", ezReader[1]), String.Format("{0}", ezReader[0])));
         }
-        dpProcess.SelectedValue = selVal;
+      dpProcess.SelectedIndex = 0;
+        //dpProcess.SelectedValue = selVal;
         ezReader.Close();
         ezReader.Dispose();
         ezCmd.Dispose();
@@ -134,6 +139,7 @@ namespace ezMESWeb.Tracking
                 ezCmd.CommandType = CommandType.StoredProcedure;
 
                 ezCmd.Parameters.AddWithValue("@_order_id", Convert.ToInt32(gvTable.SelectedDataKey.Values["id"]));
+                ezCmd.Parameters.AddWithValue("@_line_num", Convert.ToInt32(gvTable.SelectedDataKey.Values["line_num"]));
                 ezCmd.Parameters.AddWithValue("@_product_id", Convert.ToInt32(gvTable.SelectedDataKey.Values["source_id"]));
 
                 fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;

@@ -3102,32 +3102,33 @@ END$
 
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : load_procedures.sql
+*    Source File            : dispatch_multi_lots.sql
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : Diapatch a lot/batch from a order detail line. The dispatch routine will dispatch 1-n batches depending on _num_lots input
+*                             and each batch contains 1-n unit of final products depending on _lot_size
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 
-* 	 7/26/2018: Peiyu Ge: added an new variable location_id					
+*    6/19/2018: Peiyu Ge: added header info. 				
+*   11/11/2018: xdong: added input _line_num now that order_detail can have multi lines of the same product	
 */
-
--- procedure dispatch_multi_lots
+DELIMITER $ 
 DROP PROCEDURE IF EXISTS `dispatch_multi_lots`$
 CREATE PROCEDURE `dispatch_multi_lots`(
-  IN _order_id int(10) unsigned, 
-  IN _product_id int(10) unsigned,
-  IN _process_id int(10) unsigned,
-  IN _lot_size decimal(16,4) unsigned,
-  IN _num_lots int(10) unsigned,
-  IN _alias_prefix varchar(10),
-  IN _location_id int(11) unsigned,  
-  IN _lot_contact int(10) unsigned,
-  IN _lot_priority tinyint(2) unsigned,
-  IN _comment text,
-  IN _dispatcher int(10) unsigned,
-  OUT _response varchar(255)
+  IN _order_id int(10) unsigned, -- the id of the order it dispatch from
+  IN _line_num smallint(5) unsigned, -- the line number in the order detail to dispatch from
+  IN _product_id int(10) unsigned, -- the product id to produce with the batch
+  IN _process_id int(10) unsigned, -- the id of the process that the batch will assume
+  IN _lot_size decimal(16,4) unsigned, -- the size of the final product in the batch
+  IN _num_lots int(10) unsigned, -- number of batch to dispatch in this call
+  IN _alias_prefix varchar(10), -- prefix to use in producing the batch alias (batch name)
+  IN _location_id int(11) unsigned,  -- id of location to dispatch to
+  IN _lot_contact int(10) unsigned, -- employee id of the contact person for the batch
+  IN _lot_priority tinyint(2) unsigned, -- priority of the batch
+  IN _comment text,  -- any comment on the batch
+  IN _dispatcher int(10) unsigned, -- person dispatched the batch
+  OUT _response varchar(255)  -- any error or message from this stored procedure
 )
 BEGIN
 
@@ -3148,6 +3149,9 @@ BEGIN
   ELSEIF NOT EXISTS (SELECT * FROM order_general WHERE id=_order_id)
   THEN
     SET _response = "The order you selected doesn't exist in database.";    
+    ELSEIF NOT EXISTS (SELECT * FROM order_detail WHERE order_id=_order_id AND line_num = _line_num )
+  THEN
+    SET _response = "The order line you selected doesn't exist in database.";    
   ELSEIF _process_id IS NULL
   THEN
     SET _response = 'Process is required. Please select a process to dispatch lots to';
@@ -3303,6 +3307,7 @@ BEGIN
           INSERT INTO lot_status(
             alias,
             order_id,
+            order_line_num,
             product_id,
             process_id,
             status,
@@ -3315,12 +3320,14 @@ BEGIN
             dispatcher,
             dispatch_time,
 			location_id,
-            comment
+            comment,
+            quantity_status
             )
             VALUES
             (
               _alias,
               _order_id,
+              _line_num,
               _product_id,
               _process_id,
               'dispatched',
@@ -3333,7 +3340,8 @@ BEGIN
               _dispatcher,
               _dispatch_time,
 			  _location_id,
-              _comment  
+              _comment ,
+              'in process'
             );
           SET _new_id = last_insert_id();
             
@@ -3354,7 +3362,9 @@ BEGIN
               end_quantity,
               uomid,
 			  location_id,
-              comment
+              comment,
+              order_line_num,
+              quantity_status
               )
             VALUES (
               _new_id,
@@ -3371,7 +3381,9 @@ BEGIN
               _lot_size,
               _uom_id,
 			  _location_id,
-              _comment
+              _comment,
+              _line_num,
+              'in process'
               );
   
             INSERT INTO multilots (lot_id, lot_alias)
@@ -3412,6 +3424,7 @@ BEGIN
 
 
 END$
+
 
 -- procedure dispatch_single_lot
 DROP PROCEDURE IF EXISTS `dispatch_single_lot`$
