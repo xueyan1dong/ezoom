@@ -8,6 +8,7 @@
 *    Log                    :
 *    2009: xdong: first created
   *  09/26/2018:xdong: attempt to solve problem related to server.transfer call in btnDo_Click, but no result
+  *  11/12/2018:xdong: added "Product Made" check box to insert and modify popup of step/position to mark whether final product is made there
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;
@@ -44,7 +45,7 @@ namespace ezMESWeb
             falsepositionTextBox,
             reworklimitTextBox,
             promptTextBox;
-        protected CheckBox chkApproval, chkIfAutoStart;
+        protected CheckBox chkApproval, chkIfAutoStart, chkProductMade;
 
         protected LinkButton LinkButton1;
         protected TableRow tbrApprove;
@@ -180,7 +181,7 @@ namespace ezMESWeb
         protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
         {
             string stepId, stepChoice, segmentId;
-            bool approveChoice, autostartChoice;
+            bool approveChoice, autostartChoice, productmadeChoice;
 
 
             //toggle_dropdowns(rblStepOrProcess2.SelectedValue, chkApproval2.Checked, false);
@@ -227,8 +228,18 @@ namespace ezMESWeb
             else
                 approveChoice = false;
             ((CheckBox)fvUpdate.FindControl("chkApproval2")).Checked = approveChoice;
-            //  show the modal popup
-            ((RadioButtonList)fvUpdate.FindControl("rblStepOrProcess2")).Attributes.Add(
+
+            //set product made checkbox with current value
+            if (((TextBox)fvUpdate.FindControl("product_madeTextBox")).Text.Equals("1"))
+            {
+              productmadeChoice = true;
+            }
+            else
+              productmadeChoice = false;
+            ((CheckBox)fvUpdate.FindControl("chkProductMade2")).Checked = productmadeChoice;
+
+      //  show the modal popup
+      ((RadioButtonList)fvUpdate.FindControl("rblStepOrProcess2")).Attributes.Add(
                 "OnClick", 
                 "showDropDown('" +
                     ((RadioButtonList)fvUpdate.FindControl("rblStepOrProcess2")).ClientID + "','"
@@ -339,6 +350,13 @@ namespace ezMESWeb
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id", DBNull.Value);
                     }
                     ezCmd.Parameters.AddWithValue("@_employee_id", Convert.ToInt32(Session["UserID"]));
+
+                    if (chkProductMade.Checked)
+                    {
+                      ezCmd.Parameters.AddWithValue("@_product_made", 1);
+                    }
+                    else
+                      ezCmd.Parameters.AddWithValue("@_product_made", 0);
 
                     ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                     ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
@@ -468,6 +486,13 @@ namespace ezMESWeb
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id", DBNull.Value);
                     }
                     ezCmd.Parameters.AddWithValue("@_employee_id", Convert.ToInt32(Session["UserID"]));
+
+                    if (((CheckBox)fvUpdate.FindControl("chkProductMade2")).Checked)
+                    {
+                      ezCmd.Parameters.AddWithValue("@_product_made", 1);
+                    }
+                    else
+                      ezCmd.Parameters.AddWithValue("@_product_made", 0);
 
                     ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                     ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;

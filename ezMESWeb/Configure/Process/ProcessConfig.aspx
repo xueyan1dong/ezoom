@@ -312,6 +312,8 @@
                            <asp:BoundField DataField="need_approval" HeaderText="Need Approval" 
                                     SortExpression="need_approval" />
                            <asp:BoundField DataField="approved_by" HeaderText="Approved By" />
+                           <asp:BoundField DataField="product_made" HeaderText="Product Made"
+                               SortExpression="product_made" />
                        </Columns>
                        <SelectedRowStyle  BackColor="#ffffcc"/>
                    </asp:GridView>
@@ -321,11 +323,11 @@
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            DeleteCommand="{call delete_step_from_process( ?, ?, ?)}" 
            ProviderName="System.Data.Odbc" 
-           SelectCommand="select ps.position_id, s.name as step, ps.prev_step_pos, ps.next_step_pos, ps.false_step_pos, sg.name as segment, ps.rework_limit,  if(ps.if_sub_process, 'Y', 'N') as if_sub_process, ps.prompt, if(ps.if_autostart, 'Y', 'N') as if_autostart,  if(ps.need_approval, 'Y', 'N') as need_approval, concat(e1.firstname, ' ', e1.lastname) as approved_by 
-from process_step ps join step s on ps.step_id=s.id left join employee e1 on ps.approve_emp_id=e1.id LEFT JOIN process_segment sg ON ps.process_id=sg.process_id AND ps.segment_id=sg.segment_id where ps.process_id = ? and ps.if_sub_process=0
+           SelectCommand="select ps.position_id, s.name as step, ps.prev_step_pos, ps.next_step_pos, ps.false_step_pos, sg.name as segment, ps.rework_limit,  if(ps.if_sub_process, 'Y', 'N') as if_sub_process, ps.prompt, if(ps.if_autostart, 'Y', 'N') as if_autostart,  if(ps.need_approval, 'Y', 'N') as need_approval, concat(e1.firstname, ' ', e1.lastname) as approved_by,  
+if(ps.product_made, 'Y', 'N') as product_made from process_step ps join step s on ps.step_id=s.id left join employee e1 on ps.approve_emp_id=e1.id LEFT JOIN process_segment sg ON ps.process_id=sg.process_id AND ps.segment_id=sg.segment_id where ps.process_id = ? and ps.if_sub_process=0
 union
-select ps.position_id, s.name as step, ps.prev_step_pos, ps.next_step_pos, ps.false_step_pos,sg.name as segment, ps.rework_limit, if(ps.if_sub_process, 'Y', 'N') as if_sub_process, ps.prompt, if(ps.if_autostart, 'Y', 'N') as if_autostart, if(ps.need_approval, 'Y', 'N') as need_approval, concat(e1.firstname, ' ', e1.lastname) as approved_by 
-from process_step ps join process s on ps.step_id=s.id left join employee e1 on ps.approve_emp_id=e1.id LEFT JOIN process_segment sg ON ps.process_id=sg.process_id AND ps.segment_id=sg.segment_id where ps.process_id = ? and ps.if_sub_process=1
+select ps.position_id, s.name as step, ps.prev_step_pos, ps.next_step_pos, ps.false_step_pos,sg.name as segment, ps.rework_limit, if(ps.if_sub_process, 'Y', 'N') as if_sub_process, ps.prompt, if(ps.if_autostart, 'Y', 'N') as if_autostart, if(ps.need_approval, 'Y', 'N') as need_approval, concat(e1.firstname, ' ', e1.lastname) as approved_by,  
+if(ps.product_made, 'Y', 'N') as product_made from process_step ps join process s on ps.step_id=s.id left join employee e1 on ps.approve_emp_id=e1.id LEFT JOIN process_segment sg ON ps.process_id=sg.process_id AND ps.segment_id=sg.segment_id where ps.process_id = ? and ps.if_sub_process=1
 order by position_id" 
           
                  DeleteCommandType="StoredProcedure">
@@ -482,6 +484,13 @@ order by position_id"
                                     Text='<%# Bind("approve_emp_id") %>' Visible="False" />
                                  </asp:TableCell>
                             </asp:TableRow>
+                            <asp:TableRow ID="TableRow42" runat="server">
+                                <asp:TableCell ID="TableCell421" ColumnSpan="2" runat="server" Height="25px" HorizontalAlign="Center">
+                                <asp:CheckBox ID="chkProductMade2" runat="server" Text="Product Made?" />
+                                <asp:TextBox ID="product_madeTextBox" runat="server" 
+                                Text='<%# Bind("product_made") %>' Visible="False" />
+                                </asp:TableCell>                               
+                            </asp:TableRow> 
                        </asp:Table>    
 
                      </EditItemTemplate>
@@ -517,6 +526,10 @@ order by position_id"
                          approve_emp_id:
                          <asp:TextBox ID="approve_emp_idTextBox" runat="server" 
                              Text='<%# Bind("approve_emp_id") %>' />
+                         <br />
+                         product_made:
+                         <asp:TextBox ID="product_madeTextBox" runat="server"
+                             Text='<%# Bind("product_made") %>' />
                          <br />
                          <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" 
                              CommandName="Insert" Text="Insert" />
@@ -556,6 +569,9 @@ order by position_id"
                          <asp:Label ID="approve_emp_idLabel" runat="server" 
                              Text='<%# Bind("approve_emp_id") %>' />
                          <br />
+                         <asp:Label ID="product_madeLabel" runat="server"
+                             Text='<%# Bind("product_made") %>' />
+                         <br />
                          <asp:LinkButton ID="EditButton" runat="server" CausesValidation="False" 
                              CommandName="Edit" Text="Edit" />
                      </ItemTemplate>
@@ -576,7 +592,7 @@ order by position_id"
              <asp:SqlDataSource ID="sdsUpdate" runat="server" 
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
                  ProviderName="System.Data.Odbc"       
-                 SelectCommand="SELECT position_id, step_id, prev_step_pos, next_step_pos, false_step_pos, segment_id, rework_limit, if_sub_process, prompt, if_autostart, need_approval, approve_emp_id FROM process_step WHERE process_id=? and position_id = ?">
+                 SelectCommand="SELECT position_id, step_id, prev_step_pos, next_step_pos, false_step_pos, segment_id, rework_limit, if_sub_process, prompt, if_autostart, need_approval, approve_emp_id, product_made FROM process_step WHERE process_id=? and position_id = ?">
                  <SelectParameters>
                      <asp:ControlParameter ControlID="txtID" Name="process_id" 
                          PropertyName="Text" DefaultValue="0" />
@@ -748,6 +764,11 @@ order by position_id"
                            </asp:DropDownList>
                        </asp:TableCell>
                    </asp:TableRow>
+                  <asp:TableRow  ID="TableRow9" runat="server">
+                       <asp:TableCell ID="TableCell17" ColumnSpan="2" runat="server" Height="25px" HorizontalAlign="Center">
+                           <asp:CheckBox ID="chkProductMade" runat="server" Text="Product Made?" />
+                       </asp:TableCell>
+                   </asp:TableRow>  
                </asp:Table>
                </asp:TableCell>
            </asp:TableRow>

@@ -10,7 +10,7 @@
 *    6/19/2018: Peiyu Ge: added header info.
 *    11/09/2018: xdong: added new column product_made to mark whether a final step produces the product desired	 					
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $ 
 DROP TABLE IF EXISTS `process_step_history`$
 CREATE TABLE `process_step_history` (
   `event_time` datetime NOT NULL,
