@@ -63,7 +63,7 @@
                  <asp:BoundField DataField="product_id" HeaderText="product_id" Visible="false" />
                  <asp:BoundField DataField="process_id" HeaderText="process_id" Visible="false" /> 
                  <asp:BoundField DataField="step_id" HeaderText="step_id" Visible="false" />  
-                 <asp:BoundField DataField="result" HeaderText="result" Visible="false" />  
+                 <asp:BoundField DataField="result" HeaderText="result" Visible="false" />
                  <asp:BoundField DataField="equipment_id" HeaderText="Equipment" Visible="false" />	
                  <asp:BoundField DataField="start_timecode" HeaderText="StartTime" Visible="false" />	
                  
@@ -117,6 +117,7 @@ SELECT id,
         emp_id,
         ifnull((select name from location where id = location_id), 'N/A') as location_name
    FROM view_lot_in_process
+        where lot_status not in ('done', 'shipped', 'scrapped')
    ORDER BY start_timecode DESC"
         EnableCaching="false">
         </asp:SqlDataSource>
