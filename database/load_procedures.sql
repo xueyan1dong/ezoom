@@ -4111,7 +4111,7 @@ CREATE PROCEDURE `end_lot_step`(
   INOUT _position_id int(5) unsigned,
   INOUT _sub_position_id int(5) unsigned,
   INOUT _step_id int(10) unsigned,
-  OUT _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped'),
+  OUT _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done'),
   OUT _step_status enum('dispatched','started','restarted','ended','error','stopped','scrapped','shipped'),  
   OUT _autostart_timecode char(15),  
   OUT _response varchar(255)
@@ -4132,8 +4132,10 @@ BEGIN
   DECLARE _need_approval tinyint(1) unsigned;
   DECLARE _approve_emp_usage enum('employee group','employee category','employee');
   DECLARE _approve_emp_id int(10) unsigned;
-  DECLARE _lot_status_n enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped');
+  DECLARE _lot_status_n enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done');
   DECLARE _step_status_n enum('dispatched','started','restarted','ended','error','stopped','scrapped','shipped'); 
+  DECLARE _product_made tinyint(1) unsigned;
+  DECLARE _quantity_status ENUM('in process', 'made', 'shipped');
   
   IF _lot_id IS NULL AND (_lot_alias IS NULL OR length(_lot_alias)=0) THEN
     SET _response = "Batch identifier is missing. Please supply a lot.";
@@ -4242,6 +4244,7 @@ BEGIN
               FROM step s, step_type st
             WHERE s.id =_step_id
               AND st.id =s.step_type_id;
+			
   
             SET _end_timecode = DATE_FORMAT(UTC_timestamp(), '%Y%m%d%H%i%s0');
             IF _step_type in ('consume material', 'disassemble', 'condition', 'hold lot')
@@ -4262,14 +4265,44 @@ BEGIN
                 AND end_timecode IS NULL;
             
               IF row_count() > 0 THEN
-                SET _lot_status = 'in transit';
+                -- get next position, if Null, Lot Done
+                SELECT next_step_pos
+					INTO _position_id_n
+					FROM process_step
+				WHERE process_id=_process_id_p and position_id = _position_id_p and step_id = _step_id_p;
+                
+                IF _position_id_n IS NULL THEN
+					SET _lot_status = 'done';
+                    SET _quantity_status = 'made';
+				ELSE
+					SET _lot_status = 'in transit';
+                    SET _quantity_status = 'in process';
+				END IF;
                 UPDATE lot_status
                   SET status = _lot_status
                       ,actual_quantity = _end_quantity
                       ,update_timecode = _end_timecode
                       ,comment = _result_comment
+                      ,quantity_status = _quantity_status
                 WHERE id=_lot_id;
-               
+                
+				-- check product_made flag in process_step table, if 1, update quantity_made, quantity_in_process in order_detail table 
+				SELECT product_made
+					INTO _product_made
+					FROM process_step
+				WHERE process_id =_process_id_p and position_id = _position_id_p and step_id = _step_id_p;
+				  
+				IF _product_made = 1 Then
+					UPDATE order_detail
+					SET quantity_made = quantity_made + _end_quantity
+						,quantity_in_process = quantity_in_process - _end_quantity
+					WHERE order_id=(select order_id from lot_status where id = _lot_id)
+					And source_id = (select product_id from lot_status where id = _lot_id)
+					And source_type = 'product'
+					And line_num = (select order_line_num from lot_status where id = _lot_id);
+				End IF;
+                
+                
                 SET _process_id_p = null;
                 SET _sub_process_id_n = null;
                 SET _position_id_n = null;
