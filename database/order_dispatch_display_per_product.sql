@@ -12,6 +12,7 @@
 *    09/10/2018:Peiyu Ge: Created
 *    10/29/2018:Xueyan Dong: Added some scripts for easy recompile
 *    11/06/2018: Xueyan Dong: rewrite the logics to narrow down data volume processed and add line_num to the resultset.
+*    11/13/2018: Xueyan Dong: added condition to only pull out production process
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS order_dispatch_display_per_product$
@@ -48,7 +49,8 @@ BEGIN
     JOIN product_process pp
       ON pp.product_id = op.product_id
     JOIN `process` p 
-      ON p.id = pp.process_id;
+      ON p.id = pp.process_id
+         AND p.state = 'production';
   -- table for holding the capability of each process, which is determined by the scacity of peristent ingredients,
   -- e.g. the ingredient, whose inventory allows the minimum quantity of final product produced
   DROP TEMPORARY TABLE IF EXISTS process_bom_final;
