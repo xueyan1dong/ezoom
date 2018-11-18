@@ -5930,11 +5930,13 @@ namespace ezMESWeb.Reports.report_templates {
             
             private global::System.Data.DataColumn columnpriority;
             
-            private global::System.Data.DataColumn columnproduction_description;
+            private global::System.Data.DataColumn columnproduct_description;
             
             private global::System.Data.DataColumn columndescription;
             
             private global::System.Data.DataColumn columnmax_product_qty;
+            
+            private global::System.Data.DataColumn columnif_blocking_ingredient;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -6083,9 +6085,9 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn production_descriptionColumn {
+            public global::System.Data.DataColumn product_descriptionColumn {
                 get {
-                    return this.columnproduction_description;
+                    return this.columnproduct_description;
                 }
             }
             
@@ -6102,6 +6104,14 @@ namespace ezMESWeb.Reports.report_templates {
             public global::System.Data.DataColumn max_product_qtyColumn {
                 get {
                     return this.columnmax_product_qty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn if_blocking_ingredientColumn {
+                get {
+                    return this.columnif_blocking_ingredient;
                 }
             }
             
@@ -6157,9 +6167,10 @@ namespace ezMESWeb.Reports.report_templates {
                         string order_id, 
                         string expected_deliver_date, 
                         string priority, 
-                        string production_description, 
+                        string product_description, 
                         string description, 
-                        string max_product_qty) {
+                        string max_product_qty, 
+                        string if_blocking_ingredient) {
                 new_order_demand_predictionRow rownew_order_demand_predictionRow = ((new_order_demand_predictionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ponumber,
@@ -6176,9 +6187,10 @@ namespace ezMESWeb.Reports.report_templates {
                         order_id,
                         expected_deliver_date,
                         priority,
-                        production_description,
+                        product_description,
                         description,
-                        max_product_qty};
+                        max_product_qty,
+                        if_blocking_ingredient};
                 rownew_order_demand_predictionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rownew_order_demand_predictionRow);
                 return rownew_order_demand_predictionRow;
@@ -6215,9 +6227,10 @@ namespace ezMESWeb.Reports.report_templates {
                 this.columnorder_id = base.Columns["order_id"];
                 this.columnexpected_deliver_date = base.Columns["expected_deliver_date"];
                 this.columnpriority = base.Columns["priority"];
-                this.columnproduction_description = base.Columns["production_description"];
+                this.columnproduct_description = base.Columns["product_description"];
                 this.columndescription = base.Columns["description"];
                 this.columnmax_product_qty = base.Columns["max_product_qty"];
+                this.columnif_blocking_ingredient = base.Columns["if_blocking_ingredient"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6251,12 +6264,14 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columnexpected_deliver_date);
                 this.columnpriority = new global::System.Data.DataColumn("priority", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnpriority);
-                this.columnproduction_description = new global::System.Data.DataColumn("production_description", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnproduction_description);
+                this.columnproduct_description = new global::System.Data.DataColumn("product_description", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnproduct_description);
                 this.columndescription = new global::System.Data.DataColumn("description", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndescription);
                 this.columnmax_product_qty = new global::System.Data.DataColumn("max_product_qty", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnmax_product_qty);
+                this.columnif_blocking_ingredient = new global::System.Data.DataColumn("if_blocking_ingredient", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnif_blocking_ingredient);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11590,18 +11605,18 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string production_description {
+            public string product_description {
                 get {
                     try {
-                        return ((string)(this[this.tablenew_order_demand_prediction.production_descriptionColumn]));
+                        return ((string)(this[this.tablenew_order_demand_prediction.product_descriptionColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'production_description\' in table \'new_order_demand_predicti" +
-                                "on\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'product_description\' in table \'new_order_demand_prediction\'" +
+                                " is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablenew_order_demand_prediction.production_descriptionColumn] = value;
+                    this[this.tablenew_order_demand_prediction.product_descriptionColumn] = value;
                 }
             }
             
@@ -11636,6 +11651,23 @@ namespace ezMESWeb.Reports.report_templates {
                 }
                 set {
                     this[this.tablenew_order_demand_prediction.max_product_qtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string if_blocking_ingredient {
+                get {
+                    try {
+                        return ((string)(this[this.tablenew_order_demand_prediction.if_blocking_ingredientColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'if_blocking_ingredient\' in table \'new_order_demand_predicti" +
+                                "on\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablenew_order_demand_prediction.if_blocking_ingredientColumn] = value;
                 }
             }
             
@@ -11809,14 +11841,14 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool Isproduction_descriptionNull() {
-                return this.IsNull(this.tablenew_order_demand_prediction.production_descriptionColumn);
+            public bool Isproduct_descriptionNull() {
+                return this.IsNull(this.tablenew_order_demand_prediction.product_descriptionColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void Setproduction_descriptionNull() {
-                this[this.tablenew_order_demand_prediction.production_descriptionColumn] = global::System.Convert.DBNull;
+            public void Setproduct_descriptionNull() {
+                this[this.tablenew_order_demand_prediction.product_descriptionColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11841,6 +11873,18 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void Setmax_product_qtyNull() {
                 this[this.tablenew_order_demand_prediction.max_product_qtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isif_blocking_ingredientNull() {
+                return this.IsNull(this.tablenew_order_demand_prediction.if_blocking_ingredientColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setif_blocking_ingredientNull() {
+                this[this.tablenew_order_demand_prediction.if_blocking_ingredientColumn] = global::System.Convert.DBNull;
             }
         }
         

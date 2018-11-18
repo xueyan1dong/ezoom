@@ -1,4 +1,18 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : NewOrderDemandPrediction.aspx.cs
+*    Created By             : Peiyu Ge
+*    Date Created           : 2018
+*    Platform Dependencies  : .NET 
+*    Description            : Report page for showing the persistent parts required for producing the unique products in an order within all possible workflow/processes
+*                             Thus, the report list the quantities of unique products and unique processes of each product, then unique persistent parts requested in
+*                             each processes and their inventory and how many final products the inventory can produce. Also, list if a part is the one determine the
+*                             maximum final products that current inventory can produce with the process.
+*    Log                    :
+*    10/2018: Peiyu Ge: first created
+*    11/18/2018: Xueyan Dong: rewrote this report with more accurate data and columns
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;

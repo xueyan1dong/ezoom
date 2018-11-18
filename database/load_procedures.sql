@@ -7210,6 +7210,8 @@ END$
 *    Log                    :		
 *     09/02/2018: Peiyu Ge: first created
 *     11/17/2018: Xueyan Dong: rewrote the logics
+*     11/18/2018: Xueyan Dong: add if_blocking_ingredient column to output resultset and also sorting by product and process priority.
+*                              change priority to pull out from process priority
 */
 DELIMITER $  
   DROP PROCEDURE IF EXISTS `new_order_demand_prediction`$
@@ -7232,9 +7234,9 @@ DELIMITER $
   CREATE TEMPORARY TABLE IF NOT EXISTS ordered_products (
    order_id INT(10) UNSIGNED,
    expected_deliver_date DATETIME,
-   priority TINYINT(2) UNSIGNED,
    ponumber VARCHAR(40),
    product_id INT(10) UNSIGNED,
+   min_line_num SMALLINT(5) UNSIGNED,
    quantity_requested DECIMAL(16,4) UNSIGNED,
    quantity_completed DECIMAL(16,4) UNSIGNED,
    quantity_not_dispatched DECIMAL(16,4) UNSIGNED,
@@ -7245,9 +7247,9 @@ DELIMITER $
 
   INSERT INTO ordered_products
   (expected_deliver_date,
-   priority,
    ponumber,
    product_id,
+   min_line_num,
    quantity_requested,
    quantity_completed,
    quantity_not_dispatched,
@@ -7255,10 +7257,10 @@ DELIMITER $
    product_description,
    product_group_name,
    uom_id)
-  SELECT g.expected_deliver_date,
-         g.priority,
+  SELECT MIN(IFNULL(d.expected_deliver_date, g.expected_deliver_date)),
          g.ponumber,
          d.source_id,
+         MIN(d.line_num),
          SUM(d.quantity_requested),
          SUM(IFNULL(d.quantity_made,0.0)+IFNULL(d.quantity_shipped,0.0)),
          SUM(d.quantity_requested - IFNULL(d.quantity_made,0) - IFNULL(d.quantity_in_process,0)-IFNULL(d.quantity_shipped,0)),
@@ -7288,7 +7290,8 @@ DELIMITER $
     recipe_quantity DECIMAL(16,4) UNSIGNED,
     uom_id SMALLINT(2) UNSIGNED,
     inventory_quantity DECIMAL(16,4) UNSIGNED,
-    final_product_qty DECIMAL(16,4) UNSIGNED -- store how many final product the inventory can support = inventory_quantity / recipe_quantity
+    final_product_qty DECIMAL(16,4) UNSIGNED, -- store how many final product the inventory can support = inventory_quantity / recipe_quantity
+    if_blocking_ingredient TINYINT(1) UNSIGNED
     );
  INSERT INTO process_bom_final (process_id, process_name)
   SELECT DISTINCT pp.process_id, p.`name`
@@ -7315,7 +7318,8 @@ DELIMITER $
     uom_id SMALLINT(2) UNSIGNED,
     uom_name VARCHAR(20),
     inventory_quantity DECIMAL(16,4) UNSIGNED,
-    final_product_qty DECIMAL(16,4) UNSIGNED -- store how many final product the inventory can support = inventory_quantity / recipe_quantity
+    final_product_qty DECIMAL(16,4) UNSIGNED, -- store how many final product the inventory can support = inventory_quantity / recipe_quantity
+    if_blocking_ingredient TINYINT(1) UNSIGNED
     );
     
   -- find persistant ingredients of the processes none sub process steps of the processes
@@ -7455,11 +7459,30 @@ DELIMITER $
     JOIN uom u
       ON u.id = pbt.uom_id
      SET pbt.uom_name = u.name;
+  
+  -- find the blocking ingredient, e.g. the one ingredient that allow minimum final_product_qty
+  -- first identify the minimum final product qty decided by ingredient inventory
+  DELETE FROM process_bom_final;
+  INSERT INTO process_bom_final
+  (process_id,
+  final_product_qty
+  )
+  SELECT process_id,
+         MIN(final_product_qty)
+    FROM process_bom_temp pbt
+   GROUP BY process_id;
+  
+  -- set the if_blocking_ingredient for the ingredients lead to minimum final product
+  UPDATE process_bom_temp pbt
+    JOIN process_bom_final pbf
+      ON pbf.process_id = pbt.process_id
+         AND pbf.final_product_qty = pbt.final_product_qty
+     SET pbt.if_blocking_ingredient = 1;
+  
      
 	SELECT
 			_order_id,
       g.expected_deliver_date,
-      g.priority,
 			g.ponumber,
 			g.product_name, 
       g.product_description,
@@ -7469,20 +7492,23 @@ DELIMITER $
 			g.quantity_not_dispatched,
 			u.name as uom,
 			pb.process_name,
+      pp.priority,
 			pb.ingredient_name,
       pb.ingredient_description AS description,
 		-- concat(p.quantity," ", p.uom),
 			pb.recipe_quantity as quantity,
       pb.inventory_quantity AS unassigned_quantity,
-      pb.final_product_qty AS max_product_qty
-            
+      pb.final_product_qty AS max_product_qty,
+      IF(if_blocking_ingredient, 'Y', 'N') AS if_blocking_ingredient
+
 	FROM ordered_products g
   JOIN product_process pp
     ON pp.product_id = g.product_id
   JOIN process_bom_temp pb
     ON pb.process_id = pp.process_id
   JOIN uom u
-    ON u.id = g.uom_id;
+    ON u.id = g.uom_id
+  ORDER BY g.min_line_num, pp.priority desc;
     
   DROP TEMPORARY TABLE ordered_products;
   DROP TEMPORARY TABLE process_bom_final;
