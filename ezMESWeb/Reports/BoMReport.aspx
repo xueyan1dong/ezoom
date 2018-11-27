@@ -37,7 +37,7 @@
         </tr>
         <tr><td>&nbsp;</td></tr>
         <tr>
-            <td style="font-family:Times New Roman; font-size:18px;" align="left" valign="bottom" colspan ="1">Please Select An Order:
+            <td style="font-family:Times New Roman; font-size:18px;" align="left" valign="bottom" colspan ="1">Please Select A Workflow:
             <asp:DropDownList ID="dpProcess" runat="server" Width="300px" Height="25px"></asp:DropDownList></td>
         </tr>
         <tr>
