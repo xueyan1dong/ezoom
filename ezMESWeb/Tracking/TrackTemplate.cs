@@ -422,7 +422,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_alias=" + lotAlias
                 , true);
               break;
-            case "ship to warehouse":
+            case "ship to location":
               //Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
               //   "&sub_process=" + subProcessId
               //   + "&position=" + position
