@@ -7,14 +7,15 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info.
+*	 11/28/2018 updated lot_status(added 'done') 					
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `get_next_step_for_lot`$
 CREATE PROCEDURE `get_next_step_for_lot`(
   IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20),
-  IN _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped'),
+  IN _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done'),
   IN _process_id int(10) unsigned,
   IN _sub_process_id_p int(10) unsigned,
   IN _position_id_p int(5) unsigned,
