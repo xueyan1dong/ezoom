@@ -353,7 +353,7 @@ namespace ezMESWeb.Tracking
               //+ "lot_status=" + lotStatus
               //+ "uom=" + uom
               //+ "location=" + location
-              , true);
+              , false);
             break;
             case "disassemble":
             Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
@@ -367,7 +367,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
             break;
             case "display message":
             Server.Transfer("PassDisplayStep.aspx?step_status=" + stepStatus +
@@ -379,7 +379,7 @@ namespace ezMESWeb.Tracking
               + "&lot_id=" + lotId
               + "&process_id=" + processId
               + "&lot_alias=" + lotAlias
-              , true);
+              , false);
             break;
             case "deliver to customer":
             Server.Transfer("CustomerDeliver.aspx?step_status=" + stepStatus +
@@ -391,7 +391,7 @@ namespace ezMESWeb.Tracking
               + "&lot_id=" + lotId
               + "&process_id=" + processId
               + "&lot_alias=" + lotAlias
-              , true);
+              , false);
 
             break;
             case "condition":
@@ -406,7 +406,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
               break;
             case "reposition":
               Server.Transfer("Reposition.aspx?step_status=" + stepStatus 
@@ -420,7 +420,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
               break;
             case "ship to location":
               //Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
@@ -442,7 +442,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
               break;
             case "scrap":
               Server.Transfer("UnholdLot.aspx?step_status=" + stepStatus
@@ -455,7 +455,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
               break;
           }
         }
