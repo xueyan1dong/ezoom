@@ -6,8 +6,8 @@
 *    Platform Dependencies  : .NET 
 *    Description            : Basic features for tracking
 *    Log                    :
-*    6/1/2018: sdong: added disassemble to the GoNextStep adn GoEndStep to handle moving a new step type: disassemble
-*   
+*    6/1/2018: xdong: added disassemble to the GoNextStep adn GoEndStep to handle moving a new step type: disassemble
+*   11/29/2018: xdong: changed the call to server.transfer with false for PreserveForms parameter, so that the server won't come back to calling form
 *
 ----------------------------------------------------------------*/
 using System;
@@ -517,7 +517,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
               break;
             case "disassemble":
               Server.Transfer("EndDisassemble.aspx?step_status=" + stepStatus +
@@ -531,7 +531,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
               break;
 
             case "hold lot":
@@ -546,7 +546,7 @@ namespace ezMESWeb.Tracking
                 + "&lot_id=" + lotId
                 + "&process_id=" + processId
                 + "&lot_alias=" + lotAlias
-                , true);
+                , false);
               break;
           
           }
