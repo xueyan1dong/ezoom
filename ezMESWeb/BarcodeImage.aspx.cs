@@ -31,7 +31,7 @@ namespace ezMESWeb
             switch (strType)
             {
                 case "Code 128-A":
-                    nType = BarcodeLib.TYPE.CODE128B;
+                    nType = BarcodeLib.TYPE.CODE128A;
                     break;
 
                 case "Code 128-B":
