@@ -75,12 +75,12 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
         LEFT JOIN equipment eq ON eq.id = h.equipment_id
         LEFT JOIN employee ea ON ea.id = h.approver_id
   WHERE s.status NOT IN ('shipped', 'scrapped')
-  and h.lot_id not in 
+  /* and h.lot_id not in 
         (Select lot_id from process_step ps, lot_history lh
 			where lh.position_id = ps.position_id 
 				and lh.step_id = ps.step_id 
                 and lh.process_id = ps.process_id
                 and ps.next_step_pos is null
-                and lh.status = 'ended')
+                and lh.status = 'ended') */
   ORDER BY s.product_id, s.priority, s.dispatch_time
      $
