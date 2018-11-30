@@ -53,7 +53,8 @@ namespace ezMESWeb.Tracking
         FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"EndConsumeMaterial.xml"));
 
         //Event happens before the select index changed clicked.
-        //gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
+        //gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);\
+       
       }
 
       string response;
@@ -71,8 +72,8 @@ namespace ezMESWeb.Tracking
         stepId = Request.QueryString["step"];
         //lblUom.Text = Session["uom"].ToString();
         txtQuantity.Text = Request.QueryString["quantity"];
-        
-        if(Request.QueryString["step_type"].Equals("condition"))
+
+         if (Request.QueryString["step_type"].Equals("condition"))
         {
           lblResult.Visible = true;
           rbResult.Visible = true;
