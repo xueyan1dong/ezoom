@@ -91,14 +91,14 @@ namespace ezMESWeb.Tracking
                         string strPONumber = String.Format("{0}", ezReader[9]);
 
                         Image po_barcode = (Image)FindControl("po_barcode");
-                        po_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strPONumber + "&h=60&w=400&il=true&t=Code 128-A";
+                        po_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strPONumber + "&h=60&w=400&il=true&t=Code 128-B";
 
                         //name
                         string strName = String.Format("{0}", ezReader[0]);
                         //lblName.Text = strName;
                         //barcode
                         Image name_barcode = (Image)FindControl("name_barcode");
-                        name_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strName + "&h=60&w=400&il=true&t=Code 128-A";
+                        name_barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strName + "&h=60&w=400&il=true&t=Code 128-B";
 
                         //product
                         string strProduct = String.Format("{0}", ezReader[1]);
@@ -107,7 +107,7 @@ namespace ezMESWeb.Tracking
 
                         Session["po_image"] = po_barcode.ImageUrl.ToString();
                         Session["name_image"] = name_barcode.ImageUrl.ToString();
-                        Session["product_image"] = po_barcode.ImageUrl.ToString();
+                        Session["product_image"] = product_barcode.ImageUrl.ToString();
                         //lblProduct.Text = strProduct;
                         lblProcess.Text = String.Format("{0}", ezReader[2]);
                         Session["process"] = lblProcess.Text;

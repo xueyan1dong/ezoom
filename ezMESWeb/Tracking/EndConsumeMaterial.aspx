@@ -77,8 +77,6 @@ height="100%" scrollbars="Horizontal">
         <asp:lot runat="server" id ="childCtlLot"/>
     </td>
 </tr>
-<tr>
-</tr>
 <tr><td><asp:Label ID="lblError" Style="font-family:Times New Roman;font-size:20px;" ForeColor="Red" runat="server" /></td></tr>
 
 <tr>
@@ -176,9 +174,14 @@ height="100%" scrollbars="Horizontal">
         </asp:Panel>
             <p style="height:10px; background-color:#FFFFFF;"></p>
             <div align ="right">
-                <asp:Button OnClientClick="return printPage()" Text="Print Packing Page" runat="server"/>
+                
             </div> 
         </td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><asp:Button OnClientClick="return printHTMLString();" Text="Print Package Label" runat="server" ID="btnPrintLabel" Width="150px" Height="30px" OnClick="btnPrintLabel_Click"/>
+            &nbsp;&nbsp;&nbsp;
+            <asp:Button OnClientClick="return printPage()" Text="Print Packing List" runat="server" ID="btnPrintList" Width="150px" Height="30px"/></td>
         </tr>
          <tr><td colspan=3>&nbsp;</td></tr>
          <tr>
