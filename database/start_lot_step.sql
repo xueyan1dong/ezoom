@@ -9,6 +9,7 @@
 *    6/1/2018: xdong: adding handling to new step type -- disassemble
 *    6/5/2018: xdong: just modified delimiter of the file to be consistant with load_procedures
 *	 7/16/2018 peiyu: added an new inout variable _location_id
+*    11/28/2018 updated lot_status(added 'done')
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `start_lot_step`$
@@ -27,7 +28,7 @@ CREATE PROCEDURE `start_lot_step`(
   INOUT _sub_position_id int(5) unsigned,
   INOUT _step_id int(10) unsigned,
   INOUT _location_id int(11) unsigned,
-  OUT _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped'),
+  OUT _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done'),
   OUT _step_status enum('dispatched','started','restarted','ended','error','stopped','scrapped','shipped'),
   OUT _start_timecode char(15),
   OUT _response varchar(255)

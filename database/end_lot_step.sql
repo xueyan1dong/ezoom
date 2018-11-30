@@ -8,11 +8,14 @@
 *    Log                    :
 *    6/5/2018: xdong: adding handling to new step type -- disassemble
 *	 8/2/2018: peiyu: added an new variable location_id and added to call 'start_lot_step' 
+*	 11/28/2018: peiyu: added status 'done' to lot_status enum; 
+*                update lot_status to 'done' when the workflow completed 
+*                and then update quantity_made and quantity_in_process in order_detail when product_made of current step is true (in process_step). 
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `end_lot_step`$
 CREATE PROCEDURE `end_lot_step`(
-  IN _lot_id int(10) unsigned,
+    IN _lot_id int(10) unsigned,
   IN _lot_alias varchar(20),
   IN _start_timecode char(15),
   IN _operator_id int(10) unsigned,
@@ -52,6 +55,9 @@ BEGIN
   DECLARE _step_status_n enum('dispatched','started','restarted','ended','error','stopped','scrapped','shipped'); 
   DECLARE _product_made tinyint(1) unsigned;
   DECLARE _quantity_status ENUM('in process', 'made', 'shipped');
+  DECLARE _order_id int(10) unsigned;
+  DECLARE _product_id int(10) unsigned;
+  DECLARE _line_num smallint(5) unsigned;
   
   IF _lot_id IS NULL AND (_lot_alias IS NULL OR length(_lot_alias)=0) THEN
     SET _response = "Batch identifier is missing. Please supply a lot.";
@@ -182,8 +188,8 @@ BEGIN
             
               IF row_count() > 0 THEN
                 -- get next position, if Null, Lot Done
-                SELECT next_step_pos
-					INTO _position_id_n
+                SELECT next_step_pos, product_made
+					INTO _position_id_n, _product_made
 					FROM process_step
 				WHERE process_id=_process_id_p and position_id = _position_id_p and step_id = _step_id_p;
                 
@@ -192,7 +198,7 @@ BEGIN
                     SET _quantity_status = 'made';
 				ELSE
 					SET _lot_status = 'in transit';
-                    SET _quantity_status = 'in process';
+                    -- SET _quantity_status = 'in process'; default is in process
 				END IF;
                 UPDATE lot_status
                   SET status = _lot_status
@@ -203,19 +209,20 @@ BEGIN
                 WHERE id=_lot_id;
                 
 				-- check product_made flag in process_step table, if 1, update quantity_made, quantity_in_process in order_detail table 
-				SELECT product_made
-					INTO _product_made
-					FROM process_step
-				WHERE process_id =_process_id_p and position_id = _position_id_p and step_id = _step_id_p;
-				  
+				
 				IF _product_made = 1 Then
+					SELECT order_id, product_id, order_line_num
+					INTO _order_id, _product_id, _line_num
+					FROM lot_status
+					WHERE id = _lot_id;
+					 
 					UPDATE order_detail
 					SET quantity_made = quantity_made + _end_quantity
 						,quantity_in_process = quantity_in_process - _end_quantity
-					WHERE order_id=(select order_id from lot_status where id = _lot_id)
-					And source_id = (select product_id from lot_status where id = _lot_id)
+					WHERE order_id= _order_id
+					And source_id = _product_id
 					And source_type = 'product'
-					And line_num = (select order_line_num from lot_status where id = _lot_id);
+					And line_num = _line_num;
 				End IF;
                 
                 
@@ -225,37 +232,39 @@ BEGIN
                 SET _sub_position_id_n = null;
                 SET _step_id_n = null;
                 
-                CALL `start_lot_step`(
-                  _lot_id,
-                  _lot_alias,
-                  _operator_id,
-                  1,
-                  _end_quantity,
-                  null,
-                  null,
-                  'Step started automatically',
-                  _process_id_p,
-                  _sub_process_id_n,
-                  _position_id_n,
-                  _sub_position_id_n,
-                  _step_id_n,
-				  _location_id,
-                  _lot_status_n,
-                  _step_status_n,
-                  _autostart_timecode,
-                  _response
-                );
-                IF _autostart_timecode IS NOT NULL
-                THEN
-                  SET _process_id = _process_id_p;
-                  SET _sub_process_id = _sub_process_id_n;
-                  SET _position_id = _position_id_n;
-                  SET _sub_position_id = _sub_position_id_n;
-                  SET _step_id = _step_id_n;
-                  SET _lot_status = _lot_status_n;
-                  SET _step_status = _step_status_n;
-                END IF;
-
+                
+                IF _lot_status not in ('done') Then
+					CALL `start_lot_step`(
+					  _lot_id,
+					  _lot_alias,
+					  _operator_id,
+					  1,
+					  _end_quantity,
+					  null,
+					  null,
+					  'Step started automatically',
+					  _process_id_p,
+					  _sub_process_id_n,
+					  _position_id_n,
+					  _sub_position_id_n,
+					  _step_id_n,
+					  _location_id,
+					  _lot_status_n,
+					  _step_status_n,
+					  _autostart_timecode,
+					  _response
+					);
+					IF _autostart_timecode IS NOT NULL
+					THEN
+					  SET _process_id = _process_id_p;
+					  SET _sub_process_id = _sub_process_id_n;
+					  SET _position_id = _position_id_n;
+					  SET _sub_position_id = _sub_position_id_n;
+					  SET _step_id = _step_id_n;
+					  SET _lot_status = _lot_status_n;
+					  SET _step_status = _step_status_n;
+					END IF;
+				END IF;
               ELSE
                 SET _response = "Error encountered when update batch history information.";
               END IF;             

@@ -10,6 +10,7 @@
 *    06/06/2018: xdong: fixed the issue that step name now showing
 *                       Add _location parameter to call to db stored procedure pass_lot_step
 *    09/27/2018: xdong: change ui wording so that this step is not limited to warehouse locations
+*    11/29/2018: xdong: Changed ui layout and do button from showing "Ship to Warehouse" to "Ship
 ----------------------------------------------------------------*/
 
 using System;
