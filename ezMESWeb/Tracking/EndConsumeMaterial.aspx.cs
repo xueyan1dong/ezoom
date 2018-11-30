@@ -41,7 +41,9 @@ namespace ezMESWeb.Tracking
         //protected Panel MessagePanel;
         protected Image po_barcode, name_barcode, product_barcode;
 
+
         protected override void OnInit(EventArgs e)
+
         {
             base.OnInit(e);
 

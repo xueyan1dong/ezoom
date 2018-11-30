@@ -14,7 +14,8 @@
 call report_consumption_for_step (21, 'WWMTOFauce0000000006', 3, 38, '201806190044480', @_response);
 select @_response
 *    Log                    :
-*    6/18/2018: xdong: added logic to count inventory returned for disassemble step. 					
+*    6/18/2018: xdong: added logic to count inventory returned for disassemble step. 	
+*	 11/30/2018: peiyu: added a new In variable _start_quantity (user's input of quantity to work on) and updated required_quantity accordingly		
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `report_consumption_for_step`$
@@ -24,6 +25,7 @@ CREATE PROCEDURE `report_consumption_for_step`(
   IN _process_id int(10) unsigned,
   IN _step_id int(10) unsigned,
   IN _start_timecode char(15),
+  IN _start_quantity decimal(16,4) unsigned,
   OUT _response varchar(255)
 )
 BEGIN
@@ -73,7 +75,7 @@ BEGIN
            v.name, 
            v.order,
            v.description, 
-           v.quantity, 
+           v.quantity * _start_quantity, 
            v.uom_id,
            v.uom_name, 
            v.mintime, 

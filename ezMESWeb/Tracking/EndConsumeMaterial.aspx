@@ -226,7 +226,7 @@ height="100%" scrollbars="Horizontal">
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>"  
            ProviderName="System.Data.Odbc" 
        SelectCommand="
-{call report_consumption_for_step(?, ?, ?, ?, ?, @response)}">
+{call report_consumption_for_step(?, ?, ?, ?, ?, ?, @response)}">
            <SelectParameters>
                <asp:SessionParameter DefaultValue="0" Name="lot_id" SessionField="lot_id" />
                <asp:SessionParameter DefaultValue="null" Name="lot_alias" 
@@ -237,6 +237,8 @@ height="100%" scrollbars="Horizontal">
                    QueryStringField="step" />
                <asp:QueryStringParameter DefaultValue="201201010000000" Name="start_timecode" 
                    QueryStringField="start_time" />
+               <asp:QueryStringParameter DefaultValue="1.0" Name="start_quantity" 
+                   QueryStringField="quantity" />
            </SelectParameters>
         </asp:SqlDataSource>
         <asp:Panel ID="MessagePanel" runat="server" CssClass="detail" 
