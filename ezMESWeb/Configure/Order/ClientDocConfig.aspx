@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="../../Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="ClientDocConfig.aspx.cs" Inherits="ezMESWeb.Configure.Client.ClientDocConfig" Title="Client Documents Association -- ezOOM" %>
+<%@ Page Language="C#" MasterPageFile="~/Configure/ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ClientDocConfig.aspx.cs" Inherits="ezMESWeb.Configure.Client.ClientDocConfig" Title="Client Documents Association -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 

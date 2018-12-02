@@ -3112,6 +3112,7 @@ END$
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 				
 *   11/11/2018: xdong: added input _line_num now that order_detail can have multi lines of the same product	
+*   12/01/2018: xdong: fixed a bug that updated the quantity_in_process of all order detail lines of the same product, by missed line_num in where clause
 */
 DELIMITER $ 
 DROP PROCEDURE IF EXISTS `dispatch_multi_lots`$
@@ -3226,6 +3227,7 @@ BEGIN
       IF EXISTS (SELECT * 
                 FROM order_detail
                 WHERE order_id = _order_id
+                  AND line_num = _line_num
                   AND source_type = 'product'
                   AND source_id = _product_id
                   AND uomid = _uom_id
@@ -3236,6 +3238,7 @@ BEGIN
         SELECT constant INTO _ratio
           FROM uom_conversion u 
           JOIN order_detail o ON o.order_id = _order_id 
+                                AND o.line_num = _line_num
                                 AND o.source_type = 'product' 
                                 AND o.source_id = _product_id
         WHERE from_id = _uom_id
@@ -3247,8 +3250,10 @@ BEGIN
           SELECT constant INTO _ratio
             FROM uom_conversion u 
             JOIN order_detail o ON o.order_id = _order_id 
+                                  AND o.line_num = _line_num
                                   AND o.source_type = 'product' 
                                   AND o.source_id = _product_id
+                                  AND o.line_num = _line_num
           WHERE to_id = _uom_id
             AND from_id = o.uomid
             AND method = 'ratio';  
@@ -3263,6 +3268,7 @@ BEGIN
       END IF;      
       IF _ratio IS NOT NULL AND NOT EXISTS (SELECT * FROM order_detail o
                     WHERE o.order_id = _order_id
+                      AND o.line_num = _line_num
                       AND o.source_type = 'product'
                       AND o.source_id = _product_id
                       AND o.quantity_requested >= (quantity_in_process + _lot_size*_ratio*_num_lots+quantity_made+quantity_shipped))
@@ -3407,7 +3413,8 @@ BEGIN
       THEN
         UPDATE `order_detail`
            SET quantity_in_process = ifnull(quantity_in_process, 0) +  _total_quantity*_ratio
-         WHERE order_id=_order_id;
+         WHERE order_id=_order_id
+           AND line_num = _line_num;
         COMMIT;
       
       END IF;
