@@ -9,6 +9,10 @@
 *    2009: xdong: first created
 *   11/06/2018: xdong: add line number of order details into the dispatch logics
 *   11/11/2018: xdong: added line number in dispatch popup and action
+*   12/03/2018: xdong: replaced the CoolGridView control used for presenting dispatch grid with GridView in
+*                      order to gain flexible column width. As a result, do loose column adjustability
+*                      <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>
+*                      but now the columns can have different width in the grid, which allowed all columns show up
 ----------------------------------------------------------------*/
 using System;
 using System.Data;

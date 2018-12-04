@@ -23,10 +23,10 @@
       
 
        <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="None" 
-            Width="100%" Height="100%">
+            Width="1280px" Height="100%">
          <table border=0 cellpadding=5px cellspacing = 5px width=100%>
          <tr><td align=center>
-        <table border = 0 cellpadding=5px cellspacing=5px width=95% >
+        <table border = 0 cellpadding=5px cellspacing=5px width=100% >
         <tr>
             <td 
                 style="font-family:Times New Roman;font-style:italic;font-size:25px;" 
@@ -50,7 +50,7 @@
            </asp:ScriptManager>
 
            <rsweb:ReportViewer ID="rvProInvent" runat="server" Height="800px" 
-               Width="98%" Font-Names="Verdana" Font-Size="8pt" Visible="False">
+               Width="100%" Font-Names="Verdana" Font-Size="8pt" Visible="False">
                <LocalReport ReportPath="Reports\report_templates\rpOrder.rdlc">
 
                </LocalReport>

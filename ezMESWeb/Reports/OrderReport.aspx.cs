@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : OrderReport.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : Report on the quantity made, in process, shipped and not dispatched of each detail line in a given order
+*    Log                    :
+*    12/03/2018: Xueyan Dong: Added line_num to the report to account for now orders may contain multiple lines of the same products
+*                             enlarged report view area and perfected chart display
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;

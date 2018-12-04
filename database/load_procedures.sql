@@ -7260,15 +7260,16 @@ BEGIN
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : Report the quantities of given order's detail lines. Currently used by Order Status Report
 *    example	            : 
-CALL report_order_quantity (6);
+CALL report_order_quantity (7);
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 
-*    6/20/2018: Xueyan Dong: added call example to header					
+*    6/20/2018: Xueyan Dong: added call example to header			
+*   12/03/2018: Xueyan Dong: added line_num to the output (included product_name in the column for display in application report)
 */
 
-DELIMITER $  -- for escaping purpose
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `report_order_quantity`$
 CREATE PROCEDURE `report_order_quantity`(
   IN _order_id int(10) unsigned
@@ -7291,6 +7292,7 @@ BEGIN
                            FROM order_state_history os 
                           WHERE os.order_id = o.id
                             AND os.state='POed'),"%m/%d/%Y %H:%i") as order_date,
+            CONCAT(od.line_num, '. ', p.name) AS line_num,
             p.id as product_id,
             p.name as product_name,
             quantity_made, 
@@ -7309,6 +7311,7 @@ BEGIN
         AND od.source_type='product'; 
   END IF;
 END$
+
 
 -- procedure new_order_demand_prediction
 /*

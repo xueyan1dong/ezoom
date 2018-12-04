@@ -20,28 +20,28 @@ scrollbars=Both>
 				<asp:label id="title" runat="server"><b>Product Orders</b></asp:label>
             </td></tr>
           </table>    
-             <asp:CoolGridView ID="gvTable" runat="server" Caption="" 
+             <asp:GridView ID="gvTable" runat="server" Caption="" 
                CssClass="GridStyle" GridLines="None" DataSourceID="sdsPDGrid" 
                EmptyDataText="There is no outstanding order currently" 
                AutoGenerateColumns="False"  
                onselectedindexchanged="gvTable_SelectedIndexChanged" 
                 DataKeyNames="id,line_num,source_id" AllowPaging="True"  AllowSorting="True" PageSize="5" 
-               EnableTheming="False" Width="1280px" Height="500px" AllowResizeColumn="true" 
+               EnableTheming="False" Width="100%" Height="500px" AllowResizeColumn="True" 
                PagerStyle-BackColor="#f2e8da" PagerSettings-Mode="NumericFirstLast" 
                onpageindexchanged="gvTable_PageIndexChanged" HeaderStyle-Wrap="true" RowStyle-Wrap="true"
              >
              <Columns>
              <asp:TemplateField>
 			   <ItemTemplate>
-			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Dispatch" CommandName="Select" Width="10px" />
+			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Dispatch" CommandName="Select" />
 			     </ItemTemplate>                 
                  </asp:TemplateField>
                  <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="false" />
-                 <asp:BoundField DataField="order_type" HeaderText="Order Type" SortExpression="order_type" ItemStyle-Width="25px"></asp:BoundField>
-                 <asp:BoundField DataField="ponumber" HeaderText="PO Num" SortExpression="ponumber" ><ItemStyle Width="40px" /></asp:BoundField>
-                 <asp:BoundField DataField="line_num" HeaderText="Line No." SortExpression="line_num" ><ItemStyle Width="25px" /></asp:BoundField>
+                 <asp:BoundField DataField="order_type" HeaderText="Order Type" SortExpression="order_type"></asp:BoundField>
+                 <asp:BoundField DataField="ponumber" HeaderText="PO Num" SortExpression="ponumber" ></asp:BoundField>
+                 <asp:BoundField DataField="line_num" HeaderText="Line No." SortExpression="line_num" ></asp:BoundField>
                  <asp:BoundField DataField="source_id" HeaderText="source_id" SortExpression="source_id" visible="false" />
-                 <asp:BoundField DataField="ProductName" HeaderText="Product" SortExpression="ProductName" ><ItemStyle Width="40px" /></asp:BoundField>
+                 <asp:BoundField DataField="ProductName" HeaderText="Product" SortExpression="ProductName" ></asp:BoundField>
                  <asp:BoundField DataField="ClientName" HeaderText="Client" SortExpression="ClientName" />
                  <asp:BoundField DataField="expected_deliver_date" HeaderText="Expected Deliver Date"
                      SortExpression="expected_deliver_date" DataFormatString="{0:d}" />
@@ -68,10 +68,10 @@ scrollbars=Both>
 
 			   </Columns>
                <SelectedRowStyle  BackColor="#FFFFCC"/>
-                <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>
+
                         <AlternatingRowStyle CssClass="GridAlternateRowStyle" />
                         <RowStyle CssClass="GridRowStyle" />
-                </asp:CoolGridView>
+                </asp:GridView>
                 </ContentTemplate>
                 </asp:UpdatePanel> 
               </asp:panel>   

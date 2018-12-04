@@ -24,7 +24,7 @@
             </td></tr>
           </table>    
                 <asp:Label ID="lblError" Style="font-family:Times New Roman;font-size:20px;" ForeColor="Red" runat="server" />
-             <asp:CoolGridView ID="gvTable" runat="server" Caption="" 
+             <asp:GridView ID="gvTable" runat="server" Caption="" 
                CssClass="GridStyle" GridLines="None" DataSourceID="sdsPDGrid" 
                EmptyDataText="There is no outstanding order currently" PageSize="15" Width="1080px" Height="480px" AllowResizeColumn="true" 
                AutoGenerateColumns="False"  
@@ -68,11 +68,11 @@
                  <asp:BoundField DataField="start_timecode" HeaderText="StartTime" Visible="false" />	
                  
 			   </Columns>
-               <SelectedRowStyle  BackColor="#FFFFCC"/>
-                 <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>
+               <SelectedRowStyle  BackColor="#FFFFCC"/> 
+
                         <AlternatingRowStyle CssClass="GridAlternateRowStyle" />
                         <RowStyle CssClass="GridRowStyle" />
-                </asp:CoolGridView>
+                </asp:GridView>
                 </ContentTemplate>
                 <Triggers><asp:PostBackTrigger ControlID="gvTable" /></Triggers>
                 </asp:UpdatePanel> 

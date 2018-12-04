@@ -5525,6 +5525,8 @@ namespace ezMESWeb.Reports.report_templates {
             
             private global::System.Data.DataColumn columnuom;
             
+            private global::System.Data.DataColumn columnline_num;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public report_order_quantityDataTable() {
@@ -5656,6 +5658,14 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn line_numColumn {
+                get {
+                    return this.columnline_num;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -5691,7 +5701,7 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public report_order_quantityRow Addreport_order_quantityRow(string id, string order_type, string client_name, string ponumber, string order_date, string product_id, string product_name, string quantity_made, string quantity_in_process, string quantity_shipped, string quantity_requested, string uom) {
+            public report_order_quantityRow Addreport_order_quantityRow(string id, string order_type, string client_name, string ponumber, string order_date, string product_id, string product_name, string quantity_made, string quantity_in_process, string quantity_shipped, string quantity_requested, string uom, string line_num) {
                 report_order_quantityRow rowreport_order_quantityRow = ((report_order_quantityRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
@@ -5705,7 +5715,8 @@ namespace ezMESWeb.Reports.report_templates {
                         quantity_in_process,
                         quantity_shipped,
                         quantity_requested,
-                        uom};
+                        uom,
+                        line_num};
                 rowreport_order_quantityRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowreport_order_quantityRow);
                 return rowreport_order_quantityRow;
@@ -5740,6 +5751,7 @@ namespace ezMESWeb.Reports.report_templates {
                 this.columnquantity_shipped = base.Columns["quantity_shipped"];
                 this.columnquantity_requested = base.Columns["quantity_requested"];
                 this.columnuom = base.Columns["uom"];
+                this.columnline_num = base.Columns["line_num"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5769,6 +5781,8 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columnquantity_requested);
                 this.columnuom = new global::System.Data.DataColumn("uom", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnuom);
+                this.columnline_num = new global::System.Data.DataColumn("line_num", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnline_num);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -11209,6 +11223,22 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string line_num {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_quantity.line_numColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'line_num\' in table \'report_order_quantity\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_quantity.line_numColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsidNull() {
                 return this.IsNull(this.tablereport_order_quantity.idColumn);
             }
@@ -11349,6 +11379,18 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetuomNull() {
                 this[this.tablereport_order_quantity.uomColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isline_numNull() {
+                return this.IsNull(this.tablereport_order_quantity.line_numColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setline_numNull() {
+                this[this.tablereport_order_quantity.line_numColumn] = global::System.Convert.DBNull;
             }
         }
         

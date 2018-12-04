@@ -1,4 +1,16 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : ConsumptionStep.ascx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET
+*    Description            : Active control for showing step recipe in (assembly or disassembly) steps involves recipe
+*    Log                    :
+*    12/02/2018: Xueyan Dong: in the recipe, instead of showing the ingredient unit quantity required for making one final product
+*                             showing the extended quantity for making the all the final products in the batch
+*
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -240,7 +252,9 @@ namespace ezMESWeb.Tracking
                       newCell = CreateTableCell(String.Format("{0}", ezReader["name"]));
                       newRow.Cells.Add(newCell);
 
-                      newCell = CreateTableCell(String.Format("{0:N0} {1}", ezReader["quantity"], ezReader["uom_name"]));
+                      newCell = CreateTableCell(String.Format("{0:N0} {1}", 
+                                                Convert.ToInt32(ezReader["quantity"])* Convert.ToInt32(Request.QueryString["quantity"]),
+                                                ezReader["uom_name"]));
                       newRow.Cells.Add(newCell);
 
                       newCell = CreateTableCell(String.Format("{0}", ezReader["description"]));

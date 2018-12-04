@@ -8,6 +8,7 @@
 *    Log                    :
 *    2009: xdong: first created
 *   11/01/2018: xdong: adjusted code to adopt line numbers in order detail
+*   12/03/2018: xdong: added product description and product group in order detail grid
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;

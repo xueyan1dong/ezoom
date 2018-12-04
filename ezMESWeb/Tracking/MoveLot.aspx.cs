@@ -8,6 +8,10 @@
 *    Log                    :
 *    07/01/2018: Xueyan Dong: initiate session[location] to empty string for now 
 *                             to satisfy other tracking forms need for location
+*    12/03/2018: Xueyan Dong: Modified MoveLot.aspx to replace the grid control from CoolGridView to GridView
+*                             as a result, lost column boundary adjustability 
+*                             <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>
+*                             but now the columns can have different width in the grid, which allowed all columns show up
 ----------------------------------------------------------------*/
 using System;
 using System.Data;
