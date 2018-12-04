@@ -7,7 +7,7 @@
 *    Description            : UI for Display Message step
 *    Log                    :
 *    06/06/2018: xdong: Add _location parameter to call to db stored procedure pass_lot_step
-*
+*    12/04/2018: xdong: update the call to pass_lot_step to take in _location_id parameter instead of _location
 ----------------------------------------------------------------*/
 
 using System;
@@ -32,6 +32,7 @@ namespace ezMESWeb.Tracking
     private string subProcessId, positionId, subPositionId, stepId;
     protected Button btnDo;
     protected System.Web.UI.UserControl newStep;
+    protected lot eLot;
 
     protected override void Page_Load(object sender, EventArgs e)
     {
@@ -117,7 +118,8 @@ namespace ezMESWeb.Tracking
 
     protected void btnDo_Click(object sender, EventArgs e)
     {
-      string response, lotStatus, stepStatus, startTime;
+      string response, lotStatus, stepStatus, startTime, locationID="";
+
       try
       {
         ConnectToDb();
@@ -126,10 +128,20 @@ namespace ezMESWeb.Tracking
 
         ezCmd.Connection = ezConn;
 
+        //pull location_id from view
+        ezCmd.CommandText = "SELECT location_id from view_lot_in_process where id = " + Request.QueryString["lot_id"];
+        ezCmd.CommandType = CommandType.Text;
+        ezReader = ezCmd.ExecuteReader();
+        if (ezReader.Read())
+        {
+          locationID = String.Format("{0}", ezReader[0]);
+        }
+        ezReader.Dispose();
+
         ezCmd.CommandText = "pass_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
-        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
-        ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
+        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Request.QueryString["lot_id"]));
+        ezCmd.Parameters.AddWithValue("@_lot_alias", Request.QueryString["lot_alias"]);
         ezCmd.Parameters.AddWithValue("@_operator_id", Convert.ToInt32(Session["UserID"]));
         ezCmd.Parameters.AddWithValue("@_quantity", txtQuantity.Text.Trim());
         ezCmd.Parameters.AddWithValue("@_equipment_id", DBNull.Value);
@@ -138,8 +150,12 @@ namespace ezMESWeb.Tracking
         ezCmd.Parameters.AddWithValue("@_approver_password", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_short_result", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
-        ezCmd.Parameters.AddWithValue("@_location", DBNull.Value);
-        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
+        if (locationID.Length > 0)
+          ezCmd.Parameters.AddWithValue("@_location_id",  Convert.ToInt32(locationID));
+        else
+          ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
+
+        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
         if (subProcessId.Length > 0)

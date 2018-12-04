@@ -11,6 +11,7 @@
 *                       Add _location parameter to call to db stored procedure pass_lot_step
 *    09/27/2018: xdong: change ui wording so that this step is not limited to warehouse locations
 *    11/29/2018: xdong: Changed ui layout and do button from showing "Ship to Warehouse" to "Ship
+*    12/04/2018: xdong: Added logic to change the popup message and button display if at the last step of workflow
 ----------------------------------------------------------------*/
 
 using System;
@@ -30,11 +31,11 @@ namespace ezMESWeb.Tracking
 {
   public partial class ToWarehouseStep : TrackTemplate
   {
-    protected Label lblStep, lblUom,  lblEquipment, lblStepStatus, lblApprover,lblStartTime, lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId;
+    protected Label lblStep, lblUom,  lblEquipment, lblStepStatus, lblApprover,lblStartTime, lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblMessage;
     protected TextBox txtComment, txtPassword;
     protected DropDownList drpEquipment, drpApprover, drpLocation;
     private string subProcessId, positionId, subPositionId, stepId;
-    protected Button btnDo;
+    protected Button btnDo, btnMoveForm;
     protected ModalPopupExtender MessagePopupExtender;
     protected Panel MessagePanel;
     protected Label lblLotStatus2;
@@ -274,6 +275,11 @@ namespace ezMESWeb.Tracking
             lblSubPositionId.Text = ezCmd.Parameters["@_sub_position_id"].Value.ToString();
             lblStepId.Text = ezCmd.Parameters["@_step_id"].Value.ToString();
 
+          }
+          if (lblLotStatus2.Text.Equals("done")) //already at the last step
+          {
+            lblMessage.Text = "You just completed the last step of the process. Please click below button to go back to Move Product form in order to process other batches.";
+            btnMoveForm.Visible = false;
           }
 
           MessagePopupExtender.Show();

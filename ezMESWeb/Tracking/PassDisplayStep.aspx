@@ -12,7 +12,7 @@ height="100%" scrollbars="Horizontal">
 <table width=98% align="center">
 <tr>
     <td>   
-        <asp:lot runat="server" />
+        <asp:lot ID="eLot" runat="server" />
     </td>
 </tr>
 <tr><td><asp:Label ID="lblError" Style="font-family:Times New Roman;font-size:20px;" ForeColor="Red" runat="server" /></td></tr>
