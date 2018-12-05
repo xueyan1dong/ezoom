@@ -384,7 +384,7 @@ namespace ezMESWeb.Tracking
                            Request.QueryString["position"],
                            Request.QueryString["sub_position"],
                            Request.QueryString["step"],
-                           null,
+                           rbResult.SelectedValue,
                            txtQuantity.Text.Trim()
                            );
             ezCmd.Dispose();

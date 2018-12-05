@@ -5,11 +5,49 @@
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
 *    Description            : db operations for starting a lot at a step
+*    Example:
+set @_process_id = null;
+set @_sub_process_id =null;
+set @_position_id =null;
+set @_sub_position_id =null;
+set @_step_id =null;
+  set @_location_id =null;
+CALL `start_lot_step`(
+                147,
+                'PTBF01UB0000000007',
+                2,
+                1,
+                1,
+                null,
+                null,
+                'Step started automatically',
+                @_process_id,
+                @_sub_process_id,
+                @_position_id,
+                @_sub_position_id,
+                @_step_id,
+                @_location_id,
+                @_lot_status_n,
+                @_step_status_n,
+                @_autostart_timecode,
+                @_response
+              );
+              select                 @_process_id,
+                @_sub_process_id,
+                @_position_id,
+                @_sub_position_id,
+                @_step_id,
+                @_location_id,
+                @_lot_status_n,
+                @_step_status_n,
+                @_autostart_timecode,
+                @_response;
 *    Log                    :
 *    6/1/2018: xdong: adding handling to new step type -- disassemble
 *    6/5/2018: xdong: just modified delimiter of the file to be consistant with load_procedures
 *	 7/16/2018 peiyu: added an new inout variable _location_id
 *    11/28/2018 updated lot_status(added 'done')
+*    12/04/2018: xdong: added quantity_status when inserting to lot_history table
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `start_lot_step`$
@@ -164,7 +202,8 @@ BEGIN
               equipment_id,
               device_id,
 			  location_id,
-              comment
+              comment,
+              quantity_status
             )
             VALUES (
               _lot_id,
@@ -182,7 +221,8 @@ BEGIN
               _equipment_id,
               _device_id,
 			  _location_id,
-              _comment
+              _comment,
+              'in process'
             ); 
             IF row_count() > 0 THEN
               SET _lot_status = 'in process';

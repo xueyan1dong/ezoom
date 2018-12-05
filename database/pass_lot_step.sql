@@ -5,6 +5,42 @@
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
 *    Description            : db operations for starting and ending a step in one shot
+*    Example
+set @_process_id = 5;
+set @_sub_process_id =null;
+set @_position_id =15;
+set @_sub_position_id =null;
+set @_step_id =23;
+call pass_lot_step(
+147,
+'PTBF01UB0000000007',
+  2,
+  1,
+ null,
+ null,
+ 2,
+'test',
+',13,,52', -- for short result
+null,
+ null,
+@_process_id,
+@_sub_process_id,
+@_position_id,
+@_sub_position_id,
+@_step_id ,
+@_lot_status ,
+@_step_status,
+@_autostart_timecode,
+@_response );
+select @_process_id,
+@_sub_process_id,
+@_position_id,
+@_sub_position_id,
+@_step_id,
+@_lot_status ,
+@_step_status,
+@_autostart_timecode,
+@_response;
 *    Log                    :
 *    6/6/2018: xdong: adding _location parameter to record batch location for certain ship steps
 *	 8/2/2018: peiyu: replaced _location nvarchar  to location_id int
@@ -12,6 +48,7 @@
 *    in process_step is 1, update quantity_made and quantity_in_process in order details
 *   11/29/2018:xdong: fixed some logical error regarding product_made and done status. 
 *                      added code to update quantity_in_process when actual quantity changed
+*   12/04/2018: xdong: corrected logic for updating quantities in order_detail table in case of batch quantity changed in this step.
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `pass_lot_step`$
@@ -61,7 +98,7 @@ BEGIN
   DECLARE _lot_status_n enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done');
   DECLARE _step_status_n enum('dispatched','started','restarted','ended','error','stopped','scrapped','shipped'); 
   DECLARE _product_made tinyint(1) unsigned;
-  DECLARE _quantity_status ENUM('in process', 'made', 'shipped');
+  DECLARE _quantity_status, _quantity_status_p ENUM('in process', 'made', 'shipped');
   DECLARE _order_id int(10) unsigned;
   DECLARE _product_id int(10) unsigned;
   DECLARE _line_num smallint(5) unsigned;
@@ -86,7 +123,8 @@ BEGIN
            actual_quantity,
            order_id,
            product_id, 
-           order_line_num
+           order_line_num,
+           quantity_status
       INTO _lot_status, 
            _step_status, 
            _process_id_p,
@@ -99,7 +137,8 @@ BEGIN
            _actual_quantity_p,
            _order_id,
            _product_id,
-           _line_num
+           _line_num,
+           _quantity_status_p
       FROM view_lot_in_process
      WHERE id=_lot_id;
      
@@ -200,6 +239,8 @@ BEGIN
           IF _product_made = 1
           THEN
             SET _quantity_status = 'made';
+          ELSE
+            SET _quantity_status = 'in process';
           END IF;
           
           -- record this step into lot history
@@ -261,7 +302,7 @@ BEGIN
                                   _position_id_n,
                                   _sub_position_id_n,
                                   _step_id_n,
-                                  _result,
+                                  _short_result,
                                   _sub_process_id_nn,
                                   _position_id_nn,
                                   _sub_position_id_nn,
@@ -289,15 +330,25 @@ BEGIN
             WHERE id=_lot_id;
 			  
             
-            -- if actual quantity changed, update quantity_in_process in order_detail
+            -- if actual quantity changed, adjust quantities in order_detail. quantity_shipped will never need adjust, 
+            -- because once product is shipped to customer, the quantity record should not change
             IF _actual_quantity_p != _quantity
             THEN
-              UPDATE order_detail
-                 SET quantity_in_Process = quantity_in_process - _actual_quantity_p + _quantity
-              WHERE order_id= _order_id
-                And source_id = _product_id
-                And source_type = 'product'
-                And line_num = _line_num;
+              IF _quantity_status_p = 'in process' THEN
+                UPDATE order_detail
+                   SET quantity_in_Process = quantity_in_process - _actual_quantity_p + _quantity
+                WHERE order_id= _order_id
+                  And source_id = _product_id
+                  And source_type = 'product'
+                  And line_num = _line_num;
+              ELSEIF _quantity_status_p = 'made' THEN
+                 UPDATE order_detail
+                   SET quantity_made = quantity_made - _actual_quantity_p + _quantity
+                WHERE order_id= _order_id
+                  And source_id = _product_id
+                  And source_type = 'product'
+                  And line_num = _line_num;             
+              END IF;
             END IF;
 					  
             -- if product is made at the step, deduct the quantity from quantity_in_process and add it to quantity_made in order_detail

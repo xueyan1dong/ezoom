@@ -171,66 +171,68 @@ namespace ezMESWeb.Tracking
               }
               ezReader.Close();
               ezReader.Dispose();
-
-
-              if (Request.QueryString["step_type"].Equals("reposition"))
-              {
-                ezCmd.CommandText =
-                      "SELECT null as sub_process_id, p.position_id, null as sub_position_id, p.step_id, s.name, s.description "
-                    + " FROM process_step p, step s WHERE process_id = "
-                    + Session["process_id"].ToString()
-                    + " AND if_sub_process = 0 AND s.id = p.step_id and s.id != "
-                    + Request.QueryString["step"] 
-                    + " UNION SELECT p1.process_id, p.position_id, p1.position_id, p1.step_id, s.name, s.description "
-                    + " FROM process_step p, process_step p1, step s WHERE p.process_id = "
-                    + Session["process_id"].ToString()
-                    + " AND p.if_sub_process = 1 AND p.step_id = p1.process_id AND s.id = p1.step_id and s.id !="
-                    + Request.QueryString["step"] + " ORDER BY 2,3";
-
-                ezCmd.CommandType = CommandType.Text;
-
-                ezReader.Close();
-                ezReader.Dispose();
-
-                ezReader = ezCmd.ExecuteReader();
-
-                while (ezReader.Read())
-                {
-                  newRow = CreateTableRow();
-
-
-                  newCell = CreateTableCell(
-                    String.Format("<input type=\"radio\" name=\"rdbSelect\" id=\"rdbSelect\" value=\"{2},{0},{3},{4}\" OnClick=\"writeResult('{2},{0},{3},{4}','{1}')\" > &nbsp;{0} </input>", 
-                    ezReader["position_id"],
-                    txtResult.ClientID,
-                    ezReader["sub_process_id"],
-                    ezReader["sub_position_id"],
-                    ezReader["step_id"]));
-                  
-                  
-                  newRow.Cells.Add(newCell);
-
-                  newCell = CreateTableCell(String.Format("{0}", ezReader["name"]));
-                  newCell.HorizontalAlign = HorizontalAlign.Left;
-                  newRow.Cells.Add(newCell);
-
-                  newCell = CreateTableCell(String.Format("{0}", ezReader["description"]));
-                  newCell.HorizontalAlign = HorizontalAlign.Left;
-                  newRow.Cells.Add(newCell);
-
-
-                  tbSteps.Rows.Add(newRow);
-                }
-
-                if (tbSteps.Rows.Count > 1)
-                {
-                  tbSteps.Visible = true;
-                }
-                btnDo.Attributes.Add("OnClick", "return checkResult('" + txtResult.ClientID + "')");
-              }
-              ezReader.Dispose();
             }
           }
+
+          if (Request.QueryString["step_type"].Equals("reposition"))
+          {
+            ezCmd.CommandText =
+                  "SELECT null as sub_process_id, p.position_id, null as sub_position_id, p.step_id, s.name, s.description "
+                + " FROM process_step p, step s WHERE process_id = "
+                + Request.QueryString["process_id"].ToString()
+                + " AND if_sub_process = 0 AND s.id = p.step_id and s.id != "
+                + Request.QueryString["step"] 
+                + " UNION SELECT p1.process_id, p.position_id, p1.position_id, p1.step_id, s.name, s.description "
+                + " FROM process_step p, process_step p1, step s WHERE p.process_id = "
+                + Request.QueryString["process_id"].ToString()
+                + " AND p.if_sub_process = 1 AND p.step_id = p1.process_id AND s.id = p1.step_id and s.id !="
+                + Request.QueryString["step"] + " ORDER BY 2,3";
+
+            ezCmd.CommandType = CommandType.Text;
+
+            ezReader.Close();
+            ezReader.Dispose();
+
+            ezReader = ezCmd.ExecuteReader();
+
+            while (ezReader.Read())
+            {
+              newRow = CreateTableRow();
+
+
+              newCell = CreateTableCell(
+                String.Format("<input type=\"radio\" name=\"rdbSelect\" id=\"rdbSelect\" value=\"{2},{0},{3},{4}\" OnClick=\"writeResult('{2},{0},{3},{4}','{1}')\" > &nbsp;{0} </input>", 
+                ezReader["position_id"],
+                txtResult.ClientID,
+                ezReader["sub_process_id"],
+                ezReader["sub_position_id"],
+                ezReader["step_id"]));
+                  
+                  
+              newRow.Cells.Add(newCell);
+
+              newCell = CreateTableCell(String.Format("{0}", ezReader["name"]));
+              newCell.HorizontalAlign = HorizontalAlign.Left;
+              newRow.Cells.Add(newCell);
+
+              newCell = CreateTableCell(String.Format("{0}", ezReader["description"]));
+              newCell.HorizontalAlign = HorizontalAlign.Left;
+              newRow.Cells.Add(newCell);
+
+
+              tbSteps.Rows.Add(newRow);
+            }
+
+            if (tbSteps.Rows.Count > 1)
+            {
+              tbSteps.Visible = true;
+            }
+            btnDo.Attributes.Add("OnClick", "return checkResult('" + txtResult.ClientID + "')");
+          }
+          ezReader.Close();
+          ezReader.Dispose();
+            
+          
         }
         catch (Exception ex)
         {
@@ -298,7 +300,7 @@ namespace ezMESWeb.Tracking
     protected void btnDo_Click(object sender, EventArgs e)
     {
       
-      string subProcessId, positionId, subPositionId, stepId;
+      string subProcessId, positionId, subPositionId, stepId, locationID="";
 
       try
       {
@@ -308,10 +310,21 @@ namespace ezMESWeb.Tracking
 
         ezCmd.Connection = ezConn;
 
+        //pull location_id from view
+        ezCmd.CommandText = "SELECT location_id from view_lot_in_process where id = " + Request.QueryString["lot_id"];
+        ezCmd.CommandType = CommandType.Text;
+        ezReader = ezCmd.ExecuteReader();
+        if (ezReader.Read())
+        {
+          locationID = String.Format("{0}", ezReader[0]);
+        }
+        ezReader.Close();
+        ezReader.Dispose();
+
         ezCmd.CommandText = "pass_lot_step";
         ezCmd.CommandType = CommandType.StoredProcedure;
-        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Session["lot_id"]));
-        ezCmd.Parameters.AddWithValue("@_lot_alias", Session["lot_alias"].ToString());
+        ezCmd.Parameters.AddWithValue("@_lot_id", Convert.ToInt32(Request.QueryString["lot_id"]));
+        ezCmd.Parameters.AddWithValue("@_lot_alias", Request.QueryString["lot_alias"]);
         ezCmd.Parameters.AddWithValue("@_operator_id", Convert.ToInt32(Session["UserID"]));
         ezCmd.Parameters.AddWithValue("@_quantity", txtQuantity.Text.Trim());
         ezCmd.Parameters.AddWithValue("@_equiment_id", DBNull.Value);
@@ -330,8 +343,13 @@ namespace ezMESWeb.Tracking
         ezCmd.Parameters.AddWithValue("@_short_result",txtResult.Text);
 
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
-        ezCmd.Parameters.AddWithValue("@_location", DBNull.Value);
-        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Session["process_id"]), ParameterDirection.InputOutput);
+
+        if (locationID.Length > 0)
+          ezCmd.Parameters.AddWithValue("@_location_id", Convert.ToInt32(locationID));
+        else
+          ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
+
+        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
         if (subProcessId.Length > 0)

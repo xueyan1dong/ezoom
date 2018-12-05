@@ -136,6 +136,7 @@ namespace ezMESWeb.Tracking
         {
           locationID = String.Format("{0}", ezReader[0]);
         }
+        ezReader.Close();
         ezReader.Dispose();
 
         ezCmd.CommandText = "pass_lot_step";

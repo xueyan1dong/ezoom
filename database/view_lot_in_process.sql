@@ -9,7 +9,8 @@
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 		
 *    11/29/2018: Junlu Luo: Added order_line_num and finish columns to output	
-*    12/02/2018: Xueyan Dong: Added order_id column to output		
+*    12/02/2018: Xueyan Dong: Added order_id column to output	
+*    12/04/2018: Xueyan Dong: Added quantity_status to output	
 */
 DELIMITER $ 
 DROP VIEW IF EXISTS `view_lot_in_process`$
@@ -51,7 +52,8 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
 		og.ponumber,
 		s.order_line_num,
 		pr.description as finish,
-    s.order_id
+    s.order_id,
+    s.quantity_status
    FROM lot_status s 
 	JOIN order_general as og ON s.order_id = og.id
         INNER JOIN lot_history h ON h.lot_id = s.id
