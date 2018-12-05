@@ -7,7 +7,7 @@
 *    Description            : UI for Reposition step
 *    Log                    :
 *    06/06/2018: xdong: Add _location parameter to call to db stored procedure pass_lot_step
-*
+*    12/04/2018: xdong: fixed the bug that reposition not going to target step
 ----------------------------------------------------------------*/
 
 using System;

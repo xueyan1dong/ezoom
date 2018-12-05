@@ -5,7 +5,8 @@
 *    Date Created           : 11/03/2009
 *    Platform Dependencies  : .NET 2.0
 *    Description            : UI for ending the consume material step
-
+*    Log: 
+*    12/04/2018: Xueyan Dong: Fixed issue with condition step not going to Failed branch
 ----------------------------------------------------------------*/
 
 using System;
