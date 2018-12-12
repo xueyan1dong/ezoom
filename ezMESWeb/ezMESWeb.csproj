@@ -143,6 +143,7 @@
     </Content>
     <Content Include="Tracking\EndDisassemble.aspx" />
     <Content Include="Tracking\AddProductToInventory.aspx" />
+    <Content Include="Tracking\Inventory\Inventory_Relocate.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
