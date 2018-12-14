@@ -79,6 +79,17 @@ namespace ezMESWeb.Tracking
           }
           ezReader.Dispose();
 
+          // set location dropdown default to last step's location
+          ezCmd.CommandText = "SELECT location_id from view_lot_in_process where id = " + Request.QueryString["lot_id"];
+          ezCmd.CommandType = CommandType.Text;
+          ezReader = ezCmd.ExecuteReader();
+
+          if (ezReader.Read())
+          {
+            drpLocation.SelectedValue = String.Format("{0}", ezReader[0]);             
+          }
+          ezReader.Dispose();
+
           ezCmd.CommandText = "SELECT name, emp_usage, emp_id  FROM step where id=" + stepId;
           ezCmd.CommandType = CommandType.Text;
           ezReader = ezCmd.ExecuteReader();
