@@ -271,17 +271,30 @@ namespace ezMESWeb.Configure.Material
        }
        protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
        {
-          FormView1.ChangeMode(FormViewMode.Edit);
-         //modify the mode of form view
-         // if (!Request.Params["__EVENTTARGET"].Contains("btnViewDetails"))
-          if (Request.Params.GetValues(0)[0].Contains("ibClone"))
-          {
-            FormView1.Caption = "Copy Item/Part";
+            FormView1.ChangeMode(FormViewMode.Edit);
+            //modify the mode of form view
+            // if (!Request.Params["__EVENTTARGET"].Contains("btnViewDetails"))
+            if (Request.Params.GetValues(0)[0].Contains("ibClone"))
+            {
+                FormView1.Caption = "Copy Item/Part";
 
-          }
-          else
-            FormView1.Caption = "";
-       }
+            }
+            else
+                FormView1.Caption = "";
+
+
+            //if (Request.Params.GetValues(0)[0].Contains("ibClone"))
+            //{
+            //    FormView1.Caption = "Copy Item/Part";
+            //    FormView1.ChangeMode(FormViewMode.Insert);
+            //}
+            //else
+            //{
+            //    FormView1.Caption = "";
+            //    FormView1.ChangeMode(FormViewMode.Edit);
+            //}
+
+        }
 
 
       protected void btnSubmit_Click(object sender, EventArgs e)
@@ -306,7 +319,7 @@ namespace ezMESWeb.Configure.Material
               }
               else
               {
-                 if (FormView1.Caption.Contains("Clone")) //clone into new material id
+                 if (FormView1.Caption.Contains("Copy")) //clone into new material id
                      ezCmd.Parameters.AddWithValue("@_material_id", DBNull.Value);
                  else
                      ezCmd.Parameters.AddWithValue("@_material_id", gvTable.SelectedDataKey.Value.ToString());//gvTable.SelectedPersistedDataKey.Values["id"].ToString());

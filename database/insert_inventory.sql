@@ -8,7 +8,8 @@
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 
-*	 8/16/2018: Peiyu Ge: added location_id					
+*	 8/16/2018: Peiyu Ge: added location_id
+*	 12/13/20: Peiyu Ge: deleted the constraint "can not be zero" for _original_quantity. Zero is a valid input now.			
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS insert_inventory$
@@ -51,9 +52,9 @@ BEGIN
   ELSEIF  _lot_id IS NULL
   THEN 
     SET _response='Supplier lot number is required. Please fill in the lot number.';
-  ELSEIF  _original_quantity IS NULL OR _original_quantity = 0
+  ELSEIF  _original_quantity IS NULL -- OR _original_quantity = 0
   THEN 
-    SET _response='Original Quanity is required and can not be zero. Please fill in original quantity.';
+    SET _response='Original Quanity is required.'; -- and can not be zero. Please fill in original quantity.';
   ELSEIF  _actual_quantity IS NULL
   THEN 
     SET _response='Actual Quanity is required. Please fill in actual quantity.';   
