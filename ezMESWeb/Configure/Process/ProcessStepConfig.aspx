@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<script type="text/javascript" language="javascript">
+    <script type="text/javascript" language="javascript">
    function showDropDown(source, ctr1name, ctr2name)
   {
   
@@ -53,6 +53,13 @@ scrollbars="Horizontal">
           <table width="100%"><tr style="height:30px;">
 			<td align="center">
 				<asp:label id="title" runat="server"><b>Step Configuration</b></asp:label>
+             </td></tr>
+              <tr style="height:30px;">
+                  <td align="left">
+                <asp:Label ID="lblSearch" runat="server" Text="Step name:"></asp:Label>
+                <asp:TextBox ID="txtStepName" runat="server"></asp:TextBox>
+                <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" /> &nbsp;&nbsp;&nbsp;
+                <asp:label id="lblSearchResult" runat="server" ForeColor="Red" Visible="False"></asp:label>
             </td></tr>
           </table>   
             
@@ -65,6 +72,7 @@ scrollbars="Horizontal">
                EnableTheming="False" Width="860px" Height="480px" AllowResizeColumn="true" 
                PagerStyle-BackColor="#f2e8da" PagerSettings-Mode="NumericFirstLast" 
                onpageindexchanged="gvTable_PageIndexChanged"
+                onpageindexchanging="gvTable_pageIndexChanging"
              >
             <SelectedRowStyle  BackColor="#FFFFCC"/>
             <Columns>

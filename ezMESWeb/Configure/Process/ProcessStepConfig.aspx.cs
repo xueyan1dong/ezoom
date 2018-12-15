@@ -20,31 +20,35 @@ namespace ezMESWeb.Configure.Process
 {
    public partial class ProcessStepConfig : ConfigTemplate
    {
+        protected DataSet dbSet;
+        protected ezDataAdapter ezAdapter;
 
-      protected SqlDataSource sdsPStepGrid, sdsPStepConfig;
-      public DataColumnCollection colc;
-      protected Label lblError;
+        protected SqlDataSource sdsPStepGrid, sdsPStepConfig;
+        public DataColumnCollection colc;
+        protected Label lblError;
+        protected TextBox txtStepName;
+        protected Label lblSearchResult;
 
-      protected override void OnInit(EventArgs e)
-      {
-         base.OnInit(e);
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            {
+                DataView dv = (DataView)sdsPStepGrid.Select(DataSourceSelectArguments.Empty);
+                colc = dv.Table.Columns;
 
-         {
-            DataView dv = (DataView)sdsPStepGrid.Select(DataSourceSelectArguments.Empty);
-            colc = dv.Table.Columns;
+                //Initial insert template  
+                FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"PStep_insert.xml"));
 
-            //Initial insert template  
-            FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"PStep_insert.xml"));
+                //Initial Edit template           
+                FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"PStep_modify.xml"));
 
-            //Initial Edit template           
-            FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"PStep_modify.xml"));
+                //Event happens before the select index changed clicked.
+                gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
 
-            //Event happens before the select index changed clicked.
-            gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
-         }
-      }
+            }
+        }
 
-      protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
+        protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
       {
          //modify the mode of form view
          FormView1.ChangeMode(FormViewMode.Edit);
@@ -213,5 +217,54 @@ namespace ezMESWeb.Configure.Process
          //  show the modal popup
          this.ModalPopupExtender.Show();
       }
-   }
+
+        protected void doSearch(string strSearchKeyword, int nPageIndex)
+        {
+            ConnectToDb();
+
+            dbSet = new DataSet();
+            ezCmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
+            ezCmd.Connection = ezConn;
+
+            ezCmd.CommandText = sdsPStepGrid.SelectCommand;
+
+            if (txtStepName != null && txtStepName.Text.Length > 0)
+                ezCmd.CommandText = string.Format("SELECT * FROM ({0}) tempTable WHERE tempTable.name LIKE '%{1}%'",
+                    sdsPStepGrid.SelectCommand,
+                    strSearchKeyword);
+
+            ezCmd.CommandType = CommandType.Text;
+
+            ezAdapter = new ezDataAdapter();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(dbSet);
+
+            //no result?
+            bool bNoResult = (dbSet.Tables[0].Rows.Count == 0);
+            gvTable.Visible = (!bNoResult);
+            lblSearchResult.Visible = bNoResult;
+            if (bNoResult)
+            {
+                lblSearchResult.Text = string.Format("No result for \"{0}\"", strSearchKeyword);
+                return;
+            }
+
+            gvTable.PageIndex = nPageIndex;
+
+            gvTable.DataSourceID = null;
+            gvTable.DataSource = dbSet;
+            gvTable.DataBind();
+            gvTablePanel.Update();
+
+        }
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            this.doSearch(txtStepName.Text, 0);
+        }
+
+        protected void gvTable_pageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            this.doSearch(txtStepName.Text, e.NewPageIndex);
+        }
+    }
 }

@@ -49,6 +49,7 @@ namespace ezMESWeb
 
         protected LinkButton LinkButton1;
         protected TableRow tbrApprove;
+        protected Button btnDuplicate;
 
         protected override void Page_Load(object sender, EventArgs e)
         {
@@ -167,6 +168,7 @@ namespace ezMESWeb
             btnCancel.Text = "Delete Workflow";
             btnInsert.Visible = true;
             gvTable.Visible = true;
+            btnDuplicate.Visible = true;
         }
         protected void show_NewProcess(short tabIndex)
         {
@@ -177,6 +179,7 @@ namespace ezMESWeb
             gvTable.Visible = false;
             btnDo.Text = "Submit";
             btnCancel.Text = "Clear";
+            btnDuplicate.Visible = false;
         }
         protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -861,6 +864,58 @@ namespace ezMESWeb
             return true;
         }
 
+        protected void btnDuplicate_Click(object sender, EventArgs e)
+        {
+            string strProcessID = txtID.Text;
+            if (strProcessID == null || strProcessID.Length == 0) return;
 
+            try
+            {
+                //duplicate process
+                ConnectToDb();
+                ezCmd = new EzSqlCommand();
+                ezCmd.Connection = ezConn;
+                ezCmd.CommandText = "duplicate_process";
+                ezCmd.CommandType = CommandType.StoredProcedure;
+
+
+                ezCmd.Parameters.AddWithValue("@_old_process_id", strProcessID);
+                ezCmd.Parameters.AddWithValue("@_employee_id", Convert.ToInt32(Session["UserID"]));
+
+                ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
+                ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+                ezCmd.Parameters.AddWithValue("@_new_process_id", DBNull.Value);
+                ezCmd.Parameters["@_new_process_id"].Direction = ParameterDirection.Output;
+
+                ezCmd.ExecuteNonQuery();
+
+                string strResp = ezCmd.Parameters["@_response"].Value.ToString();
+                string strNewProcessID = "";
+                object result = ezCmd.Parameters["@_new_process_id"].Value;
+                if (result.GetType().ToString().Contains("System.Byte"))
+                {
+                    System.Text.ASCIIEncoding asi = new System.Text.ASCIIEncoding();
+                    strNewProcessID = asi.GetString((byte[])result);
+                }
+                else
+                {
+                    strNewProcessID = result.ToString();
+                }
+
+                ezCmd.Dispose();
+                ezConn.Dispose();
+
+                //go to the newly-created process
+                if (strNewProcessID.Length > 0)
+                    Server.Transfer(Request.CurrentExecutionFilePath + "?Id=" + strNewProcessID, false);
+
+            }
+            catch (Exception ex)
+            {
+                lblMainError.Text = ex.Message;
+            }
+
+        }
     }
 }
