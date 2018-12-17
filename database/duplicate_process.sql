@@ -9,8 +9,9 @@
         CALL duplicate_process (7, 2, @resp, @new_id);
         SELECT @resp, @new_id;
 *    Log                    :
+*    12/152018: Junlu Luo: First Created
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $ 
 DROP PROCEDURE IF EXISTS `duplicate_process`$
 CREATE procedure duplicate_process (
   IN _old_process_id int(10) unsigned,
