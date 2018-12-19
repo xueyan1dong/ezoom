@@ -34,6 +34,12 @@
     <siteMapNode  title="Equipment"  description="Equipment Configuration" >
       <siteMapNode url="~/Configure/Equipment/EquipmentConfig.aspx" title="Equipment"  description="Equipment Configuration" />
     </siteMapNode>  
+      
+     <siteMapNode  title="Location"  description="Location Configuration" >
+      <siteMapNode url="~/Configure/Location/LocationConfig.aspx" title="Location"  description="Location Configuration" />
+      <siteMapNode url="~/Configure/Location/LoadLocation.aspx" title="Load Locations"  description="Load Locations" />
+    </siteMapNode>   
+    
 
   </siteMapNode>
 
