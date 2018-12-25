@@ -118,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BarcodeImage.aspx" />
+    <Content Include="Configure\Location\Location.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configure\Order\LoadOrder.aspx" />
     <Content Include="Configure\Order\LoadOrderProduct.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
@@ -508,7 +511,9 @@
     </None>
     <Content Include="Configure\Equipment\EquipmentConfig.aspx" />
     <Content Include="Configure\Equipment\Equipment.xml" />
-    <Content Include="Tracking\Inventory\Inventory.xml" />
+    <Content Include="Tracking\Inventory\Inventory.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Tracking\Inventory\InventoryConfig.aspx" />
     <Content Include="Configure\Material\Material.xml" />
     <Content Include="Configure\Material\MaterialConfig.aspx" />
