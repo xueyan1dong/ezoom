@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Table name="location">
+  <Header>Location</Header>
+  <Column name ="name">
+    <DisplayName>Location Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="parent_loc_id">
+    <DisplayName>Parent Location</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'NA', null Union Select name, id from location</DropdownQuery>
+  </Column>
+  <Column name ="contact_employee">
+    <DisplayName>Contact Employee</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select username, id from employee order by 1</DropdownQuery>
+  </Column>
+  <Column name ="adjacent_loc_id1">
+    <DisplayName>Adjacent_Loc_Id1</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'NA', null Union Select name, id from location</DropdownQuery>
+  </Column>
+  <Column name ="adjacent_loc_id2">
+    <DisplayName>Adjacent_Loc_Id2</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'NA', null Union Select name, id from location</DropdownQuery>
+  </Column>
+  <Column name ="adjacent_loc_id3">
+    <DisplayName>Adjacent_Loc_Id3</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'NA', null Union Select name, id from location</DropdownQuery>
+  </Column>
+  <Column name ="adjacent_loc_id4">
+    <DisplayName>Adjacent_Loc_Id4</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'NA', null Union Select name, id from location</DropdownQuery>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
