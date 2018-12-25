@@ -36,7 +36,7 @@
     </siteMapNode>  
       
      <siteMapNode  title="Location"  description="Location Configuration" >
-      <siteMapNode url="~/Configure/Location/LocationConfig.aspx" title="Location"  description="Location Configuration" />
+      <siteMapNode url="~/Configure/Location/LocationConfigure.aspx" title="Location"  description="Location Configuration" />
       <siteMapNode url="~/Configure/Location/LoadLocation.aspx" title="Load Locations"  description="Load Locations" />
     </siteMapNode>   
     
