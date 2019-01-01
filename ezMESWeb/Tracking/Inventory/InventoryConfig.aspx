@@ -55,11 +55,19 @@
  <asp:panel id="pnlScroll" runat="server" width="100%" scrollbars="Horizontal">  
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
-             <table width="100%"><tr style="height:30px;">
-			<td align="center">
-				<asp:label id="title" runat="server"><b>Inventories</b></asp:label>
-            </td></tr>
-          </table>    
+            <table width="80%">
+                <tr style="height:30px;">
+			        <td colspan ="3" align="center">
+				        <asp:label id="title" runat="server"><b>Inventories</b></asp:label>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td align ="left" style="width:25%;">Part Name: <asp:TextBox id ="partName" runat ="server"></asp:TextBox></td>
+                    <td align="left" style="width:35%;">Choose A Supplier: <asp:DropDownList id="drpSupplier" runat="server" Width ="170px" class="drpStyle" AutoPostBack="True" onselectedindexchanged="drpSupplier_SelectedIndexChanged"/></td>
+                    <td align="left">Location: <asp:DropDownList id="drpLocation" Width ="170px" runat="server" class="drpStyle" AutoPostBack="True" onselectedindexchanged="drpLocation_SelectedIndexChanged"/><asp:Button id="Search" runat="server" Width ="100px" Text="Search" onclick="btnSearch_Click"/></td>
+                </tr>
+            </table> 
+             <asp:label id="Message" forecolor="#FF3300" runat="server"/>
              <asp:CoolGridView ID="gvTable" runat="server" Caption="" 
                 CssClass="GridStyle" GridLines="None" DataSourceID="sdsInventoryGrid" 
                EmptyDataText="No inventory currently available" 
@@ -130,6 +138,7 @@ SELECT i.id,
   i.original_quantity, 
   i.actual_quantity,
   (select name from location where id = i.location_id) as location_id,
+  (select i.location_id) as location,
     u.Name as uom,
   i.uom_id, 
   i.manufacture_date, 
@@ -164,9 +173,10 @@ SELECT i.id,
   i.original_quantity, 
   i.actual_quantity,
   (select name from location where id = i.location_id) as location_id,
+  (select i.location_id) as location,
     u.Name as uom,
   i.uom_id, 
-  i.manufacture_date, 
+  i.manufacture_date,
   i.expiration_date, 
   i.arrive_date, 
   i.recorded_by,
@@ -312,9 +322,7 @@ SELECT i.id,
           <asp:LinkButton ID="LinkButton2" runat="server" 
            CausesValidation="False" CommandName="Cancel" OnClick="btnCancel_Click"
              Text="Cancel" />
-        </div>
-       
-                  
+        </div>      
       </ContentTemplate>
       </asp:UpdatePanel>
        </asp:Panel>
