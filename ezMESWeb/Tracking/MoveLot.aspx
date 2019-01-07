@@ -55,8 +55,6 @@
                  <asp:BoundField DataField="step_status" HeaderText="Step Status" SortExpression="step_status" />
                  <asp:BoundField DataField="start_time" HeaderText="Step Start" SortExpression="start_time" />
                  <asp:BoundField DataField="end_time" HeaderText="Step End" SortExpression="end_time" />
-                 <asp:BoundField DataField="next_step_true" HeaderText="Next Step_True" SortExpression="next_step_true" Visible ="false" />
-                 <asp:BoundField DataField="next_step" HeaderText="Next Step" SortExpression="next_step" />
                  <asp:BoundField DataField="actual_quantity" HeaderText="Current Quantity" 
                      SortExpression="actual_quantity" DataFormatString="{0:N0}" />
                  <asp:BoundField DataField="uom" HeaderText="Unit" SortExpression="uom" />
@@ -67,7 +65,9 @@
                  <asp:BoundField DataField="step_id" HeaderText="step_id" Visible="false" />  
                  <asp:BoundField DataField="result" HeaderText="result" Visible="false" />
                  <asp:BoundField DataField="equipment_id" HeaderText="Equipment" Visible="false" />	
-                 <asp:BoundField DataField="start_timecode" HeaderText="StartTime" Visible="false" />	
+                 <asp:BoundField DataField="start_timecode" HeaderText="StartTime" Visible="false" />
+                  <asp:BoundField DataField="next_step_true" HeaderText="Next Step_True" SortExpression="next_step_true" Visible ="false" />
+                 <asp:BoundField DataField="next_step" HeaderText="Next Step" SortExpression="next_step" />
                  
 			   </Columns>
                <SelectedRowStyle  BackColor="#FFFFCC"/> 
@@ -107,8 +107,6 @@ SELECT id,
         step_status,
         start_time,
         end_time,
-        if(v.position_id = 0, (select step_id from process_step where process_id = v.process_id and position_id = 1), ps2.step_id) as next_step_true,
-        if(ps1.false_step_pos is Null, (select name from step where id = next_step_true), concat((select name from step where id = next_step_true), ' / ', (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos)))) as next_step,
         start_timecode,
         actual_quantity,
         uomid,
@@ -119,7 +117,9 @@ SELECT id,
         result,
         emp_usage,
         emp_id,
-        ifnull((select name from location where id = location_id), 'N/A') as location_name
+        ifnull((select name from location where id = location_id), 'N/A') as location_name,
+        if(v.position_id = 0, (select step_id from process_step where process_id = v.process_id and position_id = 1), ps2.step_id) as next_step_true,
+        if(ps1.false_step_pos is Null, (select name from step where id = next_step_true), concat((select name from step where id = next_step_true), ' / ', (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos)))) as next_step
    FROM view_lot_in_process v
         left join process_step ps1 on
         v.process_id = ps1.process_id
