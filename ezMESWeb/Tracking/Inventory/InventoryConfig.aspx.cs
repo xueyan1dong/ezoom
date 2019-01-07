@@ -13,6 +13,7 @@ using AjaxControlToolkit;
 using System.Globalization;
 using CommonLib.Data.EzSqlClient;
 
+
 namespace ezMESWeb.Tracking.Inventory
 {
    public partial class InventoryConfig : ConfigTemplate
@@ -69,8 +70,8 @@ namespace ezMESWeb.Tracking.Inventory
                 //Event happens before the select index changed clicked.
                 gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
 
-         }
-      }
+            }
+        }
 
         //populate dropdownlist of supplier and location for searching
       protected void Page_Load(object sender, EventArgs e) 
@@ -344,7 +345,7 @@ namespace ezMESWeb.Tracking.Inventory
             Message.Text = "";
             try
             {
-                drpDataBind("drpSupplier");
+                inventorySearch();
             }catch(Exception ex){
                 lblError.Text = ex.Message;
             }
@@ -359,7 +360,7 @@ namespace ezMESWeb.Tracking.Inventory
             Message.Text = "";
             try
             {
-                drpDataBind("drpLocation");
+                inventorySearch();
             }
             catch (Exception ex)
             {
@@ -369,27 +370,50 @@ namespace ezMESWeb.Tracking.Inventory
             //drpSupplier.SelectedValue = "-1";
         }
 
-        protected void drpDataBind(string drp)
+        protected void inventorySearch()
        {
+            Message.Text = "";
+            string part = partName.Text;
+            string loc = drpLocation.SelectedValue.ToString();
+            string supl = drpSupplier.SelectedValue.ToString();
             try
             {
                 ConnectToDb();
                 ezCmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
                 ezCmd.Connection = ezConn;
-                if (drp.Equals("drpSupplier") && drpSupplier.SelectedValue.ToString() != "-1")
+                if (supl != "-1" && loc != "-1")
                 {
                     ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.supplier_id = " +
-                    drpSupplier.SelectedValue.ToString();
+                    supl + " and tempTable.location = " + loc + " and tempTable.name like \'%" + part + "%\'";
                 }
-                else if (drp.Equals("drpLocation") && drpLocation.SelectedValue.ToString() != "-1")
+                else if (supl != "-1")
                 {
-                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.location = " +
-                       drpLocation.SelectedValue.ToString();
+                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.supplier_id = " +
+                       supl + " and tempTable.name like \'%" + part + "%\'";
+                }
+                else if (loc != "-1")
+                {
+                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.location = " + loc
+                        + " and tempTable.name like \'%" + part + "%\'";
                 }
                 else
                 {
-                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable";
+                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.name like \'%" + part + "%\'";
                 }
+                //if (drp.Equals("drpSupplier") && drpSupplier.SelectedValue.ToString() != "-1")
+                //{
+                //    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.supplier_id = " +
+                //    drpSupplier.SelectedValue.ToString();
+                //}
+                //else if (drp.Equals("drpLocation") && drpLocation.SelectedValue.ToString() != "-1")
+                //{
+                //    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.location = " +
+                //       drpLocation.SelectedValue.ToString();
+                //}
+                //else
+                //{
+                //    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable";
+                //}
                 ezCmd.CommandType = CommandType.Text;
                 ezAdapter = new ezDataAdapter();
                 ezAdapter.SelectCommand = ezCmd;
@@ -422,41 +446,42 @@ namespace ezMESWeb.Tracking.Inventory
             string supl = drpSupplier.SelectedValue.ToString();
             try
             {
-                ConnectToDb();
-                ezCmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
-                ezCmd.Connection = ezConn;
-                if (supl!= "-1" && loc != "-1")
-                {
-                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.supplier_id = " +
-                    supl + " and tempTable.location = " + loc + " and tempTable.name like \'%"+ part+"%\'";
-                }
-                else if (supl != "-1")
-                {
-                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.supplier_id = " +
-                       supl + " and tempTable.name like \'%" + part + "%\'";
-                }
-                else if (loc != "-1")
-                {
-                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.location = " + loc
-                        + " and tempTable.name like \'%" + part + "%\'";
-                }
-                else
-                {
-                    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.name like \'%" + part + "%\'";
-                }
-                ezCmd.CommandType = CommandType.Text;
-                ezAdapter = new ezDataAdapter();
-                ezAdapter.SelectCommand = ezCmd;
-                dbSet = new DataSet();
-                ezAdapter.Fill(dbSet);
-                if (dbSet.Tables[0].Rows.Count == 0)
-                {
-                    Message.Text = "No inventory found for your search";
-                }
-                gvTable.DataSourceID = null;
-                gvTable.DataSource = dbSet;
-                gvTable.DataBind();
-                gvTablePanel.Update();
+                inventorySearch();
+                //ConnectToDb();
+                //ezCmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
+                //ezCmd.Connection = ezConn;
+                //if (supl!= "-1" && loc != "-1")
+                //{
+                //    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.supplier_id = " +
+                //    supl + " and tempTable.location = " + loc + " and tempTable.name like \'%"+ part+"%\'";
+                //}
+                //else if (supl != "-1")
+                //{
+                //    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.supplier_id = " +
+                //       supl + " and tempTable.name like \'%" + part + "%\'";
+                //}
+                //else if (loc != "-1")
+                //{
+                //    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.location = " + loc
+                //        + " and tempTable.name like \'%" + part + "%\'";
+                //}
+                //else
+                //{
+                //    ezCmd.CommandText = "Select * from ( " + sdsInventoryGrid.SelectCommand + ") tempTable where tempTable.name like \'%" + part + "%\'";
+                //}
+                //ezCmd.CommandType = CommandType.Text;
+                //ezAdapter = new ezDataAdapter();
+                //ezAdapter.SelectCommand = ezCmd;
+                //dbSet = new DataSet();
+                //ezAdapter.Fill(dbSet);
+                //if (dbSet.Tables[0].Rows.Count == 0)
+                //{
+                //    Message.Text = "No inventory found for your search";
+                //}
+                //gvTable.DataSourceID = null;
+                //gvTable.DataSource = dbSet;
+                //gvTable.DataBind();
+                //gvTablePanel.Update();
                 //partName.Text = "";
                 //drpLocation.SelectedValue = "-1";
                 //drpSupplier.SelectedValue = "-1";
@@ -466,6 +491,7 @@ namespace ezMESWeb.Tracking.Inventory
                 lblError.Text = ex.Message;
             }
         }
+       
 
     }
 }
