@@ -19,7 +19,7 @@
 <br />
 <asp:Label ID="lblErrorSubmit" runat="server" ForeColor="#FF3300" Height="60px" Width="350px"><br />
 <asp:Button ID="btnSubmit" runat="server" Text="Submit" Width="147px" OnClick="btnSubmit_Click"/> 
-</asp:Label><asp:Label ID ="lblLoaded" runat="server"></asp:Label>
+</asp:Label><asp:Label ID ="lblLoaded" runat="server" Visible ="false"></asp:Label>
 <asp:Panel ID="MessagePanel" runat="server" CssClass="detail" style="margin-top: 19px;  height:200px; width:400px; display:none" HorizontalAlign="Center" BorderColor="Green">
 <asp:Button id="btnMessagePopup" runat="server" style="display:none" />
 <asp:ModalPopupExtender ID="MessagePopupExtender" runat="server" TargetControlID="btnMessagePopup" BackgroundCssClass="modalBackground" PopupControlID="MessagePanel" PopupDragHandleControlID="MessagePanel" Drag="True" DropShadow="True" ></asp:ModalPopupExtender>    
