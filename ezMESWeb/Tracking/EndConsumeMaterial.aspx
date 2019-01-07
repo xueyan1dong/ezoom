@@ -153,6 +153,7 @@ height="100%" scrollbars="Horizontal">
                </asp:BoundField>
 			     <asp:BoundField DataField="restriction" HeaderText="Time Restriction" /> 
                  <asp:BoundField DataField="uom_id" HeaderText="uom id" visible="false" /> 
+                 <asp:BoundField DataField ="inventory" HeaderText ="Inventories" />
 			   </Columns>
                <SelectedRowStyle  BackColor="#FFFFCC"/>
                 </asp:GridView>
@@ -165,7 +166,7 @@ height="100%" scrollbars="Horizontal">
         <asp:Panel ID="printPanel" BorderColor="white" BorderStyle="Solid" BorderWidth="1px" Width="100%" runat="server" Visible ="true" style ="display:none;">  
             <table border="1" style="width:50%; margin: auto; text-align: center;" cellspacing="0" cellpadding="15px">
                 <tr><th align="center" colspan="2" style ="font-size:30px; width: 50px;">Print Batch Information</th></tr>
-                <tr><td>PONumber:</td><td style="vertical-align:middle; padding:15px;"><asp:Image ID="po_barcode" runat="server" /></tdstyle="vertical-align:middle;></tr>
+                <tr><td>PONumber:</td><td style="vertical-align:middle; padding:15px;"><asp:Image ID="po_barcode" runat="server" /></td></tr>
                 <tr><td>Name:</td><td style="vertical-align:middle; padding:15px;"><asp:Image ID="name_barcode" runat="server" /></td></tr>
                 <tr><td>Product:</td><td style="vertical-align:middle; padding:15px;"><asp:Image ID="product_barcode" runat="server" /></td></tr>
                 <tr><td>Workflow:</td><td><asp:Label ID="lblProcess" runat="server" /></td></tr>
@@ -222,7 +223,7 @@ height="100%" scrollbars="Horizontal">
  </table>   
 </div>
 </asp:panel>
-       <asp:SqlDataSource ID="sdsPDGrid" runat="server" 
+       <asp:SqlDataSource ID="sdsPDGrid" runat="server"
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>"  
            ProviderName="System.Data.Odbc" 
        SelectCommand="
@@ -238,7 +239,7 @@ height="100%" scrollbars="Horizontal">
                <asp:QueryStringParameter DefaultValue="201201010000000" Name="start_timecode" 
                    QueryStringField="start_time" />
                <asp:QueryStringParameter DefaultValue="1.0" Name="start_quantity" 
-                   QueryStringField="quantity" />
+                   QueryStringField="quantity"/>
            </SelectParameters>
         </asp:SqlDataSource>
         <asp:Panel ID="MessagePanel" runat="server" CssClass="detail" 
