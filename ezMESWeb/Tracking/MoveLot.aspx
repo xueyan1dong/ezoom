@@ -57,17 +57,17 @@
                  <asp:BoundField DataField="end_time" HeaderText="Step End" SortExpression="end_time" />
                  <asp:BoundField DataField="actual_quantity" HeaderText="Current Quantity" 
                      SortExpression="actual_quantity" DataFormatString="{0:N0}" />
-                 <asp:BoundField DataField="uom" HeaderText="Unit" SortExpression="uom" />
-                 <asp:BoundField DataField="contact_name" HeaderText="Contact" SortExpression="contact_name" />
-                 <asp:BoundField DataField="comment" HeaderText="Comment" />
-                 <asp:BoundField DataField="product_id" HeaderText="product_id" Visible="false" />
+                 <asp:BoundField DataField="uom" HeaderText="Unit" SortExpression="uom" /><%--17--%>
+                 <asp:BoundField DataField="next_step_true" HeaderText="Next Step_True" SortExpression="next_step_true" Visible ="false" />
+                 <asp:BoundField DataField="next_step" HeaderText="Next Step" SortExpression="next_step" />
+                 <asp:BoundField DataField="contact_name" HeaderText="Contact" SortExpression="contact_name" /> <%--18 -> 20--%>
+                 <asp:BoundField DataField="comment" HeaderText="Comment" /><%--19 -> 21--%>
+                 <asp:BoundField DataField="product_id" HeaderText="product_id" Visible="false" /> <%--20 -> 22--%>
                  <asp:BoundField DataField="process_id" HeaderText="process_id" Visible="false" /> 
                  <asp:BoundField DataField="step_id" HeaderText="step_id" Visible="false" />  
-                 <asp:BoundField DataField="result" HeaderText="result" Visible="false" />
+                 <asp:BoundField DataField="result" HeaderText="result" Visible="false" /><%--23 -> 25--%>
                  <asp:BoundField DataField="equipment_id" HeaderText="Equipment" Visible="false" />	
                  <asp:BoundField DataField="start_timecode" HeaderText="StartTime" Visible="false" />
-                  <asp:BoundField DataField="next_step_true" HeaderText="Next Step_True" SortExpression="next_step_true" Visible ="false" />
-                 <asp:BoundField DataField="next_step" HeaderText="Next Step" SortExpression="next_step" />
                  
 			   </Columns>
                <SelectedRowStyle  BackColor="#FFFFCC"/> 
@@ -111,15 +111,16 @@ SELECT id,
         actual_quantity,
         uomid,
         uom,
+        if(v.position_id = 0, (select step_id from process_step where process_id = v.process_id and position_id = 1), ps2.step_id) as next_step_true,
+        if(ps1.false_step_pos is Null, (select name from step where id = next_step_true), concat((select name from step where id = next_step_true), ' / ', (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos)))) as next_step,
         contact_name,
         equipment_id,
         comment,
         result,
         emp_usage,
         emp_id,
-        ifnull((select name from location where id = location_id), 'N/A') as location_name,
-        if(v.position_id = 0, (select step_id from process_step where process_id = v.process_id and position_id = 1), ps2.step_id) as next_step_true,
-        if(ps1.false_step_pos is Null, (select name from step where id = next_step_true), concat((select name from step where id = next_step_true), ' / ', (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos)))) as next_step
+        ifnull((select name from location where id = location_id), 'N/A') as location_name
+        
    FROM view_lot_in_process v
         left join process_step ps1 on
         v.process_id = ps1.process_id
