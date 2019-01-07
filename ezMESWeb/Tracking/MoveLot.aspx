@@ -45,16 +45,18 @@
                  <asp:BoundField DataField="product" HeaderText="Product" SortExpression="product" />
                  <asp:BoundField DataField="priority_name" HeaderText="Priority" SortExpression="priority"/>
                  <asp:BoundField DataField="dispatch_time" HeaderText="Dispatched At" SortExpression="dispatch_time" />
-                 <asp:BoundField DataField="lot_status" HeaderText="Lot Status" SortExpression="lot_status"/>
+                 <asp:BoundField DataField="lot_status" HeaderText="Batch Status" SortExpression="lot_status"/>
                  <asp:BoundField DataField="process" HeaderText="Workflow" SortExpression="process" />
                  <asp:BoundField DataField="sub_process_id" HeaderText="SubWorkflow"  Visible="false" />
                  <asp:BoundField DataField="location_name" HeaderText="Location" SortExpression="location_name" /> <%--9--%>
                  <asp:BoundField DataField="position_id" HeaderText="Current Position" SortExpression="position_id" />
                  <asp:BoundField DataField="sub_position_id" HeaderText="Sub Position"  Visible="false" />
-                 <asp:BoundField DataField="step" HeaderText="Step Name" SortExpression="step" />
+                 <asp:BoundField DataField="step" HeaderText="Current Step" SortExpression="step" />
                  <asp:BoundField DataField="step_status" HeaderText="Step Status" SortExpression="step_status" />
                  <asp:BoundField DataField="start_time" HeaderText="Step Start" SortExpression="start_time" />
-                 <asp:BoundField DataField="end_time" HeaderText="Step End" SortExpression="end_time" />                 
+                 <asp:BoundField DataField="end_time" HeaderText="Step End" SortExpression="end_time" />
+                 <asp:BoundField DataField="next_step_true" HeaderText="Next Step_True" SortExpression="next_step_true" Visible ="false" />
+                 <asp:BoundField DataField="next_step" HeaderText="Next Step" SortExpression="next_step" />
                  <asp:BoundField DataField="actual_quantity" HeaderText="Current Quantity" 
                      SortExpression="actual_quantity" DataFormatString="{0:N0}" />
                  <asp:BoundField DataField="uom" HeaderText="Unit" SortExpression="uom" />
@@ -93,18 +95,20 @@ SELECT id,
         priority,
         priority_name,
         dispatch_time,
-        process_id,
+        v.process_id,
         process,
         sub_process_id,
         sub_process,
-        position_id,
+        v.position_id,
         sub_position_id,
-        step_id,
+        v.step_id,
         step,
         lot_status,
         step_status,
         start_time,
         end_time,
+        if(v.position_id = 0, (select step_id from process_step where process_id = v.process_id and position_id = 1), ps2.step_id) as next_step_true,
+        if(ps1.false_step_pos is Null, (select name from step where id = next_step_true), concat((select name from step where id = next_step_true), ' / ', (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos)))) as next_step,
         start_timecode,
         actual_quantity,
         uomid,
@@ -116,7 +120,15 @@ SELECT id,
         emp_usage,
         emp_id,
         ifnull((select name from location where id = location_id), 'N/A') as location_name
-   FROM view_lot_in_process
+   FROM view_lot_in_process v
+        left join process_step ps1 on
+        v.process_id = ps1.process_id
+        and v.position_id = ps1.position_id
+        and v.step_id = ps1.step_id
+        left join process_step ps2 on
+        v.process_id = ps2.process_id
+        and ps1.next_step_pos = ps2.position_id
+        
         where lot_status not in ('done', 'shipped', 'scrapped')
    ORDER BY start_timecode DESC"
         EnableCaching="false">
