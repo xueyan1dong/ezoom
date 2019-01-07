@@ -28,7 +28,10 @@ height=9in ScrollBars="Auto">
                 </asp:TableHeaderCell>                
                   <asp:TableHeaderCell >
                     Time Restriction
-                </asp:TableHeaderCell>                              
+                </asp:TableHeaderCell>
+                <asp:TableHeaderCell >
+                    Inventories
+                </asp:TableHeaderCell>
             </asp:TableHeaderRow>
             </asp:Table>
         </asp:TableCell></asp:TableRow>
