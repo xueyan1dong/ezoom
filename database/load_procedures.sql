@@ -6133,6 +6133,7 @@ select @_response
 *    Log                    :
 *    6/18/2018: xdong: added logic to count inventory returned for disassemble step. 	
 *	 11/30/2018: peiyu: added a new In variable _start_quantity (user's input of quantity to work on) and updated required_quantity accordingly		
+*	 1/5/2019: peiyu added one more column inventory	
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `report_consumption_for_step`$
@@ -6153,13 +6154,16 @@ BEGIN
   
   IF _lot_id IS NULL
   THEN
-    SET _response = "Please selected a batch.";
+    SET _response = "Please select a batch.";
   ELSEIF _process_id IS NULL
   THEN
     SET _response = "The batch has no workflow assigned.";
   ELSEIF _step_id IS NULL
   THEN
     SET _response = "The batch is not inside a step.";
+  ELSEIF _start_quantity IS NULL or _start_quantity = ''
+  THEN
+    SET _response = "Start quantity is required.";
   ELSE
   
 	SELECT st.name
@@ -6183,7 +6187,8 @@ BEGIN
         maxtime int(10) unsigned,
         restriction varchar(255),
         comment text,
-        used_quantity decimal(16,4)
+        used_quantity decimal(16,4),
+        inventory varchar(255)
       ) DEFAULT CHARSET=utf8;
     
     INSERT INTO temp_consumption
@@ -6208,7 +6213,8 @@ BEGIN
                ''
            END,
            v.comment,
-           null
+           null,
+           (select group_concat(concat((select name from location where id = i.location_id), ': ', Format(i.actual_quantity, 1)) separator '|') from inventory i where v.ingredient_id = i.pd_or_mt_id)as inventory
       FROM step s JOIN view_ingredient v ON v.recipe_id = s.recipe_id
     WHERE s.id =_step_id;
     
@@ -6218,7 +6224,6 @@ BEGIN
      WHERE lot_id = _lot_id
        AND start_timecode = _start_timecode
        AND step_id = _step_id;
-    
 
 	IF _step_type = 'consume material'
     THEN
@@ -6253,6 +6258,7 @@ BEGIN
 		 SET t.used_quantity = a.total_used;    
     END IF;
     
+    
     SELECT 
         source_type,
         ingredient_id,
@@ -6266,12 +6272,14 @@ BEGIN
         mintime,
         maxtime,
         restriction,
-        comment
+        comment,
+       inventory
       FROM temp_consumption
       ORDER BY `order`
       ;
     DROP TABLE temp_consumption;
   END IF;
+ 
 END$
 
 
