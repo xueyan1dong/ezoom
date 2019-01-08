@@ -449,7 +449,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.sitemap" />
+    <Content Include="Web.sitemap">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ConfigTemplate.aspx" />
