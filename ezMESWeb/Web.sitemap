@@ -67,12 +67,13 @@
 
     <siteMapNode url="~/Reports/Report.aspx" title="Report"  description="Report">
       <siteMapNode url="~/Reports/BoMReport.aspx" title="Bill of Material"  description="Bill of Material for Workflow" />
-      <siteMapNode url="~/Reports/OrderReport.aspx" title="Order Status" description="Order Status" />
+      <siteMapNode url="~/Reports/OrderReport.aspx" title="Order Status Overview" description="Order Status Overview" />
+      <siteMapNode url="~/Reports/ProductInProcessReport.aspx" title="Order Batch Detail" description="Order Batch Detail Report" />
       <siteMapNode url="~/Reports/WorkflowReport.aspx" title="Workflow Browser" description="Browse Workflow" />
       <siteMapNode url="~/Reports/ProductInventoryReport.aspx" title="Product Inventory"  description="Correlate Product with Order and Inventory" />
-      <siteMapNode url="~/Reports/LotHistoryReport.aspx" title="Batch Status History" description="Batch Status and History Report" />
+      <siteMapNode url="~/Reports/LotHistoryReport.aspx" title="Batch Genealogy" description="Batch Genealogy Report" />
       <siteMapNode url="~/Reports/DispatchHistoryReport.aspx" title="Batch Dispatch History" description="Batch Dsipatch History Report" />
-      <siteMapNode url="~/Reports/ProductInProcessReport.aspx" title="Products Quickview" description="Quickview of Products" />
+
       <siteMapNode url="~/Reports/NewOrderDemandPrediction.aspx" title="New Order Demand" description="New Order Demand Prediction Overview" />
     </siteMapNode>
 
