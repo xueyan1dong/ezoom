@@ -234,8 +234,8 @@ namespace ezMESWeb.Tracking
                     ezReader.Close();
                     ezReader.Dispose();
                     ezCmd.CommandText =
-                      "SELECT source_type, name, description, quantity, uom_name, mintime, maxtime FROM view_ingredient WHERE recipe_id="
-                      + recipe_id + " ORDER BY `order`";
+                                               
+                     "SELECT source_type, name, description, quantity, uom_name, mintime, maxtime, (select group_concat(concat((select name from location where id = i.location_id), ': ', Format(i.actual_quantity, 1)) separator '|') from inventory i where v.ingredient_id = i.pd_or_mt_id)as inventory FROM view_ingredient v where v.recipe_id = " + recipe_id + " ORDER BY `order`";
 
                     ezCmd.CommandType = CommandType.Text;
 
@@ -244,7 +244,6 @@ namespace ezMESWeb.Tracking
                     while (ezReader.Read())
                     {
                       newRow = CreateTableRow();
-
 
                       newCell = CreateTableCell(String.Format("{0}", ezReader["source_type"]));
                       newRow.Cells.Add(newCell);
@@ -270,6 +269,8 @@ namespace ezMESWeb.Tracking
                       newCell.HorizontalAlign = HorizontalAlign.Left;
                       newRow.Cells.Add(newCell);
 
+                      newCell = CreateTableCell(String.Format("{0}", ezReader["inventory"]));
+                      newRow.Cells.Add(newCell);
                       tbIngredients.Rows.Add(newRow);
                     }
                     ezReader.Dispose();
