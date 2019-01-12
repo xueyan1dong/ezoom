@@ -33,7 +33,7 @@ namespace ezMESWeb.Tracking
 
       //protected global::System.Web.UI.WebControls.SqlDataSource sdsGrid;
       protected global::System.Web.UI.WebControls.GridView gvTable;
-      
+        protected TextBox txtBatchName;
 
 
       protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
@@ -114,5 +114,34 @@ namespace ezMESWeb.Tracking
         gvTable.SelectedIndex = -1;
         lblError.Text = "";
       }
-   }
+
+        protected void btnMove_Click(object sender, EventArgs e)
+        {
+            int nIndex = gvTable.SelectedIndex;
+
+            string strBatchName = txtBatchName.Text.Trim();
+            if (strBatchName.Length == 0)
+            {
+                lblError.Text = "No batch name";
+                lblError.Visible = true;
+                return;
+            }
+
+            for (int i = 0; i < gvTable.Rows.Count; i++)
+            {
+                gvTable.SelectedIndex = i;
+
+                string strText = gvTable.SelectedDataKey.Values["alias"].ToString();
+                if (strText == strBatchName)
+                {
+                    gvTable_SelectedIndexChanged(sender, e);
+                    return;
+                }
+            }
+
+            //not found in the list
+            lblError.Text=  string.Format("{0} is not in the list", strBatchName);
+            lblError.Visible = true;
+        }
+    }
 }
