@@ -88,7 +88,7 @@
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>"  
            ProviderName="System.Data.Odbc" 
        SelectCommand="
-SELECT id,
+SELECT v.id,
         alias,
         product_id,
         product,
@@ -112,24 +112,26 @@ SELECT id,
         uomid,
         uom,
         if(v.position_id = 0, (select step_id from process_step where process_id = v.process_id and position_id = 1), ps2.step_id) as next_step_true,
-        if(ps1.false_step_pos is Null, (select name from step where id = next_step_true), concat((select name from step where id = next_step_true), ' / ', (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos)))) as next_step,
+        -- if(ps1.false_step_pos is Null, (select name from step where id = next_step_true), if(step_status = 'started', concat((select name from step where id = next_step_true), ' / ', (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos))), if((select result from lot_history where lot_id = v.id and position_id = v.position_id) = 'True', (select name from step where id = next_step_true), (select name from step where id = (select step_id from process_step where process_id = v.process_id and position_id = ps1.false_step_pos))))) as next_step,
+        if(st.name = 'condition', 
+			  if(v.step_status = 'started', concat((select name from step where id = ps2.step_id), '/', (select name from step where id = ps3.step_id)), if(v.result = 'True', (select name from step where id = ps2.step_id), (select name from step where id = ps3.step_id))),
+              if(st.name = 'reposition', (select name from step where id = substring_index(v.result,',',-1)), if(v.position_id = 0, (select name from step where id = ps1.step_id), (select name from step where id = ps2.step_id)))
+	    ) as next_step,
         contact_name,
         equipment_id,
-        comment,
+        v.comment,
         result,
-        emp_usage,
-        emp_id,
+        v.emp_usage,
+        v.emp_id,
         ifnull((select name from location where id = location_id), 'N/A') as location_name
         
    FROM view_lot_in_process v
-        left join process_step ps1 on
-        v.process_id = ps1.process_id
-        and v.position_id = ps1.position_id
-        and v.step_id = ps1.step_id
-        left join process_step ps2 on
-        v.process_id = ps2.process_id
-        and ps1.next_step_pos = ps2.position_id
-        
+        -- left join process_step ps1 on v.process_id = ps1.process_id and v.position_id = ps1.position_id and v.step_id = ps1.step_id left join process_step ps2 on v.process_id = ps2.process_id and ps1.next_step_pos = ps2.position_id
+        LEFT JOIN step s ON s.id = v.step_id
+        LEFT JOIN step_type st ON st.id = s.step_type_id
+        LEFT JOIN process_step ps1 on ps1.process_id = v.process_id and ps1.position_id = if(v.position_id = 0, 1, v.position_id)
+        LEFT JOIN process_step ps2 on ps2.process_id = ps1.process_id and ps2.position_id = ps1.next_step_pos
+        LEFT JOIN process_step ps3 on ps3.process_id = ps2.process_id and ps3.position_id = ps1.false_step_pos
         where lot_status not in ('done', 'shipped', 'scrapped')
    ORDER BY start_timecode DESC"
         EnableCaching="false">
