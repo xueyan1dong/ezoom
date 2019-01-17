@@ -22,6 +22,12 @@
 			<td align="center">
 				<asp:label id="title" runat="server"><b>Product Orders</b></asp:label>
             </td></tr>
+                 <tr style="height:30px;">
+                     <td><asp:Label ID="lblBatchName" runat="server" Text="Batch #:"></asp:Label>
+                         <asp:TextBox ID="txtBatchName" runat="server"></asp:TextBox>
+                         <asp:Button ID="btnMove" runat="server" Text="Move" width ="70px" OnClick="btnMove_Click"/>
+                     </td>
+                 </tr>
           </table>    
                 <asp:Label ID="lblError" Style="font-family:Times New Roman;font-size:20px;" ForeColor="Red" runat="server" />
              <asp:GridView ID="gvTable" runat="server" Caption="" 
@@ -41,7 +47,7 @@
                  <asp:BoundField DataField="id" HeaderText="Batch ID" ReadOnly="True"  Visible="false" />
                  <asp:HyperLinkField DataNavigateUrlFields="alias" 
                 DataNavigateUrlFormatString="~/Reports/LotHistoryReport.aspx?batch={0}" 
-                DataTextField="alias"  HeaderText="Batch Name" SortExpression="alias" /> <%--2--%>
+                DataTextField="alias"  HeaderText="Batch #" SortExpression="alias" /> <%--2--%>
                  <asp:BoundField DataField="product" HeaderText="Product" SortExpression="product" />
                  <asp:BoundField DataField="priority_name" HeaderText="Priority" SortExpression="priority"/>
                  <asp:BoundField DataField="dispatch_time" HeaderText="Dispatched At" SortExpression="dispatch_time" />
@@ -77,6 +83,7 @@
                 </asp:GridView>
                 </ContentTemplate>
                 <Triggers><asp:PostBackTrigger ControlID="gvTable" /></Triggers>
+                <Triggers><asp:PostBackTrigger ControlID="btnMove" /></Triggers>
                 </asp:UpdatePanel> 
               </asp:panel>   
                 <div>
