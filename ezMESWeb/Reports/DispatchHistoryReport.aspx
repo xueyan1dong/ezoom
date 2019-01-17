@@ -15,8 +15,7 @@
 <%--
     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 --%>
-   <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="Double" 
-           Width="800px" Height="1100px" >
+   <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="None" width ="100%" scrollbars="Horizontal" Height="1100px"> <%--Width="1024px" Height="1100px"--%>
           
  <center class="title">Batch Dispatch History Report</center>    
  <div style="padding-bottom:5px; padding-top:5px;">
