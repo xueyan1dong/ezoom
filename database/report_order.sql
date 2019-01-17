@@ -10,7 +10,7 @@
 *     					
 */
 DELIMITER $  -- for escaping purpose
-DROP PROCEDURE IF EXISTS `report_product`$
+DROP PROCEDURE IF EXISTS `report_order`$
 CREATE PROCEDURE `report_order`(
   IN _order_id int(10) unsigned,
   IN _product_id int(10) unsigned,
