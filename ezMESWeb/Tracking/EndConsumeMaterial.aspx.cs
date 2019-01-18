@@ -34,6 +34,10 @@ namespace ezMESWeb.Tracking
         private string stepId, stepType;
 
         protected Button btnDo, btnPrintLabel, btnPrintList;
+        protected Button btnMove;
+        protected Label lblPartName;
+        protected TextBox txtPartName;
+
         protected ConsumptionStep newStep;
         protected SqlDataSource sdsPDGrid;
         public DataColumnCollection colc;
@@ -204,6 +208,9 @@ namespace ezMESWeb.Tracking
 
                     //determine whether to display print buttons
                     this.verifyPrint(stepId);
+
+                    //determine whether to display input box for handheld scanner
+                    this.verifyMoveConsumeButton();
                 }
                 catch (Exception ex)
                 {
@@ -232,115 +239,131 @@ namespace ezMESWeb.Tracking
 
             //this.FormView1.DataBind();
 
-
-            lblError2.Text = "";
             if (Request.Params["__EVENTTARGET"].Contains("btnConsume"))
-            {
-                FormView1.ChangeMode(FormViewMode.Edit);
-                this.FormView1.DataBind();
-                //  update the contents in the detail panel
-                DropDownList ddInventory = (DropDownList)FormView1.FindControl("drpingredient_id");
-                ddInventory.Width = 280;
-                ddInventory.Items.Clear();
-                Label lblRequired = (Label)FormView1.FindControl("lblrequired_quantity");
-                TextBox txtActual = (TextBox)FormView1.FindControl("txtused_quantity");
-                Decimal defaultQuantity =
-                          Convert.ToDecimal(gvTable.SelectedDataKey.Values["required_quantity"])
-                  - Convert.ToDecimal(gvTable.SelectedDataKey.Values["used_quantity"]);
-                txtActual.Text = lblRequired.Text = string.Format("{0:N0}", defaultQuantity);
-                FormView1.Caption = "Consume More '" + partName + "' from Inventory";
-                try
-                {
-                    ConnectToDb();
-                    ezCmd = new EzSqlCommand();
-                    ezCmd.Connection = ezConn;
-                    ezCmd.CommandText =
-                      " SELECT concat(i.lot_id, IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ', ', CAST(i.actual_quantity AS UNSIGNED INTEGER),' ', u.name), i.id FROM inventory i, uom u WHERE i.source_type ='"
-                    + gvTable.SelectedDataKey.Values["source_type"].ToString()
-                    + "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString()
-                    + " AND i.actual_quantity>0 AND u.id = i.uom_id";
-
-                    ezCmd.CommandType = CommandType.Text;
-                    ezReader = ezCmd.ExecuteReader();
-                    while (ezReader.Read())
-                    {
-                        ddInventory.Items.Add(new ListItem(String.Format("{0}", ezReader[0]), String.Format("{0}", ezReader[1])));
-                    }
-                    ezReader.Close();
-                    ezReader.Dispose();
-                    ezCmd.Dispose();
-                    ezConn.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    lblError.Text = ex.Message;
-                    if (ezReader != null)
-                        ezReader.Dispose();
-                    ezCmd.Dispose();
-                    ezConn.Dispose();
-                    return;
-                }
-            }
+                this.fromInventory(partName);
             else
+                this.toInventory(partName);
+        }
+
+        protected void fromInventory(string partName)
+        {
+            lblError2.Text = "";
+
+            FormView1.ChangeMode(FormViewMode.Edit);
+            this.FormView1.DataBind();
+            //  update the contents in the detail panel
+            DropDownList ddInventory = (DropDownList)FormView1.FindControl("drpingredient_id");
+            ddInventory.Width = 280;
+            ddInventory.Items.Clear();
+            Label lblRequired = (Label)FormView1.FindControl("lblrequired_quantity");
+            TextBox txtActual = (TextBox)FormView1.FindControl("txtused_quantity");
+            Decimal defaultQuantity =
+                      Convert.ToDecimal(gvTable.SelectedDataKey.Values["required_quantity"])
+              - Convert.ToDecimal(gvTable.SelectedDataKey.Values["used_quantity"]);
+            txtActual.Text = lblRequired.Text = string.Format("{0:N0}", defaultQuantity);
+            FormView1.Caption = "Consume More '" + partName + "' from Inventory";
+            try
             {
-                FormView1.ChangeMode(FormViewMode.Insert);
-                FormView1.Caption = "Return Some '" + partName + "' to Inventory";
-                FormView1.DataBind();
-                DropDownList ddInventory = (DropDownList)FormView1.FindControl("drpingredient_id");
-                ddInventory.Width = 280;
-                ddInventory.Items.Clear();
-                try
-                {
-                    ConnectToDb();
-                    ezCmd = new EzSqlCommand();
-                    ezCmd.Connection = ezConn;
+                ConnectToDb();
+                ezCmd = new EzSqlCommand();
+                ezCmd.Connection = ezConn;
+                ezCmd.CommandText =
+                  " SELECT concat(i.lot_id, IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ', ', CAST(i.actual_quantity AS UNSIGNED INTEGER),' ', u.name), i.id FROM inventory i, uom u WHERE i.source_type ='"
+                + gvTable.SelectedDataKey.Values["source_type"].ToString()
+                + "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString()
+                + " AND i.actual_quantity>0 AND u.id = i.uom_id";
 
-
-                    ezCmd.CommandText = "SELECT CONCAT( CAST(i.lot_id AS CHAR)" +
-                        ", IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ' consumed at ', date_format(str_to_date(c.start_timecode, '%Y%m%d%H%i%s0' ), '%m/%d/%Y %I:%i%p'))," +
-                        " CONCAT(c.start_timecode,',', CAST(c.quantity_used AS UNSIGNED INTEGER), ',', CAST(i.uom_id AS CHAR),',', CAST(c.inventory_id AS CHAR), ',', u.name)" +
-                        " FROM inventory_consumption c, inventory i, uom u WHERE c.lot_id ="
-                        + /*Session["lot_id"].ToString()*/ Request.QueryString["lot_id"] +
-                        " AND c.start_timecode > '" + Request.QueryString["start_time"] +
-                        "' AND i.id = c.inventory_id " +
-                        " AND i.source_type = '" + gvTable.SelectedDataKey.Values["source_type"].ToString() +
-                        "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString() +
-                        " AND u.id = c.uom_id ";
-                    ezCmd.CommandType = CommandType.Text;
-                    ezReader = ezCmd.ExecuteReader();
-                    while (ezReader.Read())
-                    {
-                        ddInventory.Items.Add(new ListItem(String.Format("{0}", ezReader[0]), String.Format("{0}", ezReader[1])));
-                    }
-                    if (ddInventory.Items.Count > 0)
-                    {
-                        ddInventory.SelectedIndex = 0;
-                        string[] dataValues = ddInventory.Items[0].Value.Split(',');
-                        Label lblRequired = (Label)FormView1.FindControl("lblrequired_quantity");
-                        lblRequired.Text = dataValues[1];
-                        Label lblUom = (Label)FormView1.FindControl("lbluom_name");
-                        lblUom.Text = dataValues[4];
-                    }
-                    ezReader.Close();
-                    ezReader.Dispose();
-                    ezCmd.Dispose();
-                    ezConn.Dispose();
-                }
-                catch (Exception ex)
+                ezCmd.CommandType = CommandType.Text;
+                ezReader = ezCmd.ExecuteReader();
+                while (ezReader.Read())
                 {
-                    lblError.Text = ex.Message;
-                    if (ezReader != null)
-                        ezReader.Dispose();
-                    ezCmd.Dispose();
-                    ezConn.Dispose();
-                    return;
+                    ddInventory.Items.Add(new ListItem(String.Format("{0}", ezReader[0]), String.Format("{0}", ezReader[1])));
                 }
+                ezReader.Close();
+                ezReader.Dispose();
+                ezCmd.Dispose();
+                ezConn.Dispose();
             }
+            catch (Exception ex)
+            {
+                lblError.Text = ex.Message;
+                if (ezReader != null)
+                    ezReader.Dispose();
+                ezCmd.Dispose();
+                ezConn.Dispose();
+                return;
+            }
+
+
             FormView1.Visible = true;
             this.updateRecordPanel.Update();
             //  show the modal popup
             this.ModalPopupExtender.Show();
         }
+
+        protected void toInventory(string partName)
+        {
+            lblError2.Text = "";
+
+            FormView1.ChangeMode(FormViewMode.Insert);
+            FormView1.Caption = "Return Some '" + partName + "' to Inventory";
+            FormView1.DataBind();
+            DropDownList ddInventory = (DropDownList)FormView1.FindControl("drpingredient_id");
+            ddInventory.Width = 280;
+            ddInventory.Items.Clear();
+            try
+            {
+                ConnectToDb();
+                ezCmd = new EzSqlCommand();
+                ezCmd.Connection = ezConn;
+
+
+                ezCmd.CommandText = "SELECT CONCAT( CAST(i.lot_id AS CHAR)" +
+                    ", IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ' consumed at ', date_format(str_to_date(c.start_timecode, '%Y%m%d%H%i%s0' ), '%m/%d/%Y %I:%i%p'))," +
+                    " CONCAT(c.start_timecode,',', CAST(c.quantity_used AS UNSIGNED INTEGER), ',', CAST(i.uom_id AS CHAR),',', CAST(c.inventory_id AS CHAR), ',', u.name)" +
+                    " FROM inventory_consumption c, inventory i, uom u WHERE c.lot_id ="
+                    + /*Session["lot_id"].ToString()*/ Request.QueryString["lot_id"] +
+                    " AND c.start_timecode > '" + Request.QueryString["start_time"] +
+                    "' AND i.id = c.inventory_id " +
+                    " AND i.source_type = '" + gvTable.SelectedDataKey.Values["source_type"].ToString() +
+                    "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString() +
+                    " AND u.id = c.uom_id ";
+                ezCmd.CommandType = CommandType.Text;
+                ezReader = ezCmd.ExecuteReader();
+                while (ezReader.Read())
+                {
+                    ddInventory.Items.Add(new ListItem(String.Format("{0}", ezReader[0]), String.Format("{0}", ezReader[1])));
+                }
+                if (ddInventory.Items.Count > 0)
+                {
+                    ddInventory.SelectedIndex = 0;
+                    string[] dataValues = ddInventory.Items[0].Value.Split(',');
+                    Label lblRequired = (Label)FormView1.FindControl("lblrequired_quantity");
+                    lblRequired.Text = dataValues[1];
+                    Label lblUom = (Label)FormView1.FindControl("lbluom_name");
+                    lblUom.Text = dataValues[4];
+                }
+                ezReader.Close();
+                ezReader.Dispose();
+                ezCmd.Dispose();
+                ezConn.Dispose();
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = ex.Message;
+                if (ezReader != null)
+                    ezReader.Dispose();
+                ezCmd.Dispose();
+                ezConn.Dispose();
+                return;
+            }
+
+            FormView1.Visible = true;
+            this.updateRecordPanel.Update();
+            //  show the modal popup
+            this.ModalPopupExtender.Show();
+        }
+
         protected void btnListForm_Click(object sender, EventArgs e)
         {
             MessagePopupExtender.Hide();
@@ -804,6 +827,53 @@ namespace ezMESWeb.Tracking
                 strPOInfo[3]);
 
             Server.Transfer(strUrl);
+
+        }
+
+        protected void verifyMoveConsumeButton()
+        {
+            string strHeader;
+            bool bVisible = false;
+            for (int i = 0; i < gvTable.Columns.Count; i++)
+            {
+                strHeader = gvTable.Columns[i].HeaderText;
+                if (strHeader.CompareTo("Consume") == 0)
+                {
+                    bVisible = gvTable.Columns[i].Visible;
+                }
+            }
+
+            btnMove.Visible = bVisible;
+            lblPartName.Visible = bVisible;
+            txtPartName.Visible = bVisible;
+        }
+        protected void btnMove_Click(object sender, EventArgs e)
+        {
+            int nIndex = gvTable.SelectedIndex;
+
+            string strPartName = txtPartName.Text.Trim();
+            if (strPartName.Length == 0)
+            {
+                lblError.Text = "No part number";
+                lblError.Visible = true;
+                return;
+            }
+
+            for (int i = 0; i < gvTable.Rows.Count; i++)
+            {
+                gvTable.SelectedIndex = i;
+
+                string strText = gvTable.SelectedDataKey.Values["name"].ToString();
+                if (strText == strPartName)
+                {
+                    this.fromInventory(strPartName);
+                    return;
+                }
+            }
+
+            //not found in the list
+            lblError.Text = string.Format("{0} is not in the list", strPartName);
+            lblError.Visible = true;
 
         }
     }

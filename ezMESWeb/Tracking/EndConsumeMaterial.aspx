@@ -179,6 +179,12 @@ height="100%" scrollbars="Horizontal">
             </div> 
         </td>
         </tr>
+        <tr style="height:30px;">
+            <td><asp:Label ID="lblPartName" runat="server" Text="Part #:"></asp:Label>
+                <asp:TextBox ID="txtPartName" runat="server"></asp:TextBox>
+                <asp:Button ID="btnMove" runat="server" Text="Consume from Inventory" width ="160px" OnClick="btnMove_Click"/>
+            </td>
+        </tr>
         <tr>
             <td colspan="3" align="center"><asp:Button OnClientClick="return printHTMLString();" Text="Print Package Label" runat="server" ID="btnPrintLabel" Width="150px" Height="30px" OnClick="btnPrintLabel_Click"/>
             &nbsp;&nbsp;&nbsp;
