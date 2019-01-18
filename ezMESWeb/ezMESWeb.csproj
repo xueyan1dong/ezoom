@@ -131,6 +131,7 @@
     <Content Include="Images\Logo.gif" />
     <Content Include="LabelPrint.aspx" />
     <Content Include="Reports\NewOrderDemandPrediction.aspx" />
+    <Content Include="Reports\OrderBatchDetail.aspx" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -204,6 +205,13 @@
     </Compile>
     <Compile Include="Reports\NewOrderDemandPrediction.aspx.designer.cs">
       <DependentUpon>NewOrderDemandPrediction.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\OrderBatchDetail.aspx.cs">
+      <DependentUpon>OrderBatchDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\OrderBatchDetail.aspx.designer.cs">
+      <DependentUpon>OrderBatchDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\OrderReport.aspx.cs">
       <DependentUpon>OrderReport.aspx</DependentUpon>
@@ -473,10 +481,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\Report1.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpNewOrderDemandPrediction.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpOrder.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpDispatchHistory.rdlc" />
+    <EmbeddedResource Include="Reports\report_templates\rpOrderBatchDetail.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpProductInProcess.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpWorkflowBom.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpLotStatusHistory.rdlc" />
