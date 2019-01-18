@@ -123,11 +123,12 @@ VALUES ('hold equipment',0,0,now(),'No parameter required and equiipment id is s
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES ('email',10,3,now(),'email address, subject, and content are required');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
-VALUES ('consume material',0,0,now(),'recipe is supplied as a column value.');
+VALUES ('consume material',0,0,now(),
+'recipe is supplied as a column value. if parameter 1 has value of [print packing docs], the step will show button for printing packing labels and packing list');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES ('reposition',0,0,now(),'No parameter is needed.');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
-VALUES ('ship to warehouse',0,0,now(),'No parameter is needed.');
+VALUES ('ship to location',0,0,now(),'if parameter 1 has value [log tracking num], show input box for recording tracking number');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES ('scrap',0,0,now(),'No parameter is needed.');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
