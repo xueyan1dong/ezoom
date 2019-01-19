@@ -9,6 +9,9 @@
         .auto-style1 {
             width: 360px;
             vertical-align:middle;
+            padding:0px;
+            border-spacing:0px;
+            border-width:1px;
         }
         .auto-style2 {
             width: 100px;
@@ -17,20 +20,23 @@
 
 <style type = "text/css">
    <!--
-      @page { size : 6.0in 4.0in;
+      @page { size : 4.0in 3.0in;
               margin-top: 0.0cm;
               margin-bottom: 0.0cm;
-              margin-left: 1.0cm;
-              margin-right: 1.0cm;
+              margin-left: 0.0cm;
+              margin-right: 0.0cm;
               overflow: hidden;
       }
+    .auto-style3 {
+        height: 17px;
+    }
    -->
 </style>
 
 </head>
 <body>
     <form id="form1" runat="server">
-        <font face="calibri">
+        <font face="calibri" size="-1">
         <table class="auto-style1">
             <tr>
                 <td colspan="2" align="center">
@@ -60,7 +66,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2">PO Line #:</td>
+                <td class="auto-style2"><NOBR>PO Line #:</NOBR></td>
                 <td>
                     <asp:Label ID="lblPOLine" runat="server" Text="Label"></asp:Label>
                 </td>
@@ -71,13 +77,13 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2"># of Pieces:</td>
+                <td class="auto-style2"><NOBR># of Pieces:</NOBR></td>
                 <td>
                     <asp:Label ID="lblPieceCount" runat="server" Text="Label"></asp:Label>
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2">Item #</td>
+                <td class="auto-style2"><NOBR>Item #:</NOBR></td>
                 <td>
                     <asp:Label ID="lblItemNumber" runat="server" Text="Label"></asp:Label>
                 </td>
@@ -88,7 +94,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2">Finish:</td>
+                <td class="auto-style2" valign="top">Finish:</td>
                 <td>
                     <asp:Label ID="lblFinish" runat="server" Text="Label"></asp:Label>
                 </td>
