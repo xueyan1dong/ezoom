@@ -14,6 +14,19 @@
             width: 100px;
         }
     </style>
+
+<style type = "text/css">
+   <!--
+      @page { size : 6.0in 4.0in;
+              margin-top: 0.0cm;
+              margin-bottom: 0.0cm;
+              margin-left: 1.0cm;
+              margin-right: 1.0cm;
+              overflow: hidden;
+      }
+   -->
+</style>
+
 </head>
 <body>
     <form id="form1" runat="server">
