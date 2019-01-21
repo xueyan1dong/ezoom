@@ -13,12 +13,6 @@
     <UI>Dropdown</UI>
     <DropdownQuery dcol="0" vcol="1">Select 'NA', null Union Select name, id from location</DropdownQuery>
   </Column>
-  <Column name ="contact_employee">
-    <DisplayName>Contact Employee</DisplayName>
-    <IsEnable>true</IsEnable>
-    <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select username, id from employee order by 1</DropdownQuery>
-  </Column>
   <Column name ="adjacent_loc_id1">
     <DisplayName>Adjacent_Loc_Id1</DisplayName>
     <IsEnable>true</IsEnable>
@@ -42,6 +36,12 @@
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
     <DropdownQuery dcol="0" vcol="1">Select 'NA', null Union Select name, id from location</DropdownQuery>
+  </Column>
+  <Column name ="contact_employee">
+    <DisplayName>Contact Employee</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select username, id from employee order by 1</DropdownQuery>
   </Column>
   <Column name ="description">
     <DisplayName>Description</DisplayName>
