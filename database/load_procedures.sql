@@ -8714,7 +8714,7 @@ END$
 *    Platform Dependencies  : MySql
 *    Description            : Insert or update location into the location table
 *    example	            : 
-*    Log                    : 1/21/2019 fixed the error
+*    Log                    : 1/21/2019 fixed the error: can not insert or update when all adjacent locations are null when there exists a different named location with all null ajdacent locations
 */
 DELIMITER $
 
