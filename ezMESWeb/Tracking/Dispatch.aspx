@@ -141,7 +141,8 @@ scrollbars=Both>
             (SELECT PP.process_id 
            FROM product_process pp 
            WHERE PP.product_id = p.id ORDER BY pp.priority desc LIMIT 1) as process_id, 
-            p.lot_size,
+           IF( d.quantity_requested-d.quantity_made-d.quantity_shipped-d.quantity_in_process < p.lot_size, 
+           d.quantity_requested-d.quantity_made-d.quantity_shipped-d.quantity_in_process, p.lot_size ) as lot_size,
             u.name as uom,
             1 as num_lots,
             substring(p.name, 1, 10) as alias_prefix,  
