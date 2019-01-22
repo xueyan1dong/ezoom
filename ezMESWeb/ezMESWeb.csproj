@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BarcodeImage.aspx" />
+	<Content Include="Configure\Location\LoadLocation.aspx" />
     <Content Include="Configure\Location\Location.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -170,6 +171,13 @@
     <Compile Include="Configure\Equipment\EquipmentConfig.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EquipmentConfig.aspx</DependentUpon>
+    </Compile>
+	<Compile Include="Configure\Location\LoadLocation.aspx.cs">
+      <DependentUpon>LoadLocation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Configure\Location\LoadLocation.aspx.designer.cs">
+      <DependentUpon>LoadLocation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Configure\Order\LoadOrder.aspx.cs">
       <DependentUpon>LoadOrder.aspx</DependentUpon>

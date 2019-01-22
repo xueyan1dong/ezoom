@@ -8714,7 +8714,7 @@ END$
 *    Platform Dependencies  : MySql
 *    Description            : Insert or update location into the location table
 *    example	            : 
-*    Log                    :		
+*    Log                    : 1/21/2019 fixed the error: can not insert or update when all adjacent locations are null when there exists a different named location with all null ajdacent locations
 */
 DELIMITER $
 
@@ -8723,11 +8723,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `modify_location`(
   INOUT _location_id int(10) unsigned,
   IN _name varchar(255),
   IN _parent_loc_id int(11) unsigned,
-  IN _contact_employee int(10) unsigned,
   IN _adjacent_loc_id1 int(5) unsigned,
   IN _adjacent_loc_id2 int(5) unsigned,
   IN _adjacent_loc_id3 int(5) unsigned,
   IN _adjacent_loc_id4 int(5) unsigned,
+  IN _contact_employee int(10) unsigned,
   IN _description varchar(255),
   IN _comment text,
   OUT _response varchar(255))
@@ -8748,16 +8748,26 @@ BEGIN
         where name = _name and if(_parent_loc_id is null, parent_loc_id is null, parent_loc_id = _parent_loc_id);
         
         If ifexist is Null Then -- 
-        -- check if the location has been occupied
-			Select name into ifoccupied
-            From location
-            where if(_parent_loc_id is null, parent_loc_id is null, parent_loc_id = _parent_loc_id)
-            and if(_adjacent_loc_id1 is null, adjacent_loc_id1 is null, adjacent_loc_id1 = _adjacent_loc_id1)
-            and if(_adjacent_loc_id2 is null, adjacent_loc_id2 is null, adjacent_loc_id2 = _adjacent_loc_id2)
-            and if(_adjacent_loc_id3 is null, adjacent_loc_id3 is null, adjacent_loc_id3 = _adjacent_loc_id3)
-            and if(_adjacent_loc_id4 is null, adjacent_loc_id4 is null, adjacent_loc_id4 = _adjacent_loc_id4)
-            and name != _name;
-            
+        -- check if the location has been occupied: if adjacent four ids are all null or any one of them is null, then we assume the location's physical location is not defined yet
+		-- thus ifoccupied is null(can be put in any place); later, when we have more knowledge about adjacent locations and what are valid combination of four adjacent locations
+		-- we need to add check adjacent location combinations are valid.
+			If (_adjacent_loc_id1 is null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is not null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is null and _adjacent_loc_id2 is not null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is not null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is not null) Then
+				Set ifexist = null;
+			Else
+				Select name into ifoccupied
+				From location
+				where if(_parent_loc_id is null, parent_loc_id is null, parent_loc_id = _parent_loc_id)
+				and if(_adjacent_loc_id1 is null, adjacent_loc_id1 is null, adjacent_loc_id1 = _adjacent_loc_id1)
+				and if(_adjacent_loc_id2 is null, adjacent_loc_id2 is null, adjacent_loc_id2 = _adjacent_loc_id2)
+				and if(_adjacent_loc_id3 is null, adjacent_loc_id3 is null, adjacent_loc_id3 = _adjacent_loc_id3)
+				and if(_adjacent_loc_id4 is null, adjacent_loc_id4 is null, adjacent_loc_id4 = _adjacent_loc_id4)
+				and name != _name;
+            End if;
+			
 			If ifoccupied is Null Then -- insert new location
 				INSERT INTO location (
 					name,
@@ -8800,14 +8810,23 @@ BEGIN
         and id != _location_id; -- For a same parent location, exists a same named location
         
         If ifexist is Null Then
-			Select name into ifoccupied
-            from location
-            where if(_parent_loc_id is null, parent_loc_id is null, parent_loc_id = _parent_loc_id)
-            and if(_adjacent_loc_id1 is null, adjacent_loc_id1 is null, adjacent_loc_id1 = _adjacent_loc_id1)
-            and if(_adjacent_loc_id2 is null, adjacent_loc_id2 is null, adjacent_loc_id2 = _adjacent_loc_id2)
-            and if(_adjacent_loc_id3 is null, adjacent_loc_id3 is null, adjacent_loc_id3 = _adjacent_loc_id3)
-            and if(_adjacent_loc_id4 is null, adjacent_loc_id4 is null, adjacent_loc_id4 = _adjacent_loc_id4)
-            and id != _location_id;
+		
+			If (_adjacent_loc_id1 is null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is not null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is null and _adjacent_loc_id2 is not null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is not null and _adjacent_loc_id4 is null) or
+			(_adjacent_loc_id1 is null and _adjacent_loc_id2 is null and _adjacent_loc_id3 is null and _adjacent_loc_id4 is not null) Then
+				Set ifoccupied = null;
+			Else
+				Select name into ifoccupied
+				from location
+				where if(_parent_loc_id is null, parent_loc_id is null, parent_loc_id = _parent_loc_id)
+				and if(_adjacent_loc_id1 is null, adjacent_loc_id1 is null, adjacent_loc_id1 = _adjacent_loc_id1)
+				and if(_adjacent_loc_id2 is null, adjacent_loc_id2 is null, adjacent_loc_id2 = _adjacent_loc_id2)
+				and if(_adjacent_loc_id3 is null, adjacent_loc_id3 is null, adjacent_loc_id3 = _adjacent_loc_id3)
+				and if(_adjacent_loc_id4 is null, adjacent_loc_id4 is null, adjacent_loc_id4 = _adjacent_loc_id4)
+				and id != _location_id; -- check if exists another id that has the same adjacent locations
+			End if;
             
             If ifoccupied is Null Then
 				Select create_time into created_time

@@ -13,6 +13,8 @@
 *                      order to gain flexible column width. As a result, do loose column adjustability
 *                      <BoundaryStyle BorderColor="Gray" BorderWidth="1px" BorderStyle="Solid"></BoundaryStyle>
 *                      but now the columns can have different width in the grid, which allowed all columns show up
+*   01/21/2019: xdong: modified the query behind dispatch popup, so that the batch size is either the number of products still need to make for the order line
+*                      or the maximum batch size allowed, taking the smaller number among the two.
 ----------------------------------------------------------------*/
 using System;
 using System.Data;
