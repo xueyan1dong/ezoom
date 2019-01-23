@@ -34,9 +34,16 @@ namespace ezMESWeb.Tracking
       //protected global::System.Web.UI.WebControls.SqlDataSource sdsGrid;
       protected global::System.Web.UI.WebControls.GridView gvTable;
         protected TextBox txtBatchName;
+        protected Button btnMove;
 
+        protected override void Page_Load(object sender, EventArgs e)
+        {
+            base.Page_Load(sender, e);
 
-      protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
+            this.Form.DefaultButton = btnMove.UniqueID;
+        }
+
+        protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
       {
         string stepType=string.Empty;
         string[] arr=new string[gvTable.SelectedRow.Cells.Count];

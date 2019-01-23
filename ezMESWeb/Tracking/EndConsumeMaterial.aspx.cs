@@ -46,6 +46,12 @@ namespace ezMESWeb.Tracking
         //protected Panel MessagePanel;
         protected Image po_barcode, name_barcode, product_barcode;
 
+        protected override void Page_Load(object sender, EventArgs e)
+        {
+            base.Page_Load(sender, e);
+
+            this.Form.DefaultButton = btnMove.UniqueID;
+        }
 
         protected override void OnInit(EventArgs e)
 
