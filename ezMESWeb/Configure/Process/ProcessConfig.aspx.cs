@@ -9,6 +9,7 @@
 *    2009: xdong: first created
   *  09/26/2018:xdong: attempt to solve problem related to server.transfer call in btnDo_Click, but no result
   *  11/12/2018:xdong: added "Product Made" check box to insert and modify popup of step/position to mark whether final product is made there
+  *  01/22/2019:xdong: widen the workflow step grid to 1024px
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;
