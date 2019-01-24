@@ -12,6 +12,7 @@
             padding:0px;
             border-spacing:0px;
             border-width:1px;
+            border-collapse:collapse;
         }
         .auto-style2 {
             width: 100px;
@@ -99,15 +100,15 @@
                     <asp:Label ID="lblFinish" runat="server" Text="Label"></asp:Label>
                 </td>
             </tr>
-            <tr>
+            <tr id="blankLine1">
                 <td class="auto-style2"></td>
                 <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr id="blankLine2">
                 <td class="auto-style2"></td>
                 <td>&nbsp;</td>
             </tr>
-            <tr>
+            <tr id="blankLine3">
                 <td class="auto-style2"></td>
                 <td align="right">
                 <asp:Button ID="btnPrint" runat="server" Text="Print" Width="71px" OnClientClick="printHTMLString();return false;" />

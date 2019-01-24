@@ -816,6 +816,17 @@ namespace ezMESWeb.Tracking
             string strProcessID = Request.QueryString["process_id"];
             string strLotAlias = Request.QueryString["lot_alias"];
 
+            //aggregate quantity
+            int nQuantity = 0;
+            for (int i = 0; i < gvTable.Rows.Count; i++)
+            {
+                gvTable.SelectedIndex = i;
+
+                string strText = gvTable.SelectedDataKey.Values["required_quantity"].ToString();
+                nQuantity += Convert.ToInt32(Convert.ToDecimal(strText));
+            }
+            strQuantity = string.Format("{0}", nQuantity);
+
             //retrieve info from database
             ConnectToDb();
             string[] strPOInfo = this.getPOInfo(strLotID);

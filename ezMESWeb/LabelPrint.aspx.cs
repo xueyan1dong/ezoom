@@ -65,8 +65,9 @@ namespace ezMESWeb
             strScript += "  var origDoc = document.body.innerHTML;\r\n";
             strScript += "  var newDoc = origDoc;\r\n";
             strScript += "  document.body.innerHTML = newDoc;\r\n";
-            strScript += "  document.getElementById(\"btnPrint\").style.visibility = \"hidden\";\r\n";
-            strScript += "  document.getElementById(\"btnCancel\").style.visibility = \"hidden\";\r\n";
+            strScript += "  document.getElementById(\"blankLine1\").innerHTML = \"\";\r\n";
+            strScript += "  document.getElementById(\"blankLine2\").innerHTML = \"\";\r\n";
+            strScript += "  document.getElementById(\"blankLine3\").innerHTML = \"\";\r\n";
             strScript += "  window.print();\r\n";
             strScript += "  document.body.innerHTML = origDoc;\r\n";
             strScript += "}";
