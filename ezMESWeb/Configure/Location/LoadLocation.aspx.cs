@@ -13,7 +13,7 @@ namespace ezMESWeb.Configure.Location
     public partial class LoadLocation : ConfigTemplate//System.Web.UI.Page
     {
 
-        string[] cols = { "name", "parent_loc_id", "contact_employee", "adjacent_loc_id1", "adjacent_loc_id2", "adjacent_loc_id3", "adjacent_loc_id4", "description", "comment" };
+        string[] cols = { "name", "parent_loc_id", "adjacent_loc_id1", "adjacent_loc_id2", "adjacent_loc_id3", "adjacent_loc_id4", "contact_employee", "description", "comment" };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -58,7 +58,15 @@ namespace ezMESWeb.Configure.Location
                             lblError.Text = ex.Message;
                         }
                         itemContent += cols[k].ToString() + ": " + field + "\n";
-                        loaded += cols[k].ToString() + ":" + field + ";";
+                        if(field.Length == 0)
+                        {
+                            loaded += cols[k].ToString() + ":" + " " + ";";
+                        }
+                        else
+                        {
+                            loaded += cols[k].ToString() + ":" + field + ";";
+                        }
+                        
                     }
                  
                     itemContent += "\n";
@@ -89,13 +97,13 @@ namespace ezMESWeb.Configure.Location
                 for (int i = 0; i < locations.Length; i++)
                 {
                     ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value, ParameterDirection.InputOutput);
-                    string[] fields = locations[i].Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] fields = locations[i].Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries); //StringSplitOptions.None);
                     for (int j = 0; j < fields.Length; j++)
                     {
                         string[] field = fields[j].Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
                         string key = "@_"+ field[0];
                         string val = field[1];
-                        if (val.Length == 0)
+                        if(val.Equals(" ")) //if (val.Length == 0)
                         {
                             ezCmd.Parameters.AddWithValue(key, DBNull.Value, ParameterDirection.Input);
                             //ezCmd.Parameters[key.ToString()].Value = DBNull.Value;
