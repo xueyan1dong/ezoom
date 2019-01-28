@@ -782,7 +782,7 @@
                                   <Value>=Fields!lot_alias.Value</Value>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
-                                    <Color>CornflowerBlue</Color>
+                                    <TextDecoration>Underline</TextDecoration>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1290,7 +1290,7 @@
             <DataSetName>DataSet1_report_order_batch_detail</DataSetName>
             <Top>0.31944in</Top>
             <Height>0.65417in</Height>
-            <Width>12.25416in</Width>
+            <Width>12.25415in</Width>
             <Style>
               <Border>
                 <Style>None</Style>

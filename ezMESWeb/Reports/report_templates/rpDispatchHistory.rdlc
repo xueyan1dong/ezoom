@@ -98,6 +98,10 @@
           <DataField>curstatus</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="batch_link">
+          <DataField>batch_link</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSet1</rd:DataSetName>
@@ -117,7 +121,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.875in</Width>
+                  <Width>1.65833in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.92083in</Width>
@@ -159,7 +163,7 @@
                   <Width>0.61667in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.7in</Width>
+                  <Width>0.71667in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -733,12 +737,22 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!lot_alias.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>Underline</TextDecoration>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
+                          <ActionInfo>
+                            <Actions>
+                              <Action>
+                                <Hyperlink>=Fields!batch_link.Value</Hyperlink>
+                              </Action>
+                            </Actions>
+                          </ActionInfo>
                           <ZIndex>11</ZIndex>
                           <Style>
                             <Border>
@@ -1252,7 +1266,7 @@
             <DataSetName>DataSet1_report_dispatch_history</DataSetName>
             <Top>0.25in</Top>
             <Height>1.04167in</Height>
-            <Width>12.89676in</Width>
+            <Width>12.69676in</Width>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -1263,7 +1277,7 @@
         <Height>1.29167in</Height>
         <Style />
       </Body>
-      <Width>14.1676in</Width>
+      <Width>14.24676in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
