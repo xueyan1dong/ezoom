@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*    1/25/2019: Peiyu Ge: added selection of three more field, step, line_num, quantity_status.				
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `report_lot_status`$
@@ -39,17 +40,44 @@ BEGIN
         u.name as uom_name,
         l.contact,
         concat(e.firstname, ' ', e.lastname)as contact_name,
-        l.priority,
+        l.priority,-- pri.name as priority,
         get_local_time(l.dispatch_time) as dispatch_time,
         get_local_time(l.output_time) as output_time,
-        l.comment
-  FROM lot_status l, product p , `order_general` o , client c, process pr, employee e, uom u
- WHERE l.id <=> _lot_id
-   AND p.id = l.product_id
-   AND o.id = l.order_id
-   AND c.id = o.client_id
-   AND pr.id = l.process_id
-   AND e.id = l.contact
-   AND u.id = l.uomid;
+        l.comment,
+        s.name as step,
+        l.order_line_num,
+        l.quantity_status,
+        if(st.name = 'condition', 
+			  if(h.status = 'started', concat((select name from step where id = ps2.step_id), '/', (select name from step where id = ps3.step_id)), if(h.result = 'True', (select name from step where id = ps2.step_id), (select name from step where id = ps3.step_id))),
+              if(st.name = 'reposition', (select name from step where id = substring_index(h.result,',',-1)), if(h.position_id = 0, (select name from step where id = ps1.step_id), (select name from step where id = ps2.step_id)))
+			 ) as next_step
  
+ FROM lot_status l INNER JOIN lot_history h ON l.id = h.lot_id
+		   AND h.start_timecode = (SELECT MAX(start_timecode)
+									FROM lot_history h2
+							  WHERE h2.lot_id=h.lot_id)      
+           LEFT JOIN order_general o ON o.id = l.order_id
+           LEFT JOIN product p ON p.id = l.product_id
+           LEFT JOIN process pr ON pr.id = l.process_id
+           LEFT JOIN uom u ON u.id = l.uomid
+           LEFT JOIN employee e2 ON e2.id = l.dispatcher
+           LEFT JOIN employee e ON e.id = l.contact
+           LEFT JOIN client c ON c.id = o.client_id
+           LEFT JOIN priority pri ON pri.id = l.priority
+           LEFT JOIN step s ON s.id = h.step_id
+           LEFT JOIN step_type st ON st.id = s.step_type_id
+           LEFT JOIN process_step ps1 on ps1.process_id = l.process_id and ps1.position_id = if(h.position_id = 0, 1, h.position_id)
+           LEFT JOIN process_step ps2 on ps2.process_id = ps1.process_id and ps2.position_id = ps1.next_step_pos
+           LEFT JOIN process_step ps3 on ps3.process_id = ps2.process_id and ps3.position_id = ps1.false_step_pos
+           WHERE l.id <=> _lot_id;
+ -- FROM lot_status l, product p , `order_general` o , client c, process pr, employee e, uom u
+-- WHERE l.id <=> _lot_id
+--   AND p.id = l.product_id
+-- AND o.id = l.order_id
+--   AND c.id = o.client_id
+--   AND pr.id = l.process_id
+--   AND e.id = l.contact
+--   AND u.id = l.uomid
+ 
+
  END$
