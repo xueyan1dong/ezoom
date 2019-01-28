@@ -11,8 +11,8 @@
 <%--
     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 --%>
-   <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="None"  width="100%" scrollbars="Horizontal">
-    <center class="title">Order Batch Status Report</center>
+   <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="None"  width="100%" Height="1800px">
+    <center class="title">Order Batch Detail Report</center>
  <center>
    <table width ="100%">
    <td colspan ="3" align="center"></td>
@@ -26,7 +26,7 @@
 <asp:ScriptManager ID="ScriptManager1" runat="server">
        </asp:ScriptManager>
 
-     <rsweb:ReportViewer Width="100%"  ID="rvDispatch" runat="server" 
+     <rsweb:ReportViewer Width="100%" Height=1720px ID="rvDispatch" runat="server" 
     Font-Names="Verdana" Font-Size="8pt" Visible="False" >
            <LocalReport ReportPath="Reports\report_templates\rpOrderBatchDetail.rdlc" EnableHyperlinks="True">
            </LocalReport>

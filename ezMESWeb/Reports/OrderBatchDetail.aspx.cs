@@ -90,6 +90,7 @@ namespace ezMESWeb.Reports
 
                 ezReader = ezCmd1.ExecuteReader();
                 dpStatus1.Items.Add(new ListItem("All", ""));
+                
                 if (ezReader.Read())
                 {
                     string raw = ezReader["Type"].ToString();
@@ -147,6 +148,7 @@ namespace ezMESWeb.Reports
             DbConnectionType ezType;
 
             dpProduct1.Items.Clear();
+            dpProduct1.Items.Add(new ListItem("All", ""));
             try
             {
 
@@ -237,7 +239,7 @@ namespace ezMESWeb.Reports
             ezCmd.CommandType = CommandType.StoredProcedure;
 
             ezCmd.Parameters.AddWithValue("@_order_id", strOrderId);
-            if (strProductId.Length > 0)
+            if (strProductId.Length > 0 && strProductId != "All")
                 ezCmd.Parameters.AddWithValue("@_product_id", strProductId);
             else
                 ezCmd.Parameters.AddWithValue("@_product_id", DBNull.Value);
