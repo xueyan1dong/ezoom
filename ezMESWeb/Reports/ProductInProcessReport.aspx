@@ -12,7 +12,7 @@
     <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 --%>
    <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="None" 
-           Width="850px" Height="1100px" >
+           Width="850px" Height="1800px" >
  <center class="title">Product Batch Status Report</center>    
  <center>
  <table border="1" cellpadding="1" cellspacing="0" class="Rpt_Filter_Table" style="margin-bottom:10px" >
@@ -43,7 +43,7 @@
        </asp:ScriptManager>
 
 
-     <rsweb:ReportViewer Width="100%"  ID="rvDispatch" runat="server" 
+     <rsweb:ReportViewer Width="100%" Height=1660px ID="rvDispatch" runat="server" 
     Font-Names="Verdana" Font-Size="8pt" Visible="False" >
            <LocalReport ReportPath="Reports\report_templates\rpProductInProcess.rdlc" EnableHyperlinks="True">
            </LocalReport>
