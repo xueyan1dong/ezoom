@@ -162,11 +162,19 @@ namespace ezMESWeb.Reports
                pnMain.Controls.Add(lc);
             }
             else
-               rvDispatch.LocalReport.DataSources.Add(
+                    //rvDispatch.LocalReport.DataSources.Add(
+                    //new ReportDataSource("DataSet1_report_dispatch_history", dispatchHistory.Tables[0]));
+                dispatchHistory.Tables[0].Columns.Add("batch_link");
+                foreach (DataRow theRow in dispatchHistory.Tables[0].Rows)
+                {
+                    theRow["batch_link"] = "http://" + Request.ServerVariables["HTTP_HOST"] + "/Reports/LotHistoryReport.aspx?batch=" + theRow["lot_alias"];
+                }
+                rvDispatch.LocalReport.DataSources.Clear();
+                rvDispatch.LocalReport.DataSources.Add(
+                //new ReportDataSource("DataSet1_report_product_in_process", dispatchHistory.Tables[0]));
                 new ReportDataSource("DataSet1_report_dispatch_history", dispatchHistory.Tables[0]));
 
-
-         }
+            }
          catch (Exception ex)
          {
             LiteralControl lc = new LiteralControl("<h3>Report Error</h3><hr width=100% size=1 color=silver /><ul><li>There was an unexpected exception encountered while generating the report.<br>" + ex.Message + "</li></ul><hr width=100% size=1 color=silver />");
