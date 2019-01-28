@@ -143,6 +143,10 @@
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
+              <xs:element name="quantity_status" msprop:Generator_ColumnVarNameInTable="columnquantity_status" msprop:Generator_ColumnPropNameInRow="quantity_status" msprop:Generator_ColumnPropNameInTable="quantity_statusColumn" msprop:Generator_UserColumnName="quantity_status" type="xs:string" minOccurs="0" />
+              <xs:element name="order_line_num" msprop:Generator_ColumnVarNameInTable="columnorder_line_num" msprop:Generator_ColumnPropNameInRow="order_line_num" msprop:Generator_ColumnPropNameInTable="order_line_numColumn" msprop:Generator_UserColumnName="order_line_num" type="xs:string" minOccurs="0" />
+              <xs:element name="next_step" msprop:Generator_ColumnVarNameInTable="columnnext_step" msprop:Generator_ColumnPropNameInRow="next_step" msprop:Generator_ColumnPropNameInTable="next_stepColumn" msprop:Generator_UserColumnName="next_step" type="xs:string" minOccurs="0" />
+              <xs:element name="step" msprop:Generator_ColumnVarNameInTable="columnstep" msprop:Generator_ColumnPropNameInRow="step" msprop:Generator_ColumnPropNameInTable="stepColumn" msprop:Generator_UserColumnName="step" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -379,6 +383,7 @@
               <xs:element name="step_status" msprop:Generator_ColumnVarNameInTable="columnstep_status" msprop:Generator_ColumnPropNameInRow="step_status" msprop:Generator_ColumnPropNameInTable="step_statusColumn" msprop:Generator_UserColumnName="step_status" type="xs:string" minOccurs="0" />
               <xs:element name="next_step" msprop:Generator_ColumnVarNameInTable="columnnext_step" msprop:Generator_ColumnPropNameInRow="next_step" msprop:Generator_ColumnPropNameInTable="next_stepColumn" msprop:Generator_UserColumnName="next_step" type="xs:string" minOccurs="0" />
               <xs:element name="curstatus" msprop:Generator_ColumnVarNameInTable="columncurstatus" msprop:Generator_ColumnPropNameInRow="curstatus" msprop:Generator_ColumnPropNameInTable="curstatusColumn" msprop:Generator_UserColumnName="curstatus" type="xs:string" minOccurs="0" />
+              <xs:element name="batch_link" msprop:Generator_ColumnVarNameInTable="columnbatch_link" msprop:Generator_ColumnPropNameInRow="batch_link" msprop:Generator_ColumnPropNameInTable="batch_linkColumn" msprop:Generator_UserColumnName="batch_link" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
