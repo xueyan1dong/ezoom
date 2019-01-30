@@ -70,7 +70,7 @@
        </asp:ScriptManager>
  
         <rsweb:ReportViewer ID="rvDispatch" runat="server" Font-Names="Verdana" Font-Size="8pt" Height="80%" Visible="False" Width="99%">
-           <localreport reportpath="Reports\report_templates\rpDispatchHistory.rdlc">
+           <localreport reportpath="Reports\report_templates\rpDispatchHistory.rdlc" EnableHyperlinks="True">
            </localreport>
         </rsweb:ReportViewer>
         

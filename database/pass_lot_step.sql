@@ -23,6 +23,7 @@ call pass_lot_step(
 ',13,,52', -- for short result
 null,
  null,
+ '123456',
 @_process_id,
 @_sub_process_id,
 @_position_id,
@@ -49,6 +50,7 @@ select @_process_id,
 *   11/29/2018:xdong: fixed some logical error regarding product_made and done status. 
 *                      added code to update quantity_in_process when actual quantity changed
 *   12/04/2018: xdong: corrected logic for updating quantities in order_detail table in case of batch quantity changed in this step.
+*   01/29/2019: xdong: added input parameter _value1 to log tracking number in 'ship to location' step for now
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `pass_lot_step`$
@@ -65,6 +67,7 @@ IN _lot_id int(10) unsigned,
   IN _comment text,
   -- IN _location nvarchar(255), -- for location
   IN _location_id int(11) unsigned,
+  IN _value1 VARCHAR(255),  -- currently only for loging tracking number in "ship to location" step, if para1 of the step = 'Log Tracking Num'. 
   INOUT _process_id int(10) unsigned,
   INOUT _sub_process_id int(10) unsigned,
   INOUT _position_id int(5) unsigned,
@@ -266,7 +269,8 @@ BEGIN
             result,
             comment,
             location_id,
-            quantity_status
+            quantity_status,
+            value1
           )
           VALUES (
             _lot_id,
@@ -289,7 +293,8 @@ BEGIN
             _short_result,
             _comment,
             _location_id,
-            _quantity_status
+            _quantity_status,
+            trim(_value1)
           ); 
           -- now that lot history is logged. update current lot information and order detail
           IF row_count() > 0 THEN
@@ -327,6 +332,7 @@ BEGIN
                   ,comment=_comment
                   ,location_id = _location_id
                   ,quantity_status = _quantity_status
+                  ,value1=trim(_value1)
             WHERE id=_lot_id;
 			  
             

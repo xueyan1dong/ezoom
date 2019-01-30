@@ -866,6 +866,7 @@ CREATE TABLE `product_process` (
 *                       added a column, order_line_num to hold the line_num that the batch is dispatched from in order_detail table
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
+*    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_status`$
@@ -900,6 +901,9 @@ CREATE TABLE `lot_status` (
    -- in process: quantity is counted toward quantity_in_process in order_detail record
    -- made: quantity is counted toward quantity_made in order_detail record
    -- shipped: quantity is counted toward quantity_shipped in order_detail record
+   `value1` varchar(255), -- reserved for storing extra info collected at each transaction. For "ship to location" step, this field store tracking number logged
+   `value2` varchar(500), -- reserved for storing extra info collected at each transaction. For now, it is not used
+   `value3` varchar(2000), -- reserved for storing extra info collected at each transaction. for now, it is not used
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB$
 
@@ -920,6 +924,7 @@ CREATE TABLE `lot_status` (
 *                       added a column, order_line_num to hold the line_num that the batch is dispatched from in order_detail table
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
+*    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_history`$
@@ -950,6 +955,9 @@ CREATE TABLE `lot_history` (
    -- in process: quantity is counted toward quantity_in_process in order_detail record
    -- made: quantity is counted toward quantity_made in order_detail record
    -- shipped: quantity is counted toward quantity_shipped in order_detail record
+  `value1` varchar(255), -- reserved for storing extra info collected at each transaction. For "ship to location" step, this field store tracking number logged
+  `value2` varchar(500), -- reserved for storing extra info collected at each transaction. For now, it is not used
+  `value3` varchar(2000), -- reserved for storing extra info collected at each transaction. for now, it is not used
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
 ) ENGINE=InnoDB$
 
@@ -1087,6 +1095,7 @@ SELECT i.recipe_id,
 *    11/29/2018: Junlu Luo: Added order_line_num and finish columns to output	
 *    12/02/2018: Xueyan Dong: Added order_id column to output	
 *    12/04/2018: Xueyan Dong: Added quantity_status to output	
+*    01/29/2019: Xueyan Dong: Added value1 to output
 */
 DELIMITER $ 
 DROP VIEW IF EXISTS `view_lot_in_process`$
@@ -1129,7 +1138,8 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
 		s.order_line_num,
 		pr.description as finish,
     s.order_id,
-    s.quantity_status
+    s.quantity_status,
+    s.value1
    FROM lot_status s 
 	JOIN order_general as og ON s.order_id = og.id
         INNER JOIN lot_history h ON h.lot_id = s.id

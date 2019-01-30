@@ -53,86 +53,93 @@ log the user out.
 <a href="#content">back to Top</a><br/><br/>
 </p>
 <p>
-<a name ="configuration"><h4>How to Use Configuration Module</h4></a>
-Configuration Module consists of 16 forms (so far) for recording resource information related to
-manufacturing activities. Once entered Configuration module, User can access these forms through the links 
-on the left vertical menu pane.<br/><br/>
- Most forms have two elements on the form: an "Insert" button on top of the
-content area for inserting new record and a grid showing current existing records. <br/><br/>
-If user clicks the "Insert" button, a new window containing input fields pops up, while
-the existing window darkens. Fill in the input fields for new record and click "Submit" link on the popup window will insert a new
-record into ezOOM database and also closes the popup window. User can also click "Cancel" link on the popup to dismiss the popup window.
-<br/><br/>
-In the grid, there is usually a delete link and an edit link at the front of each row. click on the "delete" link deletes the record 
-(deactivate an employee in Employee form) from ezOOM. Click on the "edit" link brings up a popup window for editing the record.
-This popup window works the same way as the popup window for inserting a new record.
+    <a name="configuration"><h4>How to Use Configuration Module</h4></a>
+    Configuration Module consists of 16 forms (so far) for recording resource information related to
+    manufacturing activities. Once entered Configuration module, User can access these forms through the links
+    on the left vertical menu pane.<br /><br />
+    Most forms have two elements on the form: an "Insert" button on top of the
+    content area for inserting new record and a grid showing current existing records. <br /><br />
+    If user clicks the "Insert" button, a new window containing input fields pops up, while
+    the existing window darkens. Fill in the input fields for new record and click "Submit" link on the popup window will insert a new
+    record into ezOOM database and also closes the popup window. User can also click "Cancel" link on the popup to dismiss the popup window.
+    <br /><br />
+    In the grid, there is usually a delete link and an edit link at the front of each row. click on the "delete" link deletes the record
+    (deactivate an employee in Employee form) from ezOOM. Click on the "edit" link brings up a popup window for editing the record.
+    This popup window works the same way as the popup window for inserting a new record.
 
-Details about each form:<br/><br/>
-<i>Employee</i><br/>
-Use employee configuration form to insert or modify an employee record. Any user of ezOOM must have an account in ezOOM. The employee information is very important,
-because tracking module needs this information to track and control access to manufacturing workflows and steps.<br />
-Each employee has a role. Role represents the privilege for using ezOOM features. For example, employees who have "Admin" role can
-access all features in ezOOM, while employees with "QA" role do not have access to Configuration module.
-<br /><br/>
-<i>Uom</i><br/>
-Uom configuration form is for recording Unit of Measure information. The UoM will be referred in product configuration,
-material configuration, inventory configuration, and sales configuration forms. Thus, unit of measures should be recorded using
-this form early during configuration process.
-<br /><br/>
-<i>Uom Conversion</i><br/>
-Uom Conversion form is for storing the conversion information between Unit of Measures. In the form, select an UoM from the dropdown box
-on top of the form as the source Uom, then click "Insert" button to add a destination Uom, and type in its conversion ratio. For example, for
-conversion 1m=10cm, select meter from the dropdown box, click "Insert" button, to show the Insertion Popup form
- and select cm in the TO_ID dropdown box, type in 10 in the ratio textbox. Click "Submit" link on the popup form. You can see the
-new conversion appears in the grid on main form. The Uom Conversion form can also be accessed through the links in "Num of Conversions" column
-of UoM configuration form. Click on a link in Uom form leads to Uom Conversion form with "From" uom selected.
-<br /><br/>
-<i>Product</i><br/>
-Product configuration form records product definition information, but not actual product counts. <br />
-In the form, "Lot Size" means the volume can be produced in one batch through a workflow. "LifeSpan" is the longivity or warranty time
-that the product can be used before it expires.<br /><br />
-<i>Product vs. Workflow</i><br/>
-Product Workflow association form associate valid workflows to products. <br />
-Each product can have one to multiple workflows availabe for producing the product. This form states the relationship by
-associating workflows to product accordingly. The form can also be accessed in Product configuration form through the links
-in "Num Workflow(s)" column of the grid.<br /><br />
-<br /><br/>
-<i>Material</i><br/>
-Similar to product configuration, material configuration form stores the definition of materials purchased from suppliers,
-but not actual material counts. Material definition information will be referred when constructing manufacturing
-workflows.<br /><br />
-<i>Inventory</i><br/>
-Inventory table holds records of actual product and material counts.<br />
-Once a product is finally completed, it is shipped into warehouse and also inserted into inventory table in ezOOM. Also
-after a purchased material arrives warehouse, it is also inserted into inventory table.<br />
-<br /><br/>
-<i>Step</i><br/>
-Step is an indivisible task within a workflow. A workflow consists of one to many steps. Different workflows may contain the
-same step. <br />
-Step configuration form is used to record steps into ezOOM. Information needed for defining a step are: step name, step type,
-equipment, employee usage, employee or group, recipe, min time, max time, description, comment and parameters (1~10). <br />
-Among them, only "step name" and "step type" are required. Step Type gives ezOOM clue on how to execute the step. The available step types are
-given by IT Helps based on customer requirements. Please see <a href="#steptype"> Explanation of Step Types</a> 
-for more detail about step types. <br />
-"Equipment" is the equipment the step will use. It is optional, for some steps do not need any equipment<br />
-"Employee Usage" and "Employee Or Group" fields together define the access to a step. If "Employee Usage" is set to "Employee Group"
-then the selected group from "Employee Or Group" dropdown box will have the previlidge to operate this step. If "Employee Usage" is
-set to "Employee", then only the selected employee from "Employee Or Group" can operate the step.<br />
-"Recipe" contains the material list,  quantity, and sequence information of the materials used in the step. Recipe is configured separately
-in Recipe configuration form. Only the steps with Step Type as "consume material" need to choose a recipe from the "Recipe" dropdown box.<br />
-"Min Time" is the minimum time required for the step to finish. It is only applicable, if a step has to take a certain amount of time
-to cure or finish. Leave it blank, if not applicable.<br />
-"Max Time" is the maximum time that a step can take. It is applicable when a step needs to finish within a certain time.<br />
-"Description" stores a descriptive text for the step.<br />
-"Comment" is used for storing comments that is not appropriate for putting into description field.<br />
-Parameters are used to store other information relating to the step. For example, if a step has type "call api", parameter 1 will have
-the name of the api(application interface, e.g. another software program) and parameter 2 -10 can be used to store the ariguments of the api.<br />
-<br />
+    Details about each form:<br /><br />
+    <i>Employee</i><br />
+    Use employee configuration form to insert or modify an employee record. Any user of ezOOM must have an account in ezOOM. The employee information is very important,
+    because tracking module needs this information to track and control access to manufacturing workflows and steps.<br />
+    Each employee has a role. Role represents the privilege for using ezOOM features. For example, employees who have "Admin" role can
+    access all features in ezOOM, while employees with "QA" role do not have access to Configuration module.
+    <br /><br />
+    <i>Uom</i><br />
+    Uom configuration form is for recording Unit of Measure information. The UoM will be referred in product configuration,
+    material configuration, inventory configuration, and sales configuration forms. Thus, unit of measures should be recorded using
+    this form early during configuration process.
+    <br /><br />
+    <i>Uom Conversion</i><br />
+    Uom Conversion form is for storing the conversion information between Unit of Measures. In the form, select an UoM from the dropdown box
+    on top of the form as the source Uom, then click "Insert" button to add a destination Uom, and type in its conversion ratio. For example, for
+    conversion 1m=10cm, select meter from the dropdown box, click "Insert" button, to show the Insertion Popup form
+    and select cm in the TO_ID dropdown box, type in 10 in the ratio textbox. Click "Submit" link on the popup form. You can see the
+    new conversion appears in the grid on main form. The Uom Conversion form can also be accessed through the links in "Num of Conversions" column
+    of UoM configuration form. Click on a link in Uom form leads to Uom Conversion form with "From" uom selected.
+    <br /><br />
+    <i>Product</i><br />
+    Product configuration form records product definition information, but not actual product counts. <br />
+    In the form, "Lot Size" means the volume can be produced in one batch through a workflow. "LifeSpan" is the longivity or warranty time
+    that the product can be used before it expires.<br /><br />
+    <i>Product vs. Workflow</i><br />
+    Product Workflow association form associate valid workflows to products. <br />
+    Each product can have one to multiple workflows availabe for producing the product. This form states the relationship by
+    associating workflows to product accordingly. The form can also be accessed in Product configuration form through the links
+    in "Num Workflow(s)" column of the grid.<br /><br />
+    <br /><br />
+    <i>Material</i><br />
+    Similar to product configuration, material configuration form stores the definition of materials purchased from suppliers,
+    but not actual material counts. Material definition information will be referred when constructing manufacturing
+    workflows.<br /><br />
+    <i>Inventory</i><br />
+    Inventory table holds records of actual product and material counts.<br />
+    Once a product is finally completed, it is shipped into warehouse and also inserted into inventory table in ezOOM. Also
+    after a purchased material arrives warehouse, it is also inserted into inventory table.<br />
+    <br /><br />
+    <i>Step</i><br />
+    Step is an indivisible task within a workflow. A workflow consists of one to many steps. Different workflows may contain the
+    same step. <br />
+    Step configuration form is used to record steps into ezOOM. Information needed for defining a step are: step name, step type,
+    equipment, employee usage, employee or group, recipe, min time, max time, description, comment and parameters (1~10). <br />
+    Among them, only "step name" and "step type" are required. Step Type gives ezOOM clue on how to execute the step. The available step types are
+    given by IT Helps based on customer requirements. Please see <a href="#steptype"> Explanation of Step Types</a>
+    for more detail about step types. <br />
+    "Equipment" is the equipment the step will use. It is optional, for some steps do not need any equipment<br />
+    "Employee Usage" and "Employee Or Group" fields together define the access to a step. If "Employee Usage" is set to "Employee Group"
+    then the selected group from "Employee Or Group" dropdown box will have the previlidge to operate this step. If "Employee Usage" is
+    set to "Employee", then only the selected employee from "Employee Or Group" can operate the step.<br />
+    "Recipe" contains the material list,  quantity, and sequence information of the materials used in the step. Recipe is configured separately
+    in Recipe configuration form. Only the steps with Step Type as "consume material" need to choose a recipe from the "Recipe" dropdown box.<br />
+    "Min Time" is the minimum time required for the step to finish. It is only applicable, if a step has to take a certain amount of time
+    to cure or finish. Leave it blank, if not applicable.<br />
+    "Max Time" is the maximum time that a step can take. It is applicable when a step needs to finish within a certain time.<br />
+    "Description" stores a descriptive text for the step.<br />
+    "Comment" is used for storing comments that is not appropriate for putting into description field.<br />
+    Parameters are used to store other information relating to the step. For example, if a step has type "call api", parameter 1 will have
+    the name of the api(application interface, e.g. another software program) and parameter 2 -10 can be used to store the ariguments of the api.<br />
+    <br />
 
-<a name="steptype"><i>Explanation of Step Types</i></a><br />
-Sorry, this content is still under construction.
-<br /><br/>
-<a href="#content">back to Top</a>
+    <a name="steptype"><i>Explanation of Step Types</i></a><br />
+    "consume material" -- this type of step can be used for steps that needed a recipe. A recipe includes bill of material that the step needs, <br />
+    along with the virbal or graphical instructions on how to perform the task. Recipe can be created and maintained in Recipe Configuration Page.  <br />
+    The interface for this step type will show the content of the recipe, and allow user to deduct consumption of materials from inventory. The interface <br />
+    will also show two buttons for printing package label and package list, if the first parameter in the step configuration is assigned the text value of <br />
+    "print packing docs". <br />
+    "ship to location" -- this stype is used for tracking shipment of batch from one location to another. In this step, user will be able to assign batch a<br />
+    new location. More over, if the first parameter in the step configuration is assigned the text value of "log tracking num", user will be able to record <br />
+    tracking number when performing this step. <br />
+    <br /><br />
+    <a href="#content">back to Top</a>
 </p>
 <p>
 <a name="tracking"><h4>How to Use Tracking Module</h4></a>
