@@ -3110,10 +3110,14 @@ END$
 *    Description            : Diapatch a lot/batch from a order detail line. The dispatch routine will dispatch 1-n batches depending on _num_lots input
 *                             and each batch contains 1-n unit of final products depending on _lot_size
 *    example	            : 
+SET @_response = NULL;
+CALL dispatch_multi_lots( 7, 2, 5, 5, 2, 1, '08-34170-12274', 1, 2, 4, null, 2, @_response);
+select @_response;
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 				
 *   11/11/2018: xdong: added input _line_num now that order_detail can have multi lines of the same product	
 *   12/01/2018: xdong: fixed a bug that updated the quantity_in_process of all order detail lines of the same product, by missed line_num in where clause
+*   02/05/2019: xdong: widen _alias_prefix parameter from varchar(10) to varchar(20), following widen alias column in lot_status table
 */
 DELIMITER $ 
 DROP PROCEDURE IF EXISTS `dispatch_multi_lots`$
@@ -3124,7 +3128,7 @@ CREATE PROCEDURE `dispatch_multi_lots`(
   IN _process_id int(10) unsigned, -- the id of the process that the batch will assume
   IN _lot_size decimal(16,4) unsigned, -- the size of the final product in the batch
   IN _num_lots int(10) unsigned, -- number of batch to dispatch in this call
-  IN _alias_prefix varchar(10), -- prefix to use in producing the batch alias (batch name)
+  IN _alias_prefix varchar(20), -- prefix to use in producing the batch alias (batch name)
   IN _location_id int(11) unsigned,  -- id of location to dispatch to
   IN _lot_contact int(10) unsigned, -- employee id of the contact person for the batch
   IN _lot_priority tinyint(2) unsigned, -- priority of the batch
@@ -3136,7 +3140,7 @@ BEGIN
 
   DECLARE _uom_id smallint(3) unsigned;
   DECLARE _alias_suffix int(10) unsigned zerofill;
-  DECLARE _alias varchar(20);
+  DECLARE _alias varchar(30);
   DECLARE _dispatch_time datetime;
   DECLARE _ratio decimal(16,4) unsigned;
   DECLARE _new_id int(10) unsigned;
@@ -3277,7 +3281,7 @@ BEGIN
         SET _response = "You are dispatching more product than requested. Please adjust lot size.";
       END IF;
       
-      CREATE TEMPORARY TABLE IF NOT EXISTS multilots (lot_id int(10) unsigned, lot_alias varchar(20));
+      CREATE TEMPORARY TABLE IF NOT EXISTS multilots (lot_id int(10) unsigned, lot_alias varchar(30));
       
       START TRANSACTION;
       WLOOP: WHILE _num_lots >0 DO
@@ -3292,7 +3296,7 @@ BEGIN
         END IF;
         
         SET _alias_suffix = _alias_suffix + 1;
-        SET _alias = CONCAT(_alias_prefix, _alias_suffix);
+        SET _alias = CONCAT(trim(_alias_prefix), _alias_suffix);
         
         ALOOP: WHILE EXISTS (SELECT * FROM lot_status WHERE alias=_alias)
         DO
@@ -8760,7 +8764,9 @@ END$
 *    Platform Dependencies  : MySql
 *    Description            : Insert or update location into the location table
 *    example	            : 
-*    Log                    : 1/21/2019 fixed the error: can not insert or update when all adjacent locations are null when there exists a different named location with all null ajdacent locations
+*    Log                    
+*     01/21/2019 Peiyu Ge: fixed the error: can not insert or update when all adjacent locations are null when there exists a different named location with all null ajdacent locations
+*     01/31/2019 Xueyan Dong: removed check for _contact_employee  value, to allow blank _contact_employee        
 */
 DELIMITER $
 
@@ -8773,7 +8779,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `modify_location`(
   IN _adjacent_loc_id2 int(5) unsigned,
   IN _adjacent_loc_id3 int(5) unsigned,
   IN _adjacent_loc_id4 int(5) unsigned,
-  IN _contact_employee int(10) unsigned,
+  IN _contact_employee int(10) unsigned,  -- id of contact employee
   IN _description varchar(255),
   IN _comment text,
   OUT _response varchar(255))
@@ -8783,8 +8789,8 @@ BEGIN
     DECLARE ifoccupied varchar(255);
     If _name is Null Or Length(Trim(_name)) = 0 Then
 		Set _response = "Location name is missing.";
-	Elseif _contact_employee is Null Then
-		Set _response = "Contact Employee is missing.";
+-- 	Elseif _contact_employee is Null Then
+-- 		Set _response = "Contact Employee is missing.";
 	Elseif _adjacent_loc_id1 = _adjacent_loc_id2 or _adjacent_loc_id1 = _adjacent_loc_id3 or _adjacent_loc_id1 = _adjacent_loc_id4 or _adjacent_loc_id2 = _adjacent_loc_id3 or _adjacent_loc_id2 = _adjacent_loc_id4 or _adjacent_loc_id3 = _adjacent_loc_id4 Then
 		Set _response = "Adjacent locations should be different from each other.";
 	Elseif _location_id is Null Then -- new location to be inserted

@@ -445,7 +445,7 @@ that are not wanted or need to be different.
 
 ------------------------------------------------------------------------------------*/
 	#mainContent
-	{ border: 2px; padding:10px 23px; overflow:hidden; }
+	{ border: 2px; padding:10px 23px; overflow:hidden;}
 
     #mainContent span.header
     { font-size:1.2em; font-weight:bold; }
@@ -1074,6 +1074,7 @@ z-index:3;
 	width: 13em; /* since this element is floated, a width must be given */
 	background: #FFCC66; /* #EBEBEB;the background color will be displayed for the length of the content in the column, but no further */
 	padding: 0 0 10px 0; /* top,right,bottom & left padding create visual space within this div  */
+    white-space:nowrap;
 
 }
 #sidebar1 p{
@@ -1102,7 +1103,7 @@ Body#Link #sidebar1 a#LinkMenu,
 Body#KittAdminMain #sidebar1 a#kittAdminMenu,
 Body#ContractAdmin #sidebar1 a#COAdminMenu,
 Body#RequestPage #sidebar1 a#RequestMenu 
-	{text-decoration: none; background-color: #FFF; }
+	{text-decoration: none; background-color: #FFF;}
 	
 #sidebar1 a:link, #sidebar1 a:visited
 	{color:#222;  text-decoration:underline;  

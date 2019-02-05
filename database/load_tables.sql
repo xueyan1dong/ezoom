@@ -164,8 +164,7 @@ CREATE TABLE  `employee` (
   UNIQUE KEY `em_un1` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
-
-﻿/*
+/*
 *    Copyright 2009 ~ Current  IT Helps LLC
 *    Source File            : create_location.sql
 *    Created By             : Xueyan Dong
@@ -177,26 +176,26 @@ CREATE TABLE  `employee` (
 *    6/19/2018: Peiyu Ge: added header info. 	
 *    6/27/2018: Xueyan Dong: changed name and description from VARCHAR to NVARCHAR, and parent_loc_id from varchar to integer
 						     also, enlarge the id and parent_loc_id byte size from INTEGER(5) TO INTEGER(11)
+     01/31/2019: Xueyan Dong: remove the not null restriction on contact_employee column. Added explanation for each column as comment
 */
 DELIMITER $
 DROP TABLE IF EXISTS `location` $
 CREATE TABLE `location` (
-  `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` NVARCHAR(45) NOT NULL,
-  `parent_loc_id` INTEGER(11),
-  `create_time` DATETIME NOT NULL,
-  `update_time` DATETIME,
-  `contact_employee` INTEGER(10) UNSIGNED NOT NULL,
-  `adjacent_loc_id1` INTEGER(5) UNSIGNED,
-  `adjacent_loc_id2` INTEGER(5) UNSIGNED,
-  `adjacent_loc_id3` INTEGER(5) UNSIGNED,
-  `adjacent_loc_id4` INTEGER(5) UNSIGNED,
-  `description` NVARCHAR(255),
-  `comment` TEXT,
+  `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT, -- unique identifier of the location
+  `name` NVARCHAR(45) NOT NULL,  -- name of the location
+  `parent_loc_id` INTEGER(11),  -- parent location that current location belongs to
+  `create_time` DATETIME NOT NULL,  -- date time that location is created
+  `update_time` DATETIME, -- datetime that location is updated
+  `contact_employee` INTEGER(10) UNSIGNED,  -- id of contact employee
+  `adjacent_loc_id1` INTEGER(5) UNSIGNED,  -- id of adjacent loction that helps to locate the current location
+  `adjacent_loc_id2` INTEGER(5) UNSIGNED,  -- id of adjacent location that helps to locate the current location
+  `adjacent_loc_id3` INTEGER(5) UNSIGNED,  -- id of adjacent location that helps to locate the current location
+  `adjacent_loc_id4` INTEGER(5) UNSIGNED,  -- id of adjacent location that helps to locate the current location
+  `description` NVARCHAR(255),  -- description of the location
+  `comment` TEXT,  -- any comment needed to store
   PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB $
-
 
 -- equipment_group table
 DROP TABLE IF EXISTS `equipment_group`$
@@ -867,12 +866,13 @@ CREATE TABLE `product_process` (
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
 *    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
+*    02/05/2019: xdong: widen alias column from varchar(20) to varchar(30)
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_status`$
 CREATE TABLE `lot_status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- the id of the batch
-  `alias` varchar(20) DEFAULT NULL,  -- the unique alias of the batch. This is to hold user viewable batch number. Can be customized to specific format that user require
+  `alias` varchar(30) DEFAULT NULL,  -- the unique alias of the batch. This is to hold user viewable batch number. Can be customized to specific format that user require
   `order_id` int(10) unsigned DEFAULT NULL,  -- the id of the order that the batch/lot is dispatched from
   `product_id` int(10) unsigned NOT NULL, -- the id of the product that the batch is to produce
   `process_id` int(10) unsigned NOT NULL,  -- the id of the process that the batch is to follow
@@ -925,12 +925,13 @@ CREATE TABLE `lot_status` (
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
 *    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
+*    02/05/2019: xdong: widen lot_alias column from varchar(20) to varchar(30)
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_history`$
 CREATE TABLE `lot_history` (
   `lot_id` int(10) unsigned NOT NULL,
-  `lot_alias` varchar(20) DEFAULT NULL,
+  `lot_alias` varchar(30) DEFAULT NULL,
   `start_timecode` char(15) NOT NULL,
   `end_timecode` char(15) DEFAULT NULL,
   `process_id` int(10) unsigned NOT NULL,

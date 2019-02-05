@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : LoadLocation.aspx.cs
+*    Created By             : Peiyu Ge
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : Report on Dispatch history
+*    Log                    :
+*    2009: xdong: first created
+*    01/31/2019: xdong: Added sample lines to show user how to construct the file for uploading
+----------------------------------------------------------------*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

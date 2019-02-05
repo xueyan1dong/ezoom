@@ -145,7 +145,7 @@ scrollbars=Both>
            d.quantity_requested-d.quantity_made-d.quantity_shipped-d.quantity_in_process, p.lot_size ) as lot_size,
             u.name as uom,
             1 as num_lots,
-            substring(p.name, 1, 10) as alias_prefix,  
+            substring(p.name, 1, 20) as alias_prefix,  
             (SELECT id from `location` ORDER BY id asc LIMIT 1) as location_id,
             o.internal_contact as lot_contact,
             o.priority as lot_priority,

@@ -14,12 +14,13 @@
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
 *    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
+*    02/05/2019: xdong: widen alias column from varchar(20) to varchar(30)
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_status`$
 CREATE TABLE `lot_status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- the id of the batch
-  `alias` varchar(20) DEFAULT NULL,  -- the unique alias of the batch. This is to hold user viewable batch number. Can be customized to specific format that user require
+  `alias` varchar(30) DEFAULT NULL,  -- the unique alias of the batch. This is to hold user viewable batch number. Can be customized to specific format that user require
   `order_id` int(10) unsigned DEFAULT NULL,  -- the id of the order that the batch/lot is dispatched from
   `product_id` int(10) unsigned NOT NULL, -- the id of the product that the batch is to produce
   `process_id` int(10) unsigned NOT NULL,  -- the id of the process that the batch is to follow

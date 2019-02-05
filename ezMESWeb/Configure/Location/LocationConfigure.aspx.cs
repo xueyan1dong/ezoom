@@ -1,11 +1,12 @@
 /*--------------------------------------------------------------
 *    Copyright 2009 Ambersoft LLC.
 *    Source File            : LocationConfigure.aspx.cs
-*    Created By             : Fei Xue
+*    Created By             : Xueyan Dong
 *    Date Created           : 11/03/2009
 *    Platform Dependencies  : .NET 2.0
 *    Description            : 
-*
+*    Log:
+*    02/04/2019: xdong: Adjusted some display factors. Reveal ID and contact employee columns again.
 ----------------------------------------------------------------*/
 
 using System;

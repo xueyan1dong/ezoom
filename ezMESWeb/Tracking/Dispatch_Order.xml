@@ -41,7 +41,7 @@
     <DisplayName>Prefix for Batch Name(s)</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Textbox</UI>
-    <TextBoxLength>10</TextBoxLength>
+    <TextBoxLength>20</TextBoxLength>
   </Column>
   <Column name ="location_id">
     <DisplayName>Location of Batch(es)</DisplayName>
