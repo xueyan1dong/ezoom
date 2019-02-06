@@ -45,15 +45,16 @@ CALL `start_lot_step`(
 *    Log                    :
 *    6/1/2018: xdong: adding handling to new step type -- disassemble
 *    6/5/2018: xdong: just modified delimiter of the file to be consistant with load_procedures
-*	 7/16/2018 peiyu: added an new inout variable _location_id
+*	   7/16/2018 peiyu: added an new inout variable _location_id
 *    11/28/2018 updated lot_status(added 'done')
 *    12/04/2018: xdong: added quantity_status when inserting to lot_history table
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `start_lot_step`$
 CREATE PROCEDURE `start_lot_step`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _operator_id int(10) unsigned,
   IN _check_autostart tinyint(1) unsigned,
   IN _start_quantity decimal(16,4) unsigned,

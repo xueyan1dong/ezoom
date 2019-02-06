@@ -7,14 +7,15 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 
-*    1/25/2019: Peiyu Ge: added selection of three more field, step, line_num, quantity_status.				
+*    06/19/2018: Peiyu Ge: added header info. 
+*    01/25/2019: Peiyu Ge: added selection of three more field, step, line_num, quantity_status.		
+*		 02/05/2019: Xueyan Dong: widen _lot_alias input parameter from varchar(20) to varchar(30), following change in lot_status and lot_history table
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $ 
 DROP PROCEDURE IF EXISTS `report_lot_status`$
 CREATE PROCEDURE `report_lot_status`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20)
+  IN _lot_alias varchar(30)
 )
 BEGIN
   IF _lot_id IS NULL

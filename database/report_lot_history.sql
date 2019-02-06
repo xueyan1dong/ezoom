@@ -5,14 +5,19 @@
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
 *    Description            : db operations for ending a lot at a step
+*    example:
+CALL report_lot_history (NULL, '
 *    Log                    :
-*    6/5/2018: xdong: adding handling to new step type -- disassemble
+*    06/05/2018: xdong: adding handling to new step type -- disassemble
+*    02/05/2019: xdong: added extra_info to output value1 of lot_history column, which holds shipment tracking number
+*                       widen _lot_alias input parameter from varchar(20) to varchar(30), following change in lot_status and lot_history table
+*                       fixed query issue around location and added it back to output resultset.
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `report_lot_history`$
 CREATE PROCEDURE `report_lot_history`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20)
+  IN _lot_alias varchar(30)
 )
 BEGIN
   IF _lot_id IS NULL
@@ -44,17 +49,48 @@ BEGIN
     end_quantity decimal(16,4) unsigned,
     uomid smallint(3) unsigned,
     uom_name  varchar(20),
-    location nvarchar(255),
+    location nvarchar(45),
     equipment_id int(10) unsigned,
     equipment_name varchar(255),
     device_id int(10) unsigned,
     approver_id int(10) unsigned,
     approver_name varchar(60),
     result text,
+    extra_info varchar(255),
     comment text
  );
  
- INSERT INTO lot_history_report
+ INSERT INTO lot_history_report (
+     start_time,
+    end_time,
+    process_id,
+    process_name,
+    sub_process_id,
+    sub_process_name,
+    position_id,
+    sub_position_id,
+    step_id,
+    step_name,
+    step_type,
+    start_operator_id,
+    start_operator_name,
+    end_operator_id,
+    end_operator_name,
+    status,
+    start_quantity,
+    end_quantity,
+    uomid,
+    uom_name,
+    location,
+    equipment_id,
+    equipment_name,
+    device_id,
+    approver_id,
+    approver_name,
+    result,
+    extra_info,
+    comment
+ )
  SELECT get_local_time(str_to_date(l.start_timecode, '%Y%m%d%H%i%s0' )),
         get_local_time(str_to_date(l.end_timecode, '%Y%m%d%H%i%s0' )),
         l.process_id,
@@ -75,7 +111,7 @@ BEGIN
         l.end_quantity,
         l.uomid,
         u.name,
-        l.location,
+        loc.name,
         l.equipment_id,
         null,
         l.device_id,
@@ -86,6 +122,7 @@ BEGIN
           WHEN st.name='condition' AND l.result='false' THEN 'Fail'
           ELSE l.result
         END,
+        l.value1,
         l.comment
   FROM lot_history l
   LEFT JOIN process p ON p.id = l.process_id
@@ -94,6 +131,7 @@ BEGIN
   LEFT JOIN employee e ON e.id = l.start_operator_id
   LEFT JOIN employee e2 ON e2.id = l.end_operator_id
   LEFT JOIN uom u ON u.id = l.uomid
+  LEFT JOIN location loc ON loc.id = l.location_id
  WHERE l.lot_id <=> _lot_id
  ORDER BY start_timecode
 ;
@@ -143,13 +181,14 @@ BEGIN
     end_quantity,
     uomid,
     uom_name,
-    -- location,
+    location,
     equipment_id,
     equipment_name,
     device_id,
     approver_id,
     approver_name,
     result,
+    extra_info,
     comment
   FROM lot_history_report;
   DROP TABLE lot_history_report;

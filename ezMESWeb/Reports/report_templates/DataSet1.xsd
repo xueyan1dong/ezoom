@@ -214,7 +214,7 @@
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="equipment_id" msprop:Generator_ColumnVarNameInTable="columnequipment_id" msprop:Generator_ColumnPropNameInRow="equipment_id" msprop:Generator_ColumnPropNameInTable="equipment_idColumn" msprop:Generator_UserColumnName="equipment_id" type="xs:unsignedInt" minOccurs="0" />
+              <xs:element name="location" msprop:Generator_ColumnVarNameInTable="columnlocation" msprop:Generator_ColumnPropNameInRow="location" msprop:Generator_ColumnPropNameInTable="locationColumn" msprop:Generator_UserColumnName="location" type="xs:unsignedInt" minOccurs="0" />
               <xs:element name="equipment_name" msprop:Generator_ColumnVarNameInTable="columnequipment_name" msprop:Generator_ColumnPropNameInRow="equipment_name" msprop:Generator_ColumnPropNameInTable="equipment_nameColumn" msprop:Generator_UserColumnName="equipment_name" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
@@ -239,6 +239,7 @@
                 </xs:simpleType>
               </xs:element>
               <xs:element name="comment" msprop:Generator_ColumnVarNameInTable="columncomment" msprop:Generator_ColumnPropNameInRow="comment" msprop:Generator_ColumnPropNameInTable="commentColumn" msprop:Generator_UserColumnName="comment" type="xs:string" minOccurs="0" />
+              <xs:element name="extra_info" msprop:Generator_ColumnVarNameInTable="columnextra_info" msprop:Generator_ColumnPropNameInRow="extra_info" msprop:Generator_ColumnPropNameInTable="extra_infoColumn" msprop:Generator_UserColumnName="extra_info" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -8,7 +8,7 @@
 </asp:content>
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1"> 
     <asp:Panel ID="pnMain" runat="server" BackColor="White" BorderStyle="Double" 
-           Width="800px" Height="1100px" >
+           Width="1024px" Height="1100px" >
   <center class="title">Batch Genealogy Report</center>    
  <div style="padding-bottom:5px; padding-top:5px;">   
   <ul class="topBody">

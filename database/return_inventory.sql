@@ -13,12 +13,13 @@ select @_response
 *    6/17/2018: sdong: added more comment
 *    6/18/2018: sdong: since when used in disassemble step, the quantity_before is null, which will throw off consumption_return
 *                      table, thus, replace it with 0 in this case. Also, fixed typo.
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `return_inventory`$
 CREATE PROCEDURE `return_inventory`(
   IN _lot_id int(10) unsigned,  -- id of the batch
-  IN _lot_alias varchar(20),   -- name of the batch
+  IN _lot_alias varchar(30),   -- name of the batch
   IN _operator_id int(10) unsigned,  -- id of the operator performed this action
   IN _process_id int(10) unsigned,   -- id of the workflow
   IN _step_id int(10) unsigned,     -- id of the step

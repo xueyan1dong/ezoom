@@ -7,16 +7,17 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*    02/05/2018: Xueyan Dong: widen lot alias related field to accomodate the length change of alias column in lot_status and lot_history table					
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `dispatch_single_lot`$
 CREATE PROCEDURE `dispatch_single_lot`(
   IN _order_id int(10) unsigned, 
   IN _product_id int(10) unsigned,
   IN _process_id int(10) unsigned,
   IN _lot_size decimal(16,4) unsigned,
-  IN _alias_prefix varchar(10), 
+  IN _alias_prefix varchar(20), 
   IN _lot_contact int(10) unsigned,
   IN _lot_priority tinyint(2) unsigned,
   IN _comment text,
@@ -28,7 +29,7 @@ BEGIN
  
   DECLARE _uom_id smallint(3) unsigned;
   DECLARE _alias_suffix int(10) unsigned zerofill;
-  DECLARE _alias varchar(20);
+  DECLARE _alias varchar(30);
   DECLARE _dispatch_time datetime;
   DECLARE _ratio decimal(16,4) unsigned;
  

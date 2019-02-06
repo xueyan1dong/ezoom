@@ -15,14 +15,15 @@ call report_consumption_for_step (21, 'WWMTOFauce0000000006', 3, 38, '2018061900
 select @_response
 *    Log                    :
 *    6/18/2018: xdong: added logic to count inventory returned for disassemble step. 	
-*	 11/30/2018: peiyu: added a new In variable _start_quantity (user's input of quantity to work on) and updated required_quantity accordingly	
-*	 1/5/2019: peiyu added one more column inventory	
+*	   11/30/2018: peiyu: added a new In variable _start_quantity (user's input of quantity to work on) and updated required_quantity accordingly	
+*	   1/5/2019: peiyu added one more column inventory	
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `report_consumption_for_step`$
 CREATE PROCEDURE `report_consumption_for_step`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _process_id int(10) unsigned,
   IN _step_id int(10) unsigned,
   IN _start_timecode char(15),

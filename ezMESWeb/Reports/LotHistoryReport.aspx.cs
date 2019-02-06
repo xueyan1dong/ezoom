@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : SalesOrderConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for display report of batch geneology
+*    Log                    :
+*    2009: xdong: first created
+*   02/05/2019: xdong: added location and Tracking No. column to lot history grid. Adjust the height of some cells in lot status area.
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;

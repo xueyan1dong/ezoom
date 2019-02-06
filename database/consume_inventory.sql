@@ -4,16 +4,17 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : record inventory consumption. currently called from "end consumption step" page
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    06/19/2018: Peiyu Ge: added header info. 		
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column			
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $ 
 DROP PROCEDURE IF EXISTS `consume_inventory`$
 CREATE PROCEDURE `consume_inventory`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _operator_id int(10) unsigned,
   IN _equipment_id int(10) unsigned,
   IN _device_id int(10) unsigned,
