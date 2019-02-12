@@ -180,9 +180,9 @@ height="100%" scrollbars="Horizontal">
         </td>
         </tr>
         <tr style="height:30px;">
-            <td><asp:Label ID="lblPartName" runat="server" Text="Part #:"></asp:Label>
-                <asp:TextBox ID="txtPartName" runat="server"></asp:TextBox>
-                <asp:Button ID="btnMove" runat="server" Text="Consume from Inventory" width ="160px" OnClick="btnMove_Click"/>
+            <td><asp:Label ID="lblPartName" runat="server" Text="Part #:" Visible ="true"></asp:Label>
+                <asp:TextBox ID="txtPartName" runat="server" Visible="true"></asp:TextBox>
+                <asp:Button ID="btnMove" runat="server" Text="Consume from Inventory" width ="160px" OnClick="btnMove_Click"  Visible="true"/>
             </td>
         </tr>
         <tr>
