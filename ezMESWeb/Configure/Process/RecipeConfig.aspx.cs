@@ -7,7 +7,9 @@
 *    Description            : UI for configuring recipes
 *    Log                    :
 *    2009: xdong: first created
-  *  09/26/2018:xdong: attempt to solve problem related to server.transfer call in btnDo_Click, but no result
+  *  09/26/2018: xdong: attempt to solve problem related to server.transfer call in btnDo_Click, but no result
+  *  02/10/2019: xdong: following the same fix that Junlu did in SalesOrderConfig.aspx.cs, change the call to Server.Transfer
+  *                     and fixed UI issue when btnDo_Click is triggered.
 ----------------------------------------------------------------*/
 using System;
 using System.IO;
@@ -552,8 +554,8 @@ namespace ezMESWeb.Configure.Process
                   else
                     Server.Transfer("RecipeConfig.aspx?Error=" + lblMainError.Text, false);
                 }
-                //else  //*****09/26/2018 xdong: this call cause error, comment out for now
-                //  Server.Transfer("RecipeConfig.aspx?Id=" + recipeId, true);              
+                else  //*****09/26/2018 xdong: this call cause error, comment out for now
+                  Server.Transfer("RecipeConfig.aspx?Id=" + recipeId, false);              
             }
             else if (fvMain.CurrentMode == FormViewMode.Edit)
             {
@@ -640,23 +642,24 @@ namespace ezMESWeb.Configure.Process
 
                         }
                     }
-                    if (lblMainError.Text.Length == 0)
+                  if (lblMainError.Text.Length == 0)
+                  {
+                    if (fileAction.Equals("replace"))
                     {
-                        if (fileAction.Equals("replace"))
-                        {
-                            try
-                            {
-                                theFC.SaveAs(theFileDir + recipeId + "_" + theFile);
-                            }
-                            catch (Exception ex)
-                            {
-                                lblMainError.Text = ex.Message;
-                            }
-                        }
+                      try
+                      {
+                        theFC.SaveAs(theFileDir + recipeId + "_" + theFile);
+                      }
+                      catch (Exception ex)
+                      {
+                        lblMainError.Text = ex.Message;
+                      }
                     }
+
                     //*** xdong 9/24/2018: this cause error, comment out for now
-                    //if (lblMainError.Text.Length == 0)
-                    //    Server.Transfer("RecipeConfig.aspx?Id=" + txtID.Text, true);
+                    if (lblMainError.Text.Length == 0)
+                      Server.Transfer("RecipeConfig.aspx?Id=" + txtID.Text, false);
+                  }
                 }
             }
             else

@@ -7,13 +7,14 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    06/19/2018: Peiyu Ge: added header info. 
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column					
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `deliver_lot`$
 CREATE PROCEDURE `deliver_lot`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _operator_id int(10) unsigned,
   IN _quantity decimal(16,4) unsigned,
   IN _deliver_datetime datetime,

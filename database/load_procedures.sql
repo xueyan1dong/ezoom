@@ -3110,10 +3110,14 @@ END$
 *    Description            : Diapatch a lot/batch from a order detail line. The dispatch routine will dispatch 1-n batches depending on _num_lots input
 *                             and each batch contains 1-n unit of final products depending on _lot_size
 *    example	            : 
+SET @_response = NULL;
+CALL dispatch_multi_lots( 7, 2, 5, 5, 2, 1, '08-34170-12274', 1, 2, 4, null, 2, @_response);
+select @_response;
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 				
 *   11/11/2018: xdong: added input _line_num now that order_detail can have multi lines of the same product	
 *   12/01/2018: xdong: fixed a bug that updated the quantity_in_process of all order detail lines of the same product, by missed line_num in where clause
+*   02/05/2019: xdong: widen _alias_prefix parameter from varchar(10) to varchar(20), following widen alias column in lot_status table
 */
 DELIMITER $ 
 DROP PROCEDURE IF EXISTS `dispatch_multi_lots`$
@@ -3124,7 +3128,7 @@ CREATE PROCEDURE `dispatch_multi_lots`(
   IN _process_id int(10) unsigned, -- the id of the process that the batch will assume
   IN _lot_size decimal(16,4) unsigned, -- the size of the final product in the batch
   IN _num_lots int(10) unsigned, -- number of batch to dispatch in this call
-  IN _alias_prefix varchar(10), -- prefix to use in producing the batch alias (batch name)
+  IN _alias_prefix varchar(20), -- prefix to use in producing the batch alias (batch name)
   IN _location_id int(11) unsigned,  -- id of location to dispatch to
   IN _lot_contact int(10) unsigned, -- employee id of the contact person for the batch
   IN _lot_priority tinyint(2) unsigned, -- priority of the batch
@@ -3136,7 +3140,7 @@ BEGIN
 
   DECLARE _uom_id smallint(3) unsigned;
   DECLARE _alias_suffix int(10) unsigned zerofill;
-  DECLARE _alias varchar(20);
+  DECLARE _alias varchar(30);
   DECLARE _dispatch_time datetime;
   DECLARE _ratio decimal(16,4) unsigned;
   DECLARE _new_id int(10) unsigned;
@@ -3277,7 +3281,7 @@ BEGIN
         SET _response = "You are dispatching more product than requested. Please adjust lot size.";
       END IF;
       
-      CREATE TEMPORARY TABLE IF NOT EXISTS multilots (lot_id int(10) unsigned, lot_alias varchar(20));
+      CREATE TEMPORARY TABLE IF NOT EXISTS multilots (lot_id int(10) unsigned, lot_alias varchar(30));
       
       START TRANSACTION;
       WLOOP: WHILE _num_lots >0 DO
@@ -3292,7 +3296,7 @@ BEGIN
         END IF;
         
         SET _alias_suffix = _alias_suffix + 1;
-        SET _alias = CONCAT(_alias_prefix, _alias_suffix);
+        SET _alias = CONCAT(trim(_alias_prefix), _alias_suffix);
         
         ALOOP: WHILE EXISTS (SELECT * FROM lot_status WHERE alias=_alias)
         DO
@@ -3435,13 +3439,26 @@ END$
 
 
 -- procedure dispatch_single_lot
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : dispatch_single_lot.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 
+*    02/05/2018: Xueyan Dong: widen lot alias related field to accomodate the length change of alias column in lot_status and lot_history table					
+*/
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `dispatch_single_lot`$
 CREATE PROCEDURE `dispatch_single_lot`(
   IN _order_id int(10) unsigned, 
   IN _product_id int(10) unsigned,
   IN _process_id int(10) unsigned,
   IN _lot_size decimal(16,4) unsigned,
-  IN _alias_prefix varchar(10), 
+  IN _alias_prefix varchar(20), 
   IN _lot_contact int(10) unsigned,
   IN _lot_priority tinyint(2) unsigned,
   IN _comment text,
@@ -3453,7 +3470,7 @@ BEGIN
  
   DECLARE _uom_id smallint(3) unsigned;
   DECLARE _alias_suffix int(10) unsigned zerofill;
-  DECLARE _alias varchar(20);
+  DECLARE _alias varchar(30);
   DECLARE _dispatch_time datetime;
   DECLARE _ratio decimal(16,4) unsigned;
  
@@ -3743,15 +3760,16 @@ CALL `start_lot_step`(
 *    Log                    :
 *    6/1/2018: xdong: adding handling to new step type -- disassemble
 *    6/5/2018: xdong: just modified delimiter of the file to be consistant with load_procedures
-*	 7/16/2018 peiyu: added an new inout variable _location_id
+*	   7/16/2018 peiyu: added an new inout variable _location_id
 *    11/28/2018 updated lot_status(added 'done')
 *    12/04/2018: xdong: added quantity_status when inserting to lot_history table
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `start_lot_step`$
 CREATE PROCEDURE `start_lot_step`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _operator_id int(10) unsigned,
   IN _check_autostart tinyint(1) unsigned,
   IN _start_quantity decimal(16,4) unsigned,
@@ -4006,6 +4024,7 @@ BEGIN
 END$
 
 
+
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
 *    Source File            : end_lot_step.sql
@@ -4015,18 +4034,19 @@ END$
 *    Description            : db operations for ending a lot at a step
 *    Log                    :
 *    6/5/2018: xdong: adding handling to new step type -- disassemble
-*	 8/2/2018: peiyu: added an new variable location_id and added to call 'start_lot_step' 
-*	 11/28/2018: peiyu: added status 'done' to lot_status enum; 
+*	   8/2/2018: peiyu: added an new variable location_id and added to call 'start_lot_step' 
+*	   11/28/2018: peiyu: added status 'done' to lot_status enum; 
 *                update lot_status to 'done' when the workflow completed 
 *                and then update quantity_made and quantity_in_process in order_detail when product_made of current step is true (in process_step). 
-*  12/04/2018: Xueyan Dong: corrected the logic around identifying last step of the workflow. Added logic to update quantities in order_detail in
+*    12/04/2018: Xueyan Dong: corrected the logic around identifying last step of the workflow. Added logic to update quantities in order_detail in
 *                           case of batch quantity change.
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `end_lot_step`$
 CREATE PROCEDURE `end_lot_step`(
     IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _start_timecode char(15),
   IN _operator_id int(10) unsigned,
   IN _end_quantity decimal(16,4) unsigned,
@@ -4359,12 +4379,24 @@ BEGIN
 
 END$
 
-
 -- procedure ship_lot
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : ship_lot.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 				
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column	
+*/
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `ship_lot`$
 CREATE PROCEDURE `ship_lot`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _ship_timecode char(15),
   IN _shipper_id int(10) unsigned,
   IN _quantity decimal(16,4) unsigned,
@@ -4485,6 +4517,7 @@ BEGIN
     
   END IF;
 END$
+
 
 
 -- procedure report_process_cycletime
@@ -4682,14 +4715,15 @@ END$
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 
-*    1/25/2019: Peiyu Ge: added selection of three more field, step, line_num, quantity_status.				
+*    06/19/2018: Peiyu Ge: added header info. 
+*    01/25/2019: Peiyu Ge: added selection of three more field, step, line_num, quantity_status.		
+*		 02/05/2019: Xueyan Dong: widen _lot_alias input parameter from varchar(20) to varchar(30), following change in lot_status and lot_history table
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $ 
 DROP PROCEDURE IF EXISTS `report_lot_status`$
 CREATE PROCEDURE `report_lot_status`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20)
+  IN _lot_alias varchar(30)
 )
 BEGIN
   IF _lot_id IS NULL
@@ -4754,14 +4788,29 @@ BEGIN
 --   AND e.id = l.contact
 --   AND u.id = l.uomid
  
-
  END$
 
 -- procedure report_lot_history
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : report_lot_history.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : db operations for ending a lot at a step
+*    example:
+CALL report_lot_history (NULL, '
+*    Log                    :
+*    06/05/2018: xdong: adding handling to new step type -- disassemble
+*    02/05/2019: xdong: added extra_info to output value1 of lot_history column, which holds shipment tracking number
+*                       widen _lot_alias input parameter from varchar(20) to varchar(30), following change in lot_status and lot_history table
+*                       fixed query issue around location and added it back to output resultset.
+*/
+DELIMITER $
 DROP PROCEDURE IF EXISTS `report_lot_history`$
 CREATE PROCEDURE `report_lot_history`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20)
+  IN _lot_alias varchar(30)
 )
 BEGIN
   IF _lot_id IS NULL
@@ -4793,16 +4842,48 @@ BEGIN
     end_quantity decimal(16,4) unsigned,
     uomid smallint(3) unsigned,
     uom_name  varchar(20),
+    location nvarchar(45),
     equipment_id int(10) unsigned,
     equipment_name varchar(255),
     device_id int(10) unsigned,
     approver_id int(10) unsigned,
     approver_name varchar(60),
     result text,
+    extra_info varchar(255),
     comment text
  );
  
- INSERT INTO lot_history_report
+ INSERT INTO lot_history_report (
+     start_time,
+    end_time,
+    process_id,
+    process_name,
+    sub_process_id,
+    sub_process_name,
+    position_id,
+    sub_position_id,
+    step_id,
+    step_name,
+    step_type,
+    start_operator_id,
+    start_operator_name,
+    end_operator_id,
+    end_operator_name,
+    status,
+    start_quantity,
+    end_quantity,
+    uomid,
+    uom_name,
+    location,
+    equipment_id,
+    equipment_name,
+    device_id,
+    approver_id,
+    approver_name,
+    result,
+    extra_info,
+    comment
+ )
  SELECT get_local_time(str_to_date(l.start_timecode, '%Y%m%d%H%i%s0' )),
         get_local_time(str_to_date(l.end_timecode, '%Y%m%d%H%i%s0' )),
         l.process_id,
@@ -4823,6 +4904,7 @@ BEGIN
         l.end_quantity,
         l.uomid,
         u.name,
+        loc.name,
         l.equipment_id,
         null,
         l.device_id,
@@ -4833,6 +4915,7 @@ BEGIN
           WHEN st.name='condition' AND l.result='false' THEN 'Fail'
           ELSE l.result
         END,
+        l.value1,
         l.comment
   FROM lot_history l
   LEFT JOIN process p ON p.id = l.process_id
@@ -4841,6 +4924,7 @@ BEGIN
   LEFT JOIN employee e ON e.id = l.start_operator_id
   LEFT JOIN employee e2 ON e2.id = l.end_operator_id
   LEFT JOIN uom u ON u.id = l.uomid
+  LEFT JOIN location loc ON loc.id = l.location_id
  WHERE l.lot_id <=> _lot_id
  ORDER BY start_timecode
 ;
@@ -4890,67 +4974,18 @@ BEGIN
     end_quantity,
     uomid,
     uom_name,
+    location,
     equipment_id,
     equipment_name,
     device_id,
     approver_id,
     approver_name,
     result,
+    extra_info,
     comment
   FROM lot_history_report;
   DROP TABLE lot_history_report;
  END$
- 
--- procedure issue_feedback
-DROP PROCEDURE IF EXISTS `issue_feedback`$
-CREATE PROCEDURE `issue_feedback`(
-  IN _employee_id int(10) unsigned,
-  INOUT _feedback_id int(10) unsigned,
-  IN _subject varchar(255),
-  IN _contact_info varchar(255),
-  IN _note text,
-  OUT _response varchar(255)
-)
-BEGIN
-
-  
-  IF _employee_id IS NULL OR NOT EXISTS (SELECT * FROM employee WHERE id = _employee_id)
-  THEN
-    SET _response='The employee who is issuing this feedback does not exist in database.'; 
-  ELSE
-        
-    IF _feedback_id IS NULL
-    THEN
-      INSERT INTO feedback 
-      (
-        `create_time`,
-        `noter_id` ,
-        `contact_info` ,
-        `state` ,
-        `subject` ,
-        `note` 
-      )
-      VALUES (
-        now(),
-        _employee_id,
-        _contact_info,
-        'issued',
-        _subject,
-        _note
-      );
-      SET _feedback_id = last_insert_id();
-    
-    ELSE
-      UPDATE feedback
-         SET contact_info = _contact_info,
-             last_noter_id = _employee_id,
-             last_note_time = now(),
-             subject=_subject,
-             note=_note
-       WHERE id = _feedback_id;
-    END IF;
-  END IF;
-END$
 
 -- procedure report_process_bom_total
 /*
@@ -5212,20 +5247,23 @@ END$
 -- procedure get_next_step_for_lot
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : load_procedures.sql
+*    Source File            : get_next_step_for_lot.sql
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : This stored procedure is used to pull out information for next step or end of current step 
+                              in order to move a lot in the "Move Product" page or at the end of a transaction page
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 
-*    11/28/2018 updated lot_status(added 'done')					
+*    6/19/2018: Peiyu Ge: added header info.
+*	   11/28/2018 updated lot_status(added 'done') 	
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column				
 */
+DELIMITER $ 
 DROP PROCEDURE IF EXISTS `get_next_step_for_lot`$
 CREATE PROCEDURE `get_next_step_for_lot`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done'),
   IN _process_id int(10) unsigned,
   IN _sub_process_id_p int(10) unsigned,
@@ -5793,6 +5831,7 @@ call pass_lot_step(
 ',13,,52', -- for short result
 null,
  null,
+ '123456',
 @_process_id,
 @_sub_process_id,
 @_position_id,
@@ -5813,18 +5852,20 @@ select @_process_id,
 @_response;
 *    Log                    :
 *    6/6/2018: xdong: adding _location parameter to record batch location for certain ship steps
-*	 8/2/2018: peiyu: replaced _location nvarchar  to location_id int
-*	 11/29/2018 peiyu: added one more state "done" to lot status and update lot_status accordingly. if flag product_made of current step
+*	   8/2/2018: peiyu: replaced _location nvarchar  to location_id int
+*	   11/29/2018 peiyu: added one more state "done" to lot status and update lot_status accordingly. if flag product_made of current step
 *    in process_step is 1, update quantity_made and quantity_in_process in order details
-*   11/29/2018:xdong: fixed some logical error regarding product_made and done status. 
+*    11/29/2018:xdong: fixed some logical error regarding product_made and done status. 
 *                      added code to update quantity_in_process when actual quantity changed
-*   12/04/2018: xdong: corrected logic for updating quantities in order_detail table in case of batch quantity changed in this step.
+*    12/04/2018: xdong: corrected logic for updating quantities in order_detail table in case of batch quantity changed in this step.
+*    01/29/2019: xdong: added input parameter _value1 to log tracking number in 'ship to location' step for now
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `pass_lot_step`$
 CREATE PROCEDURE `pass_lot_step`(
 IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _operator_id int(10) unsigned,
   IN _quantity decimal(16,4) unsigned,
   IN _equipment_id int(10) unsigned,
@@ -5835,6 +5876,7 @@ IN _lot_id int(10) unsigned,
   IN _comment text,
   -- IN _location nvarchar(255), -- for location
   IN _location_id int(11) unsigned,
+  IN _value1 VARCHAR(255),  -- currently only for loging tracking number in "ship to location" step, if para1 of the step = 'Log Tracking Num'. 
   INOUT _process_id int(10) unsigned,
   INOUT _sub_process_id int(10) unsigned,
   INOUT _position_id int(5) unsigned,
@@ -6036,7 +6078,8 @@ BEGIN
             result,
             comment,
             location_id,
-            quantity_status
+            quantity_status,
+            value1
           )
           VALUES (
             _lot_id,
@@ -6059,7 +6102,8 @@ BEGIN
             _short_result,
             _comment,
             _location_id,
-            _quantity_status
+            _quantity_status,
+            trim(_value1)
           ); 
           -- now that lot history is logged. update current lot information and order detail
           IF row_count() > 0 THEN
@@ -6097,6 +6141,7 @@ BEGIN
                   ,comment=_comment
                   ,location_id = _location_id
                   ,quantity_status = _quantity_status
+                  ,value1=trim(_value1)
             WHERE id=_lot_id;
 			  
             
@@ -6186,6 +6231,7 @@ BEGIN
   END IF;
 END$
 
+
 -- procedure report_consumption_for_step
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
@@ -6204,14 +6250,15 @@ call report_consumption_for_step (21, 'WWMTOFauce0000000006', 3, 38, '2018061900
 select @_response
 *    Log                    :
 *    6/18/2018: xdong: added logic to count inventory returned for disassemble step. 	
-*	 11/30/2018: peiyu: added a new In variable _start_quantity (user's input of quantity to work on) and updated required_quantity accordingly		
-*	 1/5/2019: peiyu added one more column inventory	
+*	   11/30/2018: peiyu: added a new In variable _start_quantity (user's input of quantity to work on) and updated required_quantity accordingly	
+*	   1/5/2019: peiyu added one more column inventory	
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `report_consumption_for_step`$
 CREATE PROCEDURE `report_consumption_for_step`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _process_id int(10) unsigned,
   IN _step_id int(10) unsigned,
   IN _start_timecode char(15),
@@ -6354,7 +6401,6 @@ BEGIN
  
 END$
 
-
 -- procedure report_consumption_details
 DROP PROCEDURE IF EXISTS `report_consumption_details`$
 CREATE PROCEDURE `report_consumption_details`(
@@ -6442,12 +6488,13 @@ select @_response
 *    6/17/2018: sdong: added more comment
 *    6/18/2018: sdong: since when used in disassemble step, the quantity_before is null, which will throw off consumption_return
 *                      table, thus, replace it with 0 in this case. Also, fixed typo.
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `return_inventory`$
 CREATE PROCEDURE `return_inventory`(
   IN _lot_id int(10) unsigned,  -- id of the batch
-  IN _lot_alias varchar(20),   -- name of the batch
+  IN _lot_alias varchar(30),   -- name of the batch
   IN _operator_id int(10) unsigned,  -- id of the operator performed this action
   IN _process_id int(10) unsigned,   -- id of the workflow
   IN _step_id int(10) unsigned,     -- id of the step
@@ -6581,6 +6628,7 @@ BEGIN
 END$
 
 
+
 -- procedure check_approver
 DROP PROCEDURE IF EXISTS `check_approver`$
 CREATE PROCEDURE `check_approver`(
@@ -6612,10 +6660,23 @@ BEGIN
 END$
 
 -- procedure deliver_lot
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : deliver_lot.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    06/19/2018: Peiyu Ge: added header info. 
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column					
+*/
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `deliver_lot`$
 CREATE PROCEDURE `deliver_lot`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _operator_id int(10) unsigned,
   IN _quantity decimal(16,4) unsigned,
   IN _deliver_datetime datetime,
@@ -6836,10 +6897,23 @@ BEGIN
 END$
 
 -- procedure scrap_lot
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : scrap_lot.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    06/19/2018: Peiyu Ge: added header info. 		
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column			
+*/
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `scrap_lot`$
 CREATE PROCEDURE `scrap_lot`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _operator_id int(10) unsigned,
   IN _quantity decimal(16,4) unsigned,
   IN _approver_id int(10) unsigned,
@@ -8754,7 +8828,9 @@ END$
 *    Platform Dependencies  : MySql
 *    Description            : Insert or update location into the location table
 *    example	            : 
-*    Log                    : 1/21/2019 fixed the error: can not insert or update when all adjacent locations are null when there exists a different named location with all null ajdacent locations
+*    Log                    
+*     01/21/2019 Peiyu Ge: fixed the error: can not insert or update when all adjacent locations are null when there exists a different named location with all null ajdacent locations
+*     01/31/2019 Xueyan Dong: removed check for _contact_employee  value, to allow blank _contact_employee        
 */
 DELIMITER $
 
@@ -8767,7 +8843,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `modify_location`(
   IN _adjacent_loc_id2 int(5) unsigned,
   IN _adjacent_loc_id3 int(5) unsigned,
   IN _adjacent_loc_id4 int(5) unsigned,
-  IN _contact_employee int(10) unsigned,
+  IN _contact_employee int(10) unsigned,  -- id of contact employee
   IN _description varchar(255),
   IN _comment text,
   OUT _response varchar(255))
@@ -8777,8 +8853,8 @@ BEGIN
     DECLARE ifoccupied varchar(255);
     If _name is Null Or Length(Trim(_name)) = 0 Then
 		Set _response = "Location name is missing.";
-	Elseif _contact_employee is Null Then
-		Set _response = "Contact Employee is missing.";
+-- 	Elseif _contact_employee is Null Then
+-- 		Set _response = "Contact Employee is missing.";
 	Elseif _adjacent_loc_id1 = _adjacent_loc_id2 or _adjacent_loc_id1 = _adjacent_loc_id3 or _adjacent_loc_id1 = _adjacent_loc_id4 or _adjacent_loc_id2 = _adjacent_loc_id3 or _adjacent_loc_id2 = _adjacent_loc_id4 or _adjacent_loc_id3 = _adjacent_loc_id4 Then
 		Set _response = "Adjacent locations should be different from each other.";
 	Elseif _location_id is Null Then -- new location to be inserted
@@ -9042,4 +9118,284 @@ Else
      ORDER BY l.status;
 end if;
 END $
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : return_inventory.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : db operations for return products or components back to inventory
+*    example	            : 
+call return_inventory (21, 'WWMTOFauce0000000006', 2, 3, 38, '201806190044480', '201806190044480', 6, 1, 'test', 1, @_response);
+select @_response
+*    Log                    :
+*    6/14/2018: sdong: added this header session
+*    6/17/2018: sdong: added more comment
+*    6/18/2018: sdong: since when used in disassemble step, the quantity_before is null, which will throw off consumption_return
+*                      table, thus, replace it with 0 in this case. Also, fixed typo.
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
+*/
+DELIMITER $
+DROP PROCEDURE IF EXISTS `return_inventory`$
+CREATE PROCEDURE `return_inventory`(
+  IN _lot_id int(10) unsigned,  -- id of the batch
+  IN _lot_alias varchar(30),   -- name of the batch
+  IN _operator_id int(10) unsigned,  -- id of the operator performed this action
+  IN _process_id int(10) unsigned,   -- id of the workflow
+  IN _step_id int(10) unsigned,     -- id of the step
+  IN _step_start_timecode char(15),  -- the start time of the lot to the step
+  IN _consumption_start_timecode char(15),  -- the start time of the last consumption if the current step is a "consume material" step
+			-- the start time of the current step if the current step is a "disassemble" step, since there is no consumption in such a step
+  IN _inventory_id int(10) unsigned, -- id of the inventory to be returned
+  IN _quantity_returned decimal(16,4) unsigned,  -- the quantity to be returned
+  IN _comment text,   -- comment associated with this action
+  IN _recipe_uomid smallint(3) unsigned,    -- the id of the uom used in the recipe
+  OUT _response varchar(255)    -- response of this stored procedure
+)
+BEGIN
+  
+  DECLARE _inventory_uomid smallint(3) unsigned;
+  DECLARE _inv_return_quantity decimal(16,4) unsigned;
+  DECLARE _timecode char(15);
+  DECLARE _quantity_before decimal(16,4) unsigned;
+  DECLARE _step_type varchar(20);
+  
+  SET autocommit=0;
+
+-- integrity checks
+  IF _lot_id IS NULL THEN
+     SET _response = "Batch identifier is missing. Please supply a batch indentifier.";
+  ELSEIF NOT EXISTS (SELECT * FROM lot_status WHERE id= _lot_id)
+  THEN
+    SET _response = "The batch you selected is not in database.";
+  ELSEIF NOT EXISTS (
+    SELECT *
+      FROM lot_history
+     WHERE lot_id = _lot_id
+       AND start_timecode = _step_start_timecode
+  )
+  THEN
+    SET _response = "The batch you selected hasn't reach the step given.";
+  ELSE
+  
+	SELECT st.name
+      INTO _step_type
+      FROM step_type st
+	  JOIN step s
+        ON s.step_type_id = st.id
+           AND s.id = _step_id;
+           
+    SELECT quantity_used
+      INTO _quantity_before
+      FROM inventory_consumption
+     WHERE lot_id = _lot_id
+       AND start_timecode = _consumption_start_timecode
+       AND inventory_id = _inventory_id;
+       
+    SELECT uom_id
+      INTO _inventory_uomid
+      FROM inventory
+     WHERE id=_inventory_id;
+    
+
+    IF _step_type = 'consume material' AND _quantity_before < _quantity_returned
+    -- for consume step, you can only return what has been consumed. _quantity_before is what has been consumed
+    THEN
+      SET _response = CONCAT("The quantity used ", _quantity_before, " is less than quantity to return. Please refresh form and reenter return quantity.");
+    ELSEIF _inventory_uomid IS NULL
+    THEN
+      SET _response = "The inventory you selected doesn't exist in database.";
+    ELSE
+	  -- the uom used in inventory record might be different than the uom used in recipe. below conversion calculates the qunatity by inventory uom
+      SET _inv_return_quantity=convert_quantity(_quantity_returned, _recipe_uomid, _inventory_uomid);
+      
+      IF _inv_return_quantity IS NULL
+      THEN
+        SET _response = "Can not calculate inventory return because no UoM conversion provided to convert returned quantity into the UoM used in inventory.";
+
+      ELSE
+        SET _timecode = DATE_FORMAT(utc_timestamp(), '%Y%m%d%H%i%s0');
+        
+        START TRANSACTION;
+        -- record the returns happend in consumption step or disassemble step
+        INSERT INTO `consumption_return` (
+          `lot_id` ,
+          `lot_alias` ,
+          `return_timecode` ,
+          `inventory_id` ,
+          `quantity_before` ,
+          `quantity_returned` ,
+          `uom_id`  , 
+          `operator_id`,
+          `step_start_timecode` ,
+          `consumption_start_timecode` ,
+          `process_id` ,
+          `step_id` ,
+          `comment` )
+           VALUES(
+           _lot_id,
+           _lot_alias,
+           _timecode,
+           _inventory_id,
+           ifnull(_quantity_before, 0),
+           _quantity_returned,
+           _recipe_uomid,
+           _operator_id,
+           _step_start_timecode,
+           _consumption_start_timecode,
+           _process_id,
+           _step_id,
+           _comment
+           );
+          
+          IF (_quantity_before = _quantity_returned)
+          THEN
+            DELETE FROM inventory_consumption
+            WHERE lot_id = _lot_id
+              AND start_timecode = _consumption_start_timecode
+              AND inventory_id = _inventory_id;            
+          ELSE
+            UPDATE inventory_consumption
+              SET quantity_used = quantity_used - _quantity_returned
+            WHERE lot_id = _lot_id
+              AND start_timecode = _consumption_start_timecode
+              AND inventory_id = _inventory_id;   
+          END IF;
+          
+          UPDATE inventory
+             SET actual_quantity = actual_quantity + _inv_return_quantity
+           WHERE id=_inventory_id;
+           
+        COMMIT;
+      END IF;
+    END IF;
+  END IF;
+END$
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : consume_inventory.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : record inventory consumption. currently called from "end consumption step" page
+*    example	            : 
+*    Log                    :
+*    06/19/2018: Peiyu Ge: added header info. 		
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column			
+*/
+DELIMITER $ 
+DROP PROCEDURE IF EXISTS `consume_inventory`$
+CREATE PROCEDURE `consume_inventory`(
+  IN _lot_id int(10) unsigned,
+  IN _lot_alias varchar(30),
+  IN _operator_id int(10) unsigned,
+  IN _equipment_id int(10) unsigned,
+  IN _device_id int(10) unsigned,
+  IN _process_id int(10) unsigned,
+  IN _sub_process_id int(10) unsigned,
+  IN _position_id int(5) unsigned,
+  IN _sub_position_id int(5) unsigned,
+  IN _step_id int(10) unsigned,
+  IN _step_start_timecode char(15),
+  IN _inventory_id int(10) unsigned,
+  IN _quantity decimal(16,4) unsigned,
+  IN _comment text,
+  IN _recipe_uomid smallint(3) unsigned,  
+  OUT _response varchar(255)
+)
+BEGIN
+  
+  DECLARE _inventory_uomid smallint(3) unsigned;
+  DECLARE _inv_consume_quantity decimal(16,4) unsigned;
+  DECLARE _inv_quantity decimal(16,4) unsigned;
+  DECLARE _timecode char(15);
+ 
+  SET autocommit=0;
+
+  IF _lot_id IS NULL THEN
+     SET _response = "Batch identifier is missing. Please supply a batch indentifier.";
+  ELSEIF NOT EXISTS (SELECT * FROM lot_status WHERE id= _lot_id)
+  THEN
+    SET _response = "The batch you selected is not in database.";
+  ELSEIF NOT EXISTS (
+    SELECT *
+      FROM lot_history
+     WHERE lot_id = _lot_id
+       AND start_timecode = _step_start_timecode
+       AND process_id = _process_id
+       AND sub_process_id <=> _sub_process_id
+       AND position_id = _position_id
+       AND sub_position_id <=> _sub_position_id
+       AND step_id = _step_id
+  )
+  THEN
+    SET _response = "The batch you selected is not at the step and position given.";
+  ELSE
+    SELECT uom_id, actual_quantity
+      INTO _inventory_uomid, _inv_quantity
+      FROM inventory
+     WHERE id=_inventory_id;
+    
+    IF _inventory_uomid IS NULL
+    THEN
+      SET _response = "The inventory you selected doesn't exist in database.";
+    ELSE
+      SET _inv_consume_quantity=convert_quantity(_quantity, _recipe_uomid, _inventory_uomid);
+      IF _inv_consume_quantity IS NULL
+      THEN
+        SET _response = "Can not calculate consumption because no UoM conversion provided to convert quantity into the UoM used in inventory.";
+      ELSEIF _inv_consume_quantity > _inv_quantity
+      THEN
+        SET _response = "The inventory doesn't have enough to meet the quantity required.";
+      ELSE
+        SET _timecode = DATE_FORMAT(utc_timestamp(), '%Y%m%d%H%i%s0');
+        
+        START TRANSACTION;
+          INSERT INTO inventory_consumption
+          (lot_id,
+           lot_alias,
+           start_timecode,
+           end_timecode,
+           inventory_id,
+           quantity_used,
+           uom_id,
+           process_id,
+           sub_process_id,
+           position_id,
+           sub_position_id,
+           step_id,
+           operator_id,
+           equipment_id,
+           device_id,
+           comment
+           )
+           VALUES(
+           _lot_id,
+           _lot_alias,
+           _timecode,
+           _timecode,
+           _inventory_id,
+           _quantity,
+           _recipe_uomid,
+           _process_id,
+           _sub_process_id,
+           _position_id,
+           _sub_position_id,
+           _step_id,
+           _operator_id,
+           _equipment_id,
+           _device_id,
+           _comment
+           );
+           
+          UPDATE inventory
+             SET actual_quantity = actual_quantity - _inv_consume_quantity
+           WHERE id=_inventory_id;
+           
+        COMMIT;
+      END IF;
+    END IF;
+  END IF;
+END$
+
 

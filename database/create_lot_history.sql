@@ -13,12 +13,14 @@
 *                       added a column, order_line_num to hold the line_num that the batch is dispatched from in order_detail table
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
+*    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
+*    02/05/2019: xdong: widen lot_alias column from varchar(20) to varchar(30)
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_history`$
 CREATE TABLE `lot_history` (
   `lot_id` int(10) unsigned NOT NULL,
-  `lot_alias` varchar(20) DEFAULT NULL,
+  `lot_alias` varchar(30) DEFAULT NULL,
   `start_timecode` char(15) NOT NULL,
   `end_timecode` char(15) DEFAULT NULL,
   `process_id` int(10) unsigned NOT NULL,
@@ -43,5 +45,8 @@ CREATE TABLE `lot_history` (
    -- in process: quantity is counted toward quantity_in_process in order_detail record
    -- made: quantity is counted toward quantity_made in order_detail record
    -- shipped: quantity is counted toward quantity_shipped in order_detail record
+  `value1` varchar(255), -- reserved for storing extra info collected at each transaction. For "ship to location" step, this field store tracking number logged
+  `value2` varchar(500), -- reserved for storing extra info collected at each transaction. For now, it is not used
+  `value3` varchar(2000), -- reserved for storing extra info collected at each transaction. for now, it is not used
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
 ) ENGINE=InnoDB$

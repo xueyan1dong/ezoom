@@ -48,6 +48,8 @@ namespace ezMESWeb.Reports.report_templates {
         
         private new_order_demand_predictionDataTable tablenew_order_demand_prediction;
         
+        private report_order_batch_detailDataTable tablereport_order_batch_detail;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -111,6 +113,9 @@ namespace ezMESWeb.Reports.report_templates {
                 }
                 if ((ds.Tables["new_order_demand_prediction"] != null)) {
                     base.Tables.Add(new new_order_demand_predictionDataTable(ds.Tables["new_order_demand_prediction"]));
+                }
+                if ((ds.Tables["report_order_batch_detail"] != null)) {
+                    base.Tables.Add(new report_order_batch_detailDataTable(ds.Tables["report_order_batch_detail"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -252,6 +257,16 @@ namespace ezMESWeb.Reports.report_templates {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public report_order_batch_detailDataTable report_order_batch_detail {
+            get {
+                return this.tablereport_order_batch_detail;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -352,6 +367,9 @@ namespace ezMESWeb.Reports.report_templates {
                 }
                 if ((ds.Tables["new_order_demand_prediction"] != null)) {
                     base.Tables.Add(new new_order_demand_predictionDataTable(ds.Tables["new_order_demand_prediction"]));
+                }
+                if ((ds.Tables["report_order_batch_detail"] != null)) {
+                    base.Tables.Add(new report_order_batch_detailDataTable(ds.Tables["report_order_batch_detail"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -458,6 +476,12 @@ namespace ezMESWeb.Reports.report_templates {
                     this.tablenew_order_demand_prediction.InitVars();
                 }
             }
+            this.tablereport_order_batch_detail = ((report_order_batch_detailDataTable)(base.Tables["report_order_batch_detail"]));
+            if ((initTable == true)) {
+                if ((this.tablereport_order_batch_detail != null)) {
+                    this.tablereport_order_batch_detail.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -492,6 +516,8 @@ namespace ezMESWeb.Reports.report_templates {
             base.Tables.Add(this.tablereport_order_quantity);
             this.tablenew_order_demand_prediction = new new_order_demand_predictionDataTable();
             base.Tables.Add(this.tablenew_order_demand_prediction);
+            this.tablereport_order_batch_detail = new report_order_batch_detailDataTable();
+            base.Tables.Add(this.tablereport_order_batch_detail);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -563,6 +589,12 @@ namespace ezMESWeb.Reports.report_templates {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private bool ShouldSerializenew_order_demand_prediction() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializereport_order_batch_detail() {
             return false;
         }
         
@@ -656,6 +688,9 @@ namespace ezMESWeb.Reports.report_templates {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void new_order_demand_predictionRowChangeEventHandler(object sender, new_order_demand_predictionRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void report_order_batch_detailRowChangeEventHandler(object sender, report_order_batch_detailRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -1502,6 +1537,14 @@ namespace ezMESWeb.Reports.report_templates {
             
             private global::System.Data.DataColumn columncomment;
             
+            private global::System.Data.DataColumn columnquantity_status;
+            
+            private global::System.Data.DataColumn columnorder_line_num;
+            
+            private global::System.Data.DataColumn columnnext_step;
+            
+            private global::System.Data.DataColumn columnstep;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public report_lot_statusDataTable() {
@@ -1689,6 +1732,38 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn quantity_statusColumn {
+                get {
+                    return this.columnquantity_status;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn order_line_numColumn {
+                get {
+                    return this.columnorder_line_num;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn next_stepColumn {
+                get {
+                    return this.columnnext_step;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn stepColumn {
+                get {
+                    return this.columnstep;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1743,7 +1818,11 @@ namespace ezMESWeb.Reports.report_templates {
                         byte priority, 
                         System.DateTime dispatch_time, 
                         System.DateTime output_time, 
-                        string comment) {
+                        string comment, 
+                        string quantity_status, 
+                        string order_line_num, 
+                        string next_step, 
+                        string step) {
                 report_lot_statusRow rowreport_lot_statusRow = ((report_lot_statusRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         product_id,
@@ -1764,7 +1843,11 @@ namespace ezMESWeb.Reports.report_templates {
                         priority,
                         dispatch_time,
                         output_time,
-                        comment};
+                        comment,
+                        quantity_status,
+                        order_line_num,
+                        next_step,
+                        step};
                 rowreport_lot_statusRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowreport_lot_statusRow);
                 return rowreport_lot_statusRow;
@@ -1806,6 +1889,10 @@ namespace ezMESWeb.Reports.report_templates {
                 this.columndispatch_time = base.Columns["dispatch_time"];
                 this.columnoutput_time = base.Columns["output_time"];
                 this.columncomment = base.Columns["comment"];
+                this.columnquantity_status = base.Columns["quantity_status"];
+                this.columnorder_line_num = base.Columns["order_line_num"];
+                this.columnnext_step = base.Columns["next_step"];
+                this.columnstep = base.Columns["step"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1849,6 +1936,14 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columnoutput_time);
                 this.columncomment = new global::System.Data.DataColumn("comment", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncomment);
+                this.columnquantity_status = new global::System.Data.DataColumn("quantity_status", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity_status);
+                this.columnorder_line_num = new global::System.Data.DataColumn("order_line_num", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnorder_line_num);
+                this.columnnext_step = new global::System.Data.DataColumn("next_step", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnext_step);
+                this.columnstep = new global::System.Data.DataColumn("step", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstep);
                 this.columnproduct_id.AllowDBNull = false;
                 this.columnproduct_name.AllowDBNull = false;
                 this.columnproduct_name.MaxLength = 255;
@@ -2040,7 +2135,7 @@ namespace ezMESWeb.Reports.report_templates {
             
             private global::System.Data.DataColumn columnuom_name;
             
-            private global::System.Data.DataColumn columnequipment_id;
+            private global::System.Data.DataColumn columnlocation;
             
             private global::System.Data.DataColumn columnequipment_name;
             
@@ -2053,6 +2148,8 @@ namespace ezMESWeb.Reports.report_templates {
             private global::System.Data.DataColumn columnresult;
             
             private global::System.Data.DataColumn columncomment;
+            
+            private global::System.Data.DataColumn columnextra_info;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -2241,9 +2338,9 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn equipment_idColumn {
+            public global::System.Data.DataColumn locationColumn {
                 get {
-                    return this.columnequipment_id;
+                    return this.columnlocation;
                 }
             }
             
@@ -2292,6 +2389,14 @@ namespace ezMESWeb.Reports.report_templates {
             public global::System.Data.DataColumn commentColumn {
                 get {
                     return this.columncomment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn extra_infoColumn {
+                get {
+                    return this.columnextra_info;
                 }
             }
             
@@ -2352,13 +2457,14 @@ namespace ezMESWeb.Reports.report_templates {
                         decimal end_quantity, 
                         ushort uomid, 
                         string uom_name, 
-                        uint equipment_id, 
+                        uint location, 
                         string equipment_name, 
                         uint device_id, 
                         uint approver_id, 
                         string approver_name, 
                         string result, 
-                        string comment) {
+                        string comment, 
+                        string extra_info) {
                 report_lot_historyRow rowreport_lot_historyRow = ((report_lot_historyRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         start_time,
@@ -2380,13 +2486,14 @@ namespace ezMESWeb.Reports.report_templates {
                         end_quantity,
                         uomid,
                         uom_name,
-                        equipment_id,
+                        location,
                         equipment_name,
                         device_id,
                         approver_id,
                         approver_name,
                         result,
-                        comment};
+                        comment,
+                        extra_info};
                 rowreport_lot_historyRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowreport_lot_historyRow);
                 return rowreport_lot_historyRow;
@@ -2428,13 +2535,14 @@ namespace ezMESWeb.Reports.report_templates {
                 this.columnend_quantity = base.Columns["end_quantity"];
                 this.columnuomid = base.Columns["uomid"];
                 this.columnuom_name = base.Columns["uom_name"];
-                this.columnequipment_id = base.Columns["equipment_id"];
+                this.columnlocation = base.Columns["location"];
                 this.columnequipment_name = base.Columns["equipment_name"];
                 this.columndevice_id = base.Columns["device_id"];
                 this.columnapprover_id = base.Columns["approver_id"];
                 this.columnapprover_name = base.Columns["approver_name"];
                 this.columnresult = base.Columns["result"];
                 this.columncomment = base.Columns["comment"];
+                this.columnextra_info = base.Columns["extra_info"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2478,8 +2586,8 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columnuomid);
                 this.columnuom_name = new global::System.Data.DataColumn("uom_name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnuom_name);
-                this.columnequipment_id = new global::System.Data.DataColumn("equipment_id", typeof(uint), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnequipment_id);
+                this.columnlocation = new global::System.Data.DataColumn("location", typeof(uint), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlocation);
                 this.columnequipment_name = new global::System.Data.DataColumn("equipment_name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnequipment_name);
                 this.columndevice_id = new global::System.Data.DataColumn("device_id", typeof(uint), null, global::System.Data.MappingType.Element);
@@ -2492,6 +2600,8 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columnresult);
                 this.columncomment = new global::System.Data.DataColumn("comment", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncomment);
+                this.columnextra_info = new global::System.Data.DataColumn("extra_info", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnextra_info);
                 this.columnprocess_name.MaxLength = 255;
                 this.columnsub_process_name.MaxLength = 255;
                 this.columnstep_name.MaxLength = 255;
@@ -4588,7 +4698,13 @@ namespace ezMESWeb.Reports.report_templates {
             
             private global::System.Data.DataColumn columnlot_alias;
             
+            private global::System.Data.DataColumn columnlot_status;
+            
+            private global::System.Data.DataColumn columnquantity_status;
+            
             private global::System.Data.DataColumn columnponumber;
+            
+            private global::System.Data.DataColumn columnpo_linenumber;
             
             private global::System.Data.DataColumn columnproduct_name;
             
@@ -4608,9 +4724,17 @@ namespace ezMESWeb.Reports.report_templates {
             
             private global::System.Data.DataColumn columncontact;
             
-            private global::System.Data.DataColumn columnprioirty;
+            private global::System.Data.DataColumn columnpriority;
+            
+            private global::System.Data.DataColumn columnstep_name;
+            
+            private global::System.Data.DataColumn columnstep_status;
+            
+            private global::System.Data.DataColumn columnnext_step;
             
             private global::System.Data.DataColumn columncurstatus;
+            
+            private global::System.Data.DataColumn columnbatch_link;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -4663,9 +4787,33 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn lot_statusColumn {
+                get {
+                    return this.columnlot_status;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn quantity_statusColumn {
+                get {
+                    return this.columnquantity_status;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public global::System.Data.DataColumn ponumberColumn {
                 get {
                     return this.columnponumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn po_linenumberColumn {
+                get {
+                    return this.columnpo_linenumber;
                 }
             }
             
@@ -4743,9 +4891,33 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public global::System.Data.DataColumn prioirtyColumn {
+            public global::System.Data.DataColumn priorityColumn {
                 get {
-                    return this.columnprioirty;
+                    return this.columnpriority;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn step_nameColumn {
+                get {
+                    return this.columnstep_name;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn step_statusColumn {
+                get {
+                    return this.columnstep_status;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn next_stepColumn {
+                get {
+                    return this.columnnext_step;
                 }
             }
             
@@ -4754,6 +4926,14 @@ namespace ezMESWeb.Reports.report_templates {
             public global::System.Data.DataColumn curstatusColumn {
                 get {
                     return this.columncurstatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn batch_linkColumn {
+                get {
+                    return this.columnbatch_link;
                 }
             }
             
@@ -4794,12 +4974,36 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public report_dispatch_historyRow Addreport_dispatch_historyRow(string lot_id, string lot_alias, string ponumber, string product_name, string process_name, string state, string start_quantity, string actual_quantity, string uom, string dispatch_time, string dispatcher, string contact, string prioirty, string curstatus) {
+            public report_dispatch_historyRow Addreport_dispatch_historyRow(
+                        string lot_id, 
+                        string lot_alias, 
+                        string lot_status, 
+                        string quantity_status, 
+                        string ponumber, 
+                        string po_linenumber, 
+                        string product_name, 
+                        string process_name, 
+                        string state, 
+                        string start_quantity, 
+                        string actual_quantity, 
+                        string uom, 
+                        string dispatch_time, 
+                        string dispatcher, 
+                        string contact, 
+                        string priority, 
+                        string step_name, 
+                        string step_status, 
+                        string next_step, 
+                        string curstatus, 
+                        string batch_link) {
                 report_dispatch_historyRow rowreport_dispatch_historyRow = ((report_dispatch_historyRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         lot_id,
                         lot_alias,
+                        lot_status,
+                        quantity_status,
                         ponumber,
+                        po_linenumber,
                         product_name,
                         process_name,
                         state,
@@ -4809,8 +5013,12 @@ namespace ezMESWeb.Reports.report_templates {
                         dispatch_time,
                         dispatcher,
                         contact,
-                        prioirty,
-                        curstatus};
+                        priority,
+                        step_name,
+                        step_status,
+                        next_step,
+                        curstatus,
+                        batch_link};
                 rowreport_dispatch_historyRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowreport_dispatch_historyRow);
                 return rowreport_dispatch_historyRow;
@@ -4835,7 +5043,10 @@ namespace ezMESWeb.Reports.report_templates {
             internal void InitVars() {
                 this.columnlot_id = base.Columns["lot_id"];
                 this.columnlot_alias = base.Columns["lot_alias"];
+                this.columnlot_status = base.Columns["lot_status"];
+                this.columnquantity_status = base.Columns["quantity_status"];
                 this.columnponumber = base.Columns["ponumber"];
+                this.columnpo_linenumber = base.Columns["po_linenumber"];
                 this.columnproduct_name = base.Columns["product_name"];
                 this.columnprocess_name = base.Columns["process_name"];
                 this.columnstate = base.Columns["state"];
@@ -4845,8 +5056,12 @@ namespace ezMESWeb.Reports.report_templates {
                 this.columndispatch_time = base.Columns["dispatch_time"];
                 this.columndispatcher = base.Columns["dispatcher"];
                 this.columncontact = base.Columns["contact"];
-                this.columnprioirty = base.Columns["prioirty"];
+                this.columnpriority = base.Columns["priority"];
+                this.columnstep_name = base.Columns["step_name"];
+                this.columnstep_status = base.Columns["step_status"];
+                this.columnnext_step = base.Columns["next_step"];
                 this.columncurstatus = base.Columns["curstatus"];
+                this.columnbatch_link = base.Columns["batch_link"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4856,8 +5071,14 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columnlot_id);
                 this.columnlot_alias = new global::System.Data.DataColumn("lot_alias", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnlot_alias);
+                this.columnlot_status = new global::System.Data.DataColumn("lot_status", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlot_status);
+                this.columnquantity_status = new global::System.Data.DataColumn("quantity_status", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnquantity_status);
                 this.columnponumber = new global::System.Data.DataColumn("ponumber", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnponumber);
+                this.columnpo_linenumber = new global::System.Data.DataColumn("po_linenumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnpo_linenumber);
                 this.columnproduct_name = new global::System.Data.DataColumn("product_name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnproduct_name);
                 this.columnprocess_name = new global::System.Data.DataColumn("process_name", typeof(string), null, global::System.Data.MappingType.Element);
@@ -4876,10 +5097,18 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columndispatcher);
                 this.columncontact = new global::System.Data.DataColumn("contact", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncontact);
-                this.columnprioirty = new global::System.Data.DataColumn("prioirty", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnprioirty);
+                this.columnpriority = new global::System.Data.DataColumn("priority", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnpriority);
+                this.columnstep_name = new global::System.Data.DataColumn("step_name", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstep_name);
+                this.columnstep_status = new global::System.Data.DataColumn("step_status", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstep_status);
+                this.columnnext_step = new global::System.Data.DataColumn("next_step", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnext_step);
                 this.columncurstatus = new global::System.Data.DataColumn("curstatus", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columncurstatus);
+                this.columnbatch_link = new global::System.Data.DataColumn("batch_link", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnbatch_link);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6413,6 +6642,494 @@ namespace ezMESWeb.Reports.report_templates {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class report_order_batch_detailDataTable : global::System.Data.TypedTableBase<report_order_batch_detailRow> {
+            
+            private global::System.Data.DataColumn columnlot_id;
+            
+            private global::System.Data.DataColumn columnlot_alias;
+            
+            private global::System.Data.DataColumn columnpo_linenumber;
+            
+            private global::System.Data.DataColumn columnprocess_name;
+            
+            private global::System.Data.DataColumn columnlot_status;
+            
+            private global::System.Data.DataColumn columnpre_step;
+            
+            private global::System.Data.DataColumn columnstep_name;
+            
+            private global::System.Data.DataColumn columnstart_quantity;
+            
+            private global::System.Data.DataColumn columnactual_quantity;
+            
+            private global::System.Data.DataColumn columnuom;
+            
+            private global::System.Data.DataColumn columnstep_status;
+            
+            private global::System.Data.DataColumn columnnext_step;
+            
+            private global::System.Data.DataColumn columndispatch_time;
+            
+            private global::System.Data.DataColumn columnlast_move_time;
+            
+            private global::System.Data.DataColumn columnpriority;
+            
+            private global::System.Data.DataColumn columncontact;
+            
+            private global::System.Data.DataColumn columnbatch_link;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public report_order_batch_detailDataTable() {
+                this.TableName = "report_order_batch_detail";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal report_order_batch_detailDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected report_order_batch_detailDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn lot_idColumn {
+                get {
+                    return this.columnlot_id;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn lot_aliasColumn {
+                get {
+                    return this.columnlot_alias;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn po_linenumberColumn {
+                get {
+                    return this.columnpo_linenumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn process_nameColumn {
+                get {
+                    return this.columnprocess_name;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn lot_statusColumn {
+                get {
+                    return this.columnlot_status;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn pre_stepColumn {
+                get {
+                    return this.columnpre_step;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn step_nameColumn {
+                get {
+                    return this.columnstep_name;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn start_quantityColumn {
+                get {
+                    return this.columnstart_quantity;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn actual_quantityColumn {
+                get {
+                    return this.columnactual_quantity;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn uomColumn {
+                get {
+                    return this.columnuom;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn step_statusColumn {
+                get {
+                    return this.columnstep_status;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn next_stepColumn {
+                get {
+                    return this.columnnext_step;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn dispatch_timeColumn {
+                get {
+                    return this.columndispatch_time;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn last_move_timeColumn {
+                get {
+                    return this.columnlast_move_time;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn priorityColumn {
+                get {
+                    return this.columnpriority;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn contactColumn {
+                get {
+                    return this.columncontact;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn batch_linkColumn {
+                get {
+                    return this.columnbatch_link;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public report_order_batch_detailRow this[int index] {
+                get {
+                    return ((report_order_batch_detailRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event report_order_batch_detailRowChangeEventHandler report_order_batch_detailRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event report_order_batch_detailRowChangeEventHandler report_order_batch_detailRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event report_order_batch_detailRowChangeEventHandler report_order_batch_detailRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event report_order_batch_detailRowChangeEventHandler report_order_batch_detailRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Addreport_order_batch_detailRow(report_order_batch_detailRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public report_order_batch_detailRow Addreport_order_batch_detailRow(
+                        string lot_id, 
+                        string lot_alias, 
+                        string po_linenumber, 
+                        string process_name, 
+                        string lot_status, 
+                        string pre_step, 
+                        string step_name, 
+                        string start_quantity, 
+                        string actual_quantity, 
+                        string uom, 
+                        string step_status, 
+                        string next_step, 
+                        string dispatch_time, 
+                        string last_move_time, 
+                        string priority, 
+                        string contact, 
+                        string batch_link) {
+                report_order_batch_detailRow rowreport_order_batch_detailRow = ((report_order_batch_detailRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        lot_id,
+                        lot_alias,
+                        po_linenumber,
+                        process_name,
+                        lot_status,
+                        pre_step,
+                        step_name,
+                        start_quantity,
+                        actual_quantity,
+                        uom,
+                        step_status,
+                        next_step,
+                        dispatch_time,
+                        last_move_time,
+                        priority,
+                        contact,
+                        batch_link};
+                rowreport_order_batch_detailRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowreport_order_batch_detailRow);
+                return rowreport_order_batch_detailRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                report_order_batch_detailDataTable cln = ((report_order_batch_detailDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new report_order_batch_detailDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnlot_id = base.Columns["lot_id"];
+                this.columnlot_alias = base.Columns["lot_alias"];
+                this.columnpo_linenumber = base.Columns["po_linenumber"];
+                this.columnprocess_name = base.Columns["process_name"];
+                this.columnlot_status = base.Columns["lot_status"];
+                this.columnpre_step = base.Columns["pre_step"];
+                this.columnstep_name = base.Columns["step_name"];
+                this.columnstart_quantity = base.Columns["start_quantity"];
+                this.columnactual_quantity = base.Columns["actual_quantity"];
+                this.columnuom = base.Columns["uom"];
+                this.columnstep_status = base.Columns["step_status"];
+                this.columnnext_step = base.Columns["next_step"];
+                this.columndispatch_time = base.Columns["dispatch_time"];
+                this.columnlast_move_time = base.Columns["last_move_time"];
+                this.columnpriority = base.Columns["priority"];
+                this.columncontact = base.Columns["contact"];
+                this.columnbatch_link = base.Columns["batch_link"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnlot_id = new global::System.Data.DataColumn("lot_id", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlot_id);
+                this.columnlot_alias = new global::System.Data.DataColumn("lot_alias", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlot_alias);
+                this.columnpo_linenumber = new global::System.Data.DataColumn("po_linenumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnpo_linenumber);
+                this.columnprocess_name = new global::System.Data.DataColumn("process_name", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnprocess_name);
+                this.columnlot_status = new global::System.Data.DataColumn("lot_status", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlot_status);
+                this.columnpre_step = new global::System.Data.DataColumn("pre_step", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnpre_step);
+                this.columnstep_name = new global::System.Data.DataColumn("step_name", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstep_name);
+                this.columnstart_quantity = new global::System.Data.DataColumn("start_quantity", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstart_quantity);
+                this.columnactual_quantity = new global::System.Data.DataColumn("actual_quantity", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnactual_quantity);
+                this.columnuom = new global::System.Data.DataColumn("uom", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnuom);
+                this.columnstep_status = new global::System.Data.DataColumn("step_status", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstep_status);
+                this.columnnext_step = new global::System.Data.DataColumn("next_step", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnext_step);
+                this.columndispatch_time = new global::System.Data.DataColumn("dispatch_time", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndispatch_time);
+                this.columnlast_move_time = new global::System.Data.DataColumn("last_move_time", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlast_move_time);
+                this.columnpriority = new global::System.Data.DataColumn("priority", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnpriority);
+                this.columncontact = new global::System.Data.DataColumn("contact", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncontact);
+                this.columnbatch_link = new global::System.Data.DataColumn("batch_link", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnbatch_link);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public report_order_batch_detailRow Newreport_order_batch_detailRow() {
+                return ((report_order_batch_detailRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new report_order_batch_detailRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(report_order_batch_detailRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.report_order_batch_detailRowChanged != null)) {
+                    this.report_order_batch_detailRowChanged(this, new report_order_batch_detailRowChangeEvent(((report_order_batch_detailRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.report_order_batch_detailRowChanging != null)) {
+                    this.report_order_batch_detailRowChanging(this, new report_order_batch_detailRowChangeEvent(((report_order_batch_detailRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.report_order_batch_detailRowDeleted != null)) {
+                    this.report_order_batch_detailRowDeleted(this, new report_order_batch_detailRowChangeEvent(((report_order_batch_detailRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.report_order_batch_detailRowDeleting != null)) {
+                    this.report_order_batch_detailRowDeleting(this, new report_order_batch_detailRowChangeEvent(((report_order_batch_detailRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Removereport_order_batch_detailRow(report_order_batch_detailRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                DataSet1 ds = new DataSet1();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "report_order_batch_detailDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class DataTable1Row : global::System.Data.DataRow {
@@ -7224,6 +7941,70 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string quantity_status {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_lot_status.quantity_statusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity_status\' in table \'report_lot_status\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_lot_status.quantity_statusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string order_line_num {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_lot_status.order_line_numColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'order_line_num\' in table \'report_lot_status\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_lot_status.order_line_numColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string next_step {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_lot_status.next_stepColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'next_step\' in table \'report_lot_status\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_lot_status.next_stepColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string step {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_lot_status.stepColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'step\' in table \'report_lot_status\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_lot_status.stepColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool Isorder_idNull() {
                 return this.IsNull(this.tablereport_lot_status.order_idColumn);
             }
@@ -7316,6 +8097,54 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetcommentNull() {
                 this[this.tablereport_lot_status.commentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isquantity_statusNull() {
+                return this.IsNull(this.tablereport_lot_status.quantity_statusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setquantity_statusNull() {
+                this[this.tablereport_lot_status.quantity_statusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isorder_line_numNull() {
+                return this.IsNull(this.tablereport_lot_status.order_line_numColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setorder_line_numNull() {
+                this[this.tablereport_lot_status.order_line_numColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isnext_stepNull() {
+                return this.IsNull(this.tablereport_lot_status.next_stepColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setnext_stepNull() {
+                this[this.tablereport_lot_status.next_stepColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsstepNull() {
+                return this.IsNull(this.tablereport_lot_status.stepColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetstepNull() {
+                this[this.tablereport_lot_status.stepColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -7642,17 +8471,17 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public uint equipment_id {
+            public uint location {
                 get {
                     try {
-                        return ((uint)(this[this.tablereport_lot_history.equipment_idColumn]));
+                        return ((uint)(this[this.tablereport_lot_history.locationColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'equipment_id\' in table \'report_lot_history\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'location\' in table \'report_lot_history\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablereport_lot_history.equipment_idColumn] = value;
+                    this[this.tablereport_lot_history.locationColumn] = value;
                 }
             }
             
@@ -7749,6 +8578,22 @@ namespace ezMESWeb.Reports.report_templates {
                 }
                 set {
                     this[this.tablereport_lot_history.commentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string extra_info {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_lot_history.extra_infoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'extra_info\' in table \'report_lot_history\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_lot_history.extra_infoColumn] = value;
                 }
             }
             
@@ -7982,14 +8827,14 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool Isequipment_idNull() {
-                return this.IsNull(this.tablereport_lot_history.equipment_idColumn);
+            public bool IslocationNull() {
+                return this.IsNull(this.tablereport_lot_history.locationColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void Setequipment_idNull() {
-                this[this.tablereport_lot_history.equipment_idColumn] = global::System.Convert.DBNull;
+            public void SetlocationNull() {
+                this[this.tablereport_lot_history.locationColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8062,6 +8907,18 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetcommentNull() {
                 this[this.tablereport_lot_history.commentColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isextra_infoNull() {
+                return this.IsNull(this.tablereport_lot_history.extra_infoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setextra_infoNull() {
+                this[this.tablereport_lot_history.extra_infoColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -10147,6 +11004,39 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string lot_status {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_dispatch_history.lot_statusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'lot_status\' in table \'report_dispatch_history\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_dispatch_history.lot_statusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string quantity_status {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_dispatch_history.quantity_statusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'quantity_status\' in table \'report_dispatch_history\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_dispatch_history.quantity_statusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public string ponumber {
                 get {
                     try {
@@ -10158,6 +11048,23 @@ namespace ezMESWeb.Reports.report_templates {
                 }
                 set {
                     this[this.tablereport_dispatch_history.ponumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string po_linenumber {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_dispatch_history.po_linenumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'po_linenumber\' in table \'report_dispatch_history\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_dispatch_history.po_linenumberColumn] = value;
                 }
             }
             
@@ -10312,17 +11219,65 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string prioirty {
+            public string priority {
                 get {
                     try {
-                        return ((string)(this[this.tablereport_dispatch_history.prioirtyColumn]));
+                        return ((string)(this[this.tablereport_dispatch_history.priorityColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'prioirty\' in table \'report_dispatch_history\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'priority\' in table \'report_dispatch_history\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablereport_dispatch_history.prioirtyColumn] = value;
+                    this[this.tablereport_dispatch_history.priorityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string step_name {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_dispatch_history.step_nameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'step_name\' in table \'report_dispatch_history\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_dispatch_history.step_nameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string step_status {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_dispatch_history.step_statusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'step_status\' in table \'report_dispatch_history\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_dispatch_history.step_statusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string next_step {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_dispatch_history.next_stepColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'next_step\' in table \'report_dispatch_history\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_dispatch_history.next_stepColumn] = value;
                 }
             }
             
@@ -10339,6 +11294,22 @@ namespace ezMESWeb.Reports.report_templates {
                 }
                 set {
                     this[this.tablereport_dispatch_history.curstatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string batch_link {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_dispatch_history.batch_linkColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'batch_link\' in table \'report_dispatch_history\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_dispatch_history.batch_linkColumn] = value;
                 }
             }
             
@@ -10368,6 +11339,30 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Islot_statusNull() {
+                return this.IsNull(this.tablereport_dispatch_history.lot_statusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setlot_statusNull() {
+                this[this.tablereport_dispatch_history.lot_statusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isquantity_statusNull() {
+                return this.IsNull(this.tablereport_dispatch_history.quantity_statusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setquantity_statusNull() {
+                this[this.tablereport_dispatch_history.quantity_statusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsponumberNull() {
                 return this.IsNull(this.tablereport_dispatch_history.ponumberColumn);
             }
@@ -10376,6 +11371,18 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetponumberNull() {
                 this[this.tablereport_dispatch_history.ponumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Ispo_linenumberNull() {
+                return this.IsNull(this.tablereport_dispatch_history.po_linenumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setpo_linenumberNull() {
+                this[this.tablereport_dispatch_history.po_linenumberColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -10488,14 +11495,50 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public bool IsprioirtyNull() {
-                return this.IsNull(this.tablereport_dispatch_history.prioirtyColumn);
+            public bool IspriorityNull() {
+                return this.IsNull(this.tablereport_dispatch_history.priorityColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public void SetprioirtyNull() {
-                this[this.tablereport_dispatch_history.prioirtyColumn] = global::System.Convert.DBNull;
+            public void SetpriorityNull() {
+                this[this.tablereport_dispatch_history.priorityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isstep_nameNull() {
+                return this.IsNull(this.tablereport_dispatch_history.step_nameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setstep_nameNull() {
+                this[this.tablereport_dispatch_history.step_nameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isstep_statusNull() {
+                return this.IsNull(this.tablereport_dispatch_history.step_statusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setstep_statusNull() {
+                this[this.tablereport_dispatch_history.step_statusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isnext_stepNull() {
+                return this.IsNull(this.tablereport_dispatch_history.next_stepColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setnext_stepNull() {
+                this[this.tablereport_dispatch_history.next_stepColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -10508,6 +11551,18 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetcurstatusNull() {
                 this[this.tablereport_dispatch_history.curstatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isbatch_linkNull() {
+                return this.IsNull(this.tablereport_dispatch_history.batch_linkColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setbatch_linkNull() {
+                this[this.tablereport_dispatch_history.batch_linkColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -11931,6 +12986,506 @@ namespace ezMESWeb.Reports.report_templates {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class report_order_batch_detailRow : global::System.Data.DataRow {
+            
+            private report_order_batch_detailDataTable tablereport_order_batch_detail;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal report_order_batch_detailRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tablereport_order_batch_detail = ((report_order_batch_detailDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string lot_id {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.lot_idColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'lot_id\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.lot_idColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string lot_alias {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.lot_aliasColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'lot_alias\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.lot_aliasColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string po_linenumber {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.po_linenumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'po_linenumber\' in table \'report_order_batch_detail\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.po_linenumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string process_name {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.process_nameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'process_name\' in table \'report_order_batch_detail\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.process_nameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string lot_status {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.lot_statusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'lot_status\' in table \'report_order_batch_detail\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.lot_statusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string pre_step {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.pre_stepColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'pre_step\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.pre_stepColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string step_name {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.step_nameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'step_name\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.step_nameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string start_quantity {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.start_quantityColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'start_quantity\' in table \'report_order_batch_detail\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.start_quantityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string actual_quantity {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.actual_quantityColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'actual_quantity\' in table \'report_order_batch_detail\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.actual_quantityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string uom {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.uomColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'uom\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.uomColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string step_status {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.step_statusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'step_status\' in table \'report_order_batch_detail\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.step_statusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string next_step {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.next_stepColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'next_step\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.next_stepColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string dispatch_time {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.dispatch_timeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'dispatch_time\' in table \'report_order_batch_detail\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.dispatch_timeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string last_move_time {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.last_move_timeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'last_move_time\' in table \'report_order_batch_detail\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.last_move_timeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string priority {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.priorityColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'priority\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.priorityColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string contact {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.contactColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'contact\' in table \'report_order_batch_detail\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.contactColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string batch_link {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.batch_linkColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'batch_link\' in table \'report_order_batch_detail\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.batch_linkColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Islot_idNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.lot_idColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setlot_idNull() {
+                this[this.tablereport_order_batch_detail.lot_idColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Islot_aliasNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.lot_aliasColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setlot_aliasNull() {
+                this[this.tablereport_order_batch_detail.lot_aliasColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Ispo_linenumberNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.po_linenumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setpo_linenumberNull() {
+                this[this.tablereport_order_batch_detail.po_linenumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isprocess_nameNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.process_nameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setprocess_nameNull() {
+                this[this.tablereport_order_batch_detail.process_nameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Islot_statusNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.lot_statusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setlot_statusNull() {
+                this[this.tablereport_order_batch_detail.lot_statusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Ispre_stepNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.pre_stepColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setpre_stepNull() {
+                this[this.tablereport_order_batch_detail.pre_stepColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isstep_nameNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.step_nameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setstep_nameNull() {
+                this[this.tablereport_order_batch_detail.step_nameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isstart_quantityNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.start_quantityColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setstart_quantityNull() {
+                this[this.tablereport_order_batch_detail.start_quantityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isactual_quantityNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.actual_quantityColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setactual_quantityNull() {
+                this[this.tablereport_order_batch_detail.actual_quantityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsuomNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.uomColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetuomNull() {
+                this[this.tablereport_order_batch_detail.uomColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isstep_statusNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.step_statusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setstep_statusNull() {
+                this[this.tablereport_order_batch_detail.step_statusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isnext_stepNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.next_stepColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setnext_stepNull() {
+                this[this.tablereport_order_batch_detail.next_stepColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isdispatch_timeNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.dispatch_timeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setdispatch_timeNull() {
+                this[this.tablereport_order_batch_detail.dispatch_timeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Islast_move_timeNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.last_move_timeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setlast_move_timeNull() {
+                this[this.tablereport_order_batch_detail.last_move_timeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IspriorityNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.priorityColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetpriorityNull() {
+                this[this.tablereport_order_batch_detail.priorityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IscontactNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.contactColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetcontactNull() {
+                this[this.tablereport_order_batch_detail.contactColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Isbatch_linkNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.batch_linkColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setbatch_linkNull() {
+                this[this.tablereport_order_batch_detail.batch_linkColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -12324,6 +13879,40 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public new_order_demand_predictionRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class report_order_batch_detailRowChangeEvent : global::System.EventArgs {
+            
+            private report_order_batch_detailRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public report_order_batch_detailRowChangeEvent(report_order_batch_detailRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public report_order_batch_detailRow Row {
                 get {
                     return this.eventRow;
                 }

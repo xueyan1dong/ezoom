@@ -164,8 +164,7 @@ CREATE TABLE  `employee` (
   UNIQUE KEY `em_un1` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
-
-﻿/*
+/*
 *    Copyright 2009 ~ Current  IT Helps LLC
 *    Source File            : create_location.sql
 *    Created By             : Xueyan Dong
@@ -177,26 +176,26 @@ CREATE TABLE  `employee` (
 *    6/19/2018: Peiyu Ge: added header info. 	
 *    6/27/2018: Xueyan Dong: changed name and description from VARCHAR to NVARCHAR, and parent_loc_id from varchar to integer
 						     also, enlarge the id and parent_loc_id byte size from INTEGER(5) TO INTEGER(11)
+     01/31/2019: Xueyan Dong: remove the not null restriction on contact_employee column. Added explanation for each column as comment
 */
 DELIMITER $
 DROP TABLE IF EXISTS `location` $
 CREATE TABLE `location` (
-  `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` NVARCHAR(45) NOT NULL,
-  `parent_loc_id` INTEGER(11),
-  `create_time` DATETIME NOT NULL,
-  `update_time` DATETIME,
-  `contact_employee` INTEGER(10) UNSIGNED NOT NULL,
-  `adjacent_loc_id1` INTEGER(5) UNSIGNED,
-  `adjacent_loc_id2` INTEGER(5) UNSIGNED,
-  `adjacent_loc_id3` INTEGER(5) UNSIGNED,
-  `adjacent_loc_id4` INTEGER(5) UNSIGNED,
-  `description` NVARCHAR(255),
-  `comment` TEXT,
+  `id` INTEGER(11) UNSIGNED NOT NULL AUTO_INCREMENT, -- unique identifier of the location
+  `name` NVARCHAR(45) NOT NULL,  -- name of the location
+  `parent_loc_id` INTEGER(11),  -- parent location that current location belongs to
+  `create_time` DATETIME NOT NULL,  -- date time that location is created
+  `update_time` DATETIME, -- datetime that location is updated
+  `contact_employee` INTEGER(10) UNSIGNED,  -- id of contact employee
+  `adjacent_loc_id1` INTEGER(5) UNSIGNED,  -- id of adjacent loction that helps to locate the current location
+  `adjacent_loc_id2` INTEGER(5) UNSIGNED,  -- id of adjacent location that helps to locate the current location
+  `adjacent_loc_id3` INTEGER(5) UNSIGNED,  -- id of adjacent location that helps to locate the current location
+  `adjacent_loc_id4` INTEGER(5) UNSIGNED,  -- id of adjacent location that helps to locate the current location
+  `description` NVARCHAR(255),  -- description of the location
+  `comment` TEXT,  -- any comment needed to store
   PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB $
-
 
 -- equipment_group table
 DROP TABLE IF EXISTS `equipment_group`$
@@ -386,10 +385,23 @@ CREATE TABLE `inventory` (
 
 
 -- inventory_consumption table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_inventory_consumption.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    06/19/2018: Peiyu Ge: added header info. 		
+*    02/05/2019: xdong: widen lot_alias input from varchar(20) to varchar(30) following changes of the same column in lot_history and lot_status				
+*/
+DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `inventory_consumption`$
 CREATE TABLE `inventory_consumption` (
   `lot_id` int(10) unsigned NOT NULL,
-  `lot_alias` varchar(20) DEFAULT NULL,
+  `lot_alias` varchar(30) DEFAULT NULL,
   `start_timecode` char(15) NOT NULL,
   `end_timecode` char(15) DEFAULT NULL,
   `inventory_id` int(10) unsigned NOT NULL,
@@ -866,12 +878,14 @@ CREATE TABLE `product_process` (
 *                       added a column, order_line_num to hold the line_num that the batch is dispatched from in order_detail table
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
+*    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
+*    02/05/2019: xdong: widen alias column from varchar(20) to varchar(30)
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_status`$
 CREATE TABLE `lot_status` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- the id of the batch
-  `alias` varchar(20) DEFAULT NULL,  -- the unique alias of the batch. This is to hold user viewable batch number. Can be customized to specific format that user require
+  `alias` varchar(30) DEFAULT NULL,  -- the unique alias of the batch. This is to hold user viewable batch number. Can be customized to specific format that user require
   `order_id` int(10) unsigned DEFAULT NULL,  -- the id of the order that the batch/lot is dispatched from
   `product_id` int(10) unsigned NOT NULL, -- the id of the product that the batch is to produce
   `process_id` int(10) unsigned NOT NULL,  -- the id of the process that the batch is to follow
@@ -900,6 +914,9 @@ CREATE TABLE `lot_status` (
    -- in process: quantity is counted toward quantity_in_process in order_detail record
    -- made: quantity is counted toward quantity_made in order_detail record
    -- shipped: quantity is counted toward quantity_shipped in order_detail record
+   `value1` varchar(255), -- reserved for storing extra info collected at each transaction. For "ship to location" step, this field store tracking number logged
+   `value2` varchar(500), -- reserved for storing extra info collected at each transaction. For now, it is not used
+   `value3` varchar(2000), -- reserved for storing extra info collected at each transaction. for now, it is not used
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB$
 
@@ -920,12 +937,14 @@ CREATE TABLE `lot_status` (
 *                       added a column, order_line_num to hold the line_num that the batch is dispatched from in order_detail table
 *                       added enum value 'done' to status column to mark a lot has done the last step, if not shipped or scrapped, 
 *                       e.g. a final status for a batch can be: shipped or scrapped or done.
+*    01/29/2019: xdong: added three columns for logging extra informtion collected from current transaction
+*    02/05/2019: xdong: widen lot_alias column from varchar(20) to varchar(30)
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `lot_history`$
 CREATE TABLE `lot_history` (
   `lot_id` int(10) unsigned NOT NULL,
-  `lot_alias` varchar(20) DEFAULT NULL,
+  `lot_alias` varchar(30) DEFAULT NULL,
   `start_timecode` char(15) NOT NULL,
   `end_timecode` char(15) DEFAULT NULL,
   `process_id` int(10) unsigned NOT NULL,
@@ -950,6 +969,9 @@ CREATE TABLE `lot_history` (
    -- in process: quantity is counted toward quantity_in_process in order_detail record
    -- made: quantity is counted toward quantity_made in order_detail record
    -- shipped: quantity is counted toward quantity_shipped in order_detail record
+  `value1` varchar(255), -- reserved for storing extra info collected at each transaction. For "ship to location" step, this field store tracking number logged
+  `value2` varchar(500), -- reserved for storing extra info collected at each transaction. For now, it is not used
+  `value3` varchar(2000), -- reserved for storing extra info collected at each transaction. for now, it is not used
   PRIMARY KEY `lh_un1` (`lot_id`,`start_timecode`, process_id, step_id)
 ) ENGINE=InnoDB$
 
@@ -1087,6 +1109,7 @@ SELECT i.recipe_id,
 *    11/29/2018: Junlu Luo: Added order_line_num and finish columns to output	
 *    12/02/2018: Xueyan Dong: Added order_id column to output	
 *    12/04/2018: Xueyan Dong: Added quantity_status to output	
+*    01/29/2019: Xueyan Dong: Added value1 to output
 */
 DELIMITER $ 
 DROP VIEW IF EXISTS `view_lot_in_process`$
@@ -1129,7 +1152,8 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
 		s.order_line_num,
 		pr.description as finish,
     s.order_id,
-    s.quantity_status
+    s.quantity_status,
+    s.value1
    FROM lot_status s 
 	JOIN order_general as og ON s.order_id = og.id
         INNER JOIN lot_history h ON h.lot_id = s.id
@@ -1168,10 +1192,23 @@ CREATE ALGORITHM = MERGE VIEW `view_lot_in_process` AS
 
 
 -- consumption_return table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_consumption_return.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 	
+*    02/05/2019: xdong: widen lot_alias input from varchar(20) to varchar(30) following changes of the same column in lot_history and lot_status				
+*/
+DELIMITER $  
 DROP TABLE IF EXISTS `consumption_return`$
 CREATE TABLE `consumption_return` (
   `lot_id` int(10) unsigned NOT NULL,
-  `lot_alias` varchar(20) DEFAULT NULL,
+  `lot_alias` varchar(30) DEFAULT NULL,
   `return_timecode` char(15) NOT NULL,
   `inventory_id` int(10) unsigned NOT NULL,
   `quantity_before` decimal(16,4) unsigned NOT NULL,

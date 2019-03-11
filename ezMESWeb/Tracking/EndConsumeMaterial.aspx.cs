@@ -7,6 +7,11 @@
 *    Description            : UI for ending the consume material step
 *    Log: 
 *    12/04/2018: Xueyan Dong: Fixed issue with condition step not going to Failed branch
+*    02/11/2019: Xueyan Dong: For "return to inventory popup”, change from only listing inventory that were just consumed from, 
+*                             to listing not only inventory that were just consumed from, but also inventory that were not consumed from 
+*                             — so that the parts can be returned to any inventory as long as it is the same parts.
+*                             In Condition step, hide consume inventory quick access controls, which is implemented for using scan gun to 
+*                             quickly consume materials
 ----------------------------------------------------------------*/
 
 using System;
@@ -28,15 +33,12 @@ namespace ezMESWeb.Tracking
     public partial class EndConsumeMaterial : TrackTemplate
     {
         protected Label lblStep, lblUom, lblError2, lblEquipment, lblStartTime, lblStepStatus, lblMessage, lblLotStatus2, stepPrint, lblProcess;
-        protected Label lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblApprover, lblResult;
-        protected TextBox txtQuantity, txtComment, txtPassword;
+        protected Label lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblApprover, lblResult, lblPartName;
+        protected TextBox txtQuantity, txtComment, txtPassword, txtPartName;
         protected DropDownList drpEquipment, drpApprover;
         private string stepId, stepType;
 
-        protected Button btnDo, btnPrintLabel, btnPrintList;
-        protected Button btnMove;
-        protected Label lblPartName;
-        protected TextBox txtPartName;
+        protected Button btnDo, btnPrintLabel, btnPrintList, btnMove;
 
         protected ConsumptionStep newStep;
         protected SqlDataSource sdsPDGrid;
@@ -86,7 +88,7 @@ namespace ezMESWeb.Tracking
                 stepId = Request.QueryString["step"];
                 //lblUom.Text = Session["uom"].ToString();
                 txtQuantity.Text = Request.QueryString["quantity"];
-
+         
                 if (Request.QueryString["step_type"].Equals("condition"))
                 {
                     lblResult.Visible = true;
@@ -216,7 +218,7 @@ namespace ezMESWeb.Tracking
                     this.verifyPrint(stepId);
 
                     //determine whether to display input box for handheld scanner
-                    this.verifyMoveConsumeButton();
+                    this.verifyMoveConsumeButton(Request.QueryString["step_type"]);
                 }
                 catch (Exception ex)
                 {
@@ -324,16 +326,23 @@ namespace ezMESWeb.Tracking
                 ezCmd.Connection = ezConn;
 
 
-                ezCmd.CommandText = "SELECT CONCAT( CAST(i.lot_id AS CHAR)" +
-                    ", IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ' consumed at ', date_format(str_to_date(c.start_timecode, '%Y%m%d%H%i%s0' ), '%m/%d/%Y %I:%i%p'))," +
-                    " CONCAT(c.start_timecode,',', CAST(c.quantity_used AS UNSIGNED INTEGER), ',', CAST(i.uom_id AS CHAR),',', CAST(c.inventory_id AS CHAR), ',', u.name)" +
-                    " FROM inventory_consumption c, inventory i, uom u WHERE c.lot_id ="
-                    + /*Session["lot_id"].ToString()*/ Request.QueryString["lot_id"] +
-                    " AND c.start_timecode > '" + Request.QueryString["start_time"] +
-                    "' AND i.id = c.inventory_id " +
-                    " AND i.source_type = '" + gvTable.SelectedDataKey.Values["source_type"].ToString() +
-                    "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString() +
-                    " AND u.id = c.uom_id ";
+        ezCmd.CommandText = "SELECT CONCAT( CAST(i.lot_id AS CHAR)" +
+            ", IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ' consumed at ', date_format(str_to_date(c.start_timecode, '%Y%m%d%H%i%s0' ), '%m/%d/%Y %I:%i%p')) as c1," +
+            " CONCAT(c.start_timecode,',', CAST(c.quantity_used AS UNSIGNED INTEGER), ',', CAST(i.uom_id AS CHAR),',', CAST(c.inventory_id AS CHAR), ',', u.name) as c2" +
+            " FROM inventory_consumption c, inventory i, uom u WHERE c.lot_id ="
+            + /*Session["lot_id"].ToString()*/ Request.QueryString["lot_id"] +
+            " AND c.start_timecode > '" + Request.QueryString["start_time"] +
+            "' AND i.id = c.inventory_id " +
+            " AND i.source_type = '" + gvTable.SelectedDataKey.Values["source_type"].ToString() +
+            "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString() +
+            " AND u.id = c.uom_id " +
+            " UNION SELECT CONCAT(CAST(i.lot_id AS CHAR) " +
+            ", IF(i.serial_no IS NULL, '', CONCAT('(', i.serial_no, ')')), 'not consummed by this batch'), " +
+            " CONCAT('1999-01-01,0,', CAST(i.uom_id AS CHAR),',', CAST(i.id AS CHAR),',',u.name) " +
+            " FROM inventory i, uom u WHERE i.source_type = '" + gvTable.SelectedDataKey.Values["source_type"].ToString() +
+            "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString() +
+            " AND u.id = i.uom_id AND NOT EXISTS(SELECT c.inventory_id FROM inventory_consumption c WHERE c.inventory_id = i.id AND c.lot_id =" +
+            Request.QueryString["lot_id"] + " AND c.start_timecode > '" + Request.QueryString["start_time"] + "') ";
                 ezCmd.CommandType = CommandType.Text;
                 ezReader = ezCmd.ExecuteReader();
                 while (ezReader.Read())
@@ -847,19 +856,11 @@ namespace ezMESWeb.Tracking
 
         }
 
-        protected void verifyMoveConsumeButton()
+        protected void verifyMoveConsumeButton(string stepType)
         {
-            string strHeader;
             bool bVisible = false;
-            for (int i = 0; i < gvTable.Columns.Count; i++)
-            {
-                strHeader = gvTable.Columns[i].HeaderText;
-                if (strHeader.CompareTo("Consume") == 0)
-                {
-                    bVisible = gvTable.Columns[i].Visible;
-                }
-            }
-
+   
+            bVisible = !(stepType.Equals ("condition"));
             btnMove.Visible = bVisible;
             lblPartName.Visible = bVisible;
             txtPartName.Visible = bVisible;

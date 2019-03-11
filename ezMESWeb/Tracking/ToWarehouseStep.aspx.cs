@@ -31,8 +31,9 @@ namespace ezMESWeb.Tracking
 {
   public partial class ToWarehouseStep : TrackTemplate
   {
-    protected Label lblStep, lblUom,  lblEquipment, lblStepStatus, lblApprover,lblStartTime, lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblMessage;
-    protected TextBox txtComment, txtPassword;
+    protected Label lblStep, lblUom, lblEquipment, lblStepStatus, lblApprover, lblStartTime, lblTrackingNo;
+    protected Label lblSubProcessId, lblPositionId, lblSubPositionId, lblStepId, lblMessage, lblPassword;
+    protected TextBox txtComment, txtPassword, txtTrackingNo;
     protected DropDownList drpEquipment, drpApprover, drpLocation;
     private string subProcessId, positionId, subPositionId, stepId;
     protected Button btnDo, btnMoveForm;
@@ -148,7 +149,7 @@ namespace ezMESWeb.Tracking
           ezCmd = new EzSqlCommand();
           ezCmd.Connection = ezConn;
           ezCmd.CommandText =
-            "SELECT need_approval, approve_emp_usage, approve_emp_id FROM process_step WHERE process_id= "
+            "SELECT need_approval, approve_emp_usage, approve_emp_id, step.para1 FROM process_step JOIN step ON step.id = process_step.step_id WHERE process_id= "
             + Session["process_id"].ToString()
             + " AND position_id = "
             + Request.QueryString["position"]
@@ -159,6 +160,11 @@ namespace ezMESWeb.Tracking
           ezReader = ezCmd.ExecuteReader();
           if (ezReader.Read())
           {
+            if (ezReader[3].ToString().Equals("Log Tracking Num"))
+            {
+              lblTrackingNo.Visible = true;
+              txtTrackingNo.Visible = true;
+            }
             if (ezReader[0].ToString().Equals("1"))
             {
               switch (ezReader[1].ToString())
@@ -180,6 +186,7 @@ namespace ezMESWeb.Tracking
               {
                 drpApprover.Items.Add(new ListItem(String.Format("{0}", ezReader[0]), String.Format("{0}", ezReader[1])));
                 lblApprover.Visible = true;
+                lblPassword.Visible = true;
                 drpApprover.Visible = true;
                 txtPassword.Visible = true;
               }
@@ -241,7 +248,14 @@ namespace ezMESWeb.Tracking
         {
             ezCmd.Parameters.AddWithValue("@_location_id", drpLocation.SelectedValue);
         }
-                ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]/*Session["process_id"]*/), ParameterDirection.InputOutput);
+        if (lblTrackingNo.Visible == true)
+        {
+          ezCmd.Parameters.AddWithValue("@_value1", txtTrackingNo.Text);
+        }
+        else
+          ezCmd.Parameters.AddWithValue("@_value1", DBNull.Value);
+
+        ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]/*Session["process_id"]*/), ParameterDirection.InputOutput);
 
         subProcessId = Request.QueryString["sub_process"];
         if (subProcessId.Length > 0)

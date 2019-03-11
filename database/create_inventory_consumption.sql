@@ -7,13 +7,14 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    06/19/2018: Peiyu Ge: added header info. 		
+*    02/05/2019: xdong: widen lot_alias input from varchar(20) to varchar(30) following changes of the same column in lot_history and lot_status				
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `inventory_consumption`$
 CREATE TABLE `inventory_consumption` (
   `lot_id` int(10) unsigned NOT NULL,
-  `lot_alias` varchar(20) DEFAULT NULL,
+  `lot_alias` varchar(30) DEFAULT NULL,
   `start_timecode` char(15) NOT NULL,
   `end_timecode` char(15) DEFAULT NULL,
   `inventory_id` int(10) unsigned NOT NULL,

@@ -401,7 +401,7 @@ TR.updated TD
 /*Posted to: Dynamic Drive CSS Library (http://www.dynamicdrive.com/style/) */
 
 .glossymenu{
-	position: relative;
+	position:relative;
 	padding: 0 0 0 34px;
 	margin: 0 auto 0 auto;
 	background: url(../images/menuo_bg.gif) repeat-x; /*tab background image path*/

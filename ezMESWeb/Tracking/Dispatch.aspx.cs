@@ -15,6 +15,7 @@
 *                      but now the columns can have different width in the grid, which allowed all columns show up
 *   01/21/2019: xdong: modified the query behind dispatch popup, so that the batch size is either the number of products still need to make for the order line
 *                      or the maximum batch size allowed, taking the smaller number among the two.
+*   02/05/2019: xdong: widen the text length limit for "alias prefix" of batch from 10 to 20 to accomodate longer prefix
 ----------------------------------------------------------------*/
 using System;
 using System.Data;

@@ -80,9 +80,9 @@ scrollbars=Both>
                 <asp:UpdatePanel ID="tbLotPanel" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
 
-                                        <asp:GridView ID="gvLotTable" runat="server" Caption="Batches Dispatched Within An Hour" 
+                                        <asp:GridView ID="gvLotTable" runat="server" Caption="Batches Dispatched Within 24 Hours" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsLotGrid" 
-               EmptyDataText="There is no batch dispatched within an hour" Height="100px" Width="300px"
+               EmptyDataText="There is no batch dispatched within 24 Hours" Height="100px" Width="300px"
                AutoGenerateColumns="False"  
 
              >
@@ -92,7 +92,7 @@ scrollbars=Both>
              </Columns>      
              </asp:GridView>  
              <br />       
-                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Reports/DispatchHistoryReport.aspx?for=0&start=1">View batches dispatched today</asp:HyperLink>
+                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Reports/DispatchHistoryReport.aspx?for=2&start=1">View batches dispatched this month</asp:HyperLink>
                </ContentTemplate>                           
                </asp:UpdatePanel>
                 </div>
@@ -105,7 +105,7 @@ scrollbars=Both>
        SELECT alias,
               get_local_time(dispatch_time) as dispatch_time
          FROM lot_status
-        WHERE get_local_time(dispatch_time) >=get_local_time(addtime(utc_timestamp(), '-01:00'))"  
+        WHERE get_local_time(dispatch_time) >=get_local_time(addtime(utc_timestamp(), '-24:00'))"  
         EnableCaching="false">
         </asp:SqlDataSource>       
        <asp:SqlDataSource ID="sdsPDGrid" runat="server" 
@@ -145,7 +145,7 @@ scrollbars=Both>
            d.quantity_requested-d.quantity_made-d.quantity_shipped-d.quantity_in_process, p.lot_size ) as lot_size,
             u.name as uom,
             1 as num_lots,
-            substring(p.name, 1, 10) as alias_prefix,  
+            substring(p.name, 1, 20) as alias_prefix,  
             (SELECT id from `location` ORDER BY id asc LIMIT 1) as location_id,
             o.internal_contact as lot_contact,
             o.priority as lot_priority,

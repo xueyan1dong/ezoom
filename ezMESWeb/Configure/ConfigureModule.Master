@@ -118,9 +118,9 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
 	 <div id="mainContent"> 
 <center><b> Configuration Module</b> </center>
 <br />
-	<table style="width:100%; height: 500px; margin-right: 0px; margin-top: 0px; border : 2px solid #FFCC66; ">
+	<table style="width:100%; height: 500px; margin: 0px; border : 2px solid #FFCC66; padding:0px; border-spacing:0px;" cellspacing="0px;" cellpadding="0px;">
       <tr>
-         <td valign="top" style="width:95%" >
+         <td valign="top" align="left">
     	  <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server" >
            </asp:ContentPlaceHolder>
         </td>
@@ -130,8 +130,8 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
       </div>  
 </div>
       <div id="footer">
-		<a href="#">&copy; Copyright 2018 IT Helps LLC</a> 
-		<p id="firewall">Updated: 10:15 pm ET May 09, 2018</p></div>
+		<a href="#">&copy; Copyright 2019 IT Helps LLC</a> 
+		<p id="firewall">Updated: 10:15 pm ET May 09, 2019</p></div>
 	</div>
    </form>                
 </body>

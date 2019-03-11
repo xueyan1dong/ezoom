@@ -7,18 +7,19 @@
 *    Description            : db operations for ending a lot at a step
 *    Log                    :
 *    6/5/2018: xdong: adding handling to new step type -- disassemble
-*	 8/2/2018: peiyu: added an new variable location_id and added to call 'start_lot_step' 
-*	 11/28/2018: peiyu: added status 'done' to lot_status enum; 
+*	   8/2/2018: peiyu: added an new variable location_id and added to call 'start_lot_step' 
+*	   11/28/2018: peiyu: added status 'done' to lot_status enum; 
 *                update lot_status to 'done' when the workflow completed 
 *                and then update quantity_made and quantity_in_process in order_detail when product_made of current step is true (in process_step). 
-*  12/04/2018: Xueyan Dong: corrected the logic around identifying last step of the workflow. Added logic to update quantities in order_detail in
+*    12/04/2018: Xueyan Dong: corrected the logic around identifying last step of the workflow. Added logic to update quantities in order_detail in
 *                           case of batch quantity change.
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column
 */
 DELIMITER $
 DROP PROCEDURE IF EXISTS `end_lot_step`$
 CREATE PROCEDURE `end_lot_step`(
     IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _start_timecode char(15),
   IN _operator_id int(10) unsigned,
   IN _end_quantity decimal(16,4) unsigned,

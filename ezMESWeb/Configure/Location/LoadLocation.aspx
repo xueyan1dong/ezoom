@@ -7,6 +7,9 @@
 <br />
 <p><em>This tool only read csv (comma separated values) file. CSV headers are required. Please save your file as .csv file before upload. </em></p><br />
 <p>Required columns: name, parent_loc_id, adjacent_loc_id1, adjacent_loc_id2, adjacent_loc_id3, adjacent_loc_id4, contact_employee, description, comment.</p>
+<p>Example:</p>
+<p>name, parent_loc_id, adjacent_loc_id1, adjacent_loc_id2, adjacent_loc_id3, adjacent_loc_id4, contact_employee, description, comment</p>
+<p>"My Location",1,2,3,4,5,1,"sample location","This is a sample for showing you how to construct the location file for uploading. If you don't have any of the ids, leave them blank. You will be able to update them in location page."</p>
 <br />
 <asp:FileUpload ID="fuLoad" runat="server" Width=500px Height=30px />
 <br /><br />

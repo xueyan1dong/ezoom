@@ -80,6 +80,7 @@
     (deactivate an employee in Employee form) from ezOOM. Click on the "edit" link brings up a popup window for editing the record.
     This popup window works the same way as the popup window for inserting a new record.
 
+
     Details about each form:<br /><br />
     <i>Employee</i><br />
     Use employee configuration form to insert or modify an employee record. Any user of ezOOM must have an account in ezOOM. The employee information is very important,
@@ -148,51 +149,33 @@
     Among them, only "step name" and "step type" are required. Step Type gives ezOOM clue on how to execute the step. The available step types are
     given by IT Helps based on customer requirements. Please see <a href="#steptype"> Explanation of Step Types</a>
     for more detail about step types. <br />
-    "Equipment" is the equipment the step will use. It is optional, for some steps do not need any equipment
-    <br />
+
+	"Equipment" is the equipment the step will use. It is optional, for some steps do not need any equipment<br />
     "Employee Usage" and "Employee Or Group" fields together define the access to a step. If "Employee Usage" is set to "Employee Group"
     then the selected group from "Employee Or Group" dropdown box will have the previlidge to operate this step. If "Employee Usage" is
-    set to "Employee", then only the selected employee from "Employee Or Group" can operate the step.
-    <br />
+    set to "Employee", then only the selected employee from "Employee Or Group" can operate the step.<br />
     "Recipe" contains the material list,  quantity, and sequence information of the materials used in the step. Recipe is configured separately
-    in Recipe configuration form. Only the steps with Step Type as "consume material" need to choose a recipe from the "Recipe" dropdown box.
-    <br />
+    in Recipe configuration form. Only the steps with Step Type as "consume material" need to choose a recipe from the "Recipe" dropdown box.<br />
     "Min Time" is the minimum time required for the step to finish. It is only applicable, if a step has to take a certain amount of time
-    to cure or finish. Leave it blank, if not applicable.
-    <br />
-    "Max Time" is the maximum time that a step can take. It is applicable when a step needs to finish within a certain time.
-    <br />
-    "Description" stores a descriptive text for the step.
-    <br />
-    "Comment" is used for storing comments that is not appropriate for putting into description field.
-    <br />
+    to cure or finish. Leave it blank, if not applicable.<br />
+    "Max Time" is the maximum time that a step can take. It is applicable when a step needs to finish within a certain time.<br />
+    "Description" stores a descriptive text for the step.<br />
+    "Comment" is used for storing comments that is not appropriate for putting into description field.<br />
     Parameters are used to store other information relating to the step. For example, if a step has type "call api", parameter 1 will have
-    the name of the api(application interface, e.g. another software program) and parameter 2 -10 can be used to store the arguments of the api.
+    the name of the api(application interface, e.g. another software program) and parameter 2 -10 can be used to store the ariguments of the api.<br />
     <br />
-    <br />
-    <a name="steptype"><i>Explanation of Step Types</i></a><br />
-    The step type attribute of a step describes the function of the step. Currently there are 14 different types of steps.
-    <ul>
-        <li>Condition: This step usually consists of a test that will generate different test results. The next step to a condition step is dependent on the test result.</li>
-        <li>Display message: The function is as described by its name.</li>
-        <li>Call api: In this step, the user can XX api for XX... </li>
-        <li>Check list: In this step, the user prepares the check list for printing.?</li>
-        <li>Hold lot: In this step, the user holds the current lot until it is allowed to be released.</li>
-        <li>Hold equipment: Similar to hold lot.</li>
-        <li>Email: In this step, the user sends emails to customers about their orders.</li>
-        <li>Consume material: In this step, the user will follow the instructions on ezOOM, consume materials for production and record the consumed amount, equipment used and the location of the operation.</li>
-        <li>
-            Reposition: In case of a failed test result of a product, the product can be returned to previous steps to be redone. The reposition step is used to specify to which step the defective product
-            will be returned.
-        </li>
-        <li>Ship to location: In this step, the user selects shipping location.</li>
-        <li>Scrap: In this step, the products are dumped due to quality issues.</li>
-        <li>Deliver to customer: In this step, the user inputs customer's information and sends over the ordered products. </li>
-        <li>Disassemble: In this step, the user will follow the instructions on ezOOM for disassemblying parts and updating inventories. A workflow of a product that requires disassembling will undergo this step. </li>
-        <li>Add to Inv: In this step, the user ?</li>
-    </ul>
 
+    <a name="steptype"><i>Explanation of Step Types</i></a><br />
+    "consume material" -- this type of step can be used for steps that needed a recipe. A recipe includes bill of material that the step needs, <br />
+    along with the virbal or graphical instructions on how to perform the task. Recipe can be created and maintained in Recipe Configuration Page.  <br />
+    The interface for this step type will show the content of the recipe, and allow user to deduct consumption of materials from inventory. The interface <br />
+    will also show two buttons for printing package label and package list, if the first parameter in the step configuration is assigned the text value of <br />
+    "print packing docs". <br />
+    "ship to location" -- this stype is used for tracking shipment of batch from one location to another. In this step, user will be able to assign batch a<br />
+    new location. More over, if the first parameter in the step configuration is assigned the text value of "log tracking num", user will be able to record <br />
+    tracking number when performing this step. <br />
     <br /><br />
+    
     <i>Recipe</i><br />
     Recipe configuration Module lists all defined recipes in ezOOM system that the users can refer to. By clicking on the gray button as shown in the picture below, with recipe's name on it, the user
     can check each recipe's general information as well as the information of parts used in the recipe. A defined recipe can be edited or deleted for different purposes. Its general information and parts information can be updated.
@@ -264,5 +247,4 @@
         <br />
         <a href="#content">back to Top</a>
     </p>
-</body>
-</html>
+

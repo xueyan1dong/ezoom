@@ -5,18 +5,14 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 
-  <style type="text/css">
-    .auto-style1 {
-      width: 740px;
-    }
-  </style>
+
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" /> 
 <div>
 <asp:panel id="pnlScroll" runat="server" width="100%" 
-height="100%" scrollbars="Horizontal"> 
+height="100%" scrollbars="none"> 
 <table width="98%" align="center">
 <tr>
     <td>   
@@ -28,7 +24,7 @@ height="100%" scrollbars="Horizontal">
 <td>
 <table style="width: 95%; height: 200px;" align="center" cellspacing="20px">
         <tr>
-            <td colspan="2" align="left">
+            <td colspan="3" align="left">
             <font Style="font-family:'Times New Roman';font-size:20px;">
               Please fill the location and optional comment, then click button</font>&nbsp;
               <asp:Button ID="btnDo" runat="server" Text="Ship" 
@@ -38,23 +34,27 @@ height="100%" scrollbars="Horizontal">
 
         </tr>
         <tr>
-            <td align="left" class="auto-style1">
+            <td align="left" width="30%">
                 <font Style="font-family:Times New Roman;font-size:20px;">Step Name:</font>&nbsp;<asp:Label ID="lblStep" runat="server" Style="font-family:Times New Roman;font-size:20px;"></asp:Label></td>
             <%--<td align="left">
                 <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp; 
                 <asp:TextBox ID="txtLocation" runat="server" Width="297px" Style="font-family:Times New Roman;font-size:20px;"></asp:TextBox>
                 </td>--%>
-                <td class="auto-style1" align="center">
+            <td width="40%" align="left">
                 <font Style="font-family:Times New Roman;font-size:20px;">Location:</font> &nbsp;
-                <asp:DropDownList ID="drpLocation" runat="server" Style="font-family:Times New Roman;font-size:20px; width = 280px;" >
+                <asp:DropDownList ID="drpLocation" runat="server" Style="font-family:Times New Roman;font-size:20px; width = 250px;" >
                 <asp:ListItem Text="......SELECT......"  Value=""></asp:ListItem>
-                </asp:DropDownList>
+                </asp:DropDownList> &nbsp;&nbsp;
+             </td>
+             <td align="left">     
+                <asp:Label ID="lblTrackingNo" runat="server"  Style="font-family:Times New Roman;font-size:20px;" Visible="false">Tracking No.:</asp:Label> &nbsp; 
+                <asp:TextBox ID="txtTrackingNo" runat="server" Width="250px" Style="font-family:Times New Roman;font-size:20px;" Visible="false"></asp:TextBox> &nbsp;
                 <asp:Label ID="lblLotStatus2" runat="server" Visible=false></asp:Label>
             </td>
          </tr>
    
          <tr>
-            <td align=left colspan=2><font Style="font-family:Times New Roman;font-size:20px;">Comment:</font> <br />
+            <td align=left colspan=3><font Style="font-family:Times New Roman;font-size:20px;">Comment:</font> <br />
                 <asp:TextBox ID="txtComment" runat="server" Width="100%" Height="50px" Wrap="True" TextMode="MultiLine" Style="font-family:Times New Roman;font-size:20px;"></asp:TextBox>
             </td>
 
@@ -66,6 +66,7 @@ height="100%" scrollbars="Horizontal">
             </td>
             <td><asp:Label ID="lblPassword" runat="server"  Style="font-family:Times New Roman;font-size:20px;" Visible=false>Approver Password:</asp:Label>
                 <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" Style="font-family:Times New Roman;font-size:20px;" Visible=false></asp:TextBox></td>
+            <td></td>
         
         </tr>
     </table>

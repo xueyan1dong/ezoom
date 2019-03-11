@@ -8,6 +8,7 @@
 *    Log                    :
 *    06/06/2018: xdong: Add _location parameter to call to db stored procedure pass_lot_step
 *    12/04/2018: xdong: update the call to pass_lot_step to take in _location_id parameter instead of _location
+*    02/11/2019: xdong: update the call to pass_lot_step to take in _value1 parameter, which is newly added to pass_lot_step
 ----------------------------------------------------------------*/
 
 using System;
@@ -155,6 +156,8 @@ namespace ezMESWeb.Tracking
           ezCmd.Parameters.AddWithValue("@_location_id",  Convert.ToInt32(locationID));
         else
           ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
+
+        ezCmd.Parameters.AddWithValue("@_value1", DBNull.Value);
 
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]), ParameterDirection.InputOutput);
 

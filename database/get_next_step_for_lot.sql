@@ -4,17 +4,19 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : 
+*    Description            : This stored procedure is used to pull out information for next step or end of current step 
+                              in order to move a lot in the "Move Product" page or at the end of a transaction page
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info.
-*	 11/28/2018 updated lot_status(added 'done') 					
+*	   11/28/2018 updated lot_status(added 'done') 	
+*    02/05/2019: xdong: widen _lot_alias input from varchar(20) to varchar(30) following table changes of the same column				
 */
-DELIMITER $  -- for escaping purpose
+DELIMITER $ 
 DROP PROCEDURE IF EXISTS `get_next_step_for_lot`$
 CREATE PROCEDURE `get_next_step_for_lot`(
   IN _lot_id int(10) unsigned,
-  IN _lot_alias varchar(20),
+  IN _lot_alias varchar(30),
   IN _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done'),
   IN _process_id int(10) unsigned,
   IN _sub_process_id_p int(10) unsigned,
