@@ -26,6 +26,12 @@
       <NormalField>false</NormalField>
     </AlterControl>
   </Column>
+   <Column name="supplier_id">
+    <DisplayName>Supplier</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select distinct c.name, c.id from client c where type in ('supplier', 'both') order by 1</DropdownQuery>
+  </Column>
   <Column name ="lot_id">
     <DisplayName>Batch Number</DisplayName>
     <IsEnable>true</IsEnable>

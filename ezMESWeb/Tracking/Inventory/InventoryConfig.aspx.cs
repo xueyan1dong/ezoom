@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : InventoryConfig.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for creating/editing inventories
+*    Log                    :
+*    2009: xdong: first created
+*   03/11/2019: xdong: added supplier dropdown box into the inventory insert/edit popup, so that supplier can be specified when adding/editing inventory.
+----------------------------------------------------------------*/
 using System;
 using System.Collections;
 using System.Configuration;
@@ -145,7 +156,7 @@ namespace ezMESWeb.Tracking.Inventory
                fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.InsertItemTemplate;
 
             }
-            else  //this code should never been executed.
+            else  //this code is executed when the copy/paste button is clicked, which allows user to copy inventory from an existing inventory and change the information accordingly to create a new inventory
             {
                ezCmd.CommandText = "insert_inventory";
                ezCmd.CommandType = CommandType.StoredProcedure;
@@ -158,15 +169,15 @@ namespace ezMESWeb.Tracking.Inventory
             if (sourceType.Equals("product"))
             {
               ezCmd.Parameters.AddWithValue("@_pd_or_mt_id", ((DropDownList)FormView1.FindControl("drppd_or_mt_id")).SelectedValue);
-              ezCmd.Parameters.AddWithValue("@_supplier_id", 0);
             }
             else
             {
               ezCmd.Parameters.AddWithValue("@_pd_or_mt_id", ((DropDownList)FormView1.FindControl("drpmt_id")).SelectedValue);
-              //ezCmd.Parameters.AddWithValue("@_supplier_id", ((DropDownList)FormView1.FindControl("drpsupplier_id")).SelectedValue);
-              ezCmd.Parameters.AddWithValue("@_supplier_id", 0);
+
             }
-            LoadSqlParasFromTemplate(ezCmd, fTemp);
+      //  ezCmd.Parameters.AddWithValue("@_supplier_id", ((DropDownList)FormView1.FindControl("drpsupplier_id")).SelectedValue);
+
+        LoadSqlParasFromTemplate(ezCmd, fTemp);
 
             ezCmd.Parameters.AddWithValue("@_inventory_id", DBNull.Value);
             ezCmd.Parameters["@_inventory_id"].Direction = ParameterDirection.Output;

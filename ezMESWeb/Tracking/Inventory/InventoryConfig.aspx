@@ -15,7 +15,7 @@
     var product = sourceID+'drp' + ctr1name;
     var material = sourceID+'drp' + ctr2name;
     
-    //var supplier = sourceID+'drp'+ ctr3name;
+   // var supplier = sourceID+'drp'+ ctr3name;
 
 
     var dropdown1;
@@ -219,8 +219,7 @@ SELECT i.id,
     `inventory`.source_type,
   `inventory`.pd_or_mt_id, 
   `inventory`.supplier_id,
-    client.name as ClientName,
-   `inventory`.supplier_id,
+    client.name as supplier,
    `inventory`.lot_id, 
   `inventory`.serial_no, 
   `inventory`.out_order_id, 
