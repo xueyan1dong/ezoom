@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BarcodeImage.aspx" />
-	<Content Include="Configure\Location\LoadLocation.aspx" />
+    <Content Include="Configure\Location\LoadLocation.aspx" />
     <Content Include="Configure\Location\Location.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -149,6 +149,7 @@
     <Content Include="Tracking\EndDisassemble.aspx" />
     <Content Include="Tracking\AddProductToInventory.aspx" />
     <Content Include="Tracking\Inventory\Inventory_Relocate.xml" />
+    <Content Include="Tracking\Inventory\LoadInventoryGeneral.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -172,7 +173,7 @@
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>EquipmentConfig.aspx</DependentUpon>
     </Compile>
-	<Compile Include="Configure\Location\LoadLocation.aspx.cs">
+    <Compile Include="Configure\Location\LoadLocation.aspx.cs">
       <DependentUpon>LoadLocation.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -233,6 +234,13 @@
     <Compile Include="Tracking\EndDisassemble.aspx.cs">
       <DependentUpon>EndDisassemble.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tracking\Inventory\LoadInventoryGeneral.aspx.cs">
+      <DependentUpon>LoadInventoryGeneral.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tracking\Inventory\LoadInventoryGeneral.aspx.designer.cs">
+      <DependentUpon>LoadInventoryGeneral.aspx</DependentUpon>
     </Compile>
     <Compile Include="Tracking\Reposition.aspx.cs">
       <DependentUpon>Reposition.aspx</DependentUpon>
@@ -514,7 +522,9 @@
     <Content Include="Tracking\Email.ascx" />
     <Content Include="Tracking\UnholdLot.aspx" />
     <Content Include="Tracking\Inventory\LoadInventory.aspx" />
-    <Content Include="Tracking\Inventory\Inventory_supplier.xml" />
+    <Content Include="Tracking\Inventory\Inventory_supplier.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Default.aspx" />
     <None Include="Reports\report_templates\DataSet1.xsc">
       <DependentUpon>DataSet1.xsd</DependentUpon>
