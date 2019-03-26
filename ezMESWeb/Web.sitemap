@@ -46,7 +46,8 @@
     <siteMapNode url="~/Tracking/Tracking.aspx"  title="Tracking" description="Tracking">
       <siteMapNode  title="Warehouse"  description="Warehouse Tracking" >
         <siteMapNode url="~/Tracking/Inventory/InventoryConfig.aspx" title="Inventory"  description="Inventory Editing" />
-        <siteMapNode url="~/Tracking/Inventory/LoadInventory.aspx" title="Load Inventory"  description="Inventory Loading" />
+        <siteMapNode url="~/Tracking/Inventory/LoadInventory.aspx" title="Load Inventory"  description="Inventory Loading" visibleInMenu="false"/>
+        <siteMapNode url="~/Tracking/Inventory/LoadInventoryGeneral.aspx" title="Load Inventory General"  description="Inventory Loading General"/>
       </siteMapNode>
 
       
