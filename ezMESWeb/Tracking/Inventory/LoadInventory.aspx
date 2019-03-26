@@ -42,7 +42,6 @@
     <asp:Button ID="btnInvForm" runat="server" Text="Go To Inventory Form" 
                 Style="font-family:Times New Roman;font-size:16px; font-weight:bold; width:200px;" 
                 onclick="btnInvForm_Click" />
-
      </td></tr>
      </table>           
    </asp:Panel>
