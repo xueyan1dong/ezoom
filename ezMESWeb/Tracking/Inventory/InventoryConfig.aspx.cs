@@ -91,7 +91,11 @@ namespace ezMESWeb.Tracking.Inventory
           {
               InitializeDrp();
           }
-      }
+
+          //register post back control for label printing
+          ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+          scriptManager.RegisterPostBackControl(this.gvTable);
+        }
       
       protected void InitializeDrp()
       {
@@ -234,8 +238,30 @@ namespace ezMESWeb.Tracking.Inventory
                 this.UpdatePanel1.Update();
                 this.ModalPopupExtender1.Show();
             }
-            
+
+            if (e.CommandName == "PrintLabel")
+            {
+                GridViewRow selectedRow = (GridViewRow)(((ImageButton)e.CommandSource).NamingContainer);
+
+                string strInventoryID = selectedRow.Cells[3].Text;
+                string strType = selectedRow.Cells[4].Text;
+                string strName = selectedRow.Cells[5].Text;
+                string strSupplier = selectedRow.Cells[6].Text;
+                string strBatchID = selectedRow.Cells[7].Text;
+                string strSerialNumber = selectedRow.Cells[8].Text;
+
+                string strUrl = string.Format("InventoryLabelPrint.aspx?InventoryID={0}&Type={1}&Name={2}&Supplier={3}&BatchID={4}&SerialNumber={5}",
+                    strInventoryID,
+                    strType,
+                    strName,
+                    strSupplier,
+                    strBatchID,
+                    strSerialNumber);
+
+                Server.Transfer(strUrl);
+            }
         }
+
         protected void btnSubmitRelo_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)

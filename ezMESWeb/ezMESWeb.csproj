@@ -148,6 +148,7 @@
     </Content>
     <Content Include="Tracking\EndDisassemble.aspx" />
     <Content Include="Tracking\AddProductToInventory.aspx" />
+    <Content Include="Tracking\Inventory\InventoryLabelPrint.aspx" />
     <Content Include="Tracking\Inventory\Inventory_Relocate.xml" />
     <Content Include="Tracking\Inventory\LoadInventoryGeneral.aspx" />
     <Content Include="Web.config">
@@ -205,9 +206,6 @@
       <DependentUpon>LabelPrint.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="LabelPrint.aspx.designer.cs">
-      <DependentUpon>LabelPrint.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Reports\NewOrderDemandPrediction.aspx.cs">
       <DependentUpon>NewOrderDemandPrediction.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -233,6 +231,10 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Tracking\EndDisassemble.aspx.cs">
       <DependentUpon>EndDisassemble.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tracking\Inventory\InventoryLabelPrint.aspx.cs">
+      <DependentUpon>InventoryLabelPrint.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Tracking\Inventory\LoadInventoryGeneral.aspx.cs">

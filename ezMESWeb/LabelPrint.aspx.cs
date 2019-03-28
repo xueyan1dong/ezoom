@@ -9,7 +9,23 @@ namespace ezMESWeb
 {
     public partial class LabelPrint : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Label lblAddress1;
+        protected global::System.Web.UI.WebControls.Label lblAddress2;
+        protected global::System.Web.UI.WebControls.Label lblDate;
+        protected global::System.Web.UI.WebControls.Label lblPONumber;
+        protected global::System.Web.UI.WebControls.Image imgPONumber;
+        protected global::System.Web.UI.WebControls.Label lblPOLine;
+        protected global::System.Web.UI.WebControls.Image imgPOLine;
+        protected global::System.Web.UI.WebControls.Label lblPieceCount;
+        protected global::System.Web.UI.WebControls.Label lblItemNumber;
+        protected global::System.Web.UI.WebControls.Image imgItemNumber;
+        protected global::System.Web.UI.WebControls.Label lblFinish;
+        protected global::System.Web.UI.WebControls.Button btnPrint;
+        protected global::System.Web.UI.WebControls.Label lblSpace;
+        protected global::System.Web.UI.WebControls.Button btnCancel;
+
+        protected virtual void Page_Load(object sender, EventArgs e)
         {
             //add javascript for printing
             string strScript = this.getPrintJS();
