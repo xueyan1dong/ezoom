@@ -12,12 +12,12 @@ namespace ezMESWeb
         protected global::System.Web.UI.WebControls.Label lblInventoryID;
         protected global::System.Web.UI.WebControls.Image imgInventoryID;
         protected global::System.Web.UI.WebControls.Label lblType;
-        protected global::System.Web.UI.WebControls.Label lblName;
+        protected global::System.Web.UI.WebControls.Label lblPartNumber;
+        protected global::System.Web.UI.WebControls.Image imgPartNumber;
         protected global::System.Web.UI.WebControls.Label lblSupplier;
         protected global::System.Web.UI.WebControls.Label lblBatchID;
         protected global::System.Web.UI.WebControls.Image imgBatchID;
         protected global::System.Web.UI.WebControls.Label lblSerialNumber;
-        protected global::System.Web.UI.WebControls.Image imgSerialNumber;
 		
         protected override void Page_Load(object sender, EventArgs e)
         {
@@ -54,10 +54,14 @@ namespace ezMESWeb
             //inventoryID
             lblInventoryID.Text = strInventoryID;
             imgInventoryID.ImageUrl = this.getBarcodeLink(strInventoryID, 250, 30, "Code 128-B");
-            
+
             //name and type
-            lblName.Text = strName;
             lblType.Text = strType;
+
+            //name and type
+            lblPartNumber.Text = strName;
+            imgPartNumber.ImageUrl = this.getBarcodeLink(strName, 250, 30, "Code 128-B");
+            if (strName.Length == 0) imgPartNumber.Visible = false;
 
             //supplier
             lblSupplier.Text = strSupplier;
@@ -69,8 +73,6 @@ namespace ezMESWeb
 
             //serial number
             lblSerialNumber.Text = strSerialNumber;
-            imgSerialNumber.ImageUrl = this.getBarcodeLink(strSerialNumber, 250, 30, "Code 128-B");
-            if (strSerialNumber.Length == 0) imgSerialNumber.Visible = false;
         }
     }
 }

@@ -77,27 +77,26 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style3">Name:</td>
-                <td class="auto-style4">
-        <font face="calibri" size="-1">
-                    <asp:Label ID="lblName" runat="server" Text="Label"></asp:Label>
-        </font>
+                <td class="auto-style2"><NOBR>Part #:</NOBR></td>
+                <td>
+                    <asp:Label ID="lblPartNumber" runat="server" Text="Label"></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan = "2" align="center">
+                    <asp:Image ID="imgPartNumber" runat="server" />
                 </td>
             </tr>
             <tr>
                 <td class="auto-style2">Supplier:</td>
                 <td>
-        <font face="calibri" size="-1">
                     <asp:Label ID="lblSupplier" runat="server" Text="Label"></asp:Label>
-        </font>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style2">Batch ID:</td>
                 <td>
-        <font face="calibri" size="-1">
                     <asp:Label ID="lblBatchID" runat="server" Text="Label"></asp:Label>
-        </font>
                 </td>
             </tr>
             <tr>
@@ -106,14 +105,9 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2"><NOBR>Serial #:</NOBR></td>
+                <td class="auto-style3">Serial #:</td>
                 <td>
                     <asp:Label ID="lblSerialNumber" runat="server" Text="Label"></asp:Label>
-                </td>
-            </tr>
-            <tr>
-                <td colspan = "2" align="center">
-                    <asp:Image ID="imgSerialNumber" runat="server" />
                 </td>
             </tr>
             <tr id="blankLine1">
