@@ -8,6 +8,7 @@
 *    Log                    :
 *    06/06/2018: xdong: Add _location parameter to call to db stored procedure pass_lot_step
 *    12/04/2018: xdong: fixed the bug that reposition not going to target step
+*    04/01/2019: xdong: added _value1 input parameter to db sp call to pass_lot_step, following the sp change
 ----------------------------------------------------------------*/
 
 using System;
@@ -348,6 +349,8 @@ namespace ezMESWeb.Tracking
           ezCmd.Parameters.AddWithValue("@_location_id", Convert.ToInt32(locationID));
         else
           ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
+
+        ezCmd.Parameters.AddWithValue("@_value1", DBNull.Value);
 
         ezCmd.Parameters.AddWithValue("@_process_id", Convert.ToInt32(Request.QueryString["process_id"]), ParameterDirection.InputOutput);
 
