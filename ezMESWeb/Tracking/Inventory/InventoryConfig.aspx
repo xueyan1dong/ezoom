@@ -84,9 +84,10 @@
                      </asp:TemplateField>
                      <asp:TemplateField>
  			             <ItemTemplate>
+                           <asp:ImageButton ID="ibPrintLabel" CommandName="PrintLabel" runat="server" ImageUrl="/Images/print.png" Width="32px" Height="32px" ToolTip="Print Label" AlternateText="Print Label"/>
 			               <asp:ImageButton ID="ibClone" runat="server" ImageUrl="/Images/copy_paste.png" CommandName="Select"  ToolTip="Copy/Paste" AlternateText="Copy"   />
 			             </ItemTemplate>  
-			         <HeaderStyle Width="40px" />               
+			         <HeaderStyle Width="80px" />               
                      </asp:TemplateField>             
                      <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" />
                      <asp:BoundField DataField="source_type" HeaderText="Source Type" SortExpression="inv_source_type" />
