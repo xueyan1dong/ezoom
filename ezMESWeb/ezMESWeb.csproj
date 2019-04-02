@@ -124,6 +124,7 @@
     </Content>
     <Content Include="Configure\Order\LoadOrder.aspx" />
     <Content Include="Configure\Order\LoadOrderProduct.aspx" />
+	<Content Include="Configure\Product\LoadProduct.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -201,6 +202,13 @@
     <Compile Include="Configure\Process\ProcessSegmentConfig.aspx.cs">
       <DependentUpon>ProcessSegmentConfig.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+	<Compile Include="Configure\Product\LoadProduct.aspx.cs">
+      <DependentUpon>LoadProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Configure\Product\LoadProduct.aspx.designer.cs">
+      <DependentUpon>LoadProduct.aspx</DependentUpon>
     </Compile>
     <Compile Include="LabelPrint.aspx.cs">
       <DependentUpon>LabelPrint.aspx</DependentUpon>
