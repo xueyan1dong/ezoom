@@ -124,7 +124,7 @@
     </Content>
     <Content Include="Configure\Order\LoadOrder.aspx" />
     <Content Include="Configure\Order\LoadOrderProduct.aspx" />
-	<Content Include="Configure\Product\LoadProduct.aspx" />
+    <Content Include="Configure\Product\LoadProduct.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -203,7 +203,7 @@
       <DependentUpon>ProcessSegmentConfig.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-	<Compile Include="Configure\Product\LoadProduct.aspx.cs">
+    <Compile Include="Configure\Product\LoadProduct.aspx.cs">
       <DependentUpon>LoadProduct.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -518,6 +518,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Package.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
