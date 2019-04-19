@@ -142,10 +142,10 @@ height="100%" scrollbars="Horizontal">
 			     <asp:BoundField DataField="description" HeaderText="Description" ItemStyle-HorizontalAlign="Center"> 
 			         <ControlStyle Width="30%" />
                </asp:BoundField>
-			     <asp:BoundField DataField="required_quantity" HeaderText="Required Quantity" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Center"> 
+			     <asp:BoundField DataField="required_quantity" HeaderText="Required Quantity" DataFormatString="{0:F1}" ItemStyle-HorizontalAlign="Center"> 
 			         <ControlStyle Width="3%" />
                </asp:BoundField>
-			     <asp:BoundField DataField="used_quantity" HeaderText="Quantity Used" DataFormatString="{0:N0}" ItemStyle-HorizontalAlign="Center"> 			     
+			     <asp:BoundField DataField="used_quantity" HeaderText="Quantity Used" DataFormatString="{0:F1}" ItemStyle-HorizontalAlign="Center"> 			     
 			         <ControlStyle Width="3%" />
                </asp:BoundField>
 			     <asp:BoundField DataField="uom_name" HeaderText="Unit" ItemStyle-HorizontalAlign="Center"> 

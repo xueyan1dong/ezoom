@@ -8,7 +8,7 @@
 *    Log                    :
 *    12/02/2018: Xueyan Dong: in the recipe, instead of showing the ingredient unit quantity required for making one final product
 *                             showing the extended quantity for making the all the final products in the batch
-*
+*    04/19/2019: xdong: Changed quantity display format in ingredients to decimal with 1 decimal for non-integer quantity
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;
@@ -251,7 +251,7 @@ namespace ezMESWeb.Tracking
                       newCell = CreateTableCell(String.Format("{0}", ezReader["name"]));
                       newRow.Cells.Add(newCell);
 
-                      newCell = CreateTableCell(String.Format("{0:N0} {1}", 
+                      newCell = CreateTableCell(String.Format("{0:F1} {1}", 
                                                 Convert.ToInt32(ezReader["quantity"])* Convert.ToInt32(Request.QueryString["quantity"]),
                                                 ezReader["uom_name"]));
                       newRow.Cells.Add(newCell);

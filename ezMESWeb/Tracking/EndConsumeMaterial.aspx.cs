@@ -12,6 +12,7 @@
 *                             — so that the parts can be returned to any inventory as long as it is the same parts.
 *                             In Condition step, hide consume inventory quick access controls, which is implemented for using scan gun to 
 *                             quickly consume materials
+*   04/19/2019: Xueyan Dong: Changed quantity display format in ingredients to decimal with 1 decimal for non-integer quantity                         
 ----------------------------------------------------------------*/
 
 using System;
@@ -268,7 +269,7 @@ namespace ezMESWeb.Tracking
             Decimal defaultQuantity =
                       Convert.ToDecimal(gvTable.SelectedDataKey.Values["required_quantity"])
               - Convert.ToDecimal(gvTable.SelectedDataKey.Values["used_quantity"]);
-            txtActual.Text = lblRequired.Text = string.Format("{0:N0}", defaultQuantity);
+            txtActual.Text = lblRequired.Text = string.Format("{0:F1}", defaultQuantity);
             FormView1.Caption = "Consume More '" + partName + "' from Inventory";
             try
             {
@@ -276,7 +277,7 @@ namespace ezMESWeb.Tracking
                 ezCmd = new EzSqlCommand();
                 ezCmd.Connection = ezConn;
                 ezCmd.CommandText =
-                  " SELECT concat(i.lot_id, IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ', ', CAST(i.actual_quantity AS UNSIGNED INTEGER),' ', u.name), i.id FROM inventory i, uom u WHERE i.source_type ='"
+                  " SELECT concat(i.lot_id, IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ', ', CAST(i.actual_quantity AS DECIMAL(16,1)),' ', u.name), i.id FROM inventory i, uom u WHERE i.source_type ='"
                 + gvTable.SelectedDataKey.Values["source_type"].ToString()
                 + "' AND i.pd_or_mt_id = " + gvTable.SelectedDataKey.Values["ingredient_id"].ToString()
                 + " AND i.actual_quantity>0 AND u.id = i.uom_id";
@@ -328,7 +329,7 @@ namespace ezMESWeb.Tracking
 
         ezCmd.CommandText = "SELECT CONCAT( CAST(i.lot_id AS CHAR)" +
             ", IF(i.serial_no IS NULL ,'', CONCAT('(',i.serial_no,')')), ' consumed at ', date_format(str_to_date(c.start_timecode, '%Y%m%d%H%i%s0' ), '%m/%d/%Y %I:%i%p')) as c1," +
-            " CONCAT(c.start_timecode,',', CAST(c.quantity_used AS UNSIGNED INTEGER), ',', CAST(i.uom_id AS CHAR),',', CAST(c.inventory_id AS CHAR), ',', u.name) as c2" +
+            " CONCAT(c.start_timecode,',', CAST(c.quantity_used AS DECIMAL(16,1)), ',', CAST(i.uom_id AS CHAR),',', CAST(c.inventory_id AS CHAR), ',', u.name) as c2" +
             " FROM inventory_consumption c, inventory i, uom u WHERE c.lot_id ="
             + /*Session["lot_id"].ToString()*/ Request.QueryString["lot_id"] +
             " AND c.start_timecode > '" + Request.QueryString["start_time"] +
