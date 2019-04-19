@@ -10,6 +10,8 @@
   *  09/26/2018: xdong: attempt to solve problem related to server.transfer call in btnDo_Click, but no result
   *  02/10/2019: xdong: following the same fix that Junlu did in SalesOrderConfig.aspx.cs, change the call to Server.Transfer
   *                     and fixed UI issue when btnDo_Click is triggered.
+	*  04/19/2019: xdong: modified RecipeConfig.aspx to display quantity in ingredients in decimal with 1 decimal for non-integer quantity                   
+	*                     
 ----------------------------------------------------------------*/
 using System;
 using System.IO;
