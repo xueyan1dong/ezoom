@@ -1,4 +1,16 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : WorkflowReport.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : UI for display workflow steps in workflow browser report
+*    Log                    :
+*    2009: xdong: first created
+	*  04/19/2019: xdong: Changed quantity display format in ingredients to decimal with 1 decimal for non-integer quantity                   
+	*                     
+----------------------------------------------------------------*/
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
@@ -386,7 +398,7 @@ namespace ezMESWeb.Reports
                     newCell=  CreateTableCell(String.Format("{0}", ezReader["name"]));
                     newRow.Cells.Add(newCell);
 
-                    newCell = CreateTableCell(String.Format("{0:N0} {1}", ezReader["quantity"], ezReader["uom_name"]));
+                    newCell = CreateTableCell(String.Format("{0:F1} {1}", ezReader["quantity"], ezReader["uom_name"]));
                     newRow.Cells.Add(newCell);
 
                     newCell = CreateTableCell(String.Format("{0}", ezReader["description"]));
