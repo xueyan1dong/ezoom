@@ -27,6 +27,7 @@
 
     <siteMapNode  title="Workflow"  description="Workflow Configuration" >
       <siteMapNode url="~/Configure/Process/ProcessStepConfig.aspx" title="Step"  description="Step Configuration" />
+      <siteMapNode url="~/Configure/Process/LoadStep.aspx" title="Load Step"  description="Load Step" />
       <siteMapNode url="~/Configure/Process/RecipeConfig.aspx" title="Recipe"  description="Recipe Configuration" />
       <siteMapNode url="~/Configure/Process/ProcessSegmentConfig.aspx" title="Segment"  description="Segment Configuration" />
       <siteMapNode url="~/Configure/Process/ProcessConfig.aspx" title="Workflow"  description="Workflow Configuration" />
