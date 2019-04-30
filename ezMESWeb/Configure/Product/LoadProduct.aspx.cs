@@ -233,6 +233,10 @@ namespace ezMESWeb.Configure.Product
                             {
                                 ezCmd.Parameters["@_lot_size"].Value = fields[2];
                             }
+                            else
+                            {
+                                ezCmd.Parameters["@_lot_size"].Value = DBNull.Value;
+                            }
                            
                             ezCmd.Parameters["@_uomid"].Value = fields[3];
                             ezCmd.Parameters["@_lifespan"].Value = fields[4];
@@ -240,11 +244,19 @@ namespace ezMESWeb.Configure.Product
                             {
                                 ezCmd.Parameters["@_description"].Value = fields[5];
                             }
+                            else
+                            {
+                                ezCmd.Parameters["@_description"].Value = DBNull.Value;
+                            }
                             if (fields[6].Length != 0)
                             {
                                 ezCmd.Parameters["@_comment"].Value = fields[6];
                             }
-                          
+                            else
+                            {
+                                ezCmd.Parameters["@_comment"].Value = DBNull.Value;
+                            }
+
                             ezCmd.ExecuteNonQuery();
                             response = ezCmd.Parameters["@_response"].Value.ToString();
                             if (response.Length > 0)
