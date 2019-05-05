@@ -23,6 +23,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using CommonLib.Data.EzSqlClient;
+using System.Data.Common;
+
+
 
 namespace ezMESWeb.Tracking
 {
@@ -70,12 +73,14 @@ namespace ezMESWeb.Tracking
 
             //Event happens before the select index changed clicked.
             gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
+
          }
 
       }
     /*
      * correspond to the dispatch link button on the grid
      */
+
       protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
       {
          //modify the mode of form view
@@ -191,7 +196,8 @@ namespace ezMESWeb.Tracking
 
                   gvTable.DataBind();
                   gvTablePanel.Update();
-                  gvLotTable.DataBind();
+     
+                   gvLotTable.DataBind(); 
                   //tcHeader.Text = "New Lot(s) Information:";
                   //tRow = new TableRow();
                   //tCell = new TableCell();
@@ -221,12 +227,14 @@ namespace ezMESWeb.Tracking
         
       }
 
-        protected void sdsPDGrid_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
-        {
+     
+
+      protected void sdsPDGrid_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
+       {
 
         }
 
-        protected void btn_Click(object sender, EventArgs e)
+      protected void btn_Click(object sender, EventArgs e)
       {
          //  set it to true so it will render
          this.FormView1.Visible = true;
@@ -240,6 +248,62 @@ namespace ezMESWeb.Tracking
          this.ModalPopupExtender.Show();
       }
 
-   }
+      protected string[] getPOInfo(string strLotID)
+      {
+            string strSQL = string.Format("SELECT ponumber, order_line_num, product, finish FROM view_lot_in_process WHERE ID={0}", strLotID);
+
+            EzSqlCommand cmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
+            cmd.Parameters.Clear();
+            cmd.Connection = ezConn;
+            cmd.CommandText = strSQL;
+            cmd.CommandType = CommandType.Text;
+
+            int nCount = 0;
+            DbDataReader reader = cmd.ExecuteReader();
+            bool bOK = reader.Read();
+            string strPONumber = reader.GetString(0);
+            string strPOLine = reader.GetString(1);
+            string strItemNumber = reader.GetString(2);
+            string strFinish = reader.GetString(3);
+
+            reader.Close();
+            cmd.Dispose();
+
+            string[] strResult = new string[] { strPONumber, strPOLine, strItemNumber, strFinish };
+            return strResult;
+      }
+
+      protected void btnPrintLabel_RowCommand(object sender, GridViewCommandEventArgs e) // OnClick="btnPrintLabel_Click"
+        {
+            if (e.CommandName != "OrderPrint") return;
+            //retrieve info from database
+            ConnectToDb();
+            string[] strPOInfo = this.getPOInfo(e.CommandArgument.ToString());
+            ezConn.Dispose();
+
+            //get compoments
+            //string strComponent = this.gvTable.Rows[0].Cells[4].Text;
+
+            string strUrl = string.Format("/LabelPrint.aspx?PO={0}&POLine={1}&piececnt={2}&itemnum={3}&finish={4}",
+                strPOInfo[0],
+                strPOInfo[1],
+                "",
+                strPOInfo[2],
+                strPOInfo[3]);
+
+            Server.Transfer(strUrl);
+
+        }
+
+      protected void Page_Load(object sender, EventArgs e)
+      {
+            
+        //register post back control for printing
+        ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+        scriptManager.RegisterPostBackControl(this.gvLotTable);
+      }
+
+
+    }
 }
 
