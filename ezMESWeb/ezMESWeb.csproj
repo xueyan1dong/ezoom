@@ -124,7 +124,7 @@
     </Content>
     <Content Include="Configure\Order\LoadOrder.aspx" />
     <Content Include="Configure\Order\LoadOrderProduct.aspx" />
-	<Content Include="Configure\Process\LoadStep.aspx" />
+    <Content Include="Configure\Process\LoadStep.aspx" />
     <Content Include="Configure\Product\LoadProduct.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
       <SubType>Designer</SubType>
@@ -200,7 +200,7 @@
     <Compile Include="Configure\Order\LoadOrderProduct.aspx.designer.cs">
       <DependentUpon>LoadOrderProduct.aspx</DependentUpon>
     </Compile>
-	<Compile Include="Configure\Process\LoadStep.aspx.cs">
+    <Compile Include="Configure\Process\LoadStep.aspx.cs">
       <DependentUpon>LoadStep.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -515,7 +515,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\report_templates\rpNewOrderDemandPrediction.rdlc" />
+    <EmbeddedResource Include="Reports\report_templates\rpNewOrderDemandPrediction.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\report_templates\rpOrder.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpDispatchHistory.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpOrderBatchDetail.rdlc" />

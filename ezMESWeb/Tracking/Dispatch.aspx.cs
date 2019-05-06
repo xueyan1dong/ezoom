@@ -17,6 +17,7 @@
 *                      or the maximum batch size allowed, taking the smaller number among the two.
 *   02/05/2019: xdong: widen the text length limit for "alias prefix" of batch from 10 to 20 to accomodate longer prefix
 *	05/05/2019: peiyu: added print button for each dispatched order. the information on printing label include dispatched date, ponumber, po line_num, item number and description of finish
+*	05/06/2019: xdong: Added batch # to the label printed out
 ----------------------------------------------------------------*/
 using System;
 using System.Data;
@@ -251,7 +252,7 @@ namespace ezMESWeb.Tracking
 
       protected string[] getPOInfo(string strLotID)
       {
-            string strSQL = string.Format("SELECT ponumber, order_line_num, product, finish FROM view_lot_in_process WHERE ID={0}", strLotID);
+            string strSQL = string.Format("SELECT ponumber, order_line_num, product, finish, alias FROM view_lot_in_process WHERE ID={0}", strLotID);
 
             EzSqlCommand cmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
             cmd.Parameters.Clear();
@@ -266,11 +267,12 @@ namespace ezMESWeb.Tracking
             string strPOLine = reader.GetString(1);
             string strItemNumber = reader.GetString(2);
             string strFinish = reader.GetString(3);
+            string strBatch = reader.GetString(4);
 
             reader.Close();
             cmd.Dispose();
 
-            string[] strResult = new string[] { strPONumber, strPOLine, strItemNumber, strFinish };
+            string[] strResult = new string[] { strPONumber, strPOLine, strItemNumber, strFinish, strBatch };
             return strResult;
       }
 
@@ -285,12 +287,13 @@ namespace ezMESWeb.Tracking
             //get compoments
             //string strComponent = this.gvTable.Rows[0].Cells[4].Text;
 
-            string strUrl = string.Format("/LabelPrint.aspx?PO={0}&POLine={1}&piececnt={2}&itemnum={3}&finish={4}",
+            string strUrl = string.Format("/LabelPrint.aspx?PO={0}&POLine={1}&piececnt={2}&itemnum={3}&finish={4}&batch={5}",
                 strPOInfo[0],
                 strPOInfo[1],
                 "",
                 strPOInfo[2],
-                strPOInfo[3]);
+                strPOInfo[3],
+                strPOInfo[4]);
 
             Server.Transfer(strUrl);
 

@@ -12,7 +12,8 @@
 *                             — so that the parts can be returned to any inventory as long as it is the same parts.
 *                             In Condition step, hide consume inventory quick access controls, which is implemented for using scan gun to 
 *                             quickly consume materials
-*   04/19/2019: Xueyan Dong: Changed quantity display format in ingredients to decimal with 1 decimal for non-integer quantity                         
+*   04/19/2019: Xueyan Dong: Changed quantity display format in ingredients to decimal with 1 decimal for non-integer quantity   
+*   05/06/2019: Xueyan Dong: Corrected the PO Line # value sent to "Print Package Label". Also added batch # to the label content
 ----------------------------------------------------------------*/
 
 using System;
@@ -846,12 +847,13 @@ namespace ezMESWeb.Tracking
             string strComponent = this.gvTable.Rows[0].Cells[4].Text;
 
 
-            string strUrl = string.Format("/LabelPrint.aspx?PO={0}&POLine={1}&piececnt={2}&itemnum={3}&finish={4}",
-                strPOInfo[0],
-                strComponent,
-                strQuantity,
-                strPOInfo[2],
-                strPOInfo[3]);
+      string strUrl = string.Format("/LabelPrint.aspx?PO={0}&POLine={1}&piececnt={2}&itemnum={3}&finish={4}&batch={5}",
+          strPOInfo[0],
+          strPOInfo[1],
+          strQuantity,
+          strPOInfo[2],
+          strPOInfo[3],
+          strLotAlias);
 
             Server.Transfer(strUrl);
 

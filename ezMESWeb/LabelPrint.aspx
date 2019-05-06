@@ -56,9 +56,11 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2">PO#:</td>
+                <td class="auto-style2">PO #:  
+
+                </td>
                 <td>
-                    <asp:Label ID="lblPONumber" runat="server" Text="Label"></asp:Label>
+                    <asp:Label ID="lblPONumber" runat="server" Text="Label"></asp:Label>  &nbsp; &nbsp; &nbsp; PO Line #: <asp:Label ID="lblPOLine" runat="server" Text="Label"></asp:Label>
                 </td>
             </tr>
             <tr>
@@ -67,14 +69,14 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2"><NOBR>PO Line #:</NOBR></td>
+                <td class="auto-style2"><NOBR>Batch #:</NOBR></td>
                 <td>
-                    <asp:Label ID="lblPOLine" runat="server" Text="Label"></asp:Label>
+                    <asp:Label ID="lblBatch" runat="server" Text="Label"></asp:Label>
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <asp:Image ID="imgPOLine" runat="server" />
+                    <asp:Image ID="imgBatch" runat="server" />
                 </td>
             </tr>
             <tr>

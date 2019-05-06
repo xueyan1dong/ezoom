@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 Ambersoft LLC.
+*    Source File            : LbelPrint.aspx.cs
+*    Created By             : Junlu Luo
+*    Date Created           : 2018
+*    Platform Dependencies  : .NET 2.0
+*    Description            : UI for print batch/product packaging label. Currently invoked from Move Product Page or Dispatch page
+*    Log: 
+*    ?/?/2018: Junlu Luo: First created
+*    05/06/2019: Xueyan Dong: Remove barcode for PO line # and move it to be the same line as PO number. Added Batch # and barcode of Batch #                     
+----------------------------------------------------------------*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,7 +27,6 @@ namespace ezMESWeb
         protected global::System.Web.UI.WebControls.Label lblPONumber;
         protected global::System.Web.UI.WebControls.Image imgPONumber;
         protected global::System.Web.UI.WebControls.Label lblPOLine;
-        protected global::System.Web.UI.WebControls.Image imgPOLine;
         protected global::System.Web.UI.WebControls.Label lblPieceCount;
         protected global::System.Web.UI.WebControls.Label lblItemNumber;
         protected global::System.Web.UI.WebControls.Image imgItemNumber;
@@ -24,8 +34,10 @@ namespace ezMESWeb
         protected global::System.Web.UI.WebControls.Button btnPrint;
         protected global::System.Web.UI.WebControls.Label lblSpace;
         protected global::System.Web.UI.WebControls.Button btnCancel;
+        protected global::System.Web.UI.WebControls.Label lblBatch;
+        protected global::System.Web.UI.WebControls.Image imgBatch;
 
-        protected virtual void Page_Load(object sender, EventArgs e)
+    protected virtual void Page_Load(object sender, EventArgs e)
         {
             //add javascript for printing
             string strScript = this.getPrintJS();
@@ -44,6 +56,7 @@ namespace ezMESWeb
             string strPieceCount = Request.QueryString["piececnt"];
             string strItemNumber = Request.QueryString["itemnum"];
             string strFinish = Request.QueryString["finish"];
+            string strBatch = Request.QueryString["batch"];
 
             //testing data
             strAddress1 = "595 Federal Road";
@@ -62,7 +75,6 @@ namespace ezMESWeb
 
             //po line number
             lblPOLine.Text = strPOLineNumber.Replace("_", "");
-            imgPOLine.ImageUrl = this.getBarcodeLink(lblPOLine.Text, 350, 30, "Code 128-B");
 
             //piece count
             lblPieceCount.Text = strPieceCount;
@@ -73,7 +85,11 @@ namespace ezMESWeb
 
             //strFinish
             lblFinish.Text = strFinish;
-        }
+
+            //batch number
+            lblBatch.Text = strBatch;
+            imgBatch.ImageUrl = this.getBarcodeLink(strBatch, 250, 30, "Code 128-B");
+    }
 
         protected string getPrintJS()
         {
