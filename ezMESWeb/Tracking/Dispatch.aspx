@@ -80,15 +80,21 @@ scrollbars=Both>
                 <asp:UpdatePanel ID="tbLotPanel" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
 
-                                        <asp:GridView ID="gvLotTable" runat="server" Caption="Batches Dispatched Within 24 Hours" 
-               CssClass="datagrid" GridLines="None" DataSourceID="sdsLotGrid" 
+               <asp:GridView ID="gvLotTable" runat="server" Caption="Batches Dispatched Within 24 Hours" 
+               CssClass="datagrid" GridLines="None" DataSourceID="sdsLotGrid" DataKeyNames="id"
                EmptyDataText="There is no batch dispatched within 24 Hours" Height="100px" Width="300px"
-               AutoGenerateColumns="False"  
+               AutoGenerateColumns="False" OnRowCommand ="btnPrintLabel_RowCommand" ><%--OnRowCommand="btnPrintLabel_Click" EnableEventValidation="false" EnableViewState="false" CausesValidation="false"
 
-             >
-             <Columns> 
+             >--%>
+             <Columns>
+                 <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="true" />
                   <asp:BoundField DataField="alias" HeaderText="Batch Name" ReadOnly="True" SortExpression="alias" />
-                 <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time(MST)" SortExpression="dispatch_time" />   
+                 <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time(MST)" SortExpression="dispatch_time" />
+                 <asp:TemplateField ShowHeader="False">
+                    <ItemTemplate>
+                        <asp:Button ID="btnPrint" runat="server"  CommandName="OrderPrint" CommandArgument='<%# Eval("id") %>' Text ="Print" CausesValidation="True"/>  
+                    </ItemTemplate>
+                </asp:TemplateField>
              </Columns>      
              </asp:GridView>  
              <br />       
@@ -102,8 +108,11 @@ scrollbars=Both>
            DeleteCommand="{call delete_order( ?)}" 
            ProviderName="System.Data.Odbc" 
        SelectCommand="
-       SELECT alias,
+       SELECT id,
+              alias,
               get_local_time(dispatch_time) as dispatch_time
+           
+           
          FROM lot_status
         WHERE get_local_time(dispatch_time) >=get_local_time(addtime(utc_timestamp(), '-24:00'))"  
         EnableCaching="false">
