@@ -88,7 +88,7 @@ namespace ezMESWeb
 
             //batch number
             lblBatch.Text = strBatch;
-            imgBatch.ImageUrl = this.getBarcodeLink(strBatch, 250, 30, "Code 128-B");
+            imgBatch.ImageUrl = this.getBarcodeLink(strBatch, 300, 30, "Code 128-B");
     }
 
         protected string getPrintJS()

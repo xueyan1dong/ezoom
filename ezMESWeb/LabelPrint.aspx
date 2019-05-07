@@ -15,7 +15,7 @@
             border-collapse:collapse;
         }
         .auto-style2 {
-            width: 100px;
+            width: 50px;
         }
     </style>
 
