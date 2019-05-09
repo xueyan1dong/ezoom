@@ -63,7 +63,17 @@ namespace ezMESWeb.Configure.Order
             strOrderType = strOrderType.Trim();
             string strOrderTypeEx = this.convertOrderType(strOrderType);
             if (strOrderTypeEx.Length == 0)
-                return "Order Type is invalid";
+                return "Order Type is invalid. It must be SO, IO, or PO";
+
+            //internal contact is required
+            string strInternalContact = dataRow["Internal Contact UserName"].ToString();
+            strInternalContact = strInternalContact.Trim();
+            if (strInternalContact.Length == 0)
+                return "Internal contact cannot be blank";
+
+            int nEmployeeID = this.getEmployeeID(strInternalContact);
+            if (nEmployeeID < 0)
+                return "Internal contact does not exist";
 
             //check uniqueness of the entry
             int nID = this.getOrderID(nClientID, strPONumber, strOrderType);
@@ -106,7 +116,7 @@ namespace ezMESWeb.Configure.Order
         {
             if (strUserName.Length == 0) return -1;
 
-            string strSQL = string.Format("SELECT ID FROM EMPLOYEE WHERE USERNAME=\"{0}\"", strUserName);
+            string strSQL = string.Format("SELECT ID FROM EMPLOYEE WHERE USERNAME=\"{0}\" OR CONCAT(FIRSTNAME, \" \", LASTNAME) = \"{0}\"", strUserName);
 
             return this.getID(strSQL);
         }
@@ -194,10 +204,19 @@ namespace ezMESWeb.Configure.Order
                 strValue = data["Order State"];
                 cmd.Parameters.AddWithValue("@_state", strValue);
 
+
                 //state date
                 strValue = data["State Date"];
-                DateTime dtValue = Convert.ToDateTime(strValue);
-                cmd.Parameters.AddWithValue("@_state_date", dtValue);
+                DateTime dtValue;
+                try
+                {
+                    dtValue = Convert.ToDateTime(strValue);
+                    cmd.Parameters.AddWithValue("@_state_date", dtValue);
+                }
+                catch (Exception  dtError)
+                {
+                    cmd.Parameters.AddWithValue("@_state_date", DBNull.Value);
+                }
 
                 //net total
                 strValue = data["Net Total"];
@@ -226,8 +245,14 @@ namespace ezMESWeb.Configure.Order
 
                 //expected delivery date
                 strValue = data["Expected Delivery Date"];
-                dtValue = Convert.ToDateTime(strValue);
-                cmd.Parameters.AddWithValue("@_expected_deliver_date", dtValue);
+                try
+                {
+                    dtValue = Convert.ToDateTime(strValue);
+                    cmd.Parameters.AddWithValue("@_expected_deliver_date", dtValue);
+                }
+                catch(Exception dtError) {
+                    cmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
+                }
 
                 //internal contact
                 strValue = data["Internal Contact UserName"];
@@ -285,6 +310,7 @@ namespace ezMESWeb.Configure.Order
             catch (Exception ex)
             {
                 txtError.Text = ex.Message;
+                return false;
             }
 
             return true;
@@ -307,10 +333,17 @@ namespace ezMESWeb.Configure.Order
 
             //error?
             bOK = (txtError.Text.Length == 0);
-            txtError.Visible = (!bOK);
 
             //go back to loading page
-            Server.Transfer("LoadOrder.aspx");
+            if (bOK)
+                Server.Transfer("LoadOrder.aspx");
+            else
+            {
+                txtError.Visible = !bOK;
+                btnInsert.Visible = !bOK;
+                lblUploadNote.Visible = bOK;
+                btnSubmit.Visible = bOK;
+            }
         }
     }
 }

@@ -72,7 +72,7 @@ namespace ezMESWeb.Configure.Order
                 //add two empty lines if there is content alread
                 if (txtBox.Text.Length > 0) txtBox.Text += "\r\n";
 
-                txtBox.Text += "========================================================================================";
+                txtBox.Text += "========================================================================================\r\n";
             }
 
             txtBox.Text += strText;
@@ -289,15 +289,19 @@ namespace ezMESWeb.Configure.Order
             switch (strType)
             {
                 case "SO":
+                case "Sales Order":
                     return "supplier";
 
                 case "IO":
+                case "Inventory Order":
                     return "inventory";
+
                 case "PO":
+                case "Purchase Order":
                     return "customer";
             }
 
-            return strType;
+            return "";
         }
 
 
