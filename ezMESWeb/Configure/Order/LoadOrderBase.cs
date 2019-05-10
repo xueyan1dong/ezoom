@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : LoadOrderBase.aspx.cs
+*    Created By             : Junlu Luo
+*    Date Created           : 2019
+*    Platform Dependencies  : .NET 
+*    Description            : UI for loading order header from csv file
+*    Log                    :
+*    ??/??/2019: Junlu Luo: first created
+*    05/10/2019: Xueyan Dong: Corrected order_type translation
+----------------------------------------------------------------*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -290,7 +301,7 @@ namespace ezMESWeb.Configure.Order
             {
                 case "SO":
                 case "Sales Order":
-                    return "supplier";
+                    return "customer";
 
                 case "IO":
                 case "Inventory Order":
@@ -298,7 +309,7 @@ namespace ezMESWeb.Configure.Order
 
                 case "PO":
                 case "Purchase Order":
-                    return "customer";
+                    return "supplier";
             }
 
             return "";
