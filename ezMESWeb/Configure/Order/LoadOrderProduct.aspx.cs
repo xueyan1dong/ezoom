@@ -293,10 +293,16 @@ namespace ezMESWeb.Configure.Order
 
                 //expected delivery date
                 strValue = data["Expected Delivery Date"];
-                if (strValue.Length == 0)
+                try
+                {
+                    DateTime dtValue;
+                    dtValue = Convert.ToDateTime(strValue);
+                    cmd.Parameters.AddWithValue("@_expected_deliver_date", dtValue);
+                }
+                catch (Exception dtError)
+                {
                     cmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
-                else
-                    cmd.Parameters.AddWithValue("@_expected_deliver_date", strValue);
+                }
 
                 //actually delivery date
                 cmd.Parameters.AddWithValue("@_actual_deliver_date", DBNull.Value);
@@ -355,10 +361,17 @@ namespace ezMESWeb.Configure.Order
 
             //error?
             bOK = (txtError.Text.Length == 0);
-            txtError.Visible = (!bOK);
 
             //go back to loading page
-            Server.Transfer("LoadOrderProduct.aspx");
+            if (bOK)
+                Server.Transfer("LoadOrderProduct.aspx");
+            else
+            {
+                txtError.Visible = !bOK;
+                btnInsert.Visible = !bOK;
+                lblUploadNote.Visible = bOK;
+                btnSubmit.Visible = bOK;
+            }
         }
     }
 }
