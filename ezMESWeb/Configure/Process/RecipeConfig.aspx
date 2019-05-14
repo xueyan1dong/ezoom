@@ -286,13 +286,16 @@
                       <asp:Button ID="btnCancel" runat="server" Height="26px" Text="Cancel" 
                           Width="143px" onclick="btnCancel_Click" 
                           onclientclick="return confirmDelete(this)" />
+                      <asp:Button ID="btnDuplicate" runat="server" Height="26px" Text="Duplicate Recipe" 
+                          Width="143px" onclick="btnDuplicate_Click" />
                       </td></tr>
                  </table>
                  
               </ContentTemplate>
              <Triggers>
                    <asp:PostBackTrigger ControlID="btnDo" />        
-                 <asp:PostBackTrigger ControlID="btnCancel" />            
+                 <asp:PostBackTrigger ControlID="btnCancel" /> 
+                 <asp:PostBackTrigger ControlID="btnDuplicate" />
              </Triggers>
           </asp:UpdatePanel>
           </td>

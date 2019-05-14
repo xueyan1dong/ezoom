@@ -53,6 +53,7 @@ namespace ezMESWeb.Configure.Process
             ingredientLabel, 
             orderLabelu,
             uomLabelu;
+        protected Button btnDuplicate;
 
         protected override void OnInit(EventArgs e)
         {
@@ -850,7 +851,70 @@ namespace ezMESWeb.Configure.Process
             lblMainError.Text = "";
         }
 
- 
+        protected void btnDuplicate_Click(object sender, EventArgs e)
+        {
+            string strRecipeID = txtID.Text;
+            if (strRecipeID == null || strRecipeID.Length == 0) return;
 
+            try
+            {
+                //duplicate process
+                ConnectToDb();
+                ezCmd = new EzSqlCommand();
+                ezCmd.Connection = ezConn;
+                ezCmd.CommandText = "duplicate_recipe";
+                ezCmd.CommandType = CommandType.StoredProcedure;
+
+
+                ezCmd.Parameters.AddWithValue("@_old_recipe_id", strRecipeID);
+                ezCmd.Parameters.AddWithValue("@_employee_id", Convert.ToInt32(Session["UserID"]));
+
+                ezCmd.Parameters.AddWithValue("@_diagram_filename", DBNull.Value);
+                ezCmd.Parameters["@_diagram_filename"].Direction = ParameterDirection.Output;
+
+                ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
+                ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+                ezCmd.Parameters.AddWithValue("@_new_recipe_id", DBNull.Value);
+                ezCmd.Parameters["@_new_recipe_id"].Direction = ParameterDirection.Output;
+
+                ezCmd.ExecuteNonQuery();
+
+                string strResp = ezCmd.Parameters["@_response"].Value.ToString();
+                string strFilePath = ezCmd.Parameters["@_diagram_filename"].Value.ToString();
+
+                string strNewRecipeID = "";
+                object result = ezCmd.Parameters["@_new_recipe_id"].Value;
+                if (result.GetType().ToString().Contains("System.Byte"))
+                {
+                    System.Text.ASCIIEncoding asi = new System.Text.ASCIIEncoding();
+                    strNewRecipeID = asi.GetString((byte[])result);
+                }
+                else
+                {
+                    strNewRecipeID = result.ToString();
+                }
+
+                ezCmd.Dispose();
+                ezConn.Dispose();
+
+                //go to the newly-created process
+                if (strNewRecipeID.Length > 0)
+                {
+                    //copy diagram file
+                    string strFolder = Server.MapPath(System.Configuration.ConfigurationManager.AppSettings.Get("RecipeImageDir"));
+                    string strOldFile = string.Format("{0}{1}_{2}", strFolder, strRecipeID, strFilePath);
+                    string strNewFile = string.Format("{0}{1}_{2}", strFolder, strNewRecipeID, strFilePath);
+                    System.IO.File.Copy(strOldFile, strNewFile, true);
+
+                    Server.Transfer(Request.CurrentExecutionFilePath + "?Id=" + strNewRecipeID, false);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                lblMainError.Text = ex.Message;
+            }
+        }
     }
 }
