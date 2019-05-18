@@ -7,16 +7,14 @@
 
 <br />
 <p><em>This tool only read csv (comma separated values) file. CSV headers are required. Please save your file as .csv file before upload. </em></p><br />
-<p>Required columns: Part_No, Vender, Group, Form, Status, If_Persistent, Alert_Quantity_Level, Lot_Size, Unit_of_Measure, Description, Comment</p>
-<p>Example:</p>
-<p> Part_No, Vender, Group, Form, Status, If_Persistent, Alert_Quantity_Level, Lot_Size, Unit_of_Measure, Description, Comment</p>
-<p>"My Parts", ,"sample location","This is a sample for showing you how to construct the location file for uploading. If you don't have any of the ids, leave them blank. You will be able to update them in location page."</p>
-<br />
 <asp:FileUpload ID="fuLoad1" runat="server" Width=500px Height=30px />
 <br /><br />
 <asp:Button ID="btnInsert" runat="server" Text="Preview" Width="147px" OnClick="btn_Click"/>     
 <br />
 <asp:Label ID="lblError" runat="server" ForeColor="#FF3300" Height="60px" Width="350px"></asp:Label><br />
+
+<p>Required columns: Part_No, Vender, Group, Form, Status, If_Persistent, Alert_Quantity_Level, Lot_Size, Unit_of_Measure, Description, Comment</p></br>
+<p>Example: "My Parts", "vender1" ,"group1","gas", "production", "1", "50", "18", "unit", "this is a sample description", "urgent"</p><br />
 <p><em>ezOOM is going to update following information in ezOOM, please review and click Submit button at bottom to start updating.</em></p>
 <br />
 <asp:TextBox ID="txtContent1" runat="server" TextMode="MultiLine" Height=1100px Width=800px OnTextChanged="txtContent_TextChanged"></asp:TextBox>

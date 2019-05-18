@@ -126,16 +126,11 @@ namespace ezMESWeb.Configure.Product
                                     }
 
                                     field = csvTable.Rows[j]["LifeSpan"].ToString();
-                                    if(field.Length != 0)
-                                    {
-                                        lbMaterial1.Items[materialIndex].Text += "||" + field;
-                                        itemContent += "LifeSpan:" + field + "\n";
-                                    }
-                                    else{
-                                        lblError.Text = "LifeSpan is necessary.";
-                                        break;
-                                    }
+                                    if (field.Length == 0) field = "0";
                                     
+                                    lbMaterial1.Items[materialIndex].Text += "||" + field;
+                                    itemContent += "LifeSpan:" + field + "\n";
+                                  
                                     field = csvTable.Rows[j]["Description"].ToString();
                                     lbMaterial1.Items[materialIndex].Text += "||" + field;      
                                     itemContent += "Description:" + field + "\n";
@@ -239,7 +234,9 @@ namespace ezMESWeb.Configure.Product
                             }
                            
                             ezCmd.Parameters["@_uomid"].Value = fields[3];
+                            
                             ezCmd.Parameters["@_lifespan"].Value = fields[4];
+                         
                             if (fields[5].Length != 0)
                             {
                                 ezCmd.Parameters["@_description"].Value = fields[5];
@@ -293,7 +290,7 @@ namespace ezMESWeb.Configure.Product
         protected void btnInvForm_Click(object sender, EventArgs e)
         {
             MessagePopupExtender1.Hide();
-            Server.Transfer("MoveLot.aspx");
+            Server.Transfer("ProductConfig.aspx");
         }
     }
 
