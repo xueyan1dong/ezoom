@@ -92,7 +92,7 @@ scrollbars=Both>
                  <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time(MST)" SortExpression="dispatch_time" />
                  <asp:TemplateField ShowHeader="False">
                     <ItemTemplate>
-                        <asp:Button ID="btnPrint" runat="server"  CommandName="OrderPrint" CommandArgument='<%# Eval("id") %>' Text ="Print" CausesValidation="True"/>  
+                        <asp:ImageButton ID="btnPrint" runat="server"  CommandName="OrderPrint" ImageUrl="/Images/print.png" Width="32px" Height="32px"  CommandArgument='<%# Eval("id") %>'  CausesValidation="True"/>  
                     </ItemTemplate>
                 </asp:TemplateField>
              </Columns>      
