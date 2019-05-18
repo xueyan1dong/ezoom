@@ -21,6 +21,7 @@
       <siteMapNode url="~/Configure/Product/ProdProcConfig.aspx" title="Product vs. Workflow"  description="Product Workflow Association" />
       <siteMapNode url="~/Configure/Material/MaterialGroupConfig.aspx" title="Item / Part Group"  description="Item/Part Group Configuration" />
         <siteMapNode url="~/Configure/Material/MaterialConfig.aspx" title="Item / Part"  description="Item/Part Configuration" />
+      <siteMapNode url="~/Configure/Material/LoadParts.aspx" title="Load Parts"  description="Load Parts" />
       </siteMapNode>
       
     

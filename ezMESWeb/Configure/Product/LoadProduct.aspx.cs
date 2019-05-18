@@ -293,7 +293,7 @@ namespace ezMESWeb.Configure.Product
         protected void btnInvForm_Click(object sender, EventArgs e)
         {
             MessagePopupExtender1.Hide();
-            Server.Transfer("ProductConfig.aspx");
+            Server.Transfer("MoveLot.aspx");
         }
     }
 

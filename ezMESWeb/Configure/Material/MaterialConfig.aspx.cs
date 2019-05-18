@@ -282,18 +282,6 @@ namespace ezMESWeb.Configure.Material
             else
                 FormView1.Caption = "";
 
-
-            //if (Request.Params.GetValues(0)[0].Contains("ibClone"))
-            //{
-            //    FormView1.Caption = "Copy Item/Part";
-            //    FormView1.ChangeMode(FormViewMode.Insert);
-            //}
-            //else
-            //{
-            //    FormView1.Caption = "";
-            //    FormView1.ChangeMode(FormViewMode.Edit);
-            //}
-
         }
 
 

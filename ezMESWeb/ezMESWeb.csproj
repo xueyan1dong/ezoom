@@ -122,6 +122,7 @@
     <Content Include="Configure\Location\Location.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Configure\Material\LoadParts.aspx" />
     <Content Include="Configure\Order\LoadOrder.aspx" />
     <Content Include="Configure\Order\LoadOrderProduct.aspx" />
     <Content Include="Configure\Process\LoadStep.aspx" />
@@ -182,6 +183,13 @@
     </Compile>
     <Compile Include="Configure\Location\LoadLocation.aspx.designer.cs">
       <DependentUpon>LoadLocation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configure\Material\LoadParts.aspx.cs">
+      <DependentUpon>LoadParts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Configure\Material\LoadParts.aspx.designer.cs">
+      <DependentUpon>LoadParts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Configure\Order\LoadOrder.aspx.cs">
       <DependentUpon>LoadOrder.aspx</DependentUpon>
