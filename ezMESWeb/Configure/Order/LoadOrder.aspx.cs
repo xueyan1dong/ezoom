@@ -103,24 +103,6 @@ namespace ezMESWeb.Configure.Order
             return "";
         }
 
-        protected int getPriorityID(string strPriority)
-        {
-            if (strPriority.Length == 0) return 1;
-
-            string strSQL = string.Format("SELECT ID FROM PRIORITY WHERE NAME=\"{0}\"", strPriority);
-
-            return this.getID(strSQL);
-        }
-
-        protected int getEmployeeID(string strUserName)
-        {
-            if (strUserName.Length == 0) return -1;
-
-            string strSQL = string.Format("SELECT ID FROM EMPLOYEE WHERE USERNAME=\"{0}\" OR CONCAT(FIRSTNAME, \" \", LASTNAME) = \"{0}\"", strUserName);
-
-            return this.getID(strSQL);
-        }
-
         protected void btn_Click(object sender, EventArgs e)
         {
             //clear error and make some controls hidden
@@ -171,149 +153,11 @@ namespace ezMESWeb.Configure.Order
         {
             Dictionary<string, string> data = this.convertToDict(strData);
 
-            try
-            {
-                EzSqlCommand cmd = new EzSqlCommand();
-                cmd.Parameters.Clear();
-                cmd.Connection = ezConn;
-                cmd.CommandText = "insert_order_general";
-                cmd.CommandType = CommandType.StoredProcedure;
+            string strResult = "";
+            bool bOK = this.InsertOrder(data, out strResult, ref m_orderID);
 
-                //order type
-                string strValue = data["Order Type"];
-                string strOrderType = strValue;
-                strValue = this.convertOrderType(strValue);
-                cmd.Parameters.AddWithValue("@_order_type", strValue);
-
-                //po number
-                string strPONumber = data["PO Number"];
-                cmd.Parameters.AddWithValue("@_ponumber", strPONumber);
-
-                //client id
-                strValue = data["Client"];
-                string strClient = strValue;
-                int nClientID = this.getClientID(strValue);
-                cmd.Parameters.AddWithValue("@_client_id", nClientID);
-
-                //priority
-                strValue = data["Priority"];
-                int nPriorityID = this.getPriorityID(strValue);
-                cmd.Parameters.AddWithValue("@_priority", nPriorityID);
-
-                //order state
-                strValue = data["Order State"];
-                cmd.Parameters.AddWithValue("@_state", strValue);
-
-
-                //state date
-                strValue = data["State Date"];
-                DateTime dtValue;
-                try
-                {
-                    dtValue = Convert.ToDateTime(strValue);
-                    cmd.Parameters.AddWithValue("@_state_date", dtValue);
-                }
-                catch (Exception  dtError)
-                {
-                    cmd.Parameters.AddWithValue("@_state_date", DBNull.Value);
-                }
-
-                //net total
-                strValue = data["Net Total"];
-                Decimal dValue = Convert.ToDecimal(strValue);
-                cmd.Parameters.AddWithValue("@_net_total", strValue);
-
-                //tax percentage
-                strValue = data["Tax Percentage"];
-                int nTaxPercentage = Convert.ToInt16(strValue);
-                cmd.Parameters.AddWithValue("@_tax_percentage", strValue);
-
-                //tax amount
-                strValue = data["Tax Amount"];
-                dValue = Convert.ToDecimal(strValue);
-                cmd.Parameters.AddWithValue("@_tax_amount", strValue);
-
-                //other fees
-                strValue = data["Other Fees"];
-                dValue = Convert.ToDecimal(strValue);
-                cmd.Parameters.AddWithValue("@_other_fees", strValue);
-
-                //total price
-                strValue = data["Total Price"];
-                dValue = Convert.ToDecimal(strValue);
-                cmd.Parameters.AddWithValue("@_total_price", strValue);
-
-                //expected delivery date
-                strValue = data["Expected Delivery Date"];
-                try
-                {
-                    dtValue = Convert.ToDateTime(strValue);
-                    cmd.Parameters.AddWithValue("@_expected_deliver_date", dtValue);
-                }
-                catch(Exception dtError) {
-                    cmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
-                }
-
-                //internal contact
-                strValue = data["Internal Contact UserName"];
-                int nEmployeeID = this.getEmployeeID(strValue);
-                if (nEmployeeID < 0)
-                    cmd.Parameters.AddWithValue("@_internal_contact", DBNull.Value);
-                else
-                    cmd.Parameters.AddWithValue("@_internal_contact", nEmployeeID);
-
-                //external contact
-                strValue = data["External Contact"];
-                cmd.Parameters.AddWithValue("@_external_contact", strValue);
-
-                //current user
-                int nUserID = Convert.ToInt32(Session["UserID"]);
-                cmd.Parameters.AddWithValue("@_recorder_id", nUserID);
-
-                //comment
-                strValue = data["Comment"];
-                cmd.Parameters.AddWithValue("@_comment", strValue);
-
-                //output parameters
-                cmd.Parameters.AddWithValue("@_order_id", DBNull.Value);
-                cmd.Parameters["@_order_id"].Direction = ParameterDirection.Output;
-                cmd.Parameters.AddWithValue("@_response", DBNull.Value);
-                cmd.Parameters["@_response"].Direction = ParameterDirection.Output;
-
-                cmd.ExecuteNonQuery();
-                string response = cmd.Parameters["@_response"].Value.ToString();
-
-                string strOrderID = "";
-                if (response.Length > 0)
-                {
-                    txtError.Text = response;
-                }
-                else
-                {
-                    object result = cmd.Parameters["@_order_id"].Value;
-                    if (result.GetType().ToString().Contains("System.Byte"))
-                    {
-                        System.Text.ASCIIEncoding asi = new System.Text.ASCIIEncoding();
-                        strOrderID = asi.GetString((byte[])result);
-                    }
-                    else
-                    {
-                        strOrderID = result.ToString();
-                    }
-                }
-                cmd.Dispose();
-
-                //keep order ID for product insertion
-                string strKey = string.Format("{0}|{1}{2}", strClient, strPONumber, strOrderType);
-                m_orderID.Add(strKey, strOrderID);
-            }
-            catch (Exception ex)
-            {
-                txtError.Text = ex.Message;
-                return false;
-            }
-
-            return true;
+            txtError.Text = strResult;
+            return bOK;
         }
   
         protected void btnSubmit_Click(object sender, EventArgs e)

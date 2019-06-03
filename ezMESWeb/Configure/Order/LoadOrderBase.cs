@@ -301,14 +301,17 @@ namespace ezMESWeb.Configure.Order
             {
                 case "SO":
                 case "Sales Order":
+                case "customer":
                     return "customer";
 
                 case "IO":
                 case "Inventory Order":
+                case "inventory":
                     return "inventory";
 
                 case "PO":
                 case "Purchase Order":
+                case "supplier":
                     return "supplier";
             }
 
@@ -330,6 +333,314 @@ namespace ezMESWeb.Configure.Order
         {
             //        MessagePopupExtender.Hide();
             //        Server.Transfer("InventoryConfig.aspx");
+        }
+
+        protected int getPriorityID(string strPriority)
+        {
+            if (strPriority.Length == 0) return 1;
+
+            string strSQL = string.Format("SELECT ID FROM PRIORITY WHERE NAME=\"{0}\"", strPriority);
+
+            return this.getID(strSQL);
+        }
+
+        protected int getEmployeeID(string strUserName)
+        {
+            if (strUserName.Length == 0) return -1;
+
+            string strSQL = string.Format("SELECT ID FROM EMPLOYEE WHERE USERNAME=\"{0}\" OR CONCAT(FIRSTNAME, \" \", LASTNAME) = \"{0}\"", strUserName);
+
+            return this.getID(strSQL);
+        }
+
+        protected bool InsertOrder(Dictionary<string, string> data, out string strResult, ref Dictionary<string, string> orders)
+        {
+            strResult = "";
+
+            try
+            {
+                EzSqlCommand cmd = new EzSqlCommand();
+                cmd.Parameters.Clear();
+                cmd.Connection = ezConn;
+                cmd.CommandText = "insert_order_general";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                //order type
+                string strValue = data["Order Type"];
+                string strOrderType = strValue;
+                strValue = this.convertOrderType(strValue);
+                cmd.Parameters.AddWithValue("@_order_type", strValue);
+
+                //po number
+                string strPONumber = data["PO Number"];
+                cmd.Parameters.AddWithValue("@_ponumber", strPONumber);
+
+                //client id
+                strValue = data["Client"];
+                string strClient = strValue;
+                int nClientID = this.getClientID(strValue);
+                cmd.Parameters.AddWithValue("@_client_id", nClientID);
+
+                //priority
+                strValue = data["Priority"];
+                int nPriorityID = this.getPriorityID(strValue);
+                cmd.Parameters.AddWithValue("@_priority", nPriorityID);
+
+                //order state
+                strValue = data["Order State"];
+                cmd.Parameters.AddWithValue("@_state", strValue);
+
+
+                //state date
+                strValue = data["State Date"];
+                DateTime dtValue;
+                try
+                {
+                    dtValue = Convert.ToDateTime(strValue);
+                    cmd.Parameters.AddWithValue("@_state_date", dtValue);
+                }
+                catch (Exception dtError)
+                {
+                    cmd.Parameters.AddWithValue("@_state_date", DBNull.Value);
+                }
+
+                //net total
+                strValue = data["Net Total"];
+                Decimal dValue = Convert.ToDecimal(strValue);
+                cmd.Parameters.AddWithValue("@_net_total", strValue);
+
+                //tax percentage
+                strValue = data["Tax Percentage"];
+                int nTaxPercentage = Convert.ToInt16(strValue);
+                cmd.Parameters.AddWithValue("@_tax_percentage", strValue);
+
+                //tax amount
+                strValue = data["Tax Amount"];
+                dValue = Convert.ToDecimal(strValue);
+                cmd.Parameters.AddWithValue("@_tax_amount", strValue);
+
+                //other fees
+                strValue = data["Other Fees"];
+                dValue = Convert.ToDecimal(strValue);
+                cmd.Parameters.AddWithValue("@_other_fees", strValue);
+
+                //total price
+                strValue = data["Total Price"];
+                dValue = Convert.ToDecimal(strValue);
+                cmd.Parameters.AddWithValue("@_total_price", strValue);
+
+                //expected delivery date
+                strValue = data["Expected Delivery Date"];
+                try
+                {
+                    dtValue = Convert.ToDateTime(strValue);
+                    cmd.Parameters.AddWithValue("@_expected_deliver_date", dtValue);
+                }
+                catch (Exception dtError)
+                {
+                    cmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
+                }
+
+                //internal contact
+                strValue = data["Internal Contact UserName"];
+                int nEmployeeID = this.getEmployeeID(strValue);
+                if (nEmployeeID < 0)
+                    cmd.Parameters.AddWithValue("@_internal_contact", DBNull.Value);
+                else
+                    cmd.Parameters.AddWithValue("@_internal_contact", nEmployeeID);
+
+                //external contact
+                strValue = data["External Contact"];
+                cmd.Parameters.AddWithValue("@_external_contact", strValue);
+
+                //current user
+                int nUserID = Convert.ToInt32(Session["UserID"]);
+                cmd.Parameters.AddWithValue("@_recorder_id", nUserID);
+
+                //comment
+                strValue = data["Comment"];
+                cmd.Parameters.AddWithValue("@_comment", strValue);
+
+                //output parameters
+                cmd.Parameters.AddWithValue("@_order_id", DBNull.Value);
+                cmd.Parameters["@_order_id"].Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("@_response", DBNull.Value);
+                cmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+                cmd.ExecuteNonQuery();
+                string response = cmd.Parameters["@_response"].Value.ToString();
+
+                string strOrderID = "";
+                if (response.Length > 0)
+                {
+                    strResult = response;
+                }
+                else
+                {
+                    object result = cmd.Parameters["@_order_id"].Value;
+                    if (result.GetType().ToString().Contains("System.Byte"))
+                    {
+                        System.Text.ASCIIEncoding asi = new System.Text.ASCIIEncoding();
+                        strOrderID = asi.GetString((byte[])result);
+                    }
+                    else
+                    {
+                        strOrderID = result.ToString();
+                    }
+
+                    //keep order ID for product insertion
+                    string strKey = string.Format("{0}|{1}{2}", strClient, strPONumber, strOrderType);
+                    orders.Add(strKey, strOrderID);
+                }
+                cmd.Dispose();
+            }
+            catch (Exception ex)
+            {
+                strResult = ex.Message;
+                return false;
+            }
+
+            return true;
+        }
+
+        protected int getProductID(string strProduct, string strOrderType, ref string strSourceType, string strProductVersion = "")
+        {
+            strSourceType = "";
+            strProduct = strProduct.Trim();
+            if (strProduct.Length == 0) return -1;
+
+            //table name
+            strSourceType = "product";
+            string strClause = "";
+            if (strProductVersion.Length > 0)
+                strClause = string.Format(" AND VERSION = {0}", strProductVersion);
+
+            strOrderType = this.convertOrderType(strOrderType);
+            if (strOrderType == "supplier")
+            {
+                strSourceType = "material";
+                strClause = "";
+            }
+
+            string strSQL = string.Format("SELECT ID FROM {0} WHERE NAME=\"{1}\"{2}",
+                strSourceType,
+                strProduct,
+                strClause);
+
+            return this.getID(strSQL);
+        }
+
+        protected int getUOMID(string strUOM)
+        {
+            if (strUOM.Length == 0) return 1;
+
+            string strSQL = string.Format("SELECT ID FROM UOM WHERE NAME=\"{0}\"", strUOM);
+            int nID = this.getID(strSQL);
+            if (nID < 0) nID = 1;
+
+            return nID;
+        }
+
+        protected bool InsertOrderedProducts(Dictionary<string, string> data, string strOrderID, out string strResult)
+        {
+            strResult = "";
+            try
+            {
+                EzSqlCommand cmd = new EzSqlCommand();
+                cmd.Parameters.Clear();
+
+                cmd.Connection = ezConn;
+                cmd.CommandText = "modify_order_detail";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@_operation", "insert");
+
+                //order id
+                cmd.Parameters.AddWithValue("@_order_id", strOrderID);
+
+                //order type
+                string strOrderType = data["Order Type"];
+
+                //item number
+                string strValue = data["Item Number"];
+                string strProductVersion = "";
+                if (!data.TryGetValue("Product Version", out strProductVersion)) strProductVersion = "";
+
+                string strSourceType = "";
+                int nProductID = this.getProductID(strValue, strOrderType, ref strSourceType, strProductVersion);
+                cmd.Parameters.AddWithValue("@_source_type", strSourceType);
+                cmd.Parameters.AddWithValue("@_source_id", nProductID);
+
+                //line number
+                strValue = data["Line Number"];
+                cmd.Parameters.AddWithValue("@_line_num", strValue);
+
+                //requested quantity
+                strValue = data["Requested Quantity"];
+                cmd.Parameters.AddWithValue("@_quantity_requested", strValue);
+
+                //unit price
+                strValue = data["Unit Price"];
+                cmd.Parameters.AddWithValue("@_unit_price", strValue);
+
+                //quantity made
+                cmd.Parameters.AddWithValue("@_quantity_made", 0);
+
+                //quantity in progress
+                cmd.Parameters.AddWithValue("@_quantity_in_process", 0);
+
+                //quantity shipped
+                cmd.Parameters.AddWithValue("@_quantity_shipped", 0);
+
+                //output date
+                cmd.Parameters.AddWithValue("@_output_date", DBNull.Value);
+
+                //expected delivery date
+                strValue = data["Expected Delivery Date"];
+                try
+                {
+                    DateTime dtValue;
+                    dtValue = Convert.ToDateTime(strValue);
+                    cmd.Parameters.AddWithValue("@_expected_deliver_date", dtValue);
+                }
+                catch (Exception dtError)
+                {
+                    cmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
+                }
+
+                //actually delivery date
+                cmd.Parameters.AddWithValue("@_actual_deliver_date", DBNull.Value);
+
+                //recorder id
+                cmd.Parameters.AddWithValue("@_recorder_id", Convert.ToInt32(Session["UserID"]));
+
+                //comment
+                strValue = data["Comment"];
+                cmd.Parameters.AddWithValue("@_comment", strValue);
+
+                //uomid
+                strValue = data["Unit of Measure"];
+                int nUOMID = this.getUOMID(strValue);
+                cmd.Parameters.AddWithValue("@_uomid", nUOMID);
+
+                //output parameters
+                cmd.Parameters.AddWithValue("@_response", DBNull.Value);
+                cmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+                //execute query
+                cmd.ExecuteNonQuery();
+
+                strResult = cmd.Parameters["@_response"].Value.ToString();
+
+                cmd.Dispose();
+            }
+            catch (Exception exc)
+            {
+                strResult = exc.Message;
+                return false;
+            }
+
+            return true;
         }
     }
 }
