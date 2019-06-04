@@ -101,20 +101,35 @@
     
   }
 </script> 
-    <style type="text/css">
-        .style19
-        {
-            width: 100%;
-            height: 168px;
-        }
-    </style>
+<script src="http://code.jquery.com/jquery-1.9.1.js">
+    
+    $(function () {
+
+        $(".ajax__tab_header").html("<div style='height:80px;width:1200px;' >" + $(".ajax__tab_header").html() + "</div>");
+
+    })
+</script>
+<style type="text/css">
+    .style19
+    {
+        width: 100%;
+        height: 168px;
+    }
+    .ajax__tab_header {
+        height: 80px !important;
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+</style>
 </asp:content> 
 
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1">
 
     <asp:TabContainer ID="tcMain" runat="server" 
         Height="0px" Width="100%" CssClass="amber_tab" 
-        onclientactivetabchanged="reloadContent" >
+        onclientactivetabchanged="reloadContent">
+        
     </asp:TabContainer>
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 <table style="width: 100%; height: 423px; margin-right: 0px; margin-top: 0px; border : 2px solid #6FBD06; ">
