@@ -125,6 +125,7 @@
     <Content Include="Configure\Material\LoadParts.aspx" />
     <Content Include="Configure\Order\LoadOrder.aspx" />
     <Content Include="Configure\Order\LoadOrderProduct.aspx" />
+    <Content Include="Configure\Order\LoadWOrders.aspx" />
     <Content Include="Configure\Process\LoadStep.aspx" />
     <Content Include="Configure\Product\LoadProduct.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
@@ -207,6 +208,13 @@
     </Compile>
     <Compile Include="Configure\Order\LoadOrderProduct.aspx.designer.cs">
       <DependentUpon>LoadOrderProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configure\Order\LoadWOrders.aspx.cs">
+      <DependentUpon>LoadWOrders.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Configure\Order\LoadWOrders.aspx.designer.cs">
+      <DependentUpon>LoadWOrders.aspx</DependentUpon>
     </Compile>
     <Compile Include="Configure\Process\LoadStep.aspx.cs">
       <DependentUpon>LoadStep.aspx</DependentUpon>

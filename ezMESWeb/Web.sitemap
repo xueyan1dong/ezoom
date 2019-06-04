@@ -58,6 +58,7 @@
         <siteMapNode url="~/Configure/Order/SalesOrderConfig.aspx" title="Sales Order"  description="Customer Incoming Order" />
         <siteMapNode url="~/Configure/Order/InventoryOrderConfig.aspx" title="Inventory Order"  description="Inventory Product Order" />
         <siteMapNode url="~/Configure/Order/PurchaseOrderConfig.aspx" title="Purchase Order"  description="Supplier Outgoing Order" />
+        <siteMapNode url="~/Configure/Order/LoadWOrders.aspx" title="Load W Orders"  description="Load Waterworks Orders from File" />
         <siteMapNode url="~/Configure/Order/LoadOrder.aspx" title="Load Orders"  description="Load Orders from File" />
         <siteMapNode url="~/Configure/Order/LoadOrderProduct.aspx" title="Load Order Products"  description="Load Order Products from File" />
       </siteMapNode>
