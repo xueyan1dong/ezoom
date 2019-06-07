@@ -322,9 +322,11 @@ namespace ezMESWeb.Configure.Process
         //search receipts with names contain the keywords and display in the tabcontainer
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            
 
             DbDataReader ezReader;
             TabPanel temp;
+            short count = 0;
 
             try
             {
@@ -343,7 +345,10 @@ namespace ezMESWeb.Configure.Process
 
                     temp.BackColor = System.Drawing.Color.Silver;
                     tcMain.Controls.Add(temp);
+                    count++;
+                    
                 }
+                tcMain.ActiveTabIndex = count;
                 ezReader.Close();
                 ezReader.Dispose();
                 ezCmd.Dispose();
@@ -353,7 +358,6 @@ namespace ezMESWeb.Configure.Process
             {
                 lblMainError.Text = ex.Message;
             }
-            
         }
 
 
