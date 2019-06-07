@@ -11,7 +11,7 @@
   *  02/10/2019: xdong: following the same fix that Junlu did in SalesOrderConfig.aspx.cs, change the call to Server.Transfer
   *                     and fixed UI issue when btnDo_Click is triggered.
 	*  04/19/2019: xdong: modified RecipeConfig.aspx to display quantity in ingredients in decimal with 1 decimal for non-integer quantity                   
-	*                     
+	*  6/6/2019: peiyu: added scrollbars to receipt tab containers; added search box that allows to search receipts with keywords             
 ----------------------------------------------------------------*/
 using System;
 using System.IO;
@@ -28,15 +28,17 @@ using System.Web.UI.WebControls.WebParts;
 using AjaxControlToolkit;
 using CommonLib.Data.EzSqlClient;
 
+
 namespace ezMESWeb.Configure.Process
 {
 
     public partial class RecipeConfig : TabConfigTemplate
     {
-        protected DropDownList  ddOwner,
+        protected DropDownList ddOwner,
             ddProduct,
-            ddMaterial, 
-            ddPUom,ddMUom;
+            ddMaterial,
+            ddPUom, ddMUom;
+      
         protected RadioButtonList rblMorP, rbExec;
         protected TextBox qtyTextBox, 
             orderTextBox,
@@ -47,12 +49,15 @@ namespace ezMESWeb.Configure.Process
             orderTextBoxu,
             mintimeTextBoxu,
             maxtimeTextBoxu,
-            commentTextBoxu;
-        protected Label lblUom, 
-            sourceLabel, 
-            ingredientLabel, 
+            commentTextBoxu,
+            receipt;
+        protected Label lblUom,
+            sourceLabel,
+            ingredientLabel,
             orderLabelu,
-            uomLabelu;
+            uomLabelu,
+            ifTcLoaded;
+           
         protected Button btnDuplicate;
 
         protected override void OnInit(EventArgs e)
@@ -111,82 +116,97 @@ namespace ezMESWeb.Configure.Process
                 DbDataReader ezReader;
                 TabPanel temp;
                 short count = 0;
+                string recip = "";
 
-
-               
-                if (!IsPostBack || fvMain.CurrentMode== FormViewMode.ReadOnly)
+            // The value of ifTclLoaded Label will be changed to loaded if initial page load is done. 
+            // This prevents the following steps in page_load() when calling btnSearch_click()
+            if ((!IsPostBack || fvMain.CurrentMode == FormViewMode.ReadOnly)&& ifTcLoaded.Text.Equals("notLoaded"))
+            {
+              
+                try
                 {
-                    try
+                    ConnectToDb();
+
+                    ezCmd = new EzSqlCommand();
+                    ezCmd.Connection = ezConn;
+                    //when clicking on one of the receipt tabs in the search results to view details, the page will be reloaded, Request.QueryString["receipt"] recorded the searching keyword
+                    if (Request.QueryString["receipt"] != null)
                     {
-                        ConnectToDb();
-
-                        ezCmd = new EzSqlCommand();
-                        ezCmd.Connection = ezConn;
-                        ezCmd.CommandText = "SELECT id, name FROM recipe";
-                        ezCmd.CommandType = CommandType.Text;
-                        ezReader = ezCmd.ExecuteReader();
-
-                        //while (sqlReader.Read())
-                        while (ezReader.Read())
-                        {
-                            temp = new TabPanel();
-
-                            temp.ID = String.Format("{0}", ezReader[0]);
-                            temp.HeaderText = String.Format("{0}", ezReader[1]);
-
-                            temp.BackColor = System.Drawing.Color.Silver;
-                            tcMain.Controls.Add(temp);
-                            if ((id != null) && (temp.ID.Equals(id)))
-                            {
-                                show_ExistProcess(count);
-
-                            }
-                            count++;
-                        }
-                        ezReader.Close();
-                        ezReader.Dispose();
-                        ezCmd.Dispose();
-                        //ezConn.Dispose();
+                        recip = Request.QueryString["receipt"];
+                        //after clicking on one of the search result, the search box becomes blank, 
+                        // need to reset the search textbox to the searching keyword, so we don't lose track of the keyword, 
+                        // remembering the keyword will allow the user check every tabs in the list.
+                        receipt.Text = recip; 
                     }
-                    catch (Exception ex)
+                    //when page loading, the tabcontainer will display tabs with name matching the value of recip
+                    //scenario 1, normal page loading, then recip is "", all tabs will be displayed
+                    //scenario 2, searching with keyword recip, then only names contain recip will be displayed
+                    ezCmd.CommandText = "SELECT id, name FROM recipe where name like '%" + recip + "%'";
+                    ezCmd.CommandType = CommandType.Text;
+                    ezReader = ezCmd.ExecuteReader();
+
+                    //while (sqlReader.Read())
+                    while (ezReader.Read())
                     {
-                        lblMainError.Text = ex.Message;
-                    }
-                    temp = new TabPanel();
-                    temp.ID = "newTab";
-                    temp.HeaderText = "+";
-                    temp.BackColor = System.Drawing.Color.Silver;
-                    temp.TabIndex = count;
-                    tcMain.Controls.Add(temp);
-                    tcMain.DataBind();
-                    if (id == null)
-                    {
-                        if (Request.QueryString["Tab"] != null)
+                        temp = new TabPanel();
+
+                        temp.ID = String.Format("{0}", ezReader[0]);
+                        temp.HeaderText = String.Format("{0}", ezReader[1]);
+
+                        temp.BackColor = System.Drawing.Color.Silver;
+                        tcMain.Controls.Add(temp);
+                        if ((id != null) && (temp.ID.Equals(id)))
                         {
-                            actTab = Convert.ToInt16(Request.QueryString["Tab"]);
-                            if (actTab < count)
-                                show_ExistProcess(actTab);
-                            else
-                                show_NewProcess(count);
+                            show_ExistProcess(count);
+
                         }
+                        count++;
+                    }
+                    ezReader.Close();
+                    ezReader.Dispose();
+                    ezCmd.Dispose();
+                    //ezConn.Dispose();
+                    ifTcLoaded.Text = "Loaded";
+                }
+                catch (Exception ex)
+                {
+                    lblMainError.Text = ex.Message;
+                }
+                temp = new TabPanel();
+                temp.ID = "newTab";
+                temp.HeaderText = "+";
+                temp.BackColor = System.Drawing.Color.Silver;
+                temp.TabIndex = count;
+                tcMain.Controls.Add(temp);
+                tcMain.DataBind();
+                if (id == null)
+                {
+                    if (Request.QueryString["Tab"] != null)
+                    {
+                        actTab = Convert.ToInt16(Request.QueryString["Tab"]);
+                        if (actTab < count)
+                            show_ExistProcess(actTab);
                         else
                             show_NewProcess(count);
                     }
-                    if(error != null  && error.Length>0)
-                    {
-                        lblMainError.Text = error;
-                    }
-                    //toggle the product or material dropdownlist on Ingredient insertion form
-                    rblMorP.Attributes.Add("OnClick", "showDropDown('" +
-                        rblMorP.ClientID + "','"
-                        + ddMaterial.ClientID + "','" + ddProduct.ClientID +"')");
-
+                    else
+                        show_NewProcess(count);
                 }
-                else
+                if (error != null && error.Length > 0)
                 {
-                    toggle_dropdowns(rblMorP.SelectedValue,  true);
-
+                    lblMainError.Text = error;
                 }
+                //toggle the product or material dropdownlist on Ingredient insertion form
+                rblMorP.Attributes.Add("OnClick", "showDropDown('" +
+                    rblMorP.ClientID + "','"
+                    + ddMaterial.ClientID + "','" + ddProduct.ClientID + "')");
+
+            }
+           
+            else
+            {
+                toggle_dropdowns(rblMorP.SelectedValue, true);
+            }
               
         }
 
@@ -299,8 +319,45 @@ namespace ezMESWeb.Configure.Process
             }
         }
 
+        //search receipts with names contain the keywords and display in the tabcontainer
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
 
- 
+            DbDataReader ezReader;
+            TabPanel temp;
+
+            try
+            {
+                ConnectToDb();
+                ezCmd = new EzSqlCommand();
+                ezCmd.Connection = ezConn;
+                ezCmd.CommandText = "SELECT id, name FROM recipe where name like '%" + receipt.Text + "%'";
+                ezCmd.CommandType = CommandType.Text;
+                ezReader = ezCmd.ExecuteReader();
+                while (ezReader.Read())
+                {
+                    temp = new TabPanel();
+
+                    temp.ID = String.Format("{0}", ezReader[0]);
+                    temp.HeaderText = String.Format("{0}", ezReader[1]);
+
+                    temp.BackColor = System.Drawing.Color.Silver;
+                    tcMain.Controls.Add(temp);
+                }
+                ezReader.Close();
+                ezReader.Dispose();
+                ezCmd.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+                lblMainError.Text = ex.Message;
+            }
+            
+        }
+
+
+
 
         protected override void btnSubmitInsert_Click(object sender, EventArgs e)
         {
