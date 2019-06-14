@@ -4,10 +4,26 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 
+<script type="text/javascript" language="javascript">
+    function doPrint() {
+        var panel = document.getElementById("<%=gvLotTable.ClientID %>");
+        var pageLink = "about: blank";
+        var pwa = window.open(pageLink, "_new");
+        pwa.document.write('<html><head>');
+        pwa.document.write('</head><body >');
+        pwa.document.write(panel.outerHTML);
+        pwa.document.write('</body></html>');
+        pwa.document.close();
+        setTimeout(function() {
+            pwa.print();
+        }, 500);
+        return false;
+    }
+</script> 
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     
+
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />     
    <p style="font-style:italic; color:Blue; font-weight:bold;">Please click the Dispatch link besides an order to dispatch new batch(es) against the order</p>
            
@@ -89,6 +105,11 @@ scrollbars=Both>
              <Columns>
                  <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="true" />
                   <asp:BoundField DataField="alias" HeaderText="Batch Name" ReadOnly="True" SortExpression="alias" />
+                 <asp:TemplateField ShowHeader="False">
+                    <ItemTemplate>
+                        <asp:Image ID="alias_barcode" runat="server" />
+                    </ItemTemplate>
+                </asp:TemplateField>
                  <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time(MST)" SortExpression="dispatch_time" />
                  <asp:TemplateField ShowHeader="False">
                     <ItemTemplate>
@@ -97,6 +118,9 @@ scrollbars=Both>
                 </asp:TemplateField>
              </Columns>      
              </asp:GridView>  
+                    <br />
+                    <asp:Button ID="btnPrintBatches" runat="server" Text="Print Batches" OnClientClick="doPrint()" Width ="150px" Height="30px"/>
+                    <br />
              <br />       
                     <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Reports/DispatchHistoryReport.aspx?for=2&start=1">View batches dispatched this month</asp:HyperLink>
                </ContentTemplate>                           

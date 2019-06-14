@@ -42,6 +42,7 @@ namespace ezMESWeb.Tracking
       protected System.Data.Common.DbDataReader ezReader;
       protected UpdatePanel tbLotPanel;
       protected GridView gvLotTable;
+      protected Button btnPrintBatches;
 
       protected override void OnInit(EventArgs e)
       {
@@ -199,28 +200,30 @@ namespace ezMESWeb.Tracking
                   gvTable.DataBind();
                   gvTablePanel.Update();
      
-                   gvLotTable.DataBind(); 
-                  //tcHeader.Text = "New Lot(s) Information:";
-                  //tRow = new TableRow();
-                  //tCell = new TableCell();
-                  //tCell.Text = "Batch Id";
-                  //tRow.Cells.Add(tCell);
-                  //tCell = new TableCell();
-                  //tCell.Text = "Batch Name";
-                  //tRow.Cells.Add(tCell);
-                  //tblLots.Rows.Add(tRow);
-                  //tTable = newLots.Tables[0];
-                  //foreach (DataRow tDrow in tTable.Rows)
-                  //{
-                  //  tRow = new TableRow();
-                  //  tCell = new TableCell();
-                  //  tCell.Text = tDrow.ItemArray[0].ToString();
-                  //  tRow.Cells.Add(tCell);
-                  //  tCell = new TableCell();
-                  //  tCell.Text = tDrow.ItemArray[1].ToString();
-                  //  tRow.Cells.Add(tCell);
-                  //  tblLots.Rows.Add(tRow);
-                  //}
+                   gvLotTable.DataBind();
+                    this.updateBatchBarcode();
+
+                    //tcHeader.Text = "New Lot(s) Information:";
+                    //tRow = new TableRow();
+                    //tCell = new TableCell();
+                    //tCell.Text = "Batch Id";
+                    //tRow.Cells.Add(tCell);
+                    //tCell = new TableCell();
+                    //tCell.Text = "Batch Name";
+                    //tRow.Cells.Add(tCell);
+                    //tblLots.Rows.Add(tRow);
+                    //tTable = newLots.Tables[0];
+                    //foreach (DataRow tDrow in tTable.Rows)
+                    //{
+                    //  tRow = new TableRow();
+                    //  tCell = new TableCell();
+                    //  tCell.Text = tDrow.ItemArray[0].ToString();
+                    //  tRow.Cells.Add(tCell);
+                    //  tCell = new TableCell();
+                    //  tCell.Text = tDrow.ItemArray[1].ToString();
+                    //  tRow.Cells.Add(tCell);
+                    //  tblLots.Rows.Add(tRow);
+                    //}
                   this.tbLotPanel.Update();
 
                 }
@@ -301,13 +304,89 @@ namespace ezMESWeb.Tracking
 
       protected void Page_Load(object sender, EventArgs e)
       {
-            
         //register post back control for printing
         ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
         scriptManager.RegisterPostBackControl(this.gvLotTable);
+
+        this.updateBatchBarcode();
       }
 
+        protected void updateBatchBarcode()
+        {
+          //  string strScript = this.getPrintJS();
+          //  ClientScript.RegisterClientScriptBlock(this.GetType(),
+          //      "doPrint", strScript, true);
 
+            for (int i = 0; i < gvLotTable.Rows.Count; i++)
+            {
+                string batch = gvLotTable.Rows[i].Cells[1].Text;
+
+                Image img = (Image)gvLotTable.Rows[i].FindControl("alias_barcode");
+                img.ImageUrl = string.Format("/BarcodeImage.aspx?d={0}&h=60&w=400&il=true&t=Code 128-B", batch);
+            }
+
+            btnPrintBatches.Visible = (gvLotTable.Rows.Count > 0);
+        }
+
+        protected string getPrintJS()
+        {
+
+            string strScript = @"
+            function doPrint() {
+                var panel = document.getElementById(""ctl00_ContentPlaceHolder1_gvLotTable"");
+                var pageLink = ""about: blank"";
+                var pwa = window.open(pageLink, ""_new"");
+                pwa.document.write('<html><head>');
+                pwa.document.write('</head><body >');
+                pwa.document.write(panel.outerHTML);
+                pwa.document.write('</body></html>');
+                pwa.document.close();
+                setTimeout(function() {
+                    pwa.print();
+                }, 500);
+                return false;
+            }";
+
+            return strScript;
+
+            /*
+            string strDoc = "<TABLE>";
+            for (int i = 0; i < gvLotTable.Rows.Count; i++)
+            {
+                string batch = gvLotTable.Rows[i].Cells[1].Text;
+
+                string strRow = string.Format("<TR><TD><IMG SRC=\'http://{0}/BarcodeImage.aspx?d={1}&h=60&w=400&il=true&t=Code 128-B\' /></TD></TR><TR><TD height=30px>&nbsp;</TD></TR>",
+                    Request.ServerVariables["HTTP_HOST"],
+                    batch);
+
+                strDoc += strRow;
+            }
+            strDoc += "</TABLE>";
+
+
+            string strScript = @"
+            function getHtml()
+            {
+                return ""<html><head><scr"" + ""ipt>"" +
+                        ""function step1() { setTimeout('step2()', 10); }"" +
+                        ""function step2() { window.print(); window.close(); }"" +
+                    ""</scr"" + ""ipt></head><body onload='step1()'>" +
+                    strDoc +
+                    @"</body></html>"";
+            }
+
+            function doPrint()
+            {
+                var Pagelink = ""about: blank"";
+                var pwa = window.open(Pagelink, ""_new"");
+                pwa.document.open();
+                pwa.document.write(getHtml());
+                pwa.document.close();
+            }";
+
+            return strScript;
+            */
+        }
     }
 }
 
