@@ -17,7 +17,7 @@ namespace ezMESWeb.Reports.report_templates
 {
 
 
-  public partial class DataSet1
-  {
-  }
+    public partial class DataSet1
+    {
+    }
 }

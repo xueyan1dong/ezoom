@@ -27,5 +27,8 @@
 <div class="cssnav">
 <a href="/Reports/NewOrderDemandPrediction.aspx"><span>New Order Demand Prediction</span></a>
 </div>
+<div class="cssnav">
+<a href="/Reports/OrderConsumptionInventoryReport.aspx"><span>Order Consumption Inventory Report</span></a>
+</div>
 </div>
 </asp:Content>
