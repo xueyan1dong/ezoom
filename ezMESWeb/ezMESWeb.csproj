@@ -137,6 +137,7 @@
     <Content Include="LabelPrint.aspx" />
     <Content Include="Reports\NewOrderDemandPrediction.aspx" />
     <Content Include="Reports\OrderBatchDetail.aspx" />
+    <Content Include="Reports\OrderConsumptionInventoryReport.aspx" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -251,6 +252,13 @@
     </Compile>
     <Compile Include="Reports\OrderBatchDetail.aspx.designer.cs">
       <DependentUpon>OrderBatchDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\OrderConsumptionInventoryReport.aspx.cs">
+      <DependentUpon>OrderConsumptionInventoryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\OrderConsumptionInventoryReport.aspx.designer.cs">
+      <DependentUpon>OrderConsumptionInventoryReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\OrderReport.aspx.cs">
       <DependentUpon>OrderReport.aspx</DependentUpon>
@@ -537,6 +545,7 @@
     <EmbeddedResource Include="Reports\report_templates\rpOrder.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpDispatchHistory.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpOrderBatchDetail.rdlc" />
+    <EmbeddedResource Include="Reports\report_templates\rpOrderConsumptionInventoryReport.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpProductInProcess.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpWorkflowBom.rdlc" />
     <EmbeddedResource Include="Reports\report_templates\rpLotStatusHistory.rdlc" />

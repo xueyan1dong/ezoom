@@ -79,7 +79,7 @@
       <siteMapNode url="~/Reports/ProductInventoryReport.aspx" title="Product Inventory"  description="Correlate Product with Order and Inventory" />
       <siteMapNode url="~/Reports/LotHistoryReport.aspx" title="Batch Genealogy" description="Batch Genealogy Report" />
       <siteMapNode url="~/Reports/DispatchHistoryReport.aspx" title="Batch Dispatch History" description="Batch Dsipatch History Report" />
-
+      <siteMapNode url="~/Reports/OrderConsumptionInventoryReport.aspx" title="Consumption Report" description="Order Consumption Inventory Report" />
       <siteMapNode url="~/Reports/NewOrderDemandPrediction.aspx" title="New Order Demand" description="New Order Demand Prediction Overview" />
     </siteMapNode>
 
