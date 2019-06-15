@@ -4,22 +4,6 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
 
-<script type="text/javascript" language="javascript">
-    function doPrint() {
-        var panel = document.getElementById("<%=gvLotTable.ClientID %>");
-        var pageLink = "about: blank";
-        var pwa = window.open(pageLink, "_new");
-        pwa.document.write('<html><head>');
-        pwa.document.write('</head><body >');
-        pwa.document.write(panel.outerHTML);
-        pwa.document.write('</body></html>');
-        pwa.document.close();
-        setTimeout(function() {
-            pwa.print();
-        }, 500);
-        return false;
-    }
-</script> 
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

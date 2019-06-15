@@ -145,8 +145,12 @@ namespace ezMESWeb.Configure.Order
                 string[] headers = csv.GetFieldHeaders();
 
                 for (int i = 0; i < headers.Length; i++)
-                    csvTable.Columns.Add(headers[i]);
+                {
+                    //double white spaces
+                    headers[i] = headers[i].Replace("  ", " ");
 
+                    csvTable.Columns.Add(headers[i]);
+                }
                 //verify header
                 string strResult = this.verifyFileHeader(csvTable, strFileSrc);
                 if (strResult.Length > 0)

@@ -304,6 +304,10 @@ namespace ezMESWeb.Tracking
 
       protected void Page_Load(object sender, EventArgs e)
       {
+        string strScript = this.getPrintJS();
+        ClientScript.RegisterClientScriptBlock(this.GetType(),
+            "doPrint", strScript, true);
+
         //register post back control for printing
         ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
         scriptManager.RegisterPostBackControl(this.gvLotTable);
@@ -313,10 +317,6 @@ namespace ezMESWeb.Tracking
 
         protected void updateBatchBarcode()
         {
-          //  string strScript = this.getPrintJS();
-          //  ClientScript.RegisterClientScriptBlock(this.GetType(),
-          //      "doPrint", strScript, true);
-
             for (int i = 0; i < gvLotTable.Rows.Count; i++)
             {
                 string batch = gvLotTable.Rows[i].Cells[1].Text;
@@ -330,10 +330,9 @@ namespace ezMESWeb.Tracking
 
         protected string getPrintJS()
         {
-
             string strScript = @"
             function doPrint() {
-                var panel = document.getElementById(""ctl00_ContentPlaceHolder1_gvLotTable"");
+                var panel = document.getElementById(""" + gvLotTable.ClientID + @""");
                 var pageLink = ""about: blank"";
                 var pwa = window.open(pageLink, ""_new"");
                 pwa.document.write('<html><head>');
@@ -343,7 +342,7 @@ namespace ezMESWeb.Tracking
                 pwa.document.close();
                 setTimeout(function() {
                     pwa.print();
-                }, 500);
+                }, 10);
                 return false;
             }";
 
