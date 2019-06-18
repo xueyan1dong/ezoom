@@ -333,58 +333,28 @@ namespace ezMESWeb.Tracking
             string strScript = @"
             function doPrint() {
                 var panel = document.getElementById(""" + gvLotTable.ClientID + @""");
-                var pageLink = ""about: blank"";
-                var pwa = window.open(pageLink, ""_new"");
+
+                //var pageLink = ""about: blank"";
+                var pwa = window.open("""", ""_blank"");
                 pwa.document.write('<html><head>');
                 pwa.document.write('</head><body >');
                 pwa.document.write(panel.outerHTML);
                 pwa.document.write('</body></html>');
                 pwa.document.close();
-                setTimeout(function() {
-                    pwa.print();
-                }, 10);
+
+                //hide print label icons
+                var inputs = pwa.document.getElementsByTagName('input');
+                for (var i = 0; i < inputs.length; i++)
+                    inputs[i].style.display = ""none"";
+
+                //document title
+                pwa.document.title = 'Print Batches';
+                pwa.focus();
+
                 return false;
             }";
 
             return strScript;
-
-            /*
-            string strDoc = "<TABLE>";
-            for (int i = 0; i < gvLotTable.Rows.Count; i++)
-            {
-                string batch = gvLotTable.Rows[i].Cells[1].Text;
-
-                string strRow = string.Format("<TR><TD><IMG SRC=\'http://{0}/BarcodeImage.aspx?d={1}&h=60&w=400&il=true&t=Code 128-B\' /></TD></TR><TR><TD height=30px>&nbsp;</TD></TR>",
-                    Request.ServerVariables["HTTP_HOST"],
-                    batch);
-
-                strDoc += strRow;
-            }
-            strDoc += "</TABLE>";
-
-
-            string strScript = @"
-            function getHtml()
-            {
-                return ""<html><head><scr"" + ""ipt>"" +
-                        ""function step1() { setTimeout('step2()', 10); }"" +
-                        ""function step2() { window.print(); window.close(); }"" +
-                    ""</scr"" + ""ipt></head><body onload='step1()'>" +
-                    strDoc +
-                    @"</body></html>"";
-            }
-
-            function doPrint()
-            {
-                var Pagelink = ""about: blank"";
-                var pwa = window.open(Pagelink, ""_new"");
-                pwa.document.open();
-                pwa.document.write(getHtml());
-                pwa.document.close();
-            }";
-
-            return strScript;
-            */
         }
     }
 }
