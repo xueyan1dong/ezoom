@@ -55,6 +55,7 @@ namespace ezMESWeb.Configure.Order
     protected System.Data.Common.DbDataReader ezReaderLot;
     protected UpdatePanel tbLotPanel;
     protected GridView gvLotTable;
+    protected Button btnPrintBatches;
 
     protected override void OnInit(EventArgs e)
         {
@@ -163,7 +164,11 @@ namespace ezMESWeb.Configure.Order
 
                 }
 
-              
+            string strScript = this.getPrintJS();
+            ClientScript.RegisterClientScriptBlock(this.GetType(),
+                "doPrint", strScript, true);
+
+            this.updateBatchBarcode();
         }
 
         protected void show_ExistObject(short tabIndex)
@@ -841,6 +846,8 @@ namespace ezMESWeb.Configure.Order
           gvTable.DataBind();
           this.gvTablePanel.Update();
           gvLotTable.DataBind();
+          this.updateBatchBarcode();
+
           tbLotPanel.Update();
           mdlDispatch.Hide();
 
@@ -903,5 +910,46 @@ namespace ezMESWeb.Configure.Order
       return strResult;
     }
 
-  }
+        protected void updateBatchBarcode()
+        {
+            for (int i = 0; i < gvLotTable.Rows.Count; i++)
+            {
+                string batch = gvLotTable.Rows[i].Cells[1].Text;
+
+                Image img = (Image)gvLotTable.Rows[i].FindControl("alias_barcode");
+                img.ImageUrl = string.Format("/BarcodeImage.aspx?d={0}&h=60&w=400&il=true&t=Code 128-B", batch);
+            }
+
+            btnPrintBatches.Visible = (gvLotTable.Rows.Count > 0);
+        }
+
+        protected string getPrintJS()
+        {
+            string strScript = @"
+            function doPrint() {
+                var panel = document.getElementById(""" + gvLotTable.ClientID + @""");
+
+                //var pageLink = ""about: blank"";
+                var pwa = window.open("""", ""_blank"");
+                pwa.document.write('<html><head>');
+                pwa.document.write('</head><body >');
+                pwa.document.write(panel.outerHTML);
+                pwa.document.write('</body></html>');
+                pwa.document.close();
+
+                //hide print label icons
+                var inputs = pwa.document.getElementsByTagName('input');
+                for (var i = 0; i < inputs.length; i++)
+                    inputs[i].style.display = ""none"";
+
+                //document title
+                pwa.document.title = 'Print Batches';
+                pwa.focus();
+
+                return false;
+            }";
+
+            return strScript;
+        }
+    }
 }
