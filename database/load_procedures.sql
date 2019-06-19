@@ -9410,8 +9410,8 @@ END$
 */
 
 DELIMITER $  -- for escaping purpose
-DROP PROCEDURE IF EXISTS `report_order`$
-CREATE PROCEDURE `report_order`(
+DROP PROCEDURE IF EXISTS `order_consumption_inventory_report`$
+CREATE PROCEDURE `order_consumption_inventory_report`(
   IN _order_id int(10) unsigned,
   IN _product_id int(10) unsigned,
   OUT _response varchar(255)
