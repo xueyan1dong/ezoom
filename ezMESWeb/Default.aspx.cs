@@ -6,6 +6,9 @@
 *    Platform Dependencies  : .NET 2.0
 *    Description            : 
 *
+*    Log                    :
+*    11/03/2009: Fey Xue: first created
+*    06/17/2019: Xueyan Dong: Pull out and save employee location in session variable
 ----------------------------------------------------------------*/
 
 using System;
@@ -43,7 +46,7 @@ namespace ezMESWeb
          string userName = txtUserId.Text;
          string password = txtPassword.Text;
 
-         string strSQL = "SELECT e.id, e.firstname, e.lastname, s.name " +
+         string strSQL = "SELECT e.id, e.firstname, e.lastname, s.name, e.location_id " +
            "FROM employee e, system_roles s, users_in_roles u " +
            "WHERE username= \"" + userName + "\" AND password=\""
            + password + "\"" + " and status='active' and e.id = u.userId and u.roleId =  s.id and s.applicationId = 1";
@@ -117,6 +120,7 @@ namespace ezMESWeb
                Session["LastName"] = Convert.ToString(temp[2]);
                Session["Role"] = Convert.ToString(temp[3]);
                Session["LoggedIn"] = true;
+               Session["LocationId"] = Convert.ToString(temp[4]);
 
                if (Session["Role"].ToString().Equals("Admin") ||
                     Session["Role"].ToString().Equals("Manager"))

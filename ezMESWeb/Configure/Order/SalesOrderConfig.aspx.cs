@@ -9,6 +9,8 @@
 *    2009: xdong: first created
 *   11/01/2018: xdong: adjusted code to adopt line numbers in order detail
 *   12/03/2018: xdong: added product description and product group in order detail grid
+*   05/30/2019: xdong: Added line number inputbox in the product info popup when adding product to order
+*   05/30/2019: xdong: Added delete order line feature and Dispatch Order button and dispatched batch(es) grid
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;
@@ -20,7 +22,9 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
+using System.Data.Common;
 using AjaxControlToolkit;
+
 
 using CommonLib.Data.EzSqlClient;
 
@@ -29,20 +33,30 @@ namespace ezMESWeb.Configure.Order
 
     public partial class SalesOrderConfig : TabConfigTemplate
     {
-        protected DropDownList ddProduct, ddUom;
-
-        protected TextBox requestedTextBox, 
-            priceTextBox, 
+    protected ModalPopupExtender mdlDispatch;
+    protected DropDownList ddProduct, ddUom,ddBatchPriority, ddBatchLocation, ddContact;
+    protected TextBox requestedTextBox,
+            priceTextBox,
             madeTextBox,
             processTextBox,
             shippedTextBox,
             outputTextBox,
             expectedTextBox,
             actualTextBox,
-            commentTextBox;
-        protected Label lblUom;
+            commentTextBox,
+            linenumberTextBox,
+            txtLineNumbers,
+            txtPrefix,
+            txtBatchComment;
+        protected Label lblUom, lblErrorDispatch, lblGridError, lblDeleteDetailError;
+    protected Button btnDispatch;
+    protected UpdatePanel DispatchBufferPanel, MessageUpdatePanel;
+    protected ModalPopupExtender MessagePopupExtender;
+    protected System.Data.Common.DbDataReader ezReaderLot;
+    protected UpdatePanel tbLotPanel;
+    protected GridView gvLotTable;
 
-        protected override void OnInit(EventArgs e)
+    protected override void OnInit(EventArgs e)
         {
           base.OnInit(e);
           try
@@ -169,7 +183,9 @@ namespace ezMESWeb.Configure.Order
             btnDo.Text = "Update Order Info";
             btnCancel.Text = "Delete Order";
             btnInsert.Visible = true;
+      btnDispatch.Visible = true;
             gvTable.Visible = true;
+      refresh_dispatchPopup();
         }
         protected void show_NewObject(short tabIndex)
         {
@@ -180,24 +196,88 @@ namespace ezMESWeb.Configure.Order
 
             fvMain.Caption  = "General Sales Order Information:";
             btnInsert.Visible =false;
+      btnDispatch.Visible = false;
             gvTable.Visible = false;
             btnDo.Text = "Submit";
             btnCancel.Text = "Clear";
         }
-        protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
+
+    protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+      if (Request.Params["__EVENTTARGET"].Contains("btnDeleteDetail"))
+      {
+        string response;
+
+        try
         {
+          ConnectToDb();
+          ezCmd = new EzSqlCommand();
+          ezCmd.Connection = ezConn;
+          ezCmd.CommandText = "modify_order_detail";
+          ezCmd.CommandType = CommandType.StoredProcedure;
 
-            this.fvUpdate.Visible = true;
-            //  force databinding
-            this.fvUpdate.DataBind();
-            //  update the contents in the detail panel
-            this.updateBufferPanel.Update();
-            
-            this.btnUpdate_ModalPopupExtender.Show();
+          ezCmd.Parameters.AddWithValue("@_operation", "delete");
+          ezCmd.Parameters.AddWithValue("@_order_id", txtID.Text);
+          ezCmd.Parameters.AddWithValue("@_source_type", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_source_id", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_line_num", gvTable.SelectedDataKey[0].ToString());
+          ezCmd.Parameters.AddWithValue("@_quantity_requested", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_unit_price", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_quantity_made", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_quantity_in_process", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_quantity_shipped", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_output_date", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_actual_deliver_date", DBNull.Value);
+
+          ezCmd.Parameters.AddWithValue("@_recorder_id", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_comment", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_uomid", DBNull.Value);
+          ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
+          ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+
+          ezCmd.ExecuteNonQuery();
+          response = ezCmd.Parameters["@_response"].Value.ToString();
+          ezCmd.Dispose();
+          ezConn.Dispose();
         }
+        catch (Exception exc)
+        {
+          response = exc.Message;
+        }
+        if (response.Length > 0)
+        {
+          lblDeleteDetailError.Text = response;
+          MessageUpdatePanel.Update();
+          MessagePopupExtender.Show();
+        }
+        else
+        {
+          gvTable.DataBind();
+          gvTablePanel.Update();
+          refresh_dispatchPopup();
+        }
+      }
+      else
+      {
+        this.fvUpdate.Visible = true;
+        //  force databinding
+        this.fvUpdate.DataBind();
+        //  update the contents in the detail panel
+        this.updateBufferPanel.Update();
+
+        this.btnUpdate_ModalPopupExtender.Show();
+      }
+    }
 
 
- 
+    protected void btnOK_Click(object sender, EventArgs e)
+    {
+      lblDeleteDetailError.Text = "";
+      MessagePopupExtender.Hide();
+    }
 
         protected override void btnSubmitInsert_Click(object sender, EventArgs e)
         {
@@ -217,7 +297,7 @@ namespace ezMESWeb.Configure.Order
                 ezCmd.Parameters.AddWithValue("@_order_id", txtID.Text);
                 ezCmd.Parameters.AddWithValue("@_source_type", "product");
                 ezCmd.Parameters.AddWithValue("@_source_id", ddProduct.SelectedValue);
-                ezCmd.Parameters.AddWithValue("@_line_num", DBNull.Value);
+                ezCmd.Parameters.AddWithValue("@_line_num", linenumberTextBox.Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_quantity_requested", requestedTextBox.Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_unit_price", priceTextBox.Text.Trim());
                 ezCmd.Parameters.AddWithValue("@_quantity_made", madeTextBox.Text.Trim());
@@ -278,6 +358,7 @@ namespace ezMESWeb.Configure.Order
             {
                 gvTable.DataBind();
                 this.gvTablePanel.Update();
+                refresh_dispatchPopup();
                 fvMain.DataBind();
                 upMain.Update();
                 hide_insertPopup();
@@ -291,7 +372,11 @@ namespace ezMESWeb.Configure.Order
 
         }
 
-        protected override void btnSubmitUpdate_Click(object sender, EventArgs args)
+    //protected override void btnCancelDispatch_Click(object sender, EventArgs e)
+    //{
+    //}
+
+    protected override void btnSubmitUpdate_Click(object sender, EventArgs args)
         {
             string[] arDate;
             string theDate;
@@ -671,13 +756,152 @@ namespace ezMESWeb.Configure.Order
             expectedTextBox.Text = "";
             actualTextBox.Text = "";
             commentTextBox.Text = "";
+      linenumberTextBox.Text = "";
 
         }
+    protected void refresh_dispatchPopup()
+    {
+      //populate the txtLineNumbers 
+      string theText;
+      txtLineNumbers.Text = "";
+      for (int i = 0; i < gvTable.Rows.Count; i++)
+      {
+        txtLineNumbers.Text += (i == 0 ? "" : ",") + gvTable.Rows[i].Cells[3].Text;  //line number is the third column in the grid
+      }
 
-            
-            
+     //set order po as default prefix. Only take the left 22 characters, because 
+      theText = ((Label)fvMain.FindControl("ponumberLabel")).Text;
+      if (theText.Length <= 22) 
+      {
+        txtPrefix.Text = theText + "_";
+      }
+      else
+        txtPrefix.Text = ((Label)fvMain.FindControl("ponumberLabel")).Text.Substring(0, 22) + "_";
+
+      string selPriority = ((Label)fvMain.FindControl("priorityLabel")).Text;
+      for (int i = 0; i < ddBatchPriority.Items.Count; i++)
+      {
+        if (ddBatchPriority.Items[i].Text.Equals(selPriority))
+        {
+          ddBatchPriority.ClearSelection();
+          ddBatchPriority.Items[i].Selected = true;
+          break;
+        }
+      }
+
+      //location defaults to the location of the login user/dispatcher, or not set
+      if (Session["LocationId"].ToString().Length > 0)
+        ddBatchLocation.SelectedValue = Session["LocationId"].ToString();
+      else
+        ddBatchLocation.SelectedValue = "0";
+      txtBatchComment.Text = "";
+      DispatchBufferPanel.Update();
+    }
+    protected virtual void btnCancelDispatch_Click(object sender, EventArgs e)
+    {
+      refresh_dispatchPopup();
+      mdlDispatch.Hide();
+    }
+    protected virtual void btnSubmitDispatch_Click(object sender, EventArgs args)
+    {
+      string response;
+      try
+      {
+        ConnectToDb();
+        ezCmd = new EzSqlCommand();
+        ezCmd.Connection = ezConn;
+        ezCmd.CommandText = "dispatch_order";
+        ezCmd.CommandType = CommandType.StoredProcedure;
 
 
+        ezCmd.Parameters.AddWithValue("@_order_id", txtID.Text);
+        ezCmd.Parameters.AddWithValue("@_line_numbers", txtLineNumbers.Text.Trim());
+        ezCmd.Parameters.AddWithValue("@_alias_prefix", txtPrefix.Text.Trim());
+        if (ddBatchLocation.SelectedValue.Equals('0'))
+          ezCmd.Parameters.AddWithValue("@_location_id", DBNull.Value);
+        else
+          ezCmd.Parameters.AddWithValue("@_location_id", ddBatchLocation.SelectedValue);
+        ezCmd.Parameters.AddWithValue("@_lot_priority", ddBatchPriority.SelectedValue);
+
+        ezCmd.Parameters.AddWithValue("@_lot_contact", ddContact.SelectedValue);
+        ezCmd.Parameters.AddWithValue("@_comment", txtBatchComment.Text);
+        ezCmd.Parameters.AddWithValue("@_dispatcher", Convert.ToInt32(Session["UserID"]));
+        ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
+        ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+        ezCmd.ExecuteNonQuery();
+        response = ezCmd.Parameters["@_response"].Value.ToString();
+
+        if (response.Length > 0)
+        {
+          lblErrorDispatch.Text = response;
+        }
+        else
+        {
+          gvTable.DataBind();
+          this.gvTablePanel.Update();
+          gvLotTable.DataBind();
+          tbLotPanel.Update();
+          mdlDispatch.Hide();
+
+        }
+        ezCmd.Dispose();
+        ezConn.Dispose();
+      }
+      catch (Exception ex)
+      {
+        lblErrorDispatch.Text = ex.Message;
+      }
+    }
+
+
+    protected void btnPrintLabel_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+      if (e.CommandName != "OrderPrint") return;
+      //retrieve info from database
+      ConnectToDb();
+      string[] strPOInfo = this.getPOInfo(e.CommandArgument.ToString());
+      ezConn.Dispose();
+
+      //get compoments
+      //string strComponent = this.gvTable.Rows[0].Cells[4].Text;
+
+      string strUrl = string.Format("/LabelPrint.aspx?PO={0}&POLine={1}&piececnt={2}&itemnum={3}&finish={4}&batch={5}",
+          strPOInfo[0],
+          strPOInfo[1],
+          "",
+          strPOInfo[2],
+          strPOInfo[3],
+          strPOInfo[4]);
+
+      Server.Transfer(strUrl);
 
     }
+    protected string[] getPOInfo(string strLotID)
+    {
+      string strSQL = string.Format("SELECT ponumber, order_line_num, product, finish, alias FROM view_lot_in_process WHERE ID={0}", strLotID);
+
+      EzSqlCommand cmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
+      cmd.Parameters.Clear();
+      cmd.Connection = ezConn;
+      cmd.CommandText = strSQL;
+      cmd.CommandType = CommandType.Text;
+
+      int nCount = 0;
+      DbDataReader reader = cmd.ExecuteReader();
+      bool bOK = reader.Read();
+      string strPONumber = reader.GetString(0);
+      string strPOLine = reader.GetString(1);
+      string strItemNumber = reader.GetString(2);
+      string strFinish = reader.GetString(3);
+      string strBatch = reader.GetString(4);
+
+      reader.Close();
+      cmd.Dispose();
+
+      string[] strResult = new string[] { strPONumber, strPOLine, strItemNumber, strFinish, strBatch };
+      return strResult;
+    }
+
+  }
 }

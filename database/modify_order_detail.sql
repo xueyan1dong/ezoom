@@ -4,10 +4,13 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 2009
 *    Platform Dependencies  : MySql
-*    Description            : Insert new order detail/product record or modify existing order detail record. Note that when modifying
-*                             Order Id, Source Type, Source Id, Line Number are acting as anchor for finding the record
+*    Description            : Insert new order detail/product record or modify existing order detail record OR deleting an existing order detail line.
+                              Note that when modifying Order Id, Source Type, Source Id, Line Number are acting as anchor for finding the record.
+                              When oepration='delete', only require _order_id and _line_num in input.
 *    example	            : 
 CALL modify_order_detail ('insert',  7, 'product', 5, NULL, 30, 150, 0, 0, 0, NULL, NULL, NULL, 2, '', 1, @response);
+select @response
+CALL modify_order_detail ('delete',  7, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, @response);
 select @response
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 		
@@ -16,12 +19,13 @@ select @response
 *    10/01/2018: Junlu Luo: fixed bugs caused by last change
 *    10/16/2018: Xueyan Dong: added code to auto assign _line_num, if it is inputed as null
 *    11/01/2018: Xueyan Dong: fixed a bug that would block update
+*    05/30/2019: Xueyan Dong: Added logic for deleting a ordered delete line
 */
 DELIMITER $
 
 DROP PROCEDURE IF EXISTS modify_order_detail$
 CREATE PROCEDURE modify_order_detail (
-  IN _operation enum('insert', 'update'),
+  IN _operation enum('insert', 'update','delete'),
   IN _order_id int(10) unsigned,
   IN _source_type enum('product', 'material'),
   IN _source_id int(10) unsigned,
@@ -48,16 +52,16 @@ BEGIN
   ELSEIF _order_id IS NULL
   THEN
     SET _response = 'You must select an order for adding details. Please select an order.';
-  ELSEIF _source_type IS NULL OR length(_source_type) <1
+  ELSEIF _operation !='delete' AND (_source_type IS NULL OR length(_source_type) <1)
   THEN
     SET _response='Source type is required. Please select an order type.';
-  ELSEIF  _source_id is NULL
+  ELSEIF  _operation!='delete' AND _source_id is NULL
   THEN 
     SET _response='No item selected for ordering. Please select an item.';
-  ELSEIF  _quantity_requested is NULL OR _quantity_requested <= 0
+  ELSEIF  _operation!='delete' AND (_quantity_requested is NULL OR _quantity_requested <= 0)
   THEN 
     SET _response='Quantity requested is required. Please fill the quantity requested.';
-  ELSE IF _operation = 'insert' AND EXISTS (SELECT line_num 
+  ELSEIF _operation = 'insert' AND EXISTS (SELECT line_num 
 				   FROM order_detail 
 				  WHERE order_id = _order_id
                     AND source_type = _source_type
@@ -65,15 +69,30 @@ BEGIN
                     AND line_num = _line_num)
   THEN
 	SET _response = CONCAT('The same detail line ', _line_num , ' has been recorded'); 
+  -- line number not selected
+  ELSEIF _operation='delete' AND _line_num IS NULL 
+  THEN
+    SET _response = 'No item selected for deletion. Please select an item.';
+  -- lines that is already dispatched can not be deleted
+  ELSEIF _operation='delete' AND EXISTS (
+    SELECT line_num
+      FROM order_detail
+     WHERE order_id = _order_id
+       AND line_num = _line_num
+       AND (quantity_made > 0
+            OR quantity_in_process > 0
+            OR quantity_shipped > 0))
+  THEN
+    SET _response = 'The selected line item may not be deleted, because it has been worked on.'; 
   ELSE 
    -- if _line_num is entered as null, assign a line number from highest line number + 1
     IF _line_num IS NULL
-	THEN 
-		SELECT IFNULL(MAX(line_num),0) + 1
-		INTO _line_num
-		FROM order_detail
-	   WHERE order_id = _order_id;
-	END IF;
+    THEN 
+      SELECT IFNULL(MAX(line_num),0) + 1
+      INTO _line_num
+      FROM order_detail
+       WHERE order_id = _order_id;
+    END IF;
     -- pull out original uomid
     
     IF _source_type = 'product'
@@ -87,7 +106,7 @@ BEGIN
        WHERE id = _source_id;
     END IF;
     
-    IF _origin_uomid IS NULL
+    IF _operation!='delete' AND _origin_uomid IS NULL
     THEN
       SET _response = 'THE product or material selected does not exist in database.';
     ELSE
@@ -112,7 +131,7 @@ BEGIN
           recorder_id,
           record_time,
           comment   
-    )
+      )
         values (
           _order_id,
           _source_type,
@@ -150,8 +169,12 @@ BEGIN
           AND source_type = _source_type
           AND source_id = _source_id
           AND line_num = _line_num;
+
+      ELSEIF _operation= 'delete'
+      THEN
+        DELETE FROM order_detail
+        WHERE order_id = _order_id  AND line_num = _line_num;
       END IF;
 	  END IF;
-     END IF;
   END IF;
 END $

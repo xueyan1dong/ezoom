@@ -144,6 +144,19 @@ CREATE TABLE `employee_group` (
 
 
 -- employee table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_employee.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 		
+*    6/17/2019: Xueyan Dong: added column location_id for recording employee default location			
+*/
+DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `employee`$
 CREATE TABLE  `employee` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -160,6 +173,7 @@ CREATE TABLE  `employee` (
   `phone` varchar(45) DEFAULT NULL,
   `report_to` int(10) unsigned DEFAULT NULL,
   `comment` text,
+  `location_id` int(11) unsigned DEFAULT NULL,  -- default location that employee positioned at
   PRIMARY KEY (`id`),
   UNIQUE KEY `em_un1` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
@@ -852,13 +866,27 @@ CREATE TABLE `process_step_history` (
 ) ENGINE=InnoDB$
 
 -- product_process table
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : create_product_process.sql
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : MySql
+*    Description            : 
+*    example	            : 
+*    Log                    :
+*    6/19/2018: Peiyu Ge: added header info. 		
+*    06/13/2019: Xueyan Dong: added new column if_default.			
+*/
+DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `product_process`$
 CREATE TABLE `product_process` (
   `product_id` int(10) unsigned NOT NULL,
   `process_id` int(10) unsigned NOT NULL,
   `priority` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `recorder` int(10) unsigned NOT NULL,
-  `comment` text
+  `comment` text,
+  `if_default` tinyint(1) unsigned NOT NULL DEFAULT '1'  -- if the process is a default process for the product. Only one default per product
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
 

@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 		
+*    6/17/2019: Xueyan Dong: added column location_id for recording employee default location			
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `employee`$
@@ -26,6 +27,7 @@ CREATE TABLE  `employee` (
   `phone` varchar(45) DEFAULT NULL,
   `report_to` int(10) unsigned DEFAULT NULL,
   `comment` text,
+  `location_id` int(11) unsigned DEFAULT NULL,  -- default location that employee positioned at
   PRIMARY KEY (`id`),
   UNIQUE KEY `em_un1` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$

@@ -31,7 +31,7 @@ namespace ezMESWeb
         protected FormView fvUpdate;
         protected Button btnInsert;
         protected ModalPopupExtender mdlPopup;
-        protected ModalPopupExtender btnUpdate_ModalPopupExtender;
+    protected ModalPopupExtender btnUpdate_ModalPopupExtender;
         protected UpdatePanel insertBufferPanel, updateBufferPanel;
         protected UpdatePanel gvTablePanel;
         protected Panel InsertPanel;
@@ -45,6 +45,8 @@ namespace ezMESWeb
         protected TextBox txtID;
         protected SqlDataSource sdsMain;
         protected UpdatePanel upMain;
+
+
 
         //protected Label lblErrorUpdate;
         protected void ConnectToDb() //does not handle exception here
@@ -118,5 +120,6 @@ namespace ezMESWeb
         protected virtual void btnSubmitUpdate_Click(object sender, EventArgs args)
         {
         }
-    }
+
+  }
 }

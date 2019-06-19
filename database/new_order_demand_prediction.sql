@@ -82,6 +82,8 @@ DELIMITER $
    WHERE g.id =_order_id
      AND g.order_type != 'supplier'
   GROUP BY g.expected_deliver_date, g.priority, g.ponumber, d.source_id, p.name, p.description, pg.name;
+  
+  
 
   DROP TEMPORARY TABLE IF EXISTS process_bom_final;  
   CREATE TEMPORARY TABLE process_bom_final
@@ -104,7 +106,7 @@ DELIMITER $
     JOIN `process` p
       ON p.id = pp.process_id
          AND p.state = 'production';
-         
+
  SELECT id INTO _consume_step_type_id
     FROM step_type
    WHERE name='consume material';
