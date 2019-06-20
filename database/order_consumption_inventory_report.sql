@@ -67,7 +67,7 @@ Else
            LEFT JOIN process_step ps3 on ps3.process_id = ps2.process_id and ps3.position_id = ps1.false_step_pos
            LEFT JOIN location l1 on l.location_id = l1.id
            LEFT JOIN ingredients on ingredients.recipe_id = s.recipe_id
-           LEFT JOIN inventory on inventory.pd_or_mt_id = ingredients.ingredient_id
+           LEFT JOIN (select pd_or_mt_id, location_id, actual_quantity from inventory group by pd_or_mt_id order by actual_quantity) as inventory on inventory.pd_or_mt_id = ingredients.ingredient_id
            LEFT JOIN location l2 on inventory.location_id = l2.id
      WHERE l.order_id = _order_id
        AND if(_product_id IS NULL, 1=1, l.product_id = _product_id)
