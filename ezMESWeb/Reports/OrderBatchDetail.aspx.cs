@@ -25,6 +25,7 @@ namespace ezMESWeb.Reports
         protected Panel pnMain;
         protected DropDownList dpProduct1, dpOrder1, dpStatus1;
         protected ReportViewer rvDispatch;
+        protected TextBox txStep;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -119,7 +120,7 @@ namespace ezMESWeb.Reports
                     if (Request.QueryString["status"] != null)
                         dpStatus1.SelectedValue = Request.QueryString["status"];
 
-                    showHistory(dpProduct1.SelectedValue, dpOrder1.SelectedValue, dpStatus1.SelectedValue);
+                    showHistory(dpProduct1.SelectedValue, dpOrder1.SelectedValue, dpStatus1.SelectedValue, txStep.Text);
 
                 }
 
@@ -215,8 +216,8 @@ namespace ezMESWeb.Reports
                     ezCmd.Connection = ezConn;
                 }
 
-
-                showHistory(dpProduct1.SelectedValue, dpOrder1.SelectedValue, dpStatus1.SelectedValue);
+                
+                showHistory(dpProduct1.SelectedValue, dpOrder1.SelectedValue, dpStatus1.SelectedValue, txStep.Text);
             }
             catch (Exception ex)
             {
@@ -231,7 +232,7 @@ namespace ezMESWeb.Reports
 
         }
 
-        private void showHistory(String strProductId, String strOrderId, String strStatusId)
+        private void showHistory(String strProductId, String strOrderId, String strStatusId, String txtStep)
         {
 
             DataSet dispatchHistory = new DataSet();
@@ -249,6 +250,13 @@ namespace ezMESWeb.Reports
                 ezCmd.Parameters.AddWithValue("@_lot_status", strStatusId);
             else
                 ezCmd.Parameters.AddWithValue("@_lot_status", DBNull.Value);
+
+
+            if (txtStep.Length > 0)
+                ezCmd.Parameters.AddWithValue("@_lot_step", txtStep);
+            else
+                ezCmd.Parameters.AddWithValue("@_lot_step", DBNull.Value);
+
             ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
             ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
 
@@ -281,8 +289,9 @@ namespace ezMESWeb.Reports
             ReportParameter p1 = new ReportParameter("product_name", dpProduct1.SelectedItem.Text);
             ReportParameter p2 = new ReportParameter("po", dpOrder1.SelectedItem.Text);
             ReportParameter p3 = new ReportParameter("status", dpStatus1.SelectedItem.Text);
+            ReportParameter p4 = new ReportParameter("step", txStep.Text);
 
-            rvDispatch.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3 });
+            rvDispatch.LocalReport.SetParameters(new ReportParameter[] { p1, p2, p3, p4});
 
             rvDispatch.LocalReport.Refresh();
             rvDispatch.Visible = true;
