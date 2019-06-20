@@ -92,7 +92,18 @@ namespace ezMESWeb.Reports
                 //    "and h.step_id = s.id" +
                 //    "and s.step_type_id = st.id" +
                 //    "and st.id = 8";
-                ezCmd.CommandText = "select distinct t1.order_id, g.ponumber from(select order_id, sum(quantity_requested) as r, sum(quantity_made) as m, sum(quantity_in_process) as p, sum(quantity_shipped) as s from order_detail group by order_id) t1, lot_history h, order_general g, lot_status l, step s, step_type st where t1.r > t1.p + t1.s + t1.m and g.id = t1.order_id and l.order_id = g.id and h.lot_id = l.id and h.step_id = s.id and s.step_type_id = st.id and h.start_timecode = (select MAX(start_timecode) FROM lot_history h1 where h1.lot_id = h.lot_id) and st.id = 8 and l.status != 'done'";
+                ezCmd.CommandText = "select distinct t1.order_id, g.ponumber from(select order_id, sum(quantity_requested) as r, " +
+                    "sum(quantity_made) as m, sum(quantity_in_process) as p, sum(quantity_shipped) as s from order_detail group by order_id) t1, " +
+                    "lot_history h, order_general g, lot_status l, step s, step_type st " +
+                    "where t1.r > t1.s + t1.m " +
+                    "and g.id = t1.order_id " +
+                    "and l.order_id = g.id " +
+                    "and h.lot_id = l.id " +
+                    "and h.step_id = s.id " +
+                    "and s.step_type_id = st.id " +
+                    "and h.start_timecode = (select MAX(start_timecode) FROM lot_history h1 where h1.lot_id = h.lot_id) " +
+                    "and st.id = 8 " +
+                    "and l.status != 'done'";
 
                 ezCmd.CommandType =CommandType.Text;
 
