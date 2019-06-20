@@ -94,7 +94,8 @@ scrollbars=Both>
                         <asp:Image ID="alias_barcode" runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
-                 <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time(MST)" SortExpression="dispatch_time" />
+                 <asp:BoundField DataField="actual_quantity" HeaderText="Quantity" SortExpression="actual_quantity" />
+                 <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time" SortExpression="dispatch_time" />
                  <asp:TemplateField ShowHeader="False">
                     <ItemTemplate>
                         <asp:ImageButton ID="btnPrint" runat="server"  CommandName="OrderPrint" ImageUrl="/Images/print.png" Width="32px" Height="32px"  CommandArgument='<%# Eval("id") %>'  CausesValidation="True"/>  
@@ -118,9 +119,8 @@ scrollbars=Both>
        SelectCommand="
        SELECT id,
               alias,
+              actual_quantity,
               get_local_time(dispatch_time) as dispatch_time
-           
-           
          FROM lot_status
         WHERE get_local_time(dispatch_time) >=get_local_time(addtime(utc_timestamp(), '-24:00'))"  
         EnableCaching="false">

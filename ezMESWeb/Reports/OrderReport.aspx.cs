@@ -8,6 +8,7 @@
 *    Log                    :
 *    12/03/2018: Xueyan Dong: Added line_num to the report to account for now orders may contain multiple lines of the same products
 *                             enlarged report view area and perfected chart display
+*    06/19/2019: Xueyan Dong: fixed minor bug that take "processid" in query string rather than "orderid"
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;
@@ -98,7 +99,7 @@ namespace ezMESWeb.Reports
                     count++;
                 }
 
-                string tString = (Request.QueryString.Count > 0) ? Request.QueryString["processid"] : null;
+                string tString = (Request.QueryString.Count > 0) ? Request.QueryString["orderid"] : null;
                 if (count > 0 && tString != null)
                 {
                   dpOrder.SelectedValue = tString;

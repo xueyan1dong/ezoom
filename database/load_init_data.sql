@@ -45,6 +45,49 @@ VALUES ('company', 'This is the most top level organization for the company');
          'Xueyan Dong',
          'test',
          'test');
+         
+insert into company (name,
+                     db_name,
+                     domain_name,
+                     status,
+                     timezone,
+                     daylightsaving_starttime,
+                     daylightsaving_endtime,
+                     password,
+                     plan,
+                     contact,
+                     address,
+                     city,
+                     state,
+                     country,
+                     create_time,
+                     created_by,
+                     state_change_time,
+                     state_changed_by,
+                     description,
+                     comment) 
+    SELECT 'Waterworks',
+           'ezmes',
+           'demo.ithelps.co',
+           status,
+           '-4:00',
+           '2010-03-13 02:00:00',
+           '2010-11-07 02:00:00',
+           password,
+           plan,
+           contact,
+           address,
+           city,
+           state,
+           country,
+           '2019-06-18',
+           created_by,
+           state_change_time,
+           state_changed_by,
+           description,
+           comment 
+           FROM company 
+      WHERE id = 1;
 
 -- insert a dummy employee group to be used by everybody initially.
 INSERT INTO employee_group (name, or_id, ifprivilege, description)
@@ -137,3 +180,41 @@ INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`
 VALUES('disassemble', 0, 0, now(),  'disassemble products into one or multiple components. recipe is supplied as a column value.');
 INSERT INTO `step_type`(`name`,`max_para_count`,`min_para_count`,`create_time`,`description`) 
 VALUES('Add Product To Inv', 0, 0, now(),  'Add final product to the product inventory pool. No parameter needed.');
+
+-- insert attribute definitions
+-- 6/19/2019: added product attribute: Metal Finish
+INSERT INTO attribute_definition (
+attr_name,
+attr_usage,
+attr_parent_type,
+data_type,
+length,
+decimal_length,
+key_attr,
+optional,
+uom_id,
+max_value,
+min_value,
+enum_values,
+description,
+comment,
+create_date,
+update_date
+)
+VALUES (
+'Metal Finish',
+'both',
+'product',
+'varchar',
+255,
+NULL,
+1,
+0,
+NULL,
+NULL,
+NULL,
+NULL,
+'Metal finish of product',
+'attribute is a key attribute for fitting products',
+now(),
+now())

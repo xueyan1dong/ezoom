@@ -223,7 +223,7 @@
                       <table border=0 width="100%">
                         <tr>
                           <td width="15%">Client:</td>
-                          <td width="35%"><asp:Label ID="clientLabel" runat="server" Text='<%# Bind("client_name") %>' /></td>
+                          <td width="30%"><asp:Label ID="clientLabel" runat="server" Text='<%# Bind("client_name") %>' /></td>
                           <td>PO Number:</td>   
                           <td>
                           <asp:Label ID="ponumberLabel" runat="server" 
@@ -303,6 +303,13 @@
                           <td colspan=4 align ="center"><asp:Image ID="barcode_image" runat="server" />
                           </td>
                           </tr>
+                                                  <tr><td colspan=2>
+                            <asp:HyperLink ID="hpStatus" runat="server" Target="_blank" NavigateUrl="/Reports/OrderReport.aspx?orderid=22">View Fulfill Status</asp:HyperLink>
+                            </td>
+                            <td colspan=2>
+                            <asp:HyperLink ID="hpBatch" runat="server" Target="_blank" NavigateUrl="/Reports/OrderBatchDetail.aspx?order=22">View Batch Details</asp:HyperLink>
+                            </td>
+                        </tr>
                       </table>
                       </ItemTemplate>
                   </asp:FormView>
@@ -370,7 +377,8 @@
                         <asp:Image ID="alias_barcode" runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
-                 <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time(MST)" SortExpression="dispatch_time" />
+                 <asp:BoundField DataField="actual_quantity" HeaderText="Quantity" SortExpression="actual_quantity" />
+                 <asp:BoundField DataField="dispatch_time" HeaderText="Dispatch Time" SortExpression="dispatch_time" />
                  <asp:TemplateField ShowHeader="False">
                     <ItemTemplate>
                         <asp:ImageButton ID="btnPrint" runat="server"  CommandName="OrderPrint" ImageUrl="/Images/print.png" Width="32px" Height="32px"  CommandArgument='<%# Eval("id") %>'  CausesValidation="True"/>  
@@ -392,6 +400,7 @@
            ProviderName="System.Data.Odbc" 
        SelectCommand=" SELECT id,
               alias,
+              actual_quantity,
               get_local_time(dispatch_time) as dispatch_time 
          FROM lot_status
         WHERE order_id = ?

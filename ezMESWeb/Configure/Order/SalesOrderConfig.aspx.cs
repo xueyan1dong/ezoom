@@ -11,6 +11,7 @@
 *   12/03/2018: xdong: added product description and product group in order detail grid
 *   05/30/2019: xdong: Added line number inputbox in the product info popup when adding product to order
 *   05/30/2019: xdong: Added delete order line feature and Dispatch Order button and dispatched batch(es) grid
+*   06/19/2019: xdong: Added quantity column in the dispatched batch grid
 ----------------------------------------------------------------*/
 using System;
 using System.Collections;
@@ -188,9 +189,10 @@ namespace ezMESWeb.Configure.Order
             btnDo.Text = "Update Order Info";
             btnCancel.Text = "Delete Order";
             btnInsert.Visible = true;
-      btnDispatch.Visible = true;
+            btnDispatch.Visible = true;
             gvTable.Visible = true;
-      refresh_dispatchPopup();
+            updateUrl();
+            refresh_dispatchPopup();
         }
         protected void show_NewObject(short tabIndex)
         {
@@ -206,6 +208,14 @@ namespace ezMESWeb.Configure.Order
             btnDo.Text = "Submit";
             btnCancel.Text = "Clear";
         }
+
+    private void updateUrl()
+    {
+      HyperLink statusLink = (HyperLink)fvMain.FindControl("hpStatus");
+      statusLink.NavigateUrl = "/Reports/OrderReport.aspx?orderid=" + txtID.Text;
+      HyperLink batchLink = (HyperLink)fvMain.FindControl("hpBatch");
+      batchLink.NavigateUrl = "/Reports/OrderBatchDetail.aspx?order=" + txtID.Text;
+    }
 
     protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -363,8 +373,10 @@ namespace ezMESWeb.Configure.Order
             {
                 gvTable.DataBind();
                 this.gvTablePanel.Update();
-                refresh_dispatchPopup();
+
                 fvMain.DataBind();
+                updateUrl();
+                refresh_dispatchPopup();
                 upMain.Update();
                 hide_insertPopup();
 
@@ -465,6 +477,8 @@ namespace ezMESWeb.Configure.Order
                 gvTable.DataBind();
                 this.gvTablePanel.Update();
                 fvMain.DataBind();
+                updateUrl();
+                refresh_dispatchPopup();
                 upMain.Update();
 
             }
@@ -707,6 +721,8 @@ namespace ezMESWeb.Configure.Order
             {
                 fvMain.ChangeMode(FormViewMode.ReadOnly);
                 fvMain.DataBind();
+                updateUrl();
+                refresh_dispatchPopup();
                 upMain.Update();
             }
         }
@@ -764,7 +780,7 @@ namespace ezMESWeb.Configure.Order
       linenumberTextBox.Text = "";
 
         }
-    protected void refresh_dispatchPopup()
+    private void refresh_dispatchPopup()
     {
       //populate the txtLineNumbers 
       string theText;

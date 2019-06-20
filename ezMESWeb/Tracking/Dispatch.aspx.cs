@@ -18,6 +18,8 @@
 *   02/05/2019: xdong: widen the text length limit for "alias prefix" of batch from 10 to 20 to accomodate longer prefix
 *	05/05/2019: peiyu: added print button for each dispatched order. the information on printing label include dispatched date, ponumber, po line_num, item number and description of finish
 *	05/06/2019: xdong: Added batch # to the label printed out
+*	06/14/2019: Junlu: added print batch list button to print dispatched batch list fromt he dispatched batch grid
+*	06/19/2019: xdong: add quantity column to the dispatched batch grid
 ----------------------------------------------------------------*/
 using System;
 using System.Data;
