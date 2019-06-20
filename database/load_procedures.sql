@@ -8994,7 +8994,8 @@ END$
 *    Platform Dependencies  : MySql
 *    Description            : Given an order id, list all products in that order if product_id and lot_status are not provide. Otherwise list only specified products.
 *    example	            : 
-*    Log                    :1/25/19 revised code to account for null selection of product_id, so basicly when product_id is null, display all products in the given order. 					
+*    Log                    :1/25/19 revised code to account for null selection of product_id, so basicly when product_id is null, display all products in the given order.
+*    						:6/20/2019 Peiyu Added a new variable _lot_step to allow filter orders with step name				
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `report_order`$
@@ -9002,6 +9003,7 @@ CREATE PROCEDURE `report_order`(
   IN _order_id int(10) unsigned,
   IN _product_id int(10) unsigned,
   IN _lot_status enum('dispatched','in process','in transit','hold','to warehouse','shipped','scrapped', 'done'),
+  IN _lot_step varchar(255),
   OUT _response varchar(255)
 )
 BEGIN
@@ -9068,6 +9070,7 @@ ELSEIF _product_id IS NULL OR length(_product_id) = 0 Then
            LEFT JOIN process_step ps3 on ps3.process_id = ps2.process_id and ps3.position_id = ps1.false_step_pos
      WHERE l.order_id = _order_id
        AND (_lot_status is null OR _lot_status= l.status)
+	   And (_lot_step is null or s.name like Concat('%',_lot_step , '%'))
      ORDER BY l.status;
 Else 
 	SELECT h.lot_id,
@@ -9128,9 +9131,11 @@ Else
      WHERE l.order_id = _order_id
        AND l.product_id = _product_id
        AND (_lot_status is null OR _lot_status= l.status)
+	   And (_lot_step is null or s.name like Concat('%',_lot_step , '%'))
      ORDER BY l.status;
 end if;
 END $
+
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
 *    Source File            : return_inventory.sql
