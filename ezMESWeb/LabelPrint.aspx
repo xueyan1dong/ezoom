@@ -17,6 +17,9 @@
         .auto-style2 {
             width: 50px;
         }
+        .auto-style3 {
+            width: 100px;
+        }
     </style>
 
 <style type = "text/css">
@@ -97,7 +100,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="auto-style2" valign="top">Finish:</td>
+                <td class="auto-style3" valign="top">Metal Finish:</td>
                 <td>
                     <asp:Label ID="lblFinish" runat="server" Text="Label"></asp:Label>
                 </td>

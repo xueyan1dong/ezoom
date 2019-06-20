@@ -169,6 +169,10 @@ namespace ezMESWeb.Configure.Order
             ClientScript.RegisterClientScriptBlock(this.GetType(),
                 "doPrint", strScript, true);
 
+            //register post back control for printing
+            ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
+            scriptManager.RegisterPostBackControl(this.gvLotTable);
+
             this.updateBatchBarcode();
         }
 
@@ -902,7 +906,18 @@ namespace ezMESWeb.Configure.Order
     }
     protected string[] getPOInfo(string strLotID)
     {
-      string strSQL = string.Format("SELECT ponumber, order_line_num, product, finish, alias FROM view_lot_in_process WHERE ID={0}", strLotID);
+        string strSQL = string.Format(@"
+            SELECT vlp.ponumber, vlp.order_line_num, vlp.product, av.attr_value AS finish, vlp.alias 
+                FROM view_lot_in_process AS vlp
+                JOIN product as p
+                ON p.id = vlp.product_id
+                JOIN attribute_value av
+                ON av.parent_id = p.id
+                JOIN attribute_definition ad
+                ON ad.attr_name = 'Metal Finish'
+                    AND ad.attr_parent_type = 'product'
+                    AND av.attr_id = ad.attr_id
+                WHERE vlp.ID={0}", strLotID);
 
       EzSqlCommand cmd = new CommonLib.Data.EzSqlClient.EzSqlCommand();
       cmd.Parameters.Clear();
