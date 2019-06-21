@@ -6,6 +6,7 @@
 *    Platform Dependencies  : MySql
 *    Description            : Provided with open order id, check any ongoing batches that are at step 8 (consumption material step). Listed those batches with other infor such as
 *                             ingredient_id, inventory location, et cetera.
+*							: added step input variable to filter with step name
 */
 
 DELIMITER $  -- for escaping purpose
@@ -13,6 +14,7 @@ DROP PROCEDURE IF EXISTS `order_consumption_inventory_report`$
 CREATE PROCEDURE `order_consumption_inventory_report`(
   IN _order_id int(10) unsigned,
   IN _product_id int(10) unsigned,
+  IN _lot_step varchar(255),
   OUT _response varchar(255)
 )
 
@@ -70,10 +72,11 @@ Else
            LEFT JOIN (select pd_or_mt_id, location_id, actual_quantity from inventory group by pd_or_mt_id order by actual_quantity) as inventory on inventory.pd_or_mt_id = ingredients.ingredient_id
            LEFT JOIN location l2 on inventory.location_id = l2.id
      WHERE l.order_id = _order_id
-       AND if(_product_id IS NULL, 1=1, l.product_id = _product_id)
+       AND (_product_id IS NULL or l.product_id = _product_id)
        AND s.step_type_id = 8 #consumption step
        AND l.`status` != 'done'
        AND l.quantity_status != 'made'
+       And (_lot_step is null or s.name like Concat('%',_lot_step,'%' ))
      ORDER BY l.status;
 end if;
 END

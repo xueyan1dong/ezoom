@@ -7,7 +7,8 @@
 *    Description            : Given an order id, list all products in that order if product_id and lot_status are not provide. Otherwise list only specified products.
 *    example	            : 
 *    Log                    :1/25/19 revised code to account for null selection of product_id, so basicly when product_id is null, display all products in the given order.
-*    						:6/20/2019 Peiyu Added a new variable _lot_step to allow filter orders with step name				
+*    						:6/20/2019 Peiyu Added a new variable _lot_step to allow filter orders with step name
+*							:6/21/2019 added batch location				
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `report_order`$
@@ -35,6 +36,7 @@ ELSEIF _product_id IS NULL OR length(_product_id) = 0 Then
            -- l.process_id,
            pc.name as process_name,
            l.status as lot_status,
+		   location.name as lot_location,
            l.start_quantity,
            l.actual_quantity,
            -- l.uomid,
@@ -80,6 +82,7 @@ ELSEIF _product_id IS NULL OR length(_product_id) = 0 Then
            LEFT JOIN process_step ps1 on ps1.process_id = l.process_id and ps1.position_id = if(h.position_id = 0, 1, h.position_id)
            LEFT JOIN process_step ps2 on ps2.process_id = ps1.process_id and ps2.position_id = ps1.next_step_pos
            LEFT JOIN process_step ps3 on ps3.process_id = ps2.process_id and ps3.position_id = ps1.false_step_pos
+		   LEFT JOIN location on location.id = l.location_id
      WHERE l.order_id = _order_id
        AND (_lot_status is null OR _lot_status= l.status)
 	   And (_lot_step is null or s.name like Concat('%',_lot_step , '%'))
@@ -94,6 +97,7 @@ Else
            -- l.process_id,
            pc.name as process_name,
            l.status as lot_status,
+		   location.name as lot_location,
            l.start_quantity,
            l.actual_quantity,
            -- l.uomid,
@@ -140,6 +144,7 @@ Else
            LEFT JOIN process_step ps1 on ps1.process_id = l.process_id and ps1.position_id = if(h.position_id = 0, 1, h.position_id)
            LEFT JOIN process_step ps2 on ps2.process_id = ps1.process_id and ps2.position_id = ps1.next_step_pos
            LEFT JOIN process_step ps3 on ps3.process_id = ps2.process_id and ps3.position_id = ps1.false_step_pos
+		   LEFT JOIN location on location.id = l.location_id
      WHERE l.order_id = _order_id
        AND l.product_id = _product_id
        AND (_lot_status is null OR _lot_status= l.status)
