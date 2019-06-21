@@ -20,7 +20,7 @@
       <td align="left" style="width:20%;font-size:14px;"> Order: <asp:DropDownList id="dpOrder1" Width="150px" runat="server" onselectedindexchanged="dpOrder_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList></td>
       <td align ="left" style="width:25%;font-size:14px;">Products: <asp:DropDownList id="dpProduct1"  Width="270px" runat="server"  AutoPostBack="True"></asp:DropDownList></td>
       <td align ="left" style="width:15%;font-size:14px;">Status: <asp:DropDownList ID="dpStatus1"  runat="server" ></asp:DropDownList> </td>
-      <td style ="font-size:14px">Step: <asp:TextBox id="txStep" Width ="180px" runat ="server"></asp:TextBox>  <asp:Button ID="btnRunReport" runat="server" Text="Run Report"  onclick="btnRunReport_Click"  Height="25px" Width="110px" /></td>
+      <td style ="font-size:14px">Step: <asp:TextBox id="txStep" Height="17px" Width ="180px" runat ="server"></asp:TextBox>  <asp:Button ID="btnRunReport" runat="server" Text="Run Report"  onclick="btnRunReport_Click"  Height="20px" Width="110px" /></td>
 
    </tr>
 </table>

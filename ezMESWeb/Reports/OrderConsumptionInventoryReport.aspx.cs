@@ -35,6 +35,7 @@ namespace ezMESWeb.Reports
         protected Panel pnMain;
         protected DropDownList dpProduct2, dpOrder2;
         protected ReportViewer rvDispatch;
+        protected TextBox txStep;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -130,7 +131,7 @@ namespace ezMESWeb.Reports
                         dpOrder2.SelectedIndex = 0;
                     load_order(dpOrder2.SelectedValue);
 
-                    showHistory(dpProduct2.SelectedValue, dpOrder2.SelectedValue);
+                    showHistory(dpProduct2.SelectedValue, dpOrder2.SelectedValue, txStep.Text);
 
                 }
 
@@ -226,7 +227,7 @@ namespace ezMESWeb.Reports
                 }
 
 
-                showHistory(dpProduct2.SelectedValue, dpOrder2.SelectedValue);
+                showHistory(dpProduct2.SelectedValue, dpOrder2.SelectedValue, txStep.Text);
             }
             catch (Exception ex)
             {
@@ -241,7 +242,7 @@ namespace ezMESWeb.Reports
 
         }
 
-        private void showHistory(String strProductId, String strOrderId)
+        private void showHistory(String strProductId, String strOrderId, String txtStep)
         {
 
             DataSet dispatchHistory = new DataSet();
@@ -254,6 +255,10 @@ namespace ezMESWeb.Reports
             else
                 ezCmd.Parameters.AddWithValue("@_product_id", DBNull.Value);
 
+            if (txtStep.Length > 0)
+                ezCmd.Parameters.AddWithValue("@_lot_step", txtStep);
+            else
+                ezCmd.Parameters.AddWithValue("@_lot_step", DBNull.Value);
 
             ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
             ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;

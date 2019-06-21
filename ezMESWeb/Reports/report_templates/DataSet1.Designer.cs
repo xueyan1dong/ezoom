@@ -6717,6 +6717,8 @@ namespace ezMESWeb.Reports.report_templates {
             
             private global::System.Data.DataColumn columnbatch_link;
             
+            private global::System.Data.DataColumn columnlot_location;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public report_order_batch_detailDataTable() {
@@ -6888,6 +6890,14 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn lot_locationColumn {
+                get {
+                    return this.columnlot_location;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -6940,7 +6950,8 @@ namespace ezMESWeb.Reports.report_templates {
                         string last_move_time, 
                         string priority, 
                         string contact, 
-                        string batch_link) {
+                        string batch_link, 
+                        string lot_location) {
                 report_order_batch_detailRow rowreport_order_batch_detailRow = ((report_order_batch_detailRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         lot_id,
@@ -6959,7 +6970,8 @@ namespace ezMESWeb.Reports.report_templates {
                         last_move_time,
                         priority,
                         contact,
-                        batch_link};
+                        batch_link,
+                        lot_location};
                 rowreport_order_batch_detailRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowreport_order_batch_detailRow);
                 return rowreport_order_batch_detailRow;
@@ -6999,6 +7011,7 @@ namespace ezMESWeb.Reports.report_templates {
                 this.columnpriority = base.Columns["priority"];
                 this.columncontact = base.Columns["contact"];
                 this.columnbatch_link = base.Columns["batch_link"];
+                this.columnlot_location = base.Columns["lot_location"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7038,6 +7051,8 @@ namespace ezMESWeb.Reports.report_templates {
                 base.Columns.Add(this.columncontact);
                 this.columnbatch_link = new global::System.Data.DataColumn("batch_link", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnbatch_link);
+                this.columnlot_location = new global::System.Data.DataColumn("lot_location", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlot_location);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -13718,6 +13733,23 @@ namespace ezMESWeb.Reports.report_templates {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string lot_location {
+                get {
+                    try {
+                        return ((string)(this[this.tablereport_order_batch_detail.lot_locationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'lot_location\' in table \'report_order_batch_detail\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tablereport_order_batch_detail.lot_locationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool Islot_idNull() {
                 return this.IsNull(this.tablereport_order_batch_detail.lot_idColumn);
             }
@@ -13918,6 +13950,18 @@ namespace ezMESWeb.Reports.report_templates {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void Setbatch_linkNull() {
                 this[this.tablereport_order_batch_detail.batch_linkColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool Islot_locationNull() {
+                return this.IsNull(this.tablereport_order_batch_detail.lot_locationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void Setlot_locationNull() {
+                this[this.tablereport_order_batch_detail.lot_locationColumn] = global::System.Convert.DBNull;
             }
         }
         
