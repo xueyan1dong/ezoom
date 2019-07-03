@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="../../Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="SalesOrderConfig.aspx.cs" Inherits="ezMESWeb.Configure.Order.SalesOrderConfig"
- Title="Sale Order Configuration -- ezOOM" %>
+﻿<%@ Page Language="C#" MasterPageFile="../../Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="SalesOrderConfig.aspx.cs" Inherits="ezMESWeb.Configure.Order.SalesOrderConfig" 
+ Title="Sale Order Configuration -- ezOOM" %>   
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -37,12 +37,55 @@
 
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1">
 
-    <asp:TabContainer ID="tcMain" runat="server" 
-        Height="0px" Width="100%" CssClass="amber_tab" 
-        onclientactivetabchanged="reloadContent" >
-    </asp:TabContainer>
-<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" 
-        EnableScriptGlobalization="True" />
+<%--<asp:TabContainer ID="tcMain" runat="server" Height="0px" Width="100%" CssClass="amber_tab" onclientactivetabchanged="reloadContent" >
+</asp:TabContainer>--%>
+<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="True" />
+
+
+<asp:GridView ID="GridView1" runat="server" Caption="Orders"
+               CssClass="datagrid" GridLines="None" DataSourceID="SqlDataSource1" DataKeyNames="id"
+               EmptyDataText="There is no orders" Height="200px" Width="800px" AllowPaging="True" AllowSorting="True"
+               AutoGenerateColumns="False" OnSelectedIndexChanged = "GridView1_OnSelectedIndexChanged"  > <%--OnRowCreated="GridView1_RowCreated"--%>
+                
+            <Columns>
+           
+                <asp:TemplateField>
+                    <ItemTemplate>
+                <asp:LinkButton ID="showOrder" runat="server" CommandName="Select" Text ="Select" Visible="true"/>
+                        </ItemTemplate>
+                </asp:TemplateField>
+               
+                 <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="true" />
+                  <asp:BoundField DataField="ponumber" HeaderText="PO #" ReadOnly="True" SortExpression="ponumber" />
+                <asp:BoundField DataField="priority" HeaderText="Priority" ReadOnly="True" SortExpression="priority" />
+                <asp:BoundField DataField="Expected_Deliver_Date" HeaderText="Expected Delivery Date" ReadOnly="True" SortExpression="Expected_Deliver_Date" />
+                <asp:BoundField DataField="Quantity_Requested" HeaderText="Quantity Requested" ReadOnly="True" SortExpression="Quantity_Requested" />
+                <asp:BoundField DataField="Quantity_in_Process" HeaderText="Quantity in Process" ReadOnly="True" SortExpression="Quantity_in_Process" />
+                <asp:BoundField DataField="Quantity_Made_or_Shipped" HeaderText="Quantity Made or Shipped" ReadOnly="True" SortExpression="Quantity_Made_or_Shipped" />
+             </Columns>      
+             </asp:GridView> 
+
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+           ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
+           ProviderName="System.Data.Odbc" 
+       SelectCommand=" SELECT g.id,
+              ponumber,
+			  priority.name as Priority,#pr.name as Priority,
+              get_local_time(expected_deliver_date) as Expected_Deliver_Date,
+              t.r as Quantity_Requested,
+              t.p as Quantity_in_Process,
+              (t.m + t.s) as Quantity_Made_Or_Shipped
+         FROM order_general g, (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as p, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t, priority
+         #Left Join priority pr on pr.id = g.priority
+         where t.order_id = g.id and priority.id = g.priority"
+        EnableCaching="false">
+           <SelectParameters>
+               <asp:ControlParameter ControlID="txtID" DefaultValue="0" Name="Id" 
+                   PropertyName="Text" />
+           </SelectParameters>
+        </asp:SqlDataSource> 
+
+
 <table style="width: 100%; height: 423px; margin-right: 0px; margin-top: 0px; border : 2px solid #6FBD06; ">
       <tr>
       <td style="width: 100%;">

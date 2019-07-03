@@ -26,7 +26,6 @@ using System.Web.UI.WebControls.WebParts;
 using System.Data.Common;
 using AjaxControlToolkit;
 
-
 using CommonLib.Data.EzSqlClient;
 
 namespace ezMESWeb.Configure.Order
@@ -55,8 +54,9 @@ namespace ezMESWeb.Configure.Order
     protected ModalPopupExtender MessagePopupExtender;
     protected System.Data.Common.DbDataReader ezReaderLot;
     protected UpdatePanel tbLotPanel;
-    protected GridView gvLotTable;
+    protected GridView gvLotTable, GridView1;
     protected Button btnPrintBatches;
+        
 
     protected override void OnInit(EventArgs e)
         {
@@ -95,76 +95,85 @@ namespace ezMESWeb.Configure.Order
         {
 
 
-                string id=Request.QueryString["Id"];
-                short actTab;
-                
-                TabPanel temp;
-                short count = 0;
+            string id = Request.QueryString["Id"];
+            short actTab;
+
+            TabPanel temp;
+            short count = 0;
 
 
-                if (!IsPostBack)
+            if (!IsPostBack)
+            {
+                if (Request.QueryString["orderId"] != null && Request.QueryString["orderPO"] != null)
                 {
-                    try
-                    {
-
-                        ConnectToDb();
-                        ezCmd = new EzSqlCommand();
-                        ezCmd.Connection = ezConn;
-                        ezCmd.CommandText = "SELECT o.id, ponumber, c.name FROM order_general o LEFT JOIN client c ON o.client_id = c.id WHERE order_type = 'customer'";
-                        ezCmd.CommandType = CommandType.Text;
-                        if (ezConn.State == ConnectionState.Open)
-                        {
-                            ezReader = ezCmd.ExecuteReader();
-                            while (ezReader.Read())
-                            {
-                                temp = new TabPanel();
-                                temp.ID = String.Format("{0}", ezReader[0]);
-                                temp.HeaderText = String.Format("{0}", ezReader[1]);
-                                temp.ToolTip = string.Format("order to/from {0}", ezReader[2]);
-                                temp.BackColor = System.Drawing.Color.Silver;
-                                tcMain.Controls.Add(temp);
-                                if ((id != null) && (temp.ID.Equals(id)))
-                                {
-                                    show_ExistObject(count);
-
-                                }
-                                count++;
-                            }
-
-                            ezReader.Close();
-                            ezReader.Dispose();
-                            ezCmd.Dispose();
-
-                            temp = new TabPanel();
-                            temp.ID = "newTab";
-                            temp.HeaderText = "+";
-                            temp.ToolTip = "Add new order.";
-                            temp.BackColor = System.Drawing.Color.Silver;
-                            temp.TabIndex = count;
-                            tcMain.Controls.Add(temp);
-                            tcMain.DataBind();
-                            if (id == null)
-                            {
-                                if (Request.QueryString["Tab"] != null)
-                                {
-                                    actTab = Convert.ToInt16(Request.QueryString["Tab"]);
-                                    if (actTab < count)
-                                        show_ExistObject(actTab);
-                                    else
-                                        show_NewObject(count);
-                                }
-                                else
-                                    show_NewObject(count);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        lblMainError.Text = ex.Message;
-                    }
-
+                    show_ExistObject(Request.QueryString["orderId"], Request.QueryString["orderPO"]);
                 }
+                    
+            }
+                
+            //if (!IsPostBack)
+            //{
+            //    try
+            //    {
 
+            //        ConnectToDb();
+            //        ezCmd = new EzSqlCommand();
+            //        ezCmd.Connection = ezConn;
+            //        ezCmd.CommandText = "SELECT o.id, ponumber, c.name FROM order_general o LEFT JOIN client c ON o.client_id = c.id WHERE order_type = 'customer'";
+            //        ezCmd.CommandType = CommandType.Text;
+            //        if (ezConn.State == ConnectionState.Open)
+            //        {
+            //            ezReader = ezCmd.ExecuteReader();
+            //            while (ezReader.Read())
+            //            {
+            //                temp = new TabPanel();
+            //                temp.ID = String.Format("{0}", ezReader[0]);
+            //                temp.HeaderText = String.Format("{0}", ezReader[1]);
+            //                temp.ToolTip = string.Format("order to/from {0}", ezReader[2]);
+            //                temp.BackColor = System.Drawing.Color.Silver;
+            //                tcMain.Controls.Add(temp);
+            //                if ((id != null) && (temp.ID.Equals(id)))
+            //                {
+            //                    show_ExistObject(count,"1", "1");
+
+            //                }
+            //                count++;
+            //            }
+
+            //            ezReader.Close();
+            //            ezReader.Dispose();
+            //            ezCmd.Dispose();
+
+            //            temp = new TabPanel();
+            //            temp.ID = "newTab";
+            //            temp.HeaderText = "+";
+            //            temp.ToolTip = "Add new order.";
+            //            temp.BackColor = System.Drawing.Color.Silver;
+            //            temp.TabIndex = count;
+            //            tcMain.Controls.Add(temp);
+            //            tcMain.DataBind();
+            //            if (id == null)
+            //            {
+            //                if (Request.QueryString["Tab"] != null)
+            //                {
+            //                    actTab = Convert.ToInt16(Request.QueryString["Tab"]);
+            //                    if (actTab < count)
+            //                        show_ExistObject(actTab, "1","1");
+            //                    else
+            //                        show_NewObject(count);
+            //                }
+            //                else
+            //                    show_NewObject(count);
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        lblMainError.Text = ex.Message;
+            //    }
+
+        //}
+            GridView1.SelectedIndexChanged += new EventHandler(GridView1_OnSelectedIndexChanged);
             string strScript = this.getPrintJS();
             ClientScript.RegisterClientScriptBlock(this.GetType(),
                 "doPrint", strScript, true);
@@ -176,20 +185,45 @@ namespace ezMESWeb.Configure.Order
             this.updateBatchBarcode();
         }
 
-        protected void show_ExistObject(short tabIndex)
+
+
+        protected void GridView1_OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            tcMain.ActiveTabIndex = tabIndex;
-            txtID.Text = tcMain.ActiveTab.ID;
+
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                if (row.RowIndex == GridView1.SelectedIndex)
+                {
+                    string orderId = row.Cells[1].Text;
+                    string orderPO = row.Cells[2].Text;
+                    
+                    string strUrl = string.Format("/Configure/Order/SalesOrderConfig.aspx?orderId={0}&orderPO={1}", orderId, orderPO);
+                    Server.Transfer(strUrl);
+
+                }
+
+            }
+
+        }
+
+
+        protected void show_ExistObject(string orderId, string orderPO)
+        {
+
+            //tcMain.ActiveTabIndex = tabIndex;
+            //txtID.Text = tcMain.ActiveTab.ID;//orderId;//tcMain.ActiveTab.ID;
+            txtID.Text = orderId;
             fvMain.Caption = "General Sales Order Information";
             fvMain.ChangeMode(FormViewMode.ReadOnly);
 
-            string strPONumber = tcMain.ActiveTab.HeaderText;
-            Image barcode = (Image)fvMain.FindControl("barcode_image");
+            string strPONumber = orderPO;//tcMain.ActiveTab.HeaderText;
+            //strPONumber = orderPO;
+            //Label temp = (Label)fvMain.FindControl("commentLabel");
+            Image barcode = (Image)fvMain.FindControl("barcode_image"); //this.Master.FindControl("fvMain").FindControl("barcode_image") as Image;
             barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strPONumber + "&h=60&w=400&il=true&t=Code 128-B";
 
-            //fvMain.DataBind();
-            //upMain.Update();
+            fvMain.DataBind();
+            upMain.Update();
             btnDo.Text = "Update Order Info";
             btnCancel.Text = "Delete Order";
             btnInsert.Visible = true;
@@ -198,22 +232,22 @@ namespace ezMESWeb.Configure.Order
             updateUrl();
             refresh_dispatchPopup();
         }
-        protected void show_NewObject(short tabIndex)
-        {
+        //protected void show_NewObject(short tabIndex)
+        //{
 
-            tcMain.ActiveTabIndex = tabIndex;
-            
-            fvMain.ChangeMode(FormViewMode.Insert);
+        //    tcMain.ActiveTabIndex = tabIndex;
 
-            fvMain.Caption  = "General Sales Order Information:";
-            btnInsert.Visible =false;
-      btnDispatch.Visible = false;
-            gvTable.Visible = false;
-            btnDo.Text = "Submit";
-            btnCancel.Text = "Clear";
-        }
+        //    fvMain.ChangeMode(FormViewMode.Insert);
 
-    private void updateUrl()
+        //    fvMain.Caption = "General Sales Order Information:";
+        //    btnInsert.Visible = false;
+        //    btnDispatch.Visible = false;
+        //    gvTable.Visible = false;
+        //    btnDo.Text = "Submit";
+        //    btnCancel.Text = "Clear";
+        //}
+
+        private void updateUrl()
     {
       HyperLink statusLink = (HyperLink)fvMain.FindControl("hpStatus");
       statusLink.NavigateUrl = "/Reports/OrderReport.aspx?orderid=" + txtID.Text;
@@ -731,13 +765,13 @@ namespace ezMESWeb.Configure.Order
             }
         }
 
-        protected void tcMain_ActiveTabChanged(object sender, EventArgs e)
-        {
-            if (tcMain.ActiveTabIndex+1 == tcMain.Controls.Count)
-                show_NewObject((short)tcMain.ActiveTabIndex);
-            else
-                show_ExistObject((short)tcMain.ActiveTabIndex);
-        }
+        //protected void tcMain_ActiveTabChanged(object sender, EventArgs e)
+        //{
+        //    if (tcMain.ActiveTabIndex + 1 == tcMain.Controls.Count)
+        //        show_NewObject((short)tcMain.ActiveTabIndex);
+        //    else
+        //        show_ExistObject((short)tcMain.ActiveTabIndex, "1", "1");
+        //}
         protected void clear_generalInsert()
         {
             ((DropDownList)fvMain.FindControl("ddClient")).SelectedIndex = -1;
@@ -983,4 +1017,23 @@ namespace ezMESWeb.Configure.Order
             return strScript;
         }
     }
+
+    //protected void GridView1_RowCreated(object sender, GridViewRowEventArgs e)
+    //{
+    //    e.Row.Attributes["onmouseover"] = "this.style.cursor='hand';this.style.textDecoration='underline';";
+    //    e.Row.Attributes["onmouseout"] = "this.style.textDecoration='none';";
+    //    e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink((GridView)sender, "Select$" + e.Row.RowIndex);
+
+    //}
+
+    //protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    //{
+    //    if (e.CommandName == "view")
+    //    {
+    //        GridViewRow gvr = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+    //        TextBox tbComments = ((TextBox)gvr.FindControl("txtcomment"));
+
+    //        tbComments.Visible = true;
+    //    }
+    //} 
 }
