@@ -156,6 +156,8 @@
     <Content Include="Tracking\Inventory\InventoryLabelPrint.aspx" />
     <Content Include="Tracking\Inventory\Inventory_Relocate.xml" />
     <Content Include="Tracking\Inventory\LoadInventoryGeneral.aspx" />
+    <Content Include="Tracking\OperatorMoveLot.aspx" />
+    <Content Include="Tracking\OperatorTracking.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -284,6 +286,10 @@
     <Compile Include="Tracking\Inventory\LoadInventoryGeneral.aspx.designer.cs">
       <DependentUpon>LoadInventoryGeneral.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Tracking\OperatorMoveLot.aspx.cs">
+      <DependentUpon>OperatorMoveLot.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Tracking\Reposition.aspx.cs">
       <DependentUpon>Reposition.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -294,6 +300,10 @@
     </Compile>
     <Compile Include="Tracking\AddProductToInventory.aspx.cs">
       <DependentUpon>AddProductToInventory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tracking\OperatorTracking.aspx.cs">
+      <DependentUpon>OperatorTracking.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Tracking\UnholdLot.aspx.cs">

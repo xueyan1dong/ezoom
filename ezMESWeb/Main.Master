@@ -84,12 +84,17 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
 
 <div>
 	<ul class="glossymenu">
- <% if (Session["Role"].Equals("Admin") || Session["Role"].Equals("Manager"))
+  <% if (Session["Role"].Equals("Admin") || Session["Role"].Equals("Engineer"))
      {%>   
-
 	<li><a id="Configuration" href="/Configure/Configuration.aspx"><b>Configuration</b></a></li>
-  <%} %>
+  <%} else if (Session["Role"].Equals("Operator"))
+    {%>   
+	<li><a id="OperatorTracking" href="/Tracking/OperatorTracking.aspx"><b>Tracking</b></a></li>
+  <%}
+  else
+  {%>
 	<li><a id="Tracking" href="/Tracking/Tracking.aspx"><b>Tracking</b></a></li>
+    <%} %>
 	<li><a id="Report" href="/Reports/Report.aspx"><b>Report</b></a></li>
 	<li><a id="ContactUs" href="/ContactUs.aspx"><b>Feedback</b></a></li>
        <li><a id="Help" href="JavaScript:newPopup('/help.htm');"><b>Help</b></a></li>

@@ -82,8 +82,18 @@
       <siteMapNode url="~/Reports/OrderConsumptionInventoryReport.aspx" title="Consumption Report" description="Order Consumption Inventory Report" />
       <siteMapNode url="~/Reports/NewOrderDemandPrediction.aspx" title="New Order Demand" description="New Order Demand Prediction Overview" />
     </siteMapNode>
-
+  
   <siteMapNode url="ContactUs.aspx" title="Contact us"  description="Contact us page" />
+
+    <siteMapNode url="~/Tracking/OperatorTracking.aspx"  title="OperatorTracking" description="Operator Tracking">
+      <siteMapNode  title="Shopfloor"  description="Shopfloor Tracking" >
+        <siteMapNode  url="~/Tracking/OperatorMoveLot.aspx" title="Move Product"  description="Move Product" />
+      </siteMapNode>
+
+    </siteMapNode>
+    
   </siteMapNode>
+  
+
 
 </siteMap>

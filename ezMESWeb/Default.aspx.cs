@@ -122,9 +122,14 @@ namespace ezMESWeb
                Session["LoggedIn"] = true;
                Session["LocationId"] = Convert.ToString(temp[4]);
 
+              //for admin and engineer, present configuration module as default
                if (Session["Role"].ToString().Equals("Admin") ||
-                    Session["Role"].ToString().Equals("Manager"))
+                    Session["Role"].ToString().Equals("Engineer"))
                   Server.Transfer("~/Configure/configuration.aspx");
+               //for operator, present operator specific tracking menu
+               else if (Session["Role"].ToString().Equals("Operator"))
+                  Server.Transfer("~/Tracking/OperatorTracking.aspx");
+               //for manager and qa, present general tracking menu
                else
                   Server.Transfer("~/Tracking/Tracking.aspx");
 
