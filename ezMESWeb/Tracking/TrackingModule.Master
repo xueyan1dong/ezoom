@@ -91,24 +91,41 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
   <% if (Session["Role"].Equals("Admin") || Session["Role"].Equals("Engineer"))
      {%>   
 	<li><a id="Configuration" href="/Configure/Configuration.aspx"><b>Configuration</b></a></li>
+	<li><a id="Tracking" href="/Tracking/Tracking.aspx"><b>Tracking</b></a></li>
+	<li><a id="Report" href="/Reports/Report.aspx"><b>Report</b></a></li>
+	<li><a id="ContactUs" href="/ContactUs.aspx"><b>Feedback</b></a></li>
+       <li><a id="Help" href="JavaScript:newPopup('/help.htm');"><b>Help</b></a></li>
   <%} else if (Session["Role"].Equals("Operator"))
     {%>   
-	<li><a id="OperatorTracking" href="/Tracking/OperatorTracking.aspx"><b>Tracking</b></a></li>
+	<li><a id="Tracking" href="/Tracking/OperatorTracking.aspx"><b>Tracking</b></a></li>
+	<li><a id="Report" href="/Reports/Report.aspx"><b>Report</b></a></li>
+	<li><a id="ContactUs" href="/ContactUs.aspx"><b>Feedback</b></a></li>
+       <li><a id="Help" href="JavaScript:newPopup('/help.htm');"><b>Help</b></a></li>
+  <%} else if (Session["Role"].Equals("QA"))
+    {%>   
+	<li><a id="Tracking" href="/Tracking/QATracking.aspx"><b>Tracking</b></a></li>
+	<li><a id="Report" href="/Reports/Report.aspx"><b>Report</b></a></li>
+	<li><a id="ContactUs" href="/ContactUs.aspx"><b>Feedback</b></a></li>
+       <li><a id="Help" href="JavaScript:newPopup('/help.htm');"><b>Help</b></a></li>
+  <%} else if (Session["Role"].Equals("ClientQA"))
+    {%>   
+	<li><a id="Tracking" href="/Tracking/QATracking.aspx"><b>QA Tracking</b></a></li>
   <%}
   else
   {%>
 	<li><a id="Tracking" href="/Tracking/Tracking.aspx"><b>Tracking</b></a></li>
-    <%} %>
 	<li><a id="Report" href="/Reports/Report.aspx"><b>Report</b></a></li>
 	<li><a id="ContactUs" href="/ContactUs.aspx"><b>Feedback</b></a></li>
        <li><a id="Help" href="JavaScript:newPopup('/help.htm');"><b>Help</b></a></li>
+    <%} %>
 	</ul>
 </div>
 
-<% if (! Session["Role"].Equals("tester")) {%>
+
 
   <form id="Form1" runat="server">   
   <div id="sidebar1" style="padding-bottom:390px">
+<% if (Session["Role"].Equals("Operator")) {%>
  <asp:TreeView ID="TreeView1" runat="server" DataSourceID="SiteMapDataSource1" ExpandDepth="1" ImageSet="Arrows" MaxDataBindDepth="1" >
                 <ParentNodeStyle Font-Bold="False" />
                 <HoverNodeStyle Font-Underline="True" ForeColor="#5555DD" />
@@ -117,12 +134,49 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
                 <NodeStyle Font-Names="Verdana" Font-Size="1em" ForeColor="Black" HorizontalPadding="1px"
                     NodeSpacing="0px" VerticalPadding="5px" />
                    </asp:TreeView>
-               <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="False" StartingNodeUrl="~/Tracking/Tracking.aspx"  />
+               <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="False" StartingNodeUrl="~/Tracking/OperatorTracking.aspx"  />
         
 </div>   
  
 	<div id="mainContent"> 
 	 <center><b> Tracking Module</b> </center>
+<%} else if (Session["Role"].Equals("ClientQA") || Session["Role"].Equals("QA")) {%>
+ <asp:TreeView ID="TreeView3" runat="server" DataSourceID="SiteMapDataSource3" ExpandDepth="1" ImageSet="Arrows" MaxDataBindDepth="1" >
+                <ParentNodeStyle Font-Bold="False" />
+                <HoverNodeStyle Font-Underline="True" ForeColor="#5555DD" />
+                <SelectedNodeStyle Font-Underline="True" ForeColor="#5555DD" HorizontalPadding="1px"
+                    VerticalPadding="5px" />
+                <NodeStyle Font-Names="Verdana" Font-Size="1em" ForeColor="Black" HorizontalPadding="1px"
+                    NodeSpacing="0px" VerticalPadding="5px" />
+                   </asp:TreeView>
+               <asp:SiteMapDataSource ID="SiteMapDataSource3" runat="server" ShowStartingNode="False" StartingNodeUrl="~/Tracking/QATracking.aspx"  />
+        
+</div>   
+ 
+	<div id="mainContent"> 
+	 <center><b> Tracking Module</b> </center>
+
+<%} else if (!Session["Role"].Equals("Tester")) {%>
+ <asp:TreeView ID="TreeView2" runat="server" DataSourceID="SiteMapDataSource2" ExpandDepth="1" ImageSet="Arrows" MaxDataBindDepth="1" >
+                <ParentNodeStyle Font-Bold="False" />
+                <HoverNodeStyle Font-Underline="True" ForeColor="#5555DD" />
+                <SelectedNodeStyle Font-Underline="True" ForeColor="#5555DD" HorizontalPadding="1px"
+                    VerticalPadding="5px" />
+                <NodeStyle Font-Names="Verdana" Font-Size="1em" ForeColor="Black" HorizontalPadding="1px"
+                    NodeSpacing="0px" VerticalPadding="5px" />
+                   </asp:TreeView>
+               <asp:SiteMapDataSource ID="SiteMapDataSource2" runat="server" ShowStartingNode="False" StartingNodeUrl="~/Tracking/Tracking.aspx"  />
+        
+</div>   
+ 
+	<div id="mainContent"> 
+	 <center><b> Tracking Module</b> </center>
+<% } else { %>
+</div>
+<div id="mainContent">
+ <br />
+<% } %>
+
 <br />
 	 
       <table style="width:100%; height: 380px; margin-right: 0px; margin-top: 0px; border : 2px solid #FFCC66; ">
@@ -137,25 +191,9 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
       </div>  
 	</div>
       <div id="footer">
-		<a href="#">&copy; Copyright 2018 IT Helps LLC</a> 
-		<p id="firewall">Updated: 10:15 pm ET May 09, 2018</p></div>
+		<a href="#">&copy; Copyright 2019 IT Helps LLC</a> 
+		<p id="firewall">Updated: 10:15 pm ET July 09, 2019</p></div>
 	</div>
    </form>
-<% } else { %>
-<div id="mainContent">
- <br /><br />
-<table style="width:100%; height: 380px; margin-right: 0px; margin-top: 0px; border : 2px solid #FFCC66; ">
-    <tr>
-<td valign="top" >
-<font id="RedTextLargeBold">You're entering the test page...</font>
-</td></tr></table>
-</div>
-</div>
- <div id="footer">
-		<a href="#">&copy; Copyright 2018 IT Holding LLC</a> 
-		<p id="firewall">Updated: 10:15 pm ET May 09, 2018</p></div>
-</div>
-
-<% } %>
 </body>
 </html>

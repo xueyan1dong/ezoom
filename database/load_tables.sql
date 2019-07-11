@@ -1085,7 +1085,9 @@ CREATE TABLE `feedback` (
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 	
-*    7/8/2019: Xueyan Dong: added column: description	to hold the description of privileges of the role		
+*    7/8/2019: Xueyan Dong: added column: description	to hold the description of privileges of the role
+*    7/10/2019: Xueyan Dong: inserted a new role, Operator, to the table		
+*    7/11/2019: Xueyan Dong: inserted a new role, ClientQA, to the table. 
 */
 DELIMITER $ 
 DROP TABLE IF EXISTS `system_roles`$
@@ -1102,6 +1104,7 @@ Insert into `system_roles` ( `applicationId`, `name`, `description`) values (1, 
 Insert into `system_roles` ( `applicationId`, `name`, `description`) values (1, 'QA', 'Quality Assurance. Has access to all forms')$
 Insert into `system_roles` ( `applicationId`, `name`, `description`) values (1, 'Engineer', 'Product Engineer. Has access to all forms')$
 Insert into `system_roles` ( `applicationId`, `name`, `description`) values (1, 'Operator', 'Operator on Shop floor. Has access to Move Product by Operator form')$
+Insert into `system_roles` ( `applicationId`, `name`, `description`) values (1, 'ClientQA', 'Quality Assurance person from client. They only move qa orders assigned to them')$
 
 DROP TABLE IF EXISTS `users_in_roles`$
 CREATE TABLE `users_in_roles` (
