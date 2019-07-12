@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------
-*    Copyright 2009 Ambersoft LLC.
+*    Copyright 2009 ~ Current  IT Helps LLC
 *    Source File            : Default.aspx.cs
 *    Created By             : Fei Xue
 *    Date Created           : 11/03/2009
@@ -9,6 +9,7 @@
 *    Log                    :
 *    11/03/2009: Fey Xue: first created
 *    06/17/2019: Xueyan Dong: Pull out and save employee location in session variable
+*    07/11/2019: Xueyan Dong: Added code to direct user to different home page according to user role
 ----------------------------------------------------------------*/
 
 using System;
@@ -129,8 +130,11 @@ namespace ezMESWeb
                //for operator, present operator specific tracking menu
                else if (Session["Role"].ToString().Equals("Operator"))
                   Server.Transfer("~/Tracking/OperatorTracking.aspx");
-               //for manager and qa, present general tracking menu
-               else
+               //for qa or client qa, present QA tracking menu
+              else if (Session["Role"].ToString().Equals("QA") || Session["Role"].ToString().Equals("ClientQA"))
+            Server.Transfer("~/Tracking/QATracking.aspx");
+              //for manager and qa, present general tracking menu
+              else
                   Server.Transfer("~/Tracking/Tracking.aspx");
 
                break;
