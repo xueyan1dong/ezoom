@@ -131,6 +131,11 @@
     <Content Include="Configure\Product\ProductCategory.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Configure\User\ConfigEmployeeGroup.aspx" />
+    <Content Include="Configure\User\EmployeeGroup_insert.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configure\User\EmployeeGroup_modify.xml" />
     <Content Include="Images\bg.gif" />
     <Content Include="Images\bg_preamble.jpg" />
     <Content Include="Images\Logo.gif" />
@@ -236,6 +241,10 @@
     </Compile>
     <Compile Include="Configure\Product\LoadProduct.aspx.designer.cs">
       <DependentUpon>LoadProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configure\User\ConfigEmployeeGroup.aspx.cs">
+      <DependentUpon>ConfigEmployeeGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="LabelPrint.aspx.cs">
       <DependentUpon>LabelPrint.aspx</DependentUpon>
