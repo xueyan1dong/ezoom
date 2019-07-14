@@ -1,15 +1,16 @@
 /*--------------------------------------------------------------
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : OperatorMoveLot.aspx.cs
+*    Source File            : QAMoveLot.aspx.cs
 *    Created By             : Xueyan Dong
-*    Date Created           : 07/10/2019
+*    Date Created           : 07/11/2019
 *    Platform Dependencies  : .NET 
-*    Description            : UI for waterworks operator to process product batches 
+*    Description            : UI for waterworks and client QA personnel to process QA Order/Batches. 
 *    Log                    :
-*    07/10/2019: Xueyan Dong: Created from MoveLot class. It differs from MoveLot for it only show product batches assigned to operator
+*    07/10/2019: Xueyan Dong: Created from MoveLot class. It differs from MoveLot for it only show QA batches and QA 
 ----------------------------------------------------------------*/
 using System;
 using System.Data;
+
 using System.Configuration;
 using System.Collections;
 using System.Web;
@@ -22,7 +23,7 @@ using CommonLib.Data.EzSqlClient;
 
 namespace ezMESWeb.Tracking
 {
-  public partial class OperatorMoveLot : TrackTemplate
+  public partial class QAMoveLot : TrackTemplate
    {
 
 

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="TrackingModule.Master" AutoEventWireup="true" CodeBehind="OperatorMoveLot.aspx.cs" Inherits="ezMESWeb.Tracking.OperatorMoveLot" Title="Operator Move Product -- ezOOM" %>
+<%@ Page Language="C#" MasterPageFile="TrackingModule.Master" AutoEventWireup="true" CodeBehind="QAMoveLot.aspx.cs" Inherits="ezMESWeb.Tracking.QAMoveLot" Title="Process QA Order -- ezOOM" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register Assembly="IdeaSparx.CoolControls.Web" Namespace="IdeaSparx.CoolControls.Web" TagPrefix="asp" %>
 

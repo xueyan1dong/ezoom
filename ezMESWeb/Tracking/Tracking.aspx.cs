@@ -1,3 +1,13 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : Tracking.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 11/03/2009
+*    Platform Dependencies  : .NET 2.0
+*    Description            : Product Batch Tracking module homepage for Admin, Manager, and Engineer. it loads in TrackingModule.Master
+*
+*    Log                    :
+----------------------------------------------------------------*/
 using System;
 using System.Data;
 using System.Configuration;

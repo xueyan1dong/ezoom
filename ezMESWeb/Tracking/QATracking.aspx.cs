@@ -1,13 +1,13 @@
 /*--------------------------------------------------------------
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : TrackingModule.Master.cs
+*    Source File            : QATracking.aspx.cs
 *    Created By             : Xueyan Dong
-*    Date Created           : 11/03/2009
+*    Date Created           : 07/11/2019
 *    Platform Dependencies  : .NET 2.0
-*    Description            : 
+*    Description            : QA Order Batch Tracking module homepage for QA. it loads in TrackingModule.Master
 *
 *    Log                    :
-*    07/11/2019: Xueyan Dong: Added code to direct user to different tab menu and side bar menu according to role of user
+*    07/11/2019: Xueyan Dong: First Created
 ----------------------------------------------------------------*/
 using System;
 using System.Data;
@@ -22,13 +22,18 @@ using System.Web.UI.HtmlControls;
 
 namespace ezMESWeb.Tracking
 {
-   public partial class TrackingModule : System.Web.UI.MasterPage
+   public partial class QATracking : System.Web.UI.Page
    {
       protected void Page_Load(object sender, EventArgs e)
       {
-         if ((Session["LoggedIn"]==null)||(!(bool)Session["LoggedIn"]))
-            Server.Transfer("/Default.aspx");
+          if (Session["UserID"] == null)
+              Server.Transfer("/Default.aspx");
+          else
+          {
+              Label tLabel = (Label)Page.Master.FindControl("lblName");
+              if (!tLabel.Text.StartsWith("Welcome"))
+                  tLabel.Text = "Welcome " + (string)(Session["FirstName"]) + "!";
+          }
       }
-
    }
 }

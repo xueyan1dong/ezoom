@@ -5,9 +5,12 @@ Insert into priority (name) value("High");
 Insert into priority (name) value("Critical");
 Insert into priority (name) value("Showstopper");
 -- insert company into organization table at set up
-INSERT INTO organization (name, description)
-VALUES ('company', 'This is the most top level organization for the company');
-
+INSERT INTO organization (name, parent_organization, description, root_org_type)
+VALUES ('Wateworks', 2, 'This is the most top level organization for Waterworks', 'host');
+INSERT INTO organization (name, parent_organization, description, root_org_type)
+VALUES ('Wateworks MTO', 1, 'This is the most top level organization for Waterworks', 'host');
+INSERT INTO organization (name, parent_organization, description, root_org_type)
+VALUES ('Wateworks QM', 1, 'This is the most top level organization for Waterworks', 'host');
 -- insert company specific information
  INSERT INTO company (name, 
                    db_name, 
@@ -90,9 +93,12 @@ insert into company (name,
       WHERE id = 1;
 
 -- insert a dummy employee group to be used by everybody initially.
-INSERT INTO employee_group (name, or_id, ifprivilege, description)
-VALUES('general', 1, 0, 'This group represents the whole company');
-
+INSERT INTO employee_group (name, org_id, ifprivilege, description)
+VALUES('Waterworks General', 1, 0, 'This group represents the whole company');
+INSERT INTO employee_group (name, org_id, ifprivilege, description)
+VALUES('Waterworks MTO', 2, 0, 'This group of users that perform MTO operations');
+INSERT INTO employee_group (name, org_id, ifprivilege, description)
+VALUES('Waterworks and Client QM', 3, 0, 'This group of waterworks and its client users that perform QMS operations');
 -- insert an admin account
 INSERT INTO employee 
   (company_id, 

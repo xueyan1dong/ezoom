@@ -4,7 +4,7 @@
    
     <siteMapNode url="~/Configure/Configuration.aspx" title="Configure"  description="Configuration">
       <siteMapNode  title="User" description="User Configuration">
-        <siteMapNode url="~/Configure/User/ConfigEmployee.aspx" title="Employee"  description="User Configuration" />
+        <siteMapNode url="~/Configure/User/ConfigEmployee.aspx" title="Users"  description="User Configuration" />
         <siteMapNode url="~/Configure/User/ConfigEmployeeGroup.aspx" title="Employee Group"  description="User Group Configuration" />
       </siteMapNode>
       
@@ -86,9 +86,17 @@
   
   <siteMapNode url="ContactUs.aspx" title="Contact us"  description="Contact us page" />
 
-    <siteMapNode url="~/Tracking/OperatorTracking.aspx"  title="OperatorTracking" description="Operator Tracking">
+    <siteMapNode url="~/Tracking/OperatorTracking.aspx"  title="Operator Tracking" description="Operator Tracking">
       <siteMapNode  title="Shopfloor"  description="Shopfloor Tracking" >
         <siteMapNode  url="~/Tracking/OperatorMoveLot.aspx" title="Move Product"  description="Move Product" />
+      </siteMapNode>
+    </siteMapNode>
+    <siteMapNode url="~/Tracking/QATracking.aspx"  title="QA Tracking" description="QA Tracking">
+      <siteMapNode  title="QA Order"  description="QA Order Setup" >
+        <siteMapNode url="~/Configure/Order/QAOrderConfig.aspx" title="QA Orders"  description="Enlist QA Orders" />
+      </siteMapNode>
+      <siteMapNode  title="QA Proccess"  description="Quality Assurance Process" >
+        <siteMapNode  url="~/Tracking/QAMoveLot.aspx" title="Process QA Order"  description="Process QA Order" />
       </siteMapNode>
 
     </siteMapNode>

@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : OperatorTracking.aspx.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 07/11/2019
+*    Platform Dependencies  : .NET 2.0
+*    Description            : Product Batch Tracking module homepage for Operator. it loads in TrackingModule.Master
+*
+*    Log                    :
+*    07/11/2019: Xueyan Dong: First Created
+----------------------------------------------------------------*/
 using System;
 using System.Data;
 using System.Configuration;
