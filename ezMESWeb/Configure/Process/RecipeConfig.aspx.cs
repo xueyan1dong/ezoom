@@ -11,7 +11,7 @@
   *  02/10/2019: xdong: following the same fix that Junlu did in SalesOrderConfig.aspx.cs, change the call to Server.Transfer
   *                     and fixed UI issue when btnDo_Click is triggered.
 	*  04/19/2019: xdong: modified RecipeConfig.aspx to display quantity in ingredients in decimal with 1 decimal for non-integer quantity                   
-	*  6/6/2019: peiyu: added scrollbars to receipt tab containers; added search box that allows to search receipts with keywords             
+	*  6/6/2019: peiyu: added scrollbars to recipe tab containers; added search box that allows to search recipe with keywords             
 ----------------------------------------------------------------*/
 using System;
 using System.IO;
@@ -50,7 +50,7 @@ namespace ezMESWeb.Configure.Process
             mintimeTextBoxu,
             maxtimeTextBoxu,
             commentTextBoxu,
-            receipt;
+            recipe;
         protected Label lblUom,
             sourceLabel,
             ingredientLabel,
@@ -129,14 +129,14 @@ namespace ezMESWeb.Configure.Process
 
                     ezCmd = new EzSqlCommand();
                     ezCmd.Connection = ezConn;
-                    //when clicking on one of the receipt tabs in the search results to view details, the page will be reloaded, Request.QueryString["receipt"] recorded the searching keyword
-                    if (Request.QueryString["receipt"] != null)
+                    //when clicking on one of the recipe tabs in the search results to view details, the page will be reloaded, Request.QueryString["recipe"] recorded the searching keyword
+                    if (Request.QueryString["recipe"] != null)
                     {
-                        recip = Request.QueryString["receipt"];
+                        recip = Request.QueryString["recipe"];
                         //after clicking on one of the search result, the search box becomes blank, 
                         // need to reset the search textbox to the searching keyword, so we don't lose track of the keyword, 
                         // remembering the keyword will allow the user check every tabs in the list.
-                        receipt.Text = recip; 
+                        recipe.Text = recip; 
                     }
                     //when page loading, the tabcontainer will display tabs with name matching the value of recip
                     //scenario 1, normal page loading, then recip is "", all tabs will be displayed
@@ -319,7 +319,7 @@ namespace ezMESWeb.Configure.Process
             }
         }
 
-        //search receipts with names contain the keywords and display in the tabcontainer
+        //search recipe with names contain the keywords and display in the tabcontainer
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             
@@ -333,7 +333,7 @@ namespace ezMESWeb.Configure.Process
                 ConnectToDb();
                 ezCmd = new EzSqlCommand();
                 ezCmd.Connection = ezConn;
-                ezCmd.CommandText = "SELECT id, name FROM recipe where name like '%" + receipt.Text + "%'";
+                ezCmd.CommandText = "SELECT id, name FROM recipe where name like '%" + recipe.Text + "%'";
                 ezCmd.CommandType = CommandType.Text;
                 ezReader = ezCmd.ExecuteReader();
                 while (ezReader.Read())

@@ -32,7 +32,7 @@
   function reloadContent(sender, e)
   {
 
-      window.location = "RecipeConfig.aspx?Tab=" + sender.get_activeTabIndex() + "&receipt=" + document.getElementById('<%=receipt.ClientID%>').value; 
+      window.location = "RecipeConfig.aspx?Tab=" + sender.get_activeTabIndex() + "&recipe=" + document.getElementById('<%=recipe.ClientID%>').value; 
   }
   function confirmDelete(button)
   {
@@ -127,7 +127,7 @@
 
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1">
     <table style="width: 100%; height: 30px; margin-left: 5px;">
-        <tr style="height: 40px;"><td style ="font-size:15px;">Receipt: <asp:TextBox id="receipt" runat="server" />  &nbsp;&nbsp;<asp:Button id="Search" runat="server" Width="100px" Text="Search" CausesValidation="False" OnClick="btnSearch_Click"/></td></tr>
+        <tr style="height: 40px;"><td style ="font-size:15px;">Recipe: <asp:TextBox id="recipe" runat="server" />  &nbsp;&nbsp;<asp:Button id="Search" runat="server" Width="100px" Text="Search" CausesValidation="False" OnClick="btnSearch_Click"/></td></tr>
         <tr><td><asp:Label id="ifTcLoaded" runat="server" Text ="notLoaded" Visible ="false" /></td></tr>
     </table>
     <asp:TabContainer ID="tcMain" runat="server" 

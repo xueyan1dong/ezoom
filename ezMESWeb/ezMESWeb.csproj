@@ -127,6 +127,9 @@
     <Content Include="Configure\Order\LoadOrderProduct.aspx" />
     <Content Include="Configure\Order\LoadWOrders.aspx" />
     <Content Include="Configure\Order\QAOrderConfig.aspx" />
+    <Content Include="Configure\Order\Insert_New_Order.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configure\Process\LoadStep.aspx" />
     <Content Include="Configure\Product\LoadProduct.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
@@ -632,7 +635,9 @@
     <Content Include="Configure\Process\PStep_modify.xml" />
     <Content Include="Configure\Process\RecipeConfig.aspx" />
     <Content Include="Configure\Process\ProcessConfig.aspx" />
-    <Content Include="Configure\Process\PStep_insert.xml" />
+    <Content Include="Configure\Process\PStep_insert.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configure\Product\UomConversion.xml" />
     <Content Include="Configure\Product\UomConversionConfig.aspx" />
     <Content Include="Configure\Product\Uom_modify.xml" />

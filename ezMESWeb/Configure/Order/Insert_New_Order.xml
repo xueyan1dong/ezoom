@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Table name="New order">
+  <Header>New Order</Header>
+  <Column name ="ponumber">
+    <DisplayName>PO Number</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  
+  <Column name ="client_id">
+    <DisplayName>Client</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">select name, id from client where type in ('both', 'customer')</DropdownQuery>
+    
+  </Column>
+  <Column name ="priority">
+    <DisplayName>Priority</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select p.Name, p.id from priority p order by 1</DropdownQuery>
+  </Column>
+  <Column name ="state">
+    <DisplayName>State</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select 'Quoted', 'quoted' union Select 'Scheduled', 'scheduled' union Select 'Produced', 'produced' union Select 'Shipped', 'shipped' union Select 'Delivered', 'delivered' union Select 'Invoiced', 'invoiced' union Select 'Paid', 'paid'</DropdownQuery>
+  </Column>
+  <Column name ="state_date">
+    <DisplayName>Date of the State</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+
+  <Column name ="net_total">
+    <DisplayName>Net Total Price($)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="tax_percentage">
+    <DisplayName>Tax Percentage(%)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="tax_amount">
+    <DisplayName>Tax Amount($)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="other_fees">
+    <DisplayName>Other Fees($)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="total_price">
+    <DisplayName>Total Price($)</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="expected_deliver_date">
+    <DisplayName>Expected Delivery Date</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="internal_contact">
+    <DisplayName>Internal Contact</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">select concat(firstname, ' ', lastname), id as name from employee</DropdownQuery>
+  </Column>
+  <Column name ="external_contact">
+    <DisplayName>External Contract</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="recorder_id">
+    <DisplayName>Recorder</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">select "", 1</DropdownQuery>
+    <Attribute key="style">display:none</Attribute>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>TextBox</UI>
+    <TextBoxLength>100</TextBoxLength>
+  </Column>
+</Table>
+

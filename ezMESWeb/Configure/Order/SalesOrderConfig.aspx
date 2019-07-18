@@ -3,6 +3,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
+
 <asp:content ID="Content2" contentplaceholderid="head" runat="server"> 
 
  <script type="text/javascript" language="javascript">
@@ -33,31 +34,111 @@
   }
 
 </script> 
+<style type="text/css">
+.Initial
+{
+  display: block;
+  padding: 4px 18px 4px 18px;
+  float: left;
+  /*background: url("../Images/InitialImage.png") no-repeat right top;*/
+  color: Black;
+  font-weight: bold;
+}
+.Initial:hover
+{
+  color: White;
+  /*background: url("../Images/SelectedButton.png") no-repeat right top;*/
+}
+.Clicked
+{
+  float: left;
+  display: block;
+  /*background: url("../Images/SelectedButton.png") no-repeat right top;*/
+  padding: 4px 18px 4px 18px;
+  color: Black;
+  font-weight: bold;
+  color: White;
+}
+</style>
 </asp:content> 
 
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1">
+ 
 
-<%--<asp:TabContainer ID="tcMain" runat="server" Height="0px" Width="100%" CssClass="amber_tab" onclientactivetabchanged="reloadContent" >
-</asp:TabContainer>--%>
-<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="True" />
+<asp:TabContainer ID="tcMain" runat="server" Height="0px" Width="100%" CssClass="amber_tab" onclientactivetabchanged="reloadContent" ActiveTabIndex="0" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true" ><%----%>
+     <%--<asp:TabPanel ID="hidden" runat="server" style ="display: none"> </asp:TabPanel>--%>
+    <asp:TabPanel ID="Tp1" runat="server">
+                            <HeaderTemplate>
+                                Orders To Do</HeaderTemplate>
+                            <ContentTemplate>
+                                <asp:Button ID="btnNewOrder" runat="server" Text='Create New Order'  style ="display: block" OnClick ="btnInsert_Onclick"></asp:Button>
+                            </ContentTemplate>
+                        </asp:TabPanel>
+                        <asp:TabPanel ID="Tp2" runat="server" >
+                            <HeaderTemplate>
+                                Orders in Process</HeaderTemplate>
+                            <ContentTemplate>
+                                <asp:Label ID="LblEmail" runat="server" Text=''>
+                                </asp:Label>
+                            </ContentTemplate>
+                        </asp:TabPanel>
+                        <asp:TabPanel ID="Tp3" runat="server" >
+                            <HeaderTemplate>
+                                Orders Finished</HeaderTemplate>
+                            <ContentTemplate>
+                                <asp:Label ID="Llbphn" runat="server" Text=''>
+                                </asp:Label>
+                            </ContentTemplate>
+                        </asp:TabPanel>
+</asp:TabContainer>
 
 
+   <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="True" />
+
+     <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 
+       style="margin-top: 19px;  height:500px; width:370px; display:none" HorizontalAlign="Left" >
+   <asp:UpdatePanel ID="updateRecordPanel" runat="server" UpdateMode="Conditional">
+   <ContentTemplate>
+   <asp:Button id="Popup1" runat="server" style="display:none" />
+    <asp:ModalPopupExtender ID="ModalPopupExtender" runat="server" TargetControlID="Popup1"
+         BackgroundCssClass="modalBackground" PopupControlID="RecordPanel" 
+        PopupDragHandleControlID="RecordPanel" Drag="True" DropShadow="True" >
+        </asp:ModalPopupExtender>
+        
+       <asp:FormView ID="insertNewOrder" runat="server" DataSourceID= "sdsMain"
+       EnableTheming="True" Height="100px" HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333"
+       >      
+       </asp:FormView>
+       <div class="footer">
+          <asp:LinkButton ID="btnSubmit" runat="server" CausesValidation="True" 
+            OnClick="btnInsertOrderSubmit_Click"  Text="Submit" />&nbsp;
+          <asp:LinkButton ID="LinkButton1" runat="server" 
+           CausesValidation="False" CommandName="Cancel" OnClick="btnInsertOrderCancel_Click"
+             Text="Cancel" />
+            <asp:Label ID="lblActiveTab"
+                          runat="server" Visible="False"></asp:Label>
+       </div>
+       <asp:Label ID="lblError" runat="server" ForeColor="#FF3300" 
+                Height="60px" Width="350px"></asp:Label>
+      </ContentTemplate>
+      </asp:UpdatePanel>
+       </asp:Panel>  
+<asp:UpdatePanel ID="InsertionUpdate" runat="server" UpdateMode="Conditional">
+    <ContentTemplate>
 <asp:GridView ID="GridView1" runat="server" Caption="Orders"
-               CssClass="datagrid" GridLines="None" DataSourceID="SqlDataSource1" DataKeyNames="id"
-               EmptyDataText="There is no orders" Height="200px" Width="800px" AllowPaging="True" AllowSorting="True"
-               AutoGenerateColumns="False" OnSelectedIndexChanged = "GridView1_OnSelectedIndexChanged"  > <%--OnRowCreated="GridView1_RowCreated"--%>
-                
+               CssClass="GridStyle" GridLines="None"  DataKeyNames="id" DataSourceID="SqlDataSource1" PagerStyle-BackColor="#f2e8da"
+               EmptyDataText="There is no orders" Height="200px" Width="1024px" AllowPaging="True" AllowSorting="True"
+               AutoGenerateColumns="False" OnSelectedIndexChanged = "GridView1_OnSelectedIndexChanged" PagerSettings-Mode="NumericFirstLast" > <%--OnRowCreated="GridView1_RowCreated --%>               
             <Columns>
-           
                 <asp:TemplateField>
                     <ItemTemplate>
-                <asp:LinkButton ID="showOrder" runat="server" CommandName="Select" Text ="Select" Visible="true"/>
+                <asp:Button ID="showOrder" runat="server" CommandName="Select" Text ="Select" Visible="true"/>
                         </ItemTemplate>
                 </asp:TemplateField>
-               
-                 <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="true" />
+                 <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="false" />
                   <asp:BoundField DataField="ponumber" HeaderText="PO #" ReadOnly="True" SortExpression="ponumber" />
                 <asp:BoundField DataField="priority" HeaderText="Priority" ReadOnly="True" SortExpression="priority" />
+                <asp:BoundField DataField="order_date" HeaderText="Order Date" ReadOnly="True" SortExpression="order_date" />
                 <asp:BoundField DataField="Expected_Deliver_Date" HeaderText="Expected Delivery Date" ReadOnly="True" SortExpression="Expected_Deliver_Date" />
                 <asp:BoundField DataField="Quantity_Requested" HeaderText="Quantity Requested" ReadOnly="True" SortExpression="Quantity_Requested" />
                 <asp:BoundField DataField="Quantity_in_Process" HeaderText="Quantity in Process" ReadOnly="True" SortExpression="Quantity_in_Process" />
@@ -68,29 +149,37 @@
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            ProviderName="System.Data.Odbc" 
-       SelectCommand=" SELECT g.id,
-              ponumber,
-			  priority.name as Priority,#pr.name as Priority,
-              get_local_time(expected_deliver_date) as Expected_Deliver_Date,
-              t.r as Quantity_Requested,
-              t.p as Quantity_in_Process,
-              (t.m + t.s) as Quantity_Made_Or_Shipped
-         FROM order_general g, (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as p, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t, priority
-         #Left Join priority pr on pr.id = g.priority
-         where t.order_id = g.id and priority.id = g.priority"
+       SelectCommand=" SELECT distinct g.id, ponumber, 
+p.name as Priority, 
+DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state='POed'),'%m/%d/%Y') AS order_date,
+get_local_time(g.expected_deliver_date) as Expected_Deliver_Date,
+t1.r as Quantity_Requested,
+t1.pr as Quantity_in_Process,
+(t1.m + t1.s) as Quantity_Made_Or_Shipped
+
+	 FROM order_general g
+	 left join priority p on p.id = g.priority
+	 left join order_detail d on d.order_id = g.id
+     left join (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as pr, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t1 on t1.order_id = g.id
+	 left join (select order_id, max(quantity_requested - quantity_in_process - quantity_made - quantity_shipped) as diff, max(quantity_in_process) as proc from order_detail group by order_id) t2 on t2.order_id = g.id
+     where t2.diff is null or t2.diff > 0"
         EnableCaching="false">
            <SelectParameters>
                <asp:ControlParameter ControlID="txtID" DefaultValue="0" Name="Id" 
                    PropertyName="Text" />
            </SelectParameters>
         </asp:SqlDataSource> 
-
+    </ContentTemplate>
+</asp:UpdatePanel>
 
 <table style="width: 100%; height: 423px; margin-right: 0px; margin-top: 0px; border : 2px solid #6FBD06; ">
       <tr>
       <td style="width: 100%;">
-          
+         
+
           <asp:UpdatePanel ID="upMain" runat="server" UpdateMode="Conditional" >
+      
+
               <ContentTemplate>
               <table border="0" width="100%">
                  <tr>
@@ -342,7 +431,7 @@
                               Text='<%# Bind("comment") %>' />
                           </td>
                           </tr>
-                          <tr>                         
+                            <tr>                         
                           <td colspan=4 align ="center"><asp:Image ID="barcode_image" runat="server" />
                           </td>
                           </tr>
@@ -355,10 +444,10 @@
                         </tr>
                       </table>
                       </ItemTemplate>
-                  </asp:FormView>
-
-                    </td>
+                  </asp:FormView> 
+                  </td>
                   </tr>
+
                   <tr><td>
                       <asp:Label ID="lblMainError" runat="server" Width="600px" Height="50px" 
                           ForeColor="#CC3300"></asp:Label>
@@ -374,13 +463,15 @@
                           onclientclick="return confirmDelete(this)" />
                       </td></tr>
                  </table>
-                 
+               
               </ContentTemplate>
               <Triggers>
                   <asp:PostBackTrigger ControlID="btnDo" />
                   <asp:PostBackTrigger ControlID="btnCancel" />
               </Triggers>
-          </asp:UpdatePanel>
+       
+      </asp:UpdatePanel>
+ 
           </td>
       </tr>
       <tr><td><hr /></td></tr>
@@ -721,6 +812,7 @@
         o.internal_contact,
         concat(e.firstname, ' ', e.lastname) AS internal_contact_name,
         o.external_contact,
+        1 as recorder_id,
         o.comment
   FROM `order_general` o 
   LEFT JOIN client c ON c.id = o.client_id

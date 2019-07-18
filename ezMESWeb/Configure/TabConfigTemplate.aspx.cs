@@ -121,5 +121,93 @@ namespace ezMESWeb
         {
         }
 
-  }
+        protected void LoadSqlParasFromTemplate(EzSqlCommand ezCmd, FormView FormView1, ezMES.ITemplate.FormattedTemplate fTemp)
+        {
+            ezMES.ITemplate.FieldItem theItem;
+            string name, value;
+            for (int i = 0; i < fTemp.Fields.Count; i++)
+            {
+
+                theItem = (ezMES.ITemplate.FieldItem)fTemp.Fields[i];
+
+                if (!theItem.AutoCollect)
+                    continue;
+
+                name = theItem.Key;
+                if (name.IndexOf("drp") == 0) //dropdown list
+                {
+                    DropDownList lst = (DropDownList)FormView1.Row.FindControl(name);
+
+                    string param = "@_" + theItem.Value;
+                    value = ((DropDownList)FormView1.Row.FindControl(name)).SelectedItem.Value;
+                    if (value.Length > 0)
+                        ezCmd.Parameters.AddWithValue(param, value);
+                    else
+                        ezCmd.Parameters.AddWithValue(param, DBNull.Value);
+                }
+                else if (name.IndexOf("txt") == 0) //text box
+                {
+                    string param = "@_" + theItem.Value;
+                    DataColumn _dc = fTemp._dccol[theItem.Value];
+
+                    String txtValue = ((TextBox)FormView1.Row.FindControl(name)).Text;
+                    if (txtValue != null && txtValue.Length > 0)
+                    {
+                        switch (_dc.DataType.ToString())
+                        {
+                            case "System.String":
+                                ezCmd.Parameters.AddWithValue(param, txtValue);
+                                break;
+                            case "System.UInt32":
+                                ezCmd.Parameters.AddWithValue(param, Convert.ToInt32(txtValue));
+                                break;
+                            case "System.Int16":
+                            case "System.Int32":
+                            case "System.Int64":
+                            case "int":
+                                ezCmd.Parameters.AddWithValue(param, Convert.ToInt64(txtValue));
+                                break;
+                            case "System.Decimal":
+                                ezCmd.Parameters.AddWithValue(param, txtValue);
+                                break;
+                            case "System.DateTime":
+                                ezCmd.Parameters.AddWithValue(param, Convert.ToDateTime(txtValue));
+                                break;
+                            default:
+                                ezCmd.Parameters.AddWithValue(param, txtValue);
+                                break;
+
+                        }
+                    }
+                    else
+                        ezCmd.Parameters.AddWithValue(param, DBNull.Value);
+
+                }
+                else if (name.IndexOf("rbl") == 0) //radio button
+                {
+                    string param = "@_" + theItem.Value;
+                    DataColumn _dc = fTemp._dccol[theItem.Value];
+                    if (Convert.ToBoolean(((RadioButtonList)FormView1.Row.FindControl(name)).SelectedValue))
+                        ezCmd.Parameters.AddWithValue(param, "1");
+                    else
+                        ezCmd.Parameters.AddWithValue(param, "0");
+                }
+                else if (name.IndexOf("cbx") == 0)
+                {
+                    string param = "@_" + theItem.Value;
+                    DataColumn _dc = fTemp._dccol[theItem.Value];
+                    if (_dc != null)
+                    {
+                        CheckBox cbxTemp = (CheckBox)FormView1.Row.FindControl(name);
+                        if (cbxTemp.Checked)
+                            ezCmd.Parameters.AddWithValue(param, "1");
+                        else
+                            ezCmd.Parameters.AddWithValue(param, "0");
+                    }
+
+                }
+            }
+        }
+
+    }
 }
