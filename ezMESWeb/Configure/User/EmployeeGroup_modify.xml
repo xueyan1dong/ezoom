@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="employee_group">
+  <Header>Employee Group</Header>
+  <Column name ="groupname">
+    <DisplayName>Group Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>   
+  </Column>
+  <Column name ="or_id">  
+    <DisplayName>Organization</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o order by 1</DropdownQuery>
+  </Column>
+  <Column name ="ifprivilege">
+    <DisplayName>Privilege</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT '0', 0 UNION SELECT '1', 1</DropdownQuery>
+  </Column>
+  <Column name ="email">
+    <DisplayName>Email</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="phone">
+    <DisplayName>Phone</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="lead_employee">
+    <DisplayName>Lead Employee</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT CONCAT(firstname, ' ', lastname), id FROM employee ORDER BY 1</DropdownQuery>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>1024</TextBoxLength>
+  </Column>
+  </Table>
+
+
