@@ -4,7 +4,7 @@
 *    Created By             : Xueyan Dong
 *    Date Created           : 11/03/2009
 *    Platform Dependencies  : .NET 2.0
-*    Description            : 
+*    Description            : This is the home page of Tracking module,including the tab menus of tracking module and side bar menus
 *
 *    Log                    :
 *    07/11/2019: Xueyan Dong: Added code to direct user to different tab menu and side bar menu according to role of user

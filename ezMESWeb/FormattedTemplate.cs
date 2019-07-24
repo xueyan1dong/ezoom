@@ -1,9 +1,9 @@
 /*--------------------------------------------------------------
-*    Copyright 2010 Ambersoft LLC.
+*    Copyright 2009 ~ Current  IT Helps LLC
 *    Source File            : FormattedTemplate.cs
 *    Created By             : Fei Xue
 *    Date Created           : 1/31/2010
-*    Platform Dependencies  : .NET 2.0
+*    Platform Dependencies  : .NET
 *    Description            : Common template file for configuration 
 *                             page.
 *

@@ -1,3 +1,13 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : ConfigureModule.Master.cs
+*    Created By             : Xueyan Dong
+*    Date Created           : 2009
+*    Platform Dependencies  : .NET 
+*    Description            : This is the home page of the Configuration module, including the tab menu and side bar of the configuration module
+*    Log                    :
+*    2009: xdong: first created    
+----------------------------------------------------------------*/
 using System;
 using System.Data;
 using System.Configuration;

@@ -3,8 +3,8 @@
 *    Source File            : Default.aspx.cs
 *    Created By             : Fei Xue
 *    Date Created           : 11/03/2009
-*    Platform Dependencies  : .NET 2.0
-*    Description            : 
+*    Platform Dependencies  : .Net 
+*    Description            : This is the default page that user will see. Which shows the login screen of the application
 *
 *    Log                    :
 *    11/03/2009: Fey Xue: first created

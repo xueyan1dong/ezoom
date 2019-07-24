@@ -1,9 +1,9 @@
 ﻿/*--------------------------------------------------------------
-*    Copyright 2009 Ambersoft LLC.
-*    Source File            : LbelPrint.aspx.cs
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : LabelPrint.aspx.cs
 *    Created By             : Junlu Luo
 *    Date Created           : 2018
-*    Platform Dependencies  : .NET 2.0
+*    Platform Dependencies  : .NET 
 *    Description            : UI for print batch/product packaging label. Currently invoked from Move Product Page or Dispatch page
 *    Log: 
 *    ?/?/2018: Junlu Luo: First created
