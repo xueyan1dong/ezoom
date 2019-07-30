@@ -48,21 +48,21 @@ namespace ezMESWeb.Configure.Order
             txtLineNumbers,
             txtPrefix,
             txtBatchComment;
-        protected Label lblUom, lblErrorDispatch, lblGridError, lblDeleteDetailError, lblActiveTab;
+    protected Label lblUom, lblErrorDispatch, lblGridError, lblDeleteDetailError, lblActiveTab;
     protected Button btnDispatch, btnNewOrder;
     protected UpdatePanel DispatchBufferPanel, MessageUpdatePanel, UpdatePanel3, InsertionUpdate;
     protected ModalPopupExtender MessagePopupExtender, ModalPopupExtender;
     protected System.Data.Common.DbDataReader ezReaderLot;
     protected UpdatePanel tbLotPanel;
-        protected GridView gvLotTable, GridView1;
+    protected GridView gvLotTable, GridView1;
     protected Button btnPrintBatches;
     protected LinkButton  btnCancelUpdate, btnSubmitUpdate;
     protected TabPanel Tp1, Tp2, Tp3;
     protected DataColumnCollection colc;
-        protected FormView insertNewOrder;
-        protected SqlDataSource SqlDataSource1;
+    protected FormView insertNewOrder;
+    protected SqlDataSource SqlDataSource1;
 
-        protected override void OnInit(EventArgs e)
+    protected override void OnInit(EventArgs e)
         {
           base.OnInit(e);
             {
@@ -120,21 +120,11 @@ namespace ezMESWeb.Configure.Order
 
         if (!IsPostBack)
         {
-
-                //if (Request.QueryString["orderId"] != null && Request.QueryString["orderPO"] != null)
-                //{
-                //    show_ExistObject(Request.QueryString["orderId"], Request.QueryString["orderPO"]);
-                //}
-
-                //SqlDataSource SqlDataSource1 = new SqlDataSource();
-                //SqlDataSource1.ID = "SqlDataSource1"; //does not persist in other function scope
-                //this.Page.Controls.Add(SqlDataSource1);
-                //SqlDataSource1.ConnectionString = ConfigurationManager.ConnectionStrings["ezmesConnectionString"].ConnectionString;
-                //SqlDataSource1.ProviderName = "System.Data.Odbc";
                 
-                if (!lblActiveTab.Text.Equals("")) show_activeTab();
+            if (!lblActiveTab.Text.Equals("")) show_activeTab();
+            if(lblActiveTab.Text.Equals("")) show_defaultRow();
 
-            }
+        }
 
             //if (!IsPostBack)
             //{
@@ -200,8 +190,7 @@ namespace ezMESWeb.Configure.Order
             //}
         //GridView1.SelectedIndexChanged += new EventHandler(GridView1_OnSelectedIndexChanged);
         string strScript = this.getPrintJS();
-        ClientScript.RegisterClientScriptBlock(this.GetType(),
-            "doPrint", strScript, true);
+        ClientScript.RegisterClientScriptBlock(this.GetType(), "doPrint", strScript, true);
 
         //register post back control for printing
         ScriptManager scriptManager = ScriptManager.GetCurrent(this.Page);
@@ -216,117 +205,130 @@ namespace ezMESWeb.Configure.Order
     {
 
         this.insertNewOrder.Visible = true;
-        //this.insertNewOrder.ChangeMode(FormViewMode.Insert);
-        //  force databinding
    
         this.insertNewOrder.DataBind();
-        //  update the contents in the detail panel
-        //this.updateRecordPanel.Update();
-        //  show the modal popup
         this.ModalPopupExtender.Show();
     }
 
-        protected void TabContainer_ActiveTabChanged(object sender, EventArgs e)
-        {
+    protected void TabContainer_ActiveTabChanged(object sender, EventArgs e)
+    {
             
+        //tcMain.ActiveTabIndex = Convert.ToInt16(activeTab);
+        lblActiveTab.Text = tcMain.ActiveTabIndex.ToString();
+        show_activeTab();
+        //fvMain.Visible = false;
+        //Server.Transfer(string.Format("/Configure/Order/SalesOrderConfig.aspx?Tab={0}", tcMain.ActiveTabIndex));
+    }
 
-            //tcMain.ActiveTabIndex = Convert.ToInt16(activeTab);
-            
-            lblActiveTab.Text = tcMain.ActiveTabIndex.ToString();
-            show_activeTab();
-            //fvMain.Visible = false;
-            //Server.Transfer(string.Format("/Configure/Order/SalesOrderConfig.aspx?Tab={0}", tcMain.ActiveTabIndex));
+    protected void show_activeTab()
+    {
+        //AjaxControlToolkit.TabPanel activeTab = tcMain.ActiveTab;
+
+        //if (activeTab == Tp1)
+        if(Convert.ToInt32(lblActiveTab.Text) == 0)
+        {
+            // first tab i selected
+            btnNewOrder.Style["display"] = "";
+            SqlDataSource1.SelectCommand = "SELECT distinct g.id, ponumber, p.name as Priority, DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state = 'POed'),'%m/%d/%Y') AS order_date, get_local_time(g.expected_deliver_date) as Expected_Deliver_Date, t1.r as Quantity_Requested, t1.pr as Quantity_in_Process, (t1.m + t1.s) as Quantity_Made_Or_Shipped FROM order_general g left join priority p on p.id = g.priority left join order_detail d on d.order_id = g.id left join(select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as pr, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t1 on t1.order_id = g.id left join(select order_id, max(quantity_requested -quantity_in_process - quantity_made - quantity_shipped) as diff, max(quantity_in_process) as proc from order_detail group by order_id) t2 on t2.order_id = g.id where t2.diff is null or t2.diff > 0";
+        }
+        //else if (activeTab == Tp2)
+        else if(Convert.ToInt32(lblActiveTab.Text) == 1)
+        {
+            btnNewOrder.Style["display"] = "none";
+            SqlDataSource1.SelectCommand = "SELECT distinct g.id, ponumber, p.name as Priority, DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state = 'POed'),'%m/%d/%Y') AS order_date, get_local_time(g.expected_deliver_date) as Expected_Deliver_Date, t1.r as Quantity_Requested,t1.pr as Quantity_in_Process, (t1.m + t1.s) as Quantity_Made_Or_Shipped FROM order_general g, priority p, order_detail d, (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as pr, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t1, (select order_id, max(quantity_requested - quantity_in_process - quantity_made - quantity_shipped) as diff, max(quantity_in_process) as proc from order_detail group by order_id) t2 where t1.order_id = g.id and t2.order_id = g.id and t2.diff <= 0 and t2.proc > 0 and d.order_id = g.id and p.id = g.priority";
+        }
+        else
+        {
+            btnNewOrder.Style["display"] = "none";
+            SqlDataSource1.SelectCommand = "SELECT distinct g.id, ponumber, p.name as Priority, DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state = 'POed'),'%m/%d/%Y') AS order_date, get_local_time(g.expected_deliver_date) as Expected_Deliver_Date, t1.r as Quantity_Requested,t1.pr as Quantity_in_Process, (t1.m + t1.s) as Quantity_Made_Or_Shipped FROM order_general g, priority p, order_detail d, (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as pr, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t1, (select order_id, max(quantity_requested - quantity_in_process - quantity_made - quantity_shipped) as diff, max(quantity_in_process) as proc from order_detail group by order_id) t2 where t1.order_id = g.id and t2.order_id = g.id and t2.diff <= 0 and t2.proc = 0 and d.order_id = g.id and p.id = g.priority";
+
         }
 
-        protected void show_activeTab()
+        SqlDataSource1.DataBind();
+        GridView1.DataBind();
+        tcMain.DataBind();
+        show_defaultRow();
+
+    }
+
+    protected void show_defaultRow()
+    {
+        if (GridView1.Rows.Count > 0)
         {
-            //AjaxControlToolkit.TabPanel activeTab = tcMain.ActiveTab;
-
-            //if (activeTab == Tp1)
-            if(Convert.ToInt32(lblActiveTab.Text) == 0)
-            {
-                // first tab i selected
-                btnNewOrder.Style["display"] = "";
-                SqlDataSource1.SelectCommand = "SELECT distinct g.id, ponumber, p.name as Priority, DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state = 'POed'),'%m/%d/%Y') AS order_date, get_local_time(g.expected_deliver_date) as Expected_Deliver_Date, t1.r as Quantity_Requested, t1.pr as Quantity_in_Process, (t1.m + t1.s) as Quantity_Made_Or_Shipped FROM order_general g left join priority p on p.id = g.priority left join order_detail d on d.order_id = g.id left join(select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as pr, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t1 on t1.order_id = g.id left join(select order_id, max(quantity_requested -quantity_in_process - quantity_made - quantity_shipped) as diff, max(quantity_in_process) as proc from order_detail group by order_id) t2 on t2.order_id = g.id where t2.diff is null or t2.diff > 0";
-            }
-            //else if (activeTab == Tp2)
-            else if(Convert.ToInt32(lblActiveTab.Text) == 1)
-            {
-                btnNewOrder.Style["display"] = "none";
-                SqlDataSource1.SelectCommand = "SELECT distinct g.id, ponumber, p.name as Priority, DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state = 'POed'),'%m/%d/%Y') AS order_date, get_local_time(g.expected_deliver_date) as Expected_Deliver_Date, t1.r as Quantity_Requested,t1.pr as Quantity_in_Process, (t1.m + t1.s) as Quantity_Made_Or_Shipped FROM order_general g, priority p, order_detail d, (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as pr, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t1, (select order_id, max(quantity_requested - quantity_in_process - quantity_made - quantity_shipped) as diff, max(quantity_in_process) as proc from order_detail group by order_id) t2 where t1.order_id = g.id and t2.order_id = g.id and t2.diff <= 0 and t2.proc > 0 and d.order_id = g.id and p.id = g.priority";
-            }
-            else
-            {
-                btnNewOrder.Style["display"] = "none";
-                SqlDataSource1.SelectCommand = "SELECT distinct g.id, ponumber, p.name as Priority, DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state = 'POed'),'%m/%d/%Y') AS order_date, get_local_time(g.expected_deliver_date) as Expected_Deliver_Date, t1.r as Quantity_Requested,t1.pr as Quantity_in_Process, (t1.m + t1.s) as Quantity_Made_Or_Shipped FROM order_general g, priority p, order_detail d, (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as pr, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t1, (select order_id, max(quantity_requested - quantity_in_process - quantity_made - quantity_shipped) as diff, max(quantity_in_process) as proc from order_detail group by order_id) t2 where t1.order_id = g.id and t2.order_id = g.id and t2.diff <= 0 and t2.proc = 0 and d.order_id = g.id and p.id = g.priority";
-
-                //"SELECT g.id, ponumber, priority.name as Priority, get_local_time(expected_deliver_date) as Expected_Deliver_Date,t.r as Quantity_Requested,t.p as Quantity_in_Process,(t.m + t.s) as Quantity_Made_Or_Shipped FROM order_general g, (select order_id, sum(quantity_requested) as r, sum(quantity_in_process) as p, sum(quantity_made) as m, sum(quantity_shipped) as s from order_detail group by order_id) t, priority where t.order_id = g.id and priority.id = g.priority and g.id = 12";
-
-            }
-
-
-            SqlDataSource1.DataBind();
+            string orderId = GridView1.DataKeys[0].Values[0].ToString();
+            string orderPO = GridView1.Rows[0].Cells[2].Text;
+            show_ExistObject(orderId, orderPO);
             GridView1.DataBind();
-            tcMain.DataBind();
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                if (row.RowIndex == 0)
+                {
+                    row.BackColor = Color.Gray;
+                }
+            }
+            
         }
+        else
+        {
+            fvMain.Caption = "General Sales Order Information";
+            fvMain.ChangeMode(FormViewMode.Insert);
+        }
+    }
+
+    protected void GridView1_OnRowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(GridView1, "Select$" + e.Row.RowIndex);
+            e.Row.ToolTip = "Click to select this row.";
+        }
+    }
 
         protected void GridView1_OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
             foreach (GridViewRow row in GridView1.Rows)
             {
                 if (row.RowIndex == GridView1.SelectedIndex)
                 {
- 
-                   // GridView1.Rows[GridView1.SelectedIndex].BackColor = Color.Red;
-                    string orderId = row.Cells[1].Text;
+
+                    string orderId = GridView1.DataKeys[row.RowIndex].Values[0].ToString();
                     string orderPO = row.Cells[2].Text;
-                    row.BackColor = Color.Gray;
+
                     Session["rowIndex"] = row.RowIndex;
-                    show_ExistObject(orderId, orderPO);
                     if (!lblActiveTab.Text.Equals("")) show_activeTab();
-                    //doesn't work? GridView1.Rows[Convert.ToInt32(Session["rowIndex"])].BackColor = Color.Gray;
+                    show_ExistObject(orderId, orderPO);
                     GridView1.DataBind();
-
                 }
-        
-                
+
             }
-
-            if (Session["rowIndex"] != null)
-            {
-                GridView1.SelectedIndex = Convert.ToInt32(Session["rowIndex"]);
-
-                foreach (GridViewRow row in GridView1.Rows)
+                if (Session["rowIndex"] != null)
                 {
-                    if (row.RowIndex == GridView1.SelectedIndex)
+                    //GridView1.SelectedIndex = Convert.ToInt32(Session["rowIndex"]);
+
+                    foreach (GridViewRow row in GridView1.Rows)
                     {
-                        row.BackColor = Color.Gray;
+                        if (row.RowIndex == Convert.ToInt32(Session["rowIndex"]))
+                        {
+                            row.BackColor = Color.Gray;
+                        }
                     }
-                }
-            }
-           // GridView1.DataBind();
+                }   
 
         }
-
-
 
 
         protected void show_ExistObject(string orderId, string orderPO)
         {
 
-            //tcMain.ActiveTabIndex = tabIndex;
-            //txtID.Text = tcMain.ActiveTab.ID;//orderId;//tcMain.ActiveTab.ID;
             txtID.Text = orderId;
             fvMain.Caption = "General Sales Order Information";
             fvMain.ChangeMode(FormViewMode.ReadOnly);
             fvMain.DataBind();
-
-            string strPONumber = orderPO;//tcMain.ActiveTab.HeaderText;
-            System.Web.UI.WebControls.Image barcode = (System.Web.UI.WebControls.Image)fvMain.FindControl("barcode_image");//(Image)fvMain.FindControl("barcode_image"); //this.Master.FindControl("fvMain").FindControl("barcode_image") as Image;
+            string strPONumber = orderPO;
+            System.Web.UI.WebControls.Image barcode = (System.Web.UI.WebControls.Image)fvMain.FindControl("barcode_image");
             barcode.ImageUrl = "/BarcodeImage.aspx?d=" + strPONumber + "&h=60&w=400&il=true&t=Code 128-B";
 
-            //fvMain.DataBind();
             upMain.Update();
             btnDo.Text = "Update Order Info";
             btnCancel.Text = "Delete Order";
@@ -338,29 +340,12 @@ namespace ezMESWeb.Configure.Order
         }
     
     
-        //protected void show_NewObject(short tabIndex)
-        //{
 
-        //    tcMain.ActiveTabIndex = tabIndex;
-
-        //    fvMain.ChangeMode(FormViewMode.Insert);
-
-        //    fvMain.Caption = "General Sales Order Information:";
-        //    btnInsert.Visible = false;
-        //    btnDispatch.Visible = false;
-        //    gvTable.Visible = false;
-        //    btnDo.Text = "Submit";
-        //    btnCancel.Text = "Clear";
-        //}
     protected void btnInsertOrderSubmit_Click(object sender, EventArgs e)
     {
       
             string response, ponum, newId;
 
-            //MasterPage ctl00 = FindControl("ctl00") as MasterPage;
-            //ContentPlaceHolder MainContent = ctl00.FindControl("ContentPlaceHolder1") as ContentPlaceHolder;
-            //FormView fm = (FormView)MainContent.FindControl("fvMain");
-            //Label barcode = (Label)MainContent.FindControl("lblMainError");
             try
             {
                 ConnectToDb();
@@ -469,12 +454,12 @@ namespace ezMESWeb.Configure.Order
     }
 
     private void updateUrl()
-        {
-          HyperLink statusLink = (HyperLink)fvMain.FindControl("hpStatus");
-          statusLink.NavigateUrl = "/Reports/OrderReport.aspx?orderid=" + txtID.Text;
-          HyperLink batchLink = (HyperLink)fvMain.FindControl("hpBatch");
-          batchLink.NavigateUrl = "/Reports/OrderBatchDetail.aspx?order=" + txtID.Text;
-        }
+    {
+        HyperLink statusLink = (HyperLink)fvMain.FindControl("hpStatus");
+        statusLink.NavigateUrl = "/Reports/OrderReport.aspx?orderid=" + txtID.Text;
+        HyperLink batchLink = (HyperLink)fvMain.FindControl("hpBatch");
+        batchLink.NavigateUrl = "/Reports/OrderBatchDetail.aspx?order=" + txtID.Text;
+    }
 
     protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -549,104 +534,104 @@ namespace ezMESWeb.Configure.Order
 
     protected void btnOK_Click(object sender, EventArgs e)
     {
-      lblDeleteDetailError.Text = "";
-      MessagePopupExtender.Hide();
+        lblDeleteDetailError.Text = "";
+        MessagePopupExtender.Hide();
     }
 
-        protected override void btnSubmitInsert_Click(object sender, EventArgs e)
+    protected override void btnSubmitInsert_Click(object sender, EventArgs e)
+    {
+        string[] arDate;
+        string theDate, theText;
+        char[] spliter = { '/' };
+        string response;
+        try
         {
-            string[] arDate;
-            string theDate, theText;
-            char[] spliter = { '/' };
-            string response;
-            try
-            {
-                ConnectToDb();
-                ezCmd =new EzSqlCommand();
-                ezCmd.Connection = ezConn;
-                ezCmd.CommandText = "modify_order_detail";
-                ezCmd.CommandType = CommandType.StoredProcedure;
+            ConnectToDb();
+            ezCmd =new EzSqlCommand();
+            ezCmd.Connection = ezConn;
+            ezCmd.CommandText = "modify_order_detail";
+            ezCmd.CommandType = CommandType.StoredProcedure;
                 
-                ezCmd.Parameters.AddWithValue("@_operation", "insert");
-                ezCmd.Parameters.AddWithValue("@_order_id", txtID.Text);
-                ezCmd.Parameters.AddWithValue("@_source_type", "product");
-                ezCmd.Parameters.AddWithValue("@_source_id", ddProduct.SelectedValue);
-                ezCmd.Parameters.AddWithValue("@_line_num", linenumberTextBox.Text.Trim());
-                ezCmd.Parameters.AddWithValue("@_quantity_requested", requestedTextBox.Text.Trim());
-                ezCmd.Parameters.AddWithValue("@_unit_price", priceTextBox.Text.Trim());
-                ezCmd.Parameters.AddWithValue("@_quantity_made", madeTextBox.Text.Trim());
-                ezCmd.Parameters.AddWithValue("@_quantity_in_process", processTextBox.Text.Trim());
-                ezCmd.Parameters.AddWithValue("@_quantity_shipped", shippedTextBox.Text.Trim());
-                theText = outputTextBox.Text.Trim();
-                if (theText.Length > 0)
-                {
-                    arDate = theText.Split(spliter);
-                    theDate = arDate[2] + "-" + arDate[0] + "-" + arDate[1];
-                    ezCmd.Parameters.AddWithValue("@_output_date", theDate);
-                }
-                else
-                    ezCmd.Parameters.AddWithValue("@_output_date", DBNull.Value);
-
-                theText = expectedTextBox.Text.Trim();
-                if (theText.Length > 0)
-                {
-                    arDate = theText.Split(spliter);
-                    theDate = arDate[2] + "-" + arDate[0] + "-" + arDate[1];
-                    ezCmd.Parameters.AddWithValue("@_expected_deliver_date", theDate);
-                }
-                else
-                    ezCmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
-
-                theText = actualTextBox.Text.Trim();
-                if (theText.Length > 0)
-                {
-                    arDate = theText.Split(spliter);
-                    theDate = arDate[2] + "-" + arDate[0] + "-" + arDate[1];
-                    ezCmd.Parameters.AddWithValue("@_actual_deliver_date", theDate);
-                }
-                else
-                    ezCmd.Parameters.AddWithValue("@_actual_deliver_date", DBNull.Value);
-
-                ezCmd.Parameters.AddWithValue("@_recorder_id", Convert.ToInt32(Session["UserID"]));
-                ezCmd.Parameters.AddWithValue("@_comment", commentTextBox.Text.Trim());
-                ezCmd.Parameters.AddWithValue("@_uomid", ddUom.Items[ddProduct.SelectedIndex].Text);
-                ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
-                ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
-
-
-                ezCmd.ExecuteNonQuery();
-                response = ezCmd.Parameters["@_response"].Value.ToString();
-                ezCmd.Dispose();
-                ezConn.Dispose();
-            }
-            catch (Exception exc)
+            ezCmd.Parameters.AddWithValue("@_operation", "insert");
+            ezCmd.Parameters.AddWithValue("@_order_id", txtID.Text);
+            ezCmd.Parameters.AddWithValue("@_source_type", "product");
+            ezCmd.Parameters.AddWithValue("@_source_id", ddProduct.SelectedValue);
+            ezCmd.Parameters.AddWithValue("@_line_num", linenumberTextBox.Text.Trim());
+            ezCmd.Parameters.AddWithValue("@_quantity_requested", requestedTextBox.Text.Trim());
+            ezCmd.Parameters.AddWithValue("@_unit_price", priceTextBox.Text.Trim());
+            ezCmd.Parameters.AddWithValue("@_quantity_made", madeTextBox.Text.Trim());
+            ezCmd.Parameters.AddWithValue("@_quantity_in_process", processTextBox.Text.Trim());
+            ezCmd.Parameters.AddWithValue("@_quantity_shipped", shippedTextBox.Text.Trim());
+            theText = outputTextBox.Text.Trim();
+            if (theText.Length > 0)
             {
-                response = exc.Message;
-            }
-            if (response.Length > 0)
-            {
-                lblErrorInsert.Text = response;
-               
+                arDate = theText.Split(spliter);
+                theDate = arDate[2] + "-" + arDate[0] + "-" + arDate[1];
+                ezCmd.Parameters.AddWithValue("@_output_date", theDate);
             }
             else
+                ezCmd.Parameters.AddWithValue("@_output_date", DBNull.Value);
+
+            theText = expectedTextBox.Text.Trim();
+            if (theText.Length > 0)
             {
-                gvTable.DataBind();
-                this.gvTablePanel.Update();
-
-                fvMain.DataBind();
-                updateUrl();
-                refresh_dispatchPopup();
-                upMain.Update();
-                hide_insertPopup();
-
+                arDate = theText.Split(spliter);
+                theDate = arDate[2] + "-" + arDate[0] + "-" + arDate[1];
+                ezCmd.Parameters.AddWithValue("@_expected_deliver_date", theDate);
             }
+            else
+                ezCmd.Parameters.AddWithValue("@_expected_deliver_date", DBNull.Value);
 
+            theText = actualTextBox.Text.Trim();
+            if (theText.Length > 0)
+            {
+                arDate = theText.Split(spliter);
+                theDate = arDate[2] + "-" + arDate[0] + "-" + arDate[1];
+                ezCmd.Parameters.AddWithValue("@_actual_deliver_date", theDate);
+            }
+            else
+                ezCmd.Parameters.AddWithValue("@_actual_deliver_date", DBNull.Value);
+
+            ezCmd.Parameters.AddWithValue("@_recorder_id", Convert.ToInt32(Session["UserID"]));
+            ezCmd.Parameters.AddWithValue("@_comment", commentTextBox.Text.Trim());
+            ezCmd.Parameters.AddWithValue("@_uomid", ddUom.Items[ddProduct.SelectedIndex].Text);
+            ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
+            ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+
+            ezCmd.ExecuteNonQuery();
+            response = ezCmd.Parameters["@_response"].Value.ToString();
+            ezCmd.Dispose();
+            ezConn.Dispose();
         }
-        protected override void btnCancelInsert_Click(object sender, EventArgs e)
+        catch (Exception exc)
         {
+            response = exc.Message;
+        }
+        if (response.Length > 0)
+        {
+            lblErrorInsert.Text = response;
+               
+        }
+        else
+        {
+            gvTable.DataBind();
+            this.gvTablePanel.Update();
+
+            fvMain.DataBind();
+            updateUrl();
+            refresh_dispatchPopup();
+            upMain.Update();
             hide_insertPopup();
 
         }
+
+    }
+    protected override void btnCancelInsert_Click(object sender, EventArgs e)
+    {
+        hide_insertPopup();
+
+    }
 
     //protected override void btnCancelDispatch_Click(object sender, EventArgs e)
     //{
@@ -984,14 +969,8 @@ namespace ezMESWeb.Configure.Order
             }
         }
 
-        //protected void tcMain_ActiveTabChanged(object sender, EventArgs e)
-        //{
-        //    if (tcMain.ActiveTabIndex + 1 == tcMain.Controls.Count)
-        //        show_NewObject((short)tcMain.ActiveTabIndex);
-        //    else
-        //        show_ExistObject((short)tcMain.ActiveTabIndex, "1", "1");
-        //}
-        protected void clear_generalInsert()
+  
+    protected void clear_generalInsert()
         {
             ((DropDownList)fvMain.FindControl("ddClient")).SelectedIndex = -1;
 
@@ -1255,4 +1234,21 @@ namespace ezMESWeb.Configure.Order
     //        tbComments.Visible = true;
     //    }
     //} 
+
+
+    //protected void show_NewObject(short tabIndex)
+    //{
+
+    //    tcMain.ActiveTabIndex = tabIndex;
+
+    //    fvMain.ChangeMode(FormViewMode.Insert);
+
+    //    fvMain.Caption = "General Sales Order Information:";
+    //    btnInsert.Visible = false;
+    //    btnDispatch.Visible = false;
+    //    gvTable.Visible = false;
+    //    btnDo.Text = "Submit";
+    //    btnCancel.Text = "Clear";
+    //}
+
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="../../Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="SalesOrderConfig.aspx.cs" Inherits="ezMESWeb.Configure.Order.SalesOrderConfig" 
+﻿<%@ Page Language="C#" MasterPageFile="../../Tracking/TrackingModule.Master" AutoEventWireup="true" CodeBehind="SalesOrderConfig.aspx.cs" EnableEventValidation="false" Inherits="ezMESWeb.Configure.Order.SalesOrderConfig"
  Title="Sale Order Configuration -- ezOOM" %>   
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
@@ -34,32 +34,7 @@
   }
 
 </script> 
-<style type="text/css">
-.Initial
-{
-  display: block;
-  padding: 4px 18px 4px 18px;
-  float: left;
-  /*background: url("../Images/InitialImage.png") no-repeat right top;*/
-  color: Black;
-  font-weight: bold;
-}
-.Initial:hover
-{
-  color: White;
-  /*background: url("../Images/SelectedButton.png") no-repeat right top;*/
-}
-.Clicked
-{
-  float: left;
-  display: block;
-  /*background: url("../Images/SelectedButton.png") no-repeat right top;*/
-  padding: 4px 18px 4px 18px;
-  color: Black;
-  font-weight: bold;
-  color: White;
-}
-</style>
+
 </asp:content> 
 
 <asp:Content ID="Content1" runat="server" contentplaceholderid="ContentPlaceHolder1">
@@ -71,7 +46,7 @@
                             <HeaderTemplate>
                                 Orders To Do</HeaderTemplate>
                             <ContentTemplate>
-                                <asp:Button ID="btnNewOrder" runat="server" Text='Create New Order'  style ="display: block" OnClick ="btnInsert_Onclick"></asp:Button>
+                                <asp:Button ID="btnNewOrder" runat="server" Text='Create New Order'  style ="display: block;  width:103px; font-size:12px" OnClick ="btnInsert_Onclick"></asp:Button>
                             </ContentTemplate>
                         </asp:TabPanel>
                         <asp:TabPanel ID="Tp2" runat="server" >
@@ -128,13 +103,16 @@
 <asp:GridView ID="GridView1" runat="server" Caption="Orders"
                CssClass="GridStyle" GridLines="None"  DataKeyNames="id" DataSourceID="SqlDataSource1" PagerStyle-BackColor="#f2e8da"
                EmptyDataText="There is no orders" Height="200px" Width="1024px" AllowPaging="True" AllowSorting="True"
-               AutoGenerateColumns="False" OnSelectedIndexChanged = "GridView1_OnSelectedIndexChanged" PagerSettings-Mode="NumericFirstLast" > <%--OnRowCreated="GridView1_RowCreated --%>               
-            <Columns>
-                <asp:TemplateField>
-                    <ItemTemplate>
-                <asp:Button ID="showOrder" runat="server" CommandName="Select" Text ="Select" Visible="true"/>
-                        </ItemTemplate>
-                </asp:TemplateField>
+               AutoGenerateColumns="False" OnSelectedIndexChanged = "GridView1_OnSelectedIndexChanged" PagerSettings-Mode="NumericFirstLast" OnRowDataBound="GridView1_OnRowDataBound" > <%--OnRowCreated="GridView1_RowCreated --%>               
+           
+   
+    <Columns>
+                <%--<asp:TemplateField>--%>
+                    <%--<ItemTemplate>
+                <asp:LinkButton ID="showOrder" runat="server" CommandName="Select" Text ="View Order" Visible="true"/>
+                        </ItemTemplate>--%>
+            
+                <%--</asp:TemplateField>--%>
                  <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" Visible="false" />
                   <asp:BoundField DataField="ponumber" HeaderText="PO #" ReadOnly="True" SortExpression="ponumber" />
                 <asp:BoundField DataField="priority" HeaderText="Priority" ReadOnly="True" SortExpression="priority" />
