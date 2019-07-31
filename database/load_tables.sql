@@ -168,7 +168,7 @@ CREATE TABLE `employee_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `org_id` int(10) unsigned DEFAULT NULL,
-  `ifprivilege` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `ifprivilege` tinyint(1) unsigned NOT NULL DEFAULT '0',  -- whether the group has approval privilege
   `email` varchar(45) DEFAULT NULL,
   `phone` varchar(45) DEFAULT NULL,
   `lead_employee` int(10) unsigned DEFAULT NULL,

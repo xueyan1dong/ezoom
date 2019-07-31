@@ -10005,8 +10005,8 @@ END$
 
 /*
 *    Copyright 2009 ~ Current  IT Helps LLC
-*    Source File            : modify_employee.sql
-*    Created By             : Xueyan Dong
+*    Source File            : modify_employee_group.sql
+*    Created By             : Junlu Luo
 *    Date Created           : 07/08/2019
 *    Platform Dependencies  : MySql
 *    Description            : Create or modify employee group
@@ -10023,10 +10023,12 @@ END$
     		'This is a test group 4',
     		@response);
     		SELECT @id as ID, @response AS Response;
-*    Log                    :					
+*    Log:		
+*       07/08/2019: Junlu Luo: First Created
+*       07/30/2019: Xueyan Dong: updated column name reference from or_id to org_id			
 */
 
-DELIMITER $  -- for escaping purpose
+DELIMITER $  
 DROP PROCEDURE IF EXISTS `modify_employee_group`$
 CREATE PROCEDURE `modify_employee_group`(
 	INOUT _id int(10) unsigned,
@@ -10067,7 +10069,7 @@ this_proc: BEGIN
     -- insert new group
 		INSERT INTO `employee_group` (
 			name,
-      or_id,
+      org_id,
 			ifprivilege,
 			email,
 			phone,
@@ -10093,7 +10095,7 @@ this_proc: BEGIN
     -- update existing record
 		UPDATE `employee_group`
 		SET name = _groupname,
-      or_id = _or_id,
+      org_id = _or_id,
 			ifprivilege = _ifprivilege,
 			email = _email,
 			phone = _phone,

@@ -1,3 +1,14 @@
+/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : ConfigEmployeeGroup.aspx.cs
+*    Created By             : Junlu Luo
+*    Date Created           : 7/8/2019
+*    Platform Dependencies  : .NET 
+*    Description            : UI for configuring Employee Group
+*    Log                    :
+*    07/08/2019: Junlu Luo: First Created
+*    07/30/2019: Xueyan Dong: Adjust reference to the column name of org_id in employee_group table
+----------------------------------------------------------------*/
 using System;
 using System.Data;
 using System.Configuration;

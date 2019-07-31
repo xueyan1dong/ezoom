@@ -17,7 +17,7 @@
     <DisplayName>Privilege</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">SELECT '0', 0 UNION SELECT '1', 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">SELECT 'N', 0 UNION SELECT 'Y', 1</DropdownQuery>
   </Column>
   <Column name ="email">
     <DisplayName>Email</DisplayName>

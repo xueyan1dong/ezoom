@@ -84,14 +84,14 @@ height="100%" scrollbars="Horizontal">
        SelectCommand="SELECT eg.id as id,
            eg.name AS groupname,
            org.name AS o_name,  org.id AS or_id,
-           eg.ifprivilege AS ifprivilege,
+           if(eg.ifprivilege=0, 'N', 'Y') as ifprivilege,
            eg.email AS email,
            eg.phone AS phone,
            e.firstname AS lead_employee,
            eg.description AS description
         FROM employee_group as eg
         LEFT JOIN organization AS org
-           ON org.id = eg.or_id
+           ON org.id = eg.org_id
         LEFT JOIN employee AS e
            ON e.id = org.lead_employee" >
         </asp:SqlDataSource>
@@ -118,8 +118,8 @@ height="100%" scrollbars="Horizontal">
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        EnableCaching="false"
        SelectCommand="SELECT eg.name AS groupname,
-           eg.or_id,
-           eg.ifprivilege,
+           eg.org_id,
+           if(eg.ifprivilege=0, 'N', 'Y') as ifprivilege,
            eg.email,
            eg.phone,
            eg.lead_employee,
@@ -142,8 +142,8 @@ height="100%" scrollbars="Horizontal">
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        EnableCaching="false"
        SelectCommand="SELECT eg.name AS groupname,
-           eg.or_id,
-           eg.ifprivilege,
+           eg.org_id,
+           if(eg.ifprivilege=0, 'N', 'Y') as ifprivilege,
            eg.email,
            eg.phone,
            eg.lead_employee,
