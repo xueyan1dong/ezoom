@@ -223,4 +223,78 @@ NULL,
 'Metal finish of product',
 'attribute is a key attribute for fitting products',
 now(),
-now())
+now());
+
+-- 8/1/2019: added product attribute: List Price
+INSERT INTO attribute_definition (
+attr_name,
+attr_usage,
+attr_parent_type,
+data_type,
+length,
+decimal_length,
+key_attr,
+optional,
+uom_id,
+max_value,
+min_value,
+enum_values,
+description,
+comment,
+create_date,
+update_date
+)
+VALUES (
+'List Price',
+'both',
+'product',
+'decimal',
+12,
+2,
+1,
+0,
+20,
+NULL,
+NULL,
+NULL,
+'US list price of product',
+NULL,
+now(),
+now());
+
+-- 8/1/2019: added product attribute: List Price
+INSERT INTO attribute_definition (
+attr_name,
+attr_usage,
+attr_parent_type,
+data_type,
+length,
+decimal_length,
+key_attr,
+optional,
+uom_id,
+max_value,
+min_value,
+enum_values,
+description,
+comment,
+create_date,
+update_date
+)
+VALUES (
+'UK List Price',
+'both',
+'product',
+'decimal',
+12,
+2,
+1,
+0,
+21,
+NULL,
+NULL,
+NULL,
+'US list price of product',
+NULL,
+now(),
+now());
