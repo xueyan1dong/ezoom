@@ -4,8 +4,9 @@
    
     <siteMapNode url="~/Configure/Configuration.aspx" title="Configure"  description="Configuration">
       <siteMapNode  title="User" description="User Configuration">
-        <siteMapNode url="~/Configure/User/ConfigEmployee.aspx" title="Users"  description="User Configuration" />
-        <siteMapNode url="~/Configure/User/ConfigEmployeeGroup.aspx" title="Employee Group"  description="User Group Configuration" />
+        <siteMapNode url="~/Configure/User/ConfigEmployee.aspx" title="Users"  description="User Setup" />
+        <siteMapNode url="~/Configure/User/ConfigEmployeeGroup.aspx" title="User Group"  description="User Group Setup" />
+        <siteMapNode url="~/Configure/User/ConfigOrganization.aspx" title="Organization"  description="Organization Setup" />
       </siteMapNode>
       
       <siteMapNode title="Customer"  description="Customer Configuration">
@@ -18,6 +19,7 @@
       <siteMapNode url="~/Configure/Product/UomConversionConfig.aspx" title="UoM Conversions"  description="Unit of Measure Conversions" />
       <siteMapNode url="~/Configure/Product/ProductCategoryConfig.aspx" title="Product Group" description="Product Group Configuration" />
       <siteMapNode url="~/Configure/Product/ProductConfig.aspx" title="Product"  description="Product Configuration" />
+      <siteMapNode url="~/Configure/Product/ProductAttributeConfig.aspx" title="Product Attributes"  description="Product Attribute Configuration" />
       <siteMapNode url="~/Configure/Product/LoadProduct.aspx" title="Load Product"  description="Load Product" />
       <siteMapNode url="~/Configure/Product/ProdProcConfig.aspx" title="Product vs. Workflow"  description="Product Workflow Association" />
       <siteMapNode url="~/Configure/Material/MaterialGroupConfig.aspx" title="Item / Part Group"  description="Item/Part Group Configuration" />
