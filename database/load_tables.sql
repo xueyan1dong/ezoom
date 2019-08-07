@@ -288,29 +288,6 @@ CREATE TABLE  `equipment` (
   KEY `eq_un1` (`eg_id`,`name`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
 
-
--- eq_attributes table
-DROP TABLE IF EXISTS `eq_attributes`$
-CREATE TABLE  `eq_attributes` (
-  `eq_id` int(10) unsigned NOT NULL,
-  `attr_id` int(10) unsigned NOT NULL,
-  `attr_name` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `attr_value` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `attr_type` enum('in','out','both') NOT NULL DEFAULT 'both',
-  `data_type` enum('decimal','signed integer','unsigned integer','signed big integer','unsigned big integer','varchar','char','date','datetime') NOT NULL,
-  `length` int(4) unsigned DEFAULT NULL,
-  `decimal_length` tinyint(1) unsigned DEFAULT NULL,
-  `key_attr` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `optional` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `max_value` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `min_value` varchar(255) DEFAULT NULL,
-  `enum_values` text,
-  `description` text,
-  `comment` text,
-  PRIMARY KEY (`eq_id`,`attr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8$
-
-
 -- equip_history table
 DROP TABLE IF EXISTS `equip_history`$
 CREATE TABLE `equip_history` (
@@ -654,29 +631,6 @@ CREATE TABLE  `product` (
   PRIMARY KEY (`id`),
   KEY `pd_un1` (`pg_id`,`name`,`version`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8$
-
-
--- pd_attributes table
-DROP TABLE IF EXISTS `pd_attributes`$
-CREATE TABLE `pd_attributes` (
-  `pd_id` int(10) unsigned NOT NULL,
-  `attr_id` int(10) unsigned NOT NULL,
-  `attr_name` varchar(255) NOT NULL,
-  `attr_value` varchar(255) DEFAULT NULL,
-  `attr_type` enum('in','out','both') NOT NULL DEFAULT 'both',
-  `data_type` enum('decimal','signed integer','unsigned integer','signed big integer','unsigned big integer','varchar','char','date','datetime') NOT NULL,
-  `length` int(4) unsigned DEFAULT NULL,
-  `decimal_length` tinyint(1) unsigned DEFAULT NULL,
-  `key_attr` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `optional` tinyint(1) unsigned NOT NULL DEFAULT '0',  
-  `max_value` varchar(255) DEFAULT NULL,
-  `min_value` varchar(255) DEFAULT NULL,
-  `enum_values` varchar(255) DEFAULT NULL,
-  `description` text CHARACTER SET latin1,
-  `comment` text CHARACTER SET latin1,
-  PRIMARY KEY (`pd_id`,`attr_id`, `attr_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8$
-
 
 -- step_type table
 DROP TABLE IF EXISTS `step_type`$
