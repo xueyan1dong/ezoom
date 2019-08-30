@@ -282,6 +282,7 @@ namespace ezMES.ITemplate
                   }
                }
             }
+            xtr.Close();
          }
       }
       

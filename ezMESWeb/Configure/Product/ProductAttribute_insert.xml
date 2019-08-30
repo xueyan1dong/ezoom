@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="ProductAttribute">
+  <Header>Product Attribute</Header>
+   <Column name ="product_name">
+    <DisplayName>Product Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>128</TextBoxLength>
+  </Column>
+  <Column name ="attr_id">
+    <DisplayName>Attribute Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>DropDown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT T1.attr_name, CONCAT(T1.attr_id, '||', CONCAT('Data type: ', REPLACE(T1.data_type, 'varchar', 'text'), ' ',IF(T1.enum_values IS NULL, CONCAT(IF(T1.min_value IS NULL, '', CONCAT(' Min=', T1.min_value)), IF(T1.max_value IS NULL, '', CONCAT(' Max=', T1.max_value))),CONCAT('Value can only be one of the following:', T1.enum_values)))) AS restriction FROM attribute_definition AS T1 WHERE attr_parent_type = "product" ORDER BY 1</DropdownQuery>
+	<Attribute key="OnChange">showDropDown(this, 'restriction')</Attribute>
+  </Column>
+  <Column name ="attr_value">
+    <DisplayName>Attribute Value</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="restriction">
+	<DisplayName>Value Restriction</DisplayName>
+	<IsEnable>true</IsEnable>
+	<UI>Label</UI>
+	<TextBoxLength>256</TextBoxLength>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
+  
+  

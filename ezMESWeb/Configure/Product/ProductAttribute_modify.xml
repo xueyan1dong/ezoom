@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Table name="ProductAttribute">
+  <Header>Product Attribute</Header>
+  <Column name ="product_name">
+    <DisplayName>Product Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Label</UI>
+    <TextBoxLength>128</TextBoxLength>
+  </Column>
+  <Column name ="attr_name">
+	<DisplayName>Attribute Name</DisplayName>
+	<IsEnable>true</IsEnable>
+	<UI>Label</UI>
+	<TextBoxLength>256</TextBoxLength>
+  </Column>
+  <Column name ="attr_value">
+    <DisplayName>Attribute Value</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+	<TextBoxLength>256</TextBoxLength>
+  </Column>
+  <Column name ="restriction">
+	<DisplayName>Value Restriction</DisplayName>
+	<IsEnable>true</IsEnable>
+	<UI>Label</UI>
+	<TextBoxLength>256</TextBoxLength>
+  </Column>
+   <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+	<TextBoxLength>256</TextBoxLength>
+  </Column>
+</Table>
+  
+  

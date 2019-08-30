@@ -132,6 +132,7 @@
     </Content>
     <Content Include="Configure\Process\LoadStep.aspx" />
     <Content Include="Configure\Product\LoadProduct.aspx" />
+    <Content Include="Configure\Product\ProductAttributeConfig.aspx" />
     <Content Include="Configure\Product\ProductCategory.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -251,6 +252,10 @@
     </Compile>
     <Compile Include="Configure\Product\LoadProduct.aspx.designer.cs">
       <DependentUpon>LoadProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Configure\Product\ProductAttributeConfig.aspx.cs">
+      <DependentUpon>ProductAttributeConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Configure\User\ConfigEmployeeGroup.aspx.cs">
       <DependentUpon>ConfigEmployeeGroup.aspx</DependentUpon>
