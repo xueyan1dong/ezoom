@@ -46,7 +46,11 @@ height="100%" scrollbars="Horizontal">
                 <asp:BoundField DataField="updated_by" HeaderText="Updated By" SortExpression="updated_by" />
                 <asp:BoundField DataField="description" HeaderText="Description" SortExpression="description" />
                 <asp:BoundField DataField="comment" HeaderText="Comment" SortExpression="comment" />
-                   	
+                <asp:TemplateField>
+                <ItemTemplate>
+                    <input type="button" style="width:80px;height:30px"  onclick="location.href='ProductAttributeConfig.aspx?prodid=<%#Eval("id")%>'" value="Attribute" />
+                </ItemTemplate>
+                </asp:TemplateField>
 			   </Columns>
                    </asp:GridView>
              </ContentTemplate>
