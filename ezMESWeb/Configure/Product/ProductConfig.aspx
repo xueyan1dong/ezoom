@@ -46,11 +46,9 @@ height="100%" scrollbars="Horizontal">
                 <asp:BoundField DataField="updated_by" HeaderText="Updated By" SortExpression="updated_by" />
                 <asp:BoundField DataField="description" HeaderText="Description" SortExpression="description" />
                 <asp:BoundField DataField="comment" HeaderText="Comment" SortExpression="comment" />
-                <asp:TemplateField>
-                <ItemTemplate>
-                    <input type="button" style="width:80px;height:30px"  onclick="location.href='ProductAttributeConfig.aspx?prodid=<%#Eval("id")%>'" value="Attribute" />
-                </ItemTemplate>
-                </asp:TemplateField>
+                <asp:HyperLinkField DataNavigateUrlFields="id" 
+                DataNavigateUrlFormatString="ProductAttributeConfig.aspx?prodid={0}" 
+                DataTextField="attr_count" DataTextFormatString="{0}" HeaderText="Num of Attribute(s)" />   
 			   </Columns>
                    </asp:GridView>
              </ContentTemplate>
@@ -64,6 +62,11 @@ height="100%" scrollbars="Horizontal">
            SelectCommand="select p.id as ID, p.pg_id, pg.name as product_group, p.name, 
            p.version, p.state, p.lot_size, p.uomid, uom.Name as uom, if(p.lifespan>0, p.lifespan, null) as lifespan,
            (select count(*) from product_process pp where pp.product_id = p.id) as num_process,
+           (SELECT COUNT(*) FROM attribute_value AS T1
+            JOIN attribute_definition AS T2
+            ON T1.attr_id = T2.attr_id
+	            AND T2.attr_parent_type = 'product'
+            WHERE T1.parent_id = p.id) AS attr_count,
            p.create_time, p.created_by, concat(e.firstname, ' ', e.lastname) as created_people, p.state_change_time, concat(e2.firstname, ' ', e2.lastname) as updated_by, p.description, p.comment 
 from product p left join product_group pg on p.pg_id =  pg.id
 left join employee e on (p.created_by = e.id)
