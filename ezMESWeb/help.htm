@@ -150,7 +150,7 @@
     given by IT Helps based on customer requirements. Please see <a href="#steptype"> Explanation of Step Types</a>
     for more detail about step types. <br />
 
-	"Equipment" is the equipment the step will use. It is optional, for some steps do not need any equipment<br />
+    "Equipment" is the equipment the step will use. It is optional, for some steps do not need any equipment<br />
     "Employee Usage" and "Employee Or Group" fields together define the access to a step. If "Employee Usage" is set to "Employee Group"
     then the selected group from "Employee Or Group" dropdown box will have the previlidge to operate this step. If "Employee Usage" is
     set to "Employee", then only the selected employee from "Employee Or Group" can operate the step.<br />
@@ -175,7 +175,7 @@
     new location. More over, if the first parameter in the step configuration is assigned the text value of "log tracking num", user will be able to record <br />
     tracking number when performing this step. <br />
     <br /><br />
-    
+
     <i>Recipe</i><br />
     Recipe configuration Module lists all defined recipes in ezOOM system that the users can refer to. By clicking on the gray button as shown in the picture below, with recipe's name on it, the user
     can check each recipe's general information as well as the information of parts used in the recipe. A defined recipe can be edited or deleted for different purposes. Its general information and parts information can be updated.
@@ -194,7 +194,7 @@
     ??
     <br /><br />
     <i>Workflow</i><br />
-    The workflow configuration module is shown in the picture below. All the gray buttons listed in the gray panel is the defined workflow in the system. 
+    The workflow configuration module is shown in the picture below. All the gray buttons listed in the gray panel is the defined workflow in the system.
     <p style="text-align:center">
         <img src="\Images\Workflow.PNG" height="350px" width="600px" weight="600px" />
     </p>
@@ -229,6 +229,26 @@
     <i>Sales Order</i><br />
     The form of Sales Order is used to create incoming orders.
     <br /><br />
+    <i>Inventory Order</i><br />
+    Inventory Order is product order that manufacturers issued to themselves in order to strategically accumulate some product inventory even before the product is sold. The form of Inventory Order is used to create inventory orders.
+    <br /><br />
+    <i>Purchase Order</i><br />
+    Purchase Order is material order that manufacturers issued to their suppliers for purchasing supplies that are neccessary for producing the manufacturer's own product
+    <br /><br />
+    <a name="LoadWOrder"><i>Load W Orders</i><br /></a>
+    This form is specifically developed for Waterworks in order to load MTO orders directly from JDE order dump. The dump file is saved as a csv files with following header:<br />
+    Order  Number,Or  Ty,Line  Number,Business  Unit,Vendor  Number,Vendor  Name,Order  Date,Next  Stat,Buyer  Number,Buyer  Name,Item  Number,Item  Description,Ship To  Number,Ln  Ty,Last  Stat,Quantity  Ordered,Unit  Cost,Extended  Price<br />
+
+    And a couple of sample orders in the file look like below:<br/>
+    4368224,OP,1,205,2003311,Dayton Grey Corp,5/10/19,280,5037,Stephanie London,22-88129-88177,".25 18"" Single Metal Towel Bar in Architectural Bronze",205,SP,220,1,35,35<br/>
+
+    4368224,OP,2,205,2003311,Dayton Grey Corp,5/10/19,280,5037,Stephanie London,22-70303-12944,.25 Single Hook in Architectural Bronze,205,SP,220,1,15,15<br/>
+
+    4368224,OP,3,205,2003311,Dayton Grey Corp,5/10/19,280,5037,Stephanie London,22-70303-12944,.25 Single Hook in Architectural Bronze,205,SP,220,1,15,15<br/>
+
+    4368237,OP,1,205,2003311,Dayton Grey Corp,5/10/19,280,5037,Stephanie London,26-22466-26925,"Universal Angle Faucet Supply Kits 1/2"" Sweat x 3/8"" O.D. Compression in Carbon Complies with 0.25% WALC",205,SP,220,2,75,150<br/>
+
+    <br /><br />
     <a href="#content">back to Top</a>
     </p>
     <p>
@@ -248,3 +268,4 @@
         <a href="#content">back to Top</a>
     </p>
 
+</body>

@@ -122,6 +122,7 @@ namespace ezMESWeb.Configure.User
 
 
               LoadSqlParasFromTemplate(ezCmd, fTemp);
+                
 
               ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
               ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;

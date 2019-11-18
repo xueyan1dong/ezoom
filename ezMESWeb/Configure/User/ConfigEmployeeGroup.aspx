@@ -37,7 +37,7 @@ height="100%" scrollbars="Horizontal">
                  </asp:TemplateField>
                     <asp:BoundField DataField="groupname" HeaderText="Group Name" SortExpression="groupname" />
                     <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
-                    <asp:BoundField DataField="ifprivilege" HeaderText="Privilege" SortExpression="ifprivilege" />
+                    <asp:BoundField DataField="ifprivilegec" HeaderText="Privilege" SortExpression="ifprivilegec" />
                     <asp:BoundField DataField="email" HeaderText="Email" SortExpression="email" />
                     <asp:BoundField DataField="phone" HeaderText="Phone" SortExpression="phone" />
                     <asp:BoundField DataField="lead_employee" HeaderText="Lead Employee" SortExpression="lead_employee" />
@@ -66,7 +66,7 @@ height="100%" scrollbars="Horizontal">
                  </asp:TemplateField>
                     <asp:BoundField DataField="groupname" HeaderText="Group Name" SortExpression="groupname" />
                     <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
-                    <asp:BoundField DataField="ifprivilege" HeaderText="Privilege" SortExpression="ifprivilege" />
+                    <asp:BoundField DataField="ifprivilegec" HeaderText="Privilege" SortExpression="ifprivilegec" />
                     <asp:BoundField DataField="email" HeaderText="Email" SortExpression="email" />
                     <asp:BoundField DataField="phone" HeaderText="Phone" SortExpression="phone" />
                     <asp:BoundField DataField="lead_employee" HeaderText="Lead Employee" SortExpression="lead_employee" />
@@ -83,8 +83,9 @@ height="100%" scrollbars="Horizontal">
           DeleteCommand="{CALL delete_employee_group(?)}"
        SelectCommand="SELECT eg.id as id,
            eg.name AS groupname,
-           org.name AS o_name,  org.id AS or_id,
-           if(eg.ifprivilege=0, 'N', 'Y') as ifprivilege,
+           org.name AS o_name,  org.id AS org_id,
+           if(eg.ifprivilege=0, 'N', 'Y') as ifprivilegec,
+           eg.ifprivilege AS ifprivilege,
            eg.email AS email,
            eg.phone AS phone,
            e.firstname AS lead_employee,
@@ -119,7 +120,7 @@ height="100%" scrollbars="Horizontal">
        EnableCaching="false"
        SelectCommand="SELECT eg.name AS groupname,
            eg.org_id,
-           if(eg.ifprivilege=0, 'N', 'Y') as ifprivilege,
+           eg.ifprivilege,
            eg.email,
            eg.phone,
            eg.lead_employee,
@@ -143,7 +144,7 @@ height="100%" scrollbars="Horizontal">
        EnableCaching="false"
        SelectCommand="SELECT eg.name AS groupname,
            eg.org_id,
-           if(eg.ifprivilege=0, 'N', 'Y') as ifprivilege,
+           eg.ifprivilege,
            eg.email,
            eg.phone,
            eg.lead_employee,

@@ -140,7 +140,9 @@
     <Content Include="Configure\User\EmployeeGroup_insert.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Configure\User\EmployeeGroup_modify.xml" />
+    <Content Include="Configure\User\EmployeeGroup_modify.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Images\bg.gif" />
     <Content Include="Images\bg_preamble.jpg" />
     <Content Include="Images\Logo.gif" />

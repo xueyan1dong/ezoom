@@ -7,17 +7,17 @@
     <UI>Textbox</UI>
     <TextBoxLength>255</TextBoxLength>   
   </Column>
-  <Column name ="or_id">  
+  <Column name ="org_id">  
     <DisplayName>Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o UNION SELECT '', 0 order by 1</DropdownQuery>
   </Column>
   <Column name ="ifprivilege">
     <DisplayName>Privilege</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">SELECT 'N', 0 UNION SELECT 'Y', 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">SELECT 'N', false UNION SELECT 'Y', true</DropdownQuery>
   </Column>
   <Column name ="email">
     <DisplayName>Email</DisplayName>

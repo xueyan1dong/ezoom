@@ -20,7 +20,8 @@
     		SELECT @id as ID, @response AS Response;
 *    Log:		
 *       07/08/2019: Junlu Luo: First Created
-*       07/30/2019: Xueyan Dong: updated column name reference from or_id to org_id			
+*       07/30/2019: Xueyan Dong: updated column name reference from or_id to org_id	
+ *      09/30/2019: Xueyan Dong: changed the input parameter _or_id to _org_id  		
 */
 
 DELIMITER $  
@@ -28,7 +29,7 @@ DROP PROCEDURE IF EXISTS `modify_employee_group`$
 CREATE PROCEDURE `modify_employee_group`(
 	INOUT _id int(10) unsigned,
 	IN _groupname varchar(255),
-	IN _or_id int(10) unsigned,
+	IN _org_id int(10) unsigned,  -- if input is 0, replace it with null, as application sends in 0 if group has no belonging org
 	IN _ifprivilege TINYINT(1) unsigned,
 	IN _email varchar(45),
 	IN _phone varchar(45),
@@ -44,9 +45,9 @@ this_proc: BEGIN
     LEAVE this_proc;
   END IF;
   
-	IF _or_id IS NULL THEN
-		SET _response = 'Organization is required. Please fill in the organization.';
-    LEAVE this_proc;
+   -- when application sends in 0, it means the group does not have a belonging organization
+  IF _org_id = 0 THEN  
+    SET _org_id = NULL;
   END IF;
   
   -- make sure group name is unique
@@ -72,7 +73,7 @@ this_proc: BEGIN
 			description
 		) VALUES (
 			_groupname,
-      _or_id,
+      _org_id,
 			_ifprivilege,
 			_email,
 			_phone,
@@ -90,7 +91,7 @@ this_proc: BEGIN
     -- update existing record
 		UPDATE `employee_group`
 		SET name = _groupname,
-      org_id = _or_id,
+      org_id = _org_id,
 			ifprivilege = _ifprivilege,
 			email = _email,
 			phone = _phone,
