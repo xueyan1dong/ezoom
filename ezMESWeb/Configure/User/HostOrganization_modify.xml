@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Table name="organization">
+  <Header>Organization</Header>
+  <Column name ="name">
+    <DisplayName>Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="lead_employee">
+    <DisplayName>Lead Employee</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+  </Column>
+  <Column name ="phone">
+    <DisplayName>Phone</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>45</TextBoxLength>
+  </Column>
+  <Column name ="email">
+    <DisplayName>Email</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>45</TextBoxLength>
+  </Column>
+  <Column name ="description">
+    <DisplayName>Description</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textarea</UI>
+    <TextBoxLength>45</TextBoxLength>
+  </Column>
+  <Column name ="parent_organization">
+    <DisplayName>Parent Organization</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+  </Column>
+  <Column name="root_company">
+    <DisplayName>Root Organization</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+  </Column>
+  <Column name="root_org_type">
+    <DisplayName>Root Organization Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1"> </DropdownQuery>
+  </Column>
+</Table>

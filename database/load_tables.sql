@@ -127,16 +127,20 @@ CREATE TABLE `config_history` (
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 		
-*    7/09/2019: Xueyan Dong: added root_org_type column		
+*    7/09/2019: Xueyan Dong: added root_org_type column	
+*    11/23/2019: xueyan Dong: added root_company column	
+*	 11/25/2019: Shelby Simpson: added status column
 */
 DELIMITER $ 
 DROP TABLE IF EXISTS `organization`$
 CREATE TABLE `organization` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,  -- auto generated id in ezoom 
   `name` varchar(255) NOT NULL,
+  `status` enum('active','inactive','removed') NOT NULL DEFAULT 'active', -- whether the organization is active, inactive or removed from the system 
   `lead_employee` int(10) unsigned DEFAULT NULL,
-  `parent_organization` int(10) unsigned DEFAULT NULL, -- the top orgnization under host company or client will have either id from company table
+  `root_company` INT(10) NOT NULL, -- the top organization under host company or client will have either id from company table
                                                         -- or id from client table as parent_organization, depending on root_organization_type
+  `parent_organization` int(10) unsigned DEFAULT NULL, -- ID FROM organization table
   `phone` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `description` text,
@@ -144,7 +148,6 @@ CREATE TABLE `organization` (
                                                                 -- or under a particular client
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB$
-
 
 -- employee_group table
 /*
