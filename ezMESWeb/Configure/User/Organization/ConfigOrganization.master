@@ -1,0 +1,25 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Configure/ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ConfigOrganization.master.cs" Inherits="ezMESWeb.Configure.User.Organization.ConfigOrganization" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
+
+    <asp:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0">
+
+        <asp:TabPanel runat="server" HeaderText="Host Organizations" ID="TabPanel1">
+            <ContentTemplate>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+                </asp:ContentPlaceHolder>
+            </ContentTemplate>
+        </asp:TabPanel>
+
+        <asp:TabPanel runat="server" HeaderText="Client Organizations" ID="TabPanel2">
+            <ContentTemplate>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder4" runat="server">
+                </asp:ContentPlaceHolder>
+            </ContentTemplate>
+        </asp:TabPanel>
+
+    </asp:TabContainer>
+
+</asp:Content>

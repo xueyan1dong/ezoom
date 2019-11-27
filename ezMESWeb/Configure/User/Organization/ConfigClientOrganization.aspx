@@ -1,22 +1,20 @@
-﻿<%@ Page Language="C#" MasterPageFile="../ConfigureModule.Master" AutoEventWireup="true" CodeBehind="ConfigOrganization.aspx.cs" Inherits="ezMESWeb.Configure.User.ConfigOrganization" Title="Organization Configuration -- ezOOM"%>
+﻿<%@ Page Language="C#" MasterPageFile="./ConfigOrganization.Master" AutoEventWireup="true" CodeBehind="ConfigClientOrganization.aspx.cs" Inherits="ezMESWeb.Configure.User.ConfigClientOrganization" Title="Client Organization Configuration -- ezOOM"%>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="head" runat="server">
-</asp:Content>
-<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder4" runat="server">
 
-<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
   <% if ((Session["Role"]!= null) && (Session["Role"].Equals("Admin")))
      {%> 
 <asp:Button ID="btnInsert" runat="server" Text="Insert" Width="147px" OnClick="btn_Click"/> 
              <%} %>  
+
  <asp:panel id="pnlScroll" runat="server" width="85%" 
 height="100%" scrollbars="Horizontal">    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
                   <% if (Session["Role"].Equals("Admin"))
                      {%> 
-            <asp:GridView ID="gvTable" runat="server" Caption="Organization List" 
+            <asp:GridView ID="gvTable" runat="server" Caption="Client Organization List" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsOrgConfigGrid" 
                EmptyDataText="No Client currently available" Height="145px" Width="500px"
                AutoGenerateColumns="False" 
@@ -43,13 +41,13 @@ height="100%" scrollbars="Horizontal">
                     <asp:BoundField DataField="description" HeaderText="Description" SortExpression="description" />
                     <asp:BoundField DataField="parent_organization" HeaderText="Parent Organization" SortExpression="parent_organization" />
                     <asp:BoundField DataField="root_company" HeaderText="Root Company" SortExpression="root_company" />
-                    <asp:BoundField DataField="root_org_type" HeaderText="Root Organization Type" SortExpression="root_org_type" />
+                    <%--<asp:BoundField DataField="root_org_type" HeaderText="Root Organization Type" SortExpression="root_org_type" />--%>
                 </Columns>
              </asp:GridView>
      <%}
                      else
                      { %>
-              <asp:GridView ID="gvTable1" runat="server" Caption="Organization List" 
+              <asp:GridView ID="gvTable1" runat="server" Caption="Client Organization List" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsOrgConfigGrid" 
                EmptyDataText="No Client currently available" Height="145px" Width="500px"
                AutoGenerateColumns="False" onselectedindexchanging="gvTable_SelectedIndexChanging"
@@ -73,7 +71,7 @@ height="100%" scrollbars="Horizontal">
                     <asp:BoundField DataField="description" HeaderText="Description" SortExpression="description" />
                     <asp:BoundField DataField="parent_organization" HeaderText="Parent Organization" SortExpression="parent_organization" />
                     <asp:BoundField DataField="root_company" HeaderText="Root Company" SortExpression="root_company" />
-                    <asp:BoundField DataField="root_org_type" HeaderText="Root Organization Type" SortExpression="root_org_type" />
+                    <%--<!--<asp:BoundField DataField="root_org_type" HeaderText="Root Organization Type" SortExpression="root_org_type" />--%>
                 </Columns>
              </asp:GridView>                   
      <%} %>
@@ -84,11 +82,12 @@ height="100%" scrollbars="Horizontal">
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            ProviderName="System.Data.Odbc" 
           DeleteCommand="Update `Organization` set status='removed' WHERE `Organization`.id=?" 
-       SelectCommand="SELECT o.id, o.name, o.status, e.firstname+' '+e.lastname as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type
+       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company
   FROM Organization o
   LEFT JOIN Employee e ON e.id = o.lead_employee
   LEFT JOIN Organization o1 ON o1.id = o.parent_organization
-  LEFT JOIN Organization o2 ON o2.id = o.root_company ">
+  LEFT JOIN Organization o2 ON o2.id = o.root_company 
+  WHERE o.root_org_type = 'client' ">
         </asp:SqlDataSource>
         
         <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 

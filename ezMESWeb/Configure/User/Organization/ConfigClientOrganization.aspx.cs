@@ -12,7 +12,7 @@ using CommonLib.Data.EzSqlClient;
 
 namespace ezMESWeb.Configure.User
 {
-    public partial class ConfigOrganization : ConfigTemplate
+    public partial class ConfigClientOrganization : ConfigTemplate
     {
         protected global::System.Web.UI.WebControls.SqlDataSource sdsOrgConfig, sdsOrgConfigGrid;
         public DataColumnCollection colc;
@@ -27,10 +27,10 @@ namespace ezMESWeb.Configure.User
                 colc = dv.Table.Columns;
 
                 //Initial insert template  
-                FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
+                FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
 
                 //Initial Edit template           
-                FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+                FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
                     FormView1.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.

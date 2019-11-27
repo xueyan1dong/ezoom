@@ -152,9 +152,9 @@ namespace ezMESWeb
                 Server.Transfer("/Default.aspx");
             else
             {
-                Label tLabel = (Label)Page.Master.FindControl("lblName");
-                if (!tLabel.Text.StartsWith("Welcome"))
-                    tLabel.Text = "Welcome " + (string)(Session["FirstName"]) + "!";
+                //Label tLabel = (Label)Page.Master.FindControl("lblName");
+                //if (!tLabel.Text.StartsWith("Welcome"))
+                //    tLabel.Text = "Welcome " + (string)(Session["FirstName"]) + "!";
             }
         }
 

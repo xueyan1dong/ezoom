@@ -17,7 +17,7 @@
     <DisplayName>Lead Employee</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'client' order by 1</DropdownQuery>
   </Column>
   <Column name ="phone">
     <DisplayName>Phone</DisplayName>
@@ -40,14 +40,12 @@
     <DisplayName>Parent Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'client' order by 1</DropdownQuery>
   </Column>
   <Column name="root_company">
     <DisplayName>Root Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'client' order by 1</DropdownQuery>
   </Column>
 </Table>
-
-

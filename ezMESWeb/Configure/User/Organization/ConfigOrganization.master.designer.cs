@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ezMESWeb.Configure.User {
+namespace ezMESWeb.Configure.User.Organization {
     
     
     public partial class ConfigOrganization {
@@ -22,48 +22,48 @@ namespace ezMESWeb.Configure.User {
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
         
         /// <summary>
-        /// pnlScroll control.
+        /// TabContainer1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlScroll;
+        protected global::AjaxControlToolkit.TabContainer TabContainer1;
         
         /// <summary>
-        /// btnShowPopup control.
+        /// TabPanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnShowPopup;
+        protected global::AjaxControlToolkit.TabPanel TabPanel1;
         
         /// <summary>
-        /// sdsOrgConfig1 control.
+        /// ContentPlaceHolder3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sdsOrgConfig1;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder3;
         
         /// <summary>
-        /// btnSubmit control.
+        /// TabPanel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSubmit;
+        protected global::AjaxControlToolkit.TabPanel TabPanel2;
         
         /// <summary>
-        /// btnCancel control.
+        /// ContentPlaceHolder4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnCancel;
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder4;
     }
 }
