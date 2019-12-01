@@ -12,12 +12,14 @@ using CommonLib.Data.EzSqlClient;
 
 namespace ezMESWeb.Configure.User
 {
-    public partial class ConfigClientOrganization : ConfigTemplate
+    public partial class ConfigOrganization : TabConfigTemplate
     {
         protected global::System.Web.UI.WebControls.SqlDataSource sdsOrgConfig, sdsOrgConfigGrid;
         public DataColumnCollection colc;
         protected Label lblError;
         protected GridView gvTable1;
+        protected Label lblActiveTab;
+        protected Button btnNewOrganization1, btnNewOrganization2;
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -27,12 +29,12 @@ namespace ezMESWeb.Configure.User
                 colc = dv.Table.Columns;
 
                 //Initial insert template  
-                FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
+                fvMain.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
 
                 //Initial Edit template           
-                FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
+                fvMain.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
-                    FormView1.DataSourceID = "sdsOrgConfig1";
+                    fvMain.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.
                 gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
 
@@ -42,27 +44,28 @@ namespace ezMESWeb.Configure.User
         protected void Page_Load(object sender, EventArgs e)
         {
             base.Page_Load(sender, e);
-            if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
+            /*if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
             {
                 for (int i = 0; i < gvTable1.Rows.Count; i++)
                 {
                     if (gvTable1.Rows[i].Cells[2].Text.Equals("removed"))
                         gvTable1.Rows[i].Enabled = false;
                 }
-            };
+            };*/
+            if (!lblActiveTab.Text.Equals("")) show_activeTab();
         }
 
         protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
         {
             //modify the mode of form view
-            FormView1.ChangeMode(FormViewMode.Edit);
+            fvMain.ChangeMode(FormViewMode.Edit);
 
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             lblError.Text = "";
-            ModalPopupExtender.Hide();
+            btnUpdate_ModalPopupExtender.Hide();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -83,12 +86,12 @@ namespace ezMESWeb.Configure.User
                     ezMES.ITemplate.FormattedTemplate fTemp;
 
 
-                    if (FormView1.CurrentMode == FormViewMode.Insert)
+                    if (fvMain.CurrentMode == FormViewMode.Insert)
                     {
 
                         ezCmd.Parameters.AddWithValue("@_id", DBNull.Value, ParameterDirection.InputOutput);
 
-                        fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.InsertItemTemplate;
+                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvMain.InsertItemTemplate;
                     }
                     else
                     {
@@ -96,13 +99,13 @@ namespace ezMESWeb.Configure.User
                             ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable1.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
                         else
                             ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
-                        fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;
+                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvMain.EditItemTemplate;
                         ezCmd.Parameters.AddWithValue("@_username", DBNull.Value);
                         ezCmd.Parameters.AddWithValue("@_password", DBNull.Value);
                     }
 
 
-                    LoadSqlParasFromTemplate(ezCmd, fTemp);
+                    LoadSqlParasFromTemplate(ezCmd, fvMain, fTemp);
 
                     ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                     ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
@@ -116,13 +119,13 @@ namespace ezMESWeb.Configure.User
                     if (response.Length > 0)
                     {
                         lblError.Text = response;
-                        this.ModalPopupExtender.Show();
+                        this.btnUpdate_ModalPopupExtender.Show();
                     }
                     else
                     {
                         lblError.Text = "";
-                        this.FormView1.Visible = false;
-                        this.ModalPopupExtender.Hide();
+                        this.fvMain.Visible = false;
+                        this.btnUpdate_ModalPopupExtender.Hide();
 
                         if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
                         {
@@ -162,14 +165,50 @@ namespace ezMESWeb.Configure.User
         protected void btn_Click(object sender, EventArgs e)
         {
             //  set it to true so it will render
-            this.FormView1.Visible = true;
-            FormView1.ChangeMode(FormViewMode.Insert);
+            this.fvMain.Visible = true;
+            fvMain.ChangeMode(FormViewMode.Insert);
             //  force databinding
-            this.FormView1.DataBind();
+            this.fvMain.DataBind();
             //  update the contents in the detail panel
-            this.updateRecordPanel.Update();
+            this.updateBufferPanel.Update();
             //  show the modal popup
-            this.ModalPopupExtender.Show();
+            this.btnUpdate_ModalPopupExtender.Show();
+        }
+
+        protected void TabContainer_ActiveTabChanged(object sender, EventArgs e)
+        {
+
+            //tcMain.ActiveTabIndex = Convert.ToInt16(activeTab);
+            lblActiveTab.Text = tcMain.ActiveTabIndex.ToString();
+            show_activeTab();
+            //fvMain.Visible = false;
+            //Server.Transfer(string.Format("/Configure/Order/SalesOrderConfig.aspx?Tab={0}", tcMain.ActiveTabIndex));
+        }
+
+        protected void show_activeTab()
+        {
+            //AjaxControlToolkit.TabPanel activeTab = tcMain.ActiveTab;
+
+            //if (activeTab == Tp1)
+            if (Convert.ToInt32(lblActiveTab.Text) == 0)
+            {
+                // first tab i selected
+                btnNewOrganization1.Style["display"] = "";
+                btnNewOrganization2.Style["display"] = "none";
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'host' ";
+                gvTable.Caption = "Host Organizations";
+            }
+            else
+            {
+                btnNewOrganization2.Style["display"] = "";
+                btnNewOrganization1.Style["display"] = "none";
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'client' ";
+                gvTable.Caption = "Client Organizations";
+            }
+
+            sdsOrgConfigGrid.DataBind();
+            gvTable.DataBind();
+            tcMain.DataBind();
         }
     }
 }

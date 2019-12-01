@@ -137,10 +137,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Configure\User\ConfigEmployeeGroup.aspx" />
-    <Content Include="Configure\User\Organization\ClientOrganization_insert.xml" />
+    <Content Include="Configure\User\Organization\ClientOrganization_insert.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configure\User\Organization\ClientOrganization_modify.xml" />
-    <Content Include="Configure\User\Organization\ConfigClientOrganization.aspx" />
-    <Content Include="Configure\User\Organization\ConfigHostOrganization.aspx" />
+    <Content Include="Configure\User\Organization\ConfigOrganization.aspx" />
     <Content Include="Configure\User\EmployeeGroup_insert.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -269,26 +270,12 @@
       <DependentUpon>ConfigEmployeeGroup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Configure\User\Organization\ConfigClientOrganization.aspx.cs">
-      <DependentUpon>ConfigClientOrganization.aspx</DependentUpon>
+    <Compile Include="Configure\User\Organization\ConfigOrganization.aspx.cs">
+      <DependentUpon>ConfigOrganization.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Configure\User\Organization\ConfigClientOrganization.aspx.designer.cs">
-      <DependentUpon>ConfigClientOrganization.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Configure\User\Organization\ConfigHostOrganization.aspx.cs">
-      <DependentUpon>ConfigHostOrganization.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Configure\User\Organization\ConfigHostOrganization.aspx.designer.cs">
-      <DependentUpon>ConfigHostOrganization.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Configure\User\Organization\ConfigOrganization.master.cs">
-      <DependentUpon>ConfigOrganization.master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Configure\User\Organization\ConfigOrganization.master.designer.cs">
-      <DependentUpon>ConfigOrganization.master</DependentUpon>
+    <Compile Include="Configure\User\Organization\ConfigOrganization.aspx.designer.cs">
+      <DependentUpon>ConfigOrganization.aspx</DependentUpon>
     </Compile>
     <Compile Include="LabelPrint.aspx.cs">
       <DependentUpon>LabelPrint.aspx</DependentUpon>
@@ -624,7 +611,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="Configure\User\Organization\ConfigOrganization.master" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Package.pubxml" />
     <None Include="Properties\Settings.settings">

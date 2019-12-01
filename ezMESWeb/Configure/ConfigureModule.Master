@@ -123,6 +123,7 @@ div.innerText=  month+"/"+date+"/"+ year+" "+hours+":"+minutes+":"+seconds+" "+a
          <td valign="top" align="left">
     	  <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server" >
            </asp:ContentPlaceHolder>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server" ></asp:ContentPlaceHolder>
         </td>
         </tr>
         </table>        

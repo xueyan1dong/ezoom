@@ -28,8 +28,8 @@
   <Column name ="description">
     <DisplayName>Description</DisplayName>
     <IsEnable>true</IsEnable>
-    <UI>Textarea</UI>
-    <TextBoxLength>45</TextBoxLength>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
   </Column>
   <Column name ="parent_organization">
     <DisplayName>Parent Organization</DisplayName>

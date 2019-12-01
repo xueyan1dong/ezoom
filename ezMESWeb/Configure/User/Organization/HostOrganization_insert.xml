@@ -17,7 +17,7 @@
     <DisplayName>Lead Employee</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select CONCAT(e.firstname,' ',e.lastname) as name, e.id from employee e where user_type = 'host' order by 1</DropdownQuery>
   </Column>
   <Column name ="phone">
     <DisplayName>Phone</DisplayName>
@@ -34,7 +34,8 @@
   <Column name ="description">
     <DisplayName>Description</DisplayName>
     <IsEnable>true</IsEnable>
-    <UI>Textarea</UI>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
   </Column>
   <Column name ="parent_organization">
     <DisplayName>Parent Organization</DisplayName>
@@ -47,6 +48,12 @@
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
     <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
+  </Column>
+  <Column name="root_org_type">
+    <DisplayName>Root Organization Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1"></DropdownQuery>
   </Column>
 </Table>
 

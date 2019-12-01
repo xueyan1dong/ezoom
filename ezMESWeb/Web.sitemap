@@ -6,7 +6,7 @@
       <siteMapNode title="User" description="User Configuration">
         <siteMapNode url="~/Configure/User/ConfigEmployee.aspx" title="Users"  description="User Setup" />
         <siteMapNode url="~/Configure/User/ConfigEmployeeGroup.aspx" title="User Group"  description="User Group Setup" />
-        <siteMapNode url="~/Configure/User/Organization/ConfigHostOrganization.aspx" title="Organizations"  description="Organization Setup" />
+        <siteMapNode url="~/Configure/User/Organization/ConfigOrganization.aspx" title="Organizations"  description="Organization Setup" />
       </siteMapNode>
       
       <siteMapNode title="Customer"  description="Customer Configuration">
