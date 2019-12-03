@@ -31,7 +31,7 @@ height="100%" scrollbars="Horizontal">
                CssClass="datagrid" GridLines="None" DataSourceID="sdsOrgConfigGrid" 
                EmptyDataText="No Client currently available" Height="145px" Width="500px"
                AutoGenerateColumns="False" 
-               onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
+               onselectedindexchanged="gvTable_SelectedIndexChanging"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
                EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged"
              >
@@ -64,7 +64,7 @@ height="100%" scrollbars="Horizontal">
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            ProviderName="System.Data.Odbc" 
           DeleteCommand="Update `Organization` set status='removed' WHERE `Organization`.id=?" 
-       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company
+       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type
   FROM Organization o
   LEFT JOIN Employee e ON e.id = o.lead_employee
   LEFT JOIN Organization o1 ON o1.id = o.parent_organization
@@ -93,10 +93,12 @@ height="100%" scrollbars="Horizontal">
        ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        EnableCaching="false"
-       SelectCommand="select  username, password, status, or_id, eg_id,
-       firstname, lastname, middlename, email,
-       phone, roleId as role_id, report_to, comment from Employee e, users_in_roles u
-       where u.userId = e.id and e.id = ?" 
+       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type
+           FROM Organization o
+           LEFT JOIN Employee e ON e.id = o.lead_employee
+           LEFT JOIN Organization o1 ON o1.id = o.parent_organization
+           LEFT JOIN Organization o2 ON o2.id = o.root_company
+           WHERE o.id = ?" 
         >
 
         <SelectParameters>

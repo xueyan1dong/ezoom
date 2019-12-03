@@ -13,15 +13,6 @@ namespace ezMESWeb.Configure.User {
     public partial class ConfigOrganization {
         
         /// <summary>
-        /// tcMain control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.TabContainer tcMain;
-        
-        /// <summary>
         /// Tp1 control.
         /// </summary>
         /// <remarks>
@@ -40,15 +31,6 @@ namespace ezMESWeb.Configure.User {
         protected global::AjaxControlToolkit.TabPanel Tp2;
         
         /// <summary>
-        /// ToolkitScriptManager1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
-        
-        /// <summary>
         /// pnlScroll control.
         /// </summary>
         /// <remarks>
@@ -56,24 +38,6 @@ namespace ezMESWeb.Configure.User {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlScroll;
-        
-        /// <summary>
-        /// gvTablePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel gvTablePanel;
-        
-        /// <summary>
-        /// gvTable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvTable;
         
         /// <summary>
         /// RecordPanel control.
@@ -85,15 +49,6 @@ namespace ezMESWeb.Configure.User {
         protected global::System.Web.UI.WebControls.Panel RecordPanel;
         
         /// <summary>
-        /// updateBufferPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updateBufferPanel;
-        
-        /// <summary>
         /// btnShowPopup control.
         /// </summary>
         /// <remarks>
@@ -101,24 +56,6 @@ namespace ezMESWeb.Configure.User {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnShowPopup;
-        
-        /// <summary>
-        /// btnUpdate_ModalPopupExtender control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender btnUpdate_ModalPopupExtender;
-        
-        /// <summary>
-        /// fvMain control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FormView fvMain;
         
         /// <summary>
         /// btnSubmit control.

@@ -38,6 +38,9 @@ source create_order_general.sql;
 source create_order_detail.sql;
 source create_order_state_history.sql;
 
+source create_organization.sql;
+source create_root_org_type.sql;
+
 source create_product_group.sql;
 source create_product.sql;
 source create_pd_attributes.sql;

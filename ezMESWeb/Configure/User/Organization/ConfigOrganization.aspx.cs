@@ -59,6 +59,14 @@ namespace ezMESWeb.Configure.User
         {
             //modify the mode of form view
             fvMain.ChangeMode(FormViewMode.Edit);
+            //  set it to true so it will render
+            this.fvMain.Visible = true;
+            //  force databinding
+            this.fvMain.DataBind();
+            //  update the contents in the detail panel
+            this.updateBufferPanel.Update();
+            //  show the modal popup
+            this.btnUpdate_ModalPopupExtender.Show();
 
         }
 
@@ -175,6 +183,21 @@ namespace ezMESWeb.Configure.User
             this.btnUpdate_ModalPopupExtender.Show();
         }
 
+        /*
+        protected void btnModify_Click(object sender, EventArgs e)
+        {
+            //  set it to true so it will render
+            this.fvMain.Visible = true;
+            fvMain.ChangeMode(FormViewMode.Edit);
+            //  force databinding
+            this.fvMain.DataBind();
+            //  update the contents in the detail panel
+            this.updateBufferPanel.Update();
+            //  show the modal popup
+            this.btnUpdate_ModalPopupExtender.Show();
+        }
+        */
+
         protected void TabContainer_ActiveTabChanged(object sender, EventArgs e)
         {
 
@@ -195,14 +218,14 @@ namespace ezMESWeb.Configure.User
                 // first tab i selected
                 btnNewOrganization1.Style["display"] = "";
                 btnNewOrganization2.Style["display"] = "none";
-                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'host' ";
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'host' ";
                 gvTable.Caption = "Host Organizations";
             }
             else
             {
                 btnNewOrganization2.Style["display"] = "";
                 btnNewOrganization1.Style["display"] = "none";
-                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'client' ";
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'client' ";
                 gvTable.Caption = "Client Organizations";
             }
 

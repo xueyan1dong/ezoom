@@ -754,13 +754,13 @@ DROP PROCEDURE IF EXISTS modify_organization$
 CREATE PROCEDURE modify_organization (
 	INOUT _id INT(10) unsigned,
     IN _name varchar(255),
+    IN _lead_employee INT(10) unsigned,
     IN _phone varchar(45),
     IN _email varchar(45),
     IN _description text,
-    IN _root_company INT(10) unsigned,
     IN _parent_organization INT(10) unsigned,
-    IN _lead_employee INT(10) unsigned,
-    IN _root_org_type enum('host','client'),
+    IN _root_company INT(10) unsigned,
+    IN _root_org_type varchar(15),
     OUT _response varchar(255)
 )
 BEGIN
@@ -798,7 +798,8 @@ BEGIN
             description = _description,
             lead_employee = _lead_employee,
             root_company = _root_company,
-            parent_organization = _parent_organization
+            parent_organization = _parent_organization,
+            root_org_type = _root_org_type
 		WHERE id = _id;
     END IF;
 END$
