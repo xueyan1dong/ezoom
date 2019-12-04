@@ -3,6 +3,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+<%-- Tab Container with buttons to select between host and client organization tabs. --%>
 <asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true">
     <asp:TabPanel ID="Tp1" runat="server" HeaderText ="Host Organizations">
         <ContentTemplate>
@@ -23,6 +24,7 @@
 </asp:TabContainer>
 
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
+
 <asp:panel id="pnlScroll" runat="server" width="85%" 
 height="100%" scrollbars="Horizontal">    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
@@ -30,8 +32,8 @@ height="100%" scrollbars="Horizontal">
             <asp:GridView ID="gvTable" runat="server" Caption="Host Organizations" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsOrgConfigGrid" 
                EmptyDataText="No Client currently available" Height="145px" Width="500px"
-               AutoGenerateColumns="False" 
-               onselectedindexchanged="gvTable_SelectedIndexChanging"  DataKeyNames="id" 
+               AutoGenerateColumns="False" EnablePersistedSelection="true"
+               onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
                EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged"
              >
@@ -46,6 +48,7 @@ height="100%" scrollbars="Horizontal">
 			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Edit" CommandName="Select" />
 			     </ItemTemplate>                 
                  </asp:TemplateField>
+                    <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" />
                     <asp:BoundField DataField="name" HeaderText="Name" SortExpression="name" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField DataField="lead_employee" HeaderText="Lead Employee" SortExpression="lead_employee" />
@@ -82,7 +85,7 @@ height="100%" scrollbars="Horizontal">
         PopupDragHandleControlID="RecordPanel" Drag="True" DropShadow="True" >
         </asp:ModalPopupExtender>
         
-       <asp:FormView ID="fvMain" runat="server" DataSourceID="sdsOrgConfig"
+       <asp:FormView ID="fvUpdate" runat="server" DataSourceID="sdsOrgConfig"
        EnableTheming="True" Height="100px" 
        HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" 
        >      
@@ -93,12 +96,9 @@ height="100%" scrollbars="Horizontal">
        ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        EnableCaching="false"
-       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type
-           FROM Organization o
-           LEFT JOIN Employee e ON e.id = o.lead_employee
-           LEFT JOIN Organization o1 ON o1.id = o.parent_organization
-           LEFT JOIN Organization o2 ON o2.id = o.root_company
-           WHERE o.id = ?" 
+       SelectCommand="SELECT id, name, status, lead_employee, phone, email, description, parent_organization, root_company, root_org_type
+           FROM Organization
+           WHERE id = ?" 
         >
 
         <SelectParameters>

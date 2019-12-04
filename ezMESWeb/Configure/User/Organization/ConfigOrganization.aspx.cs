@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*--------------------------------------------------------------
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : ConfigOrganization.aspx.cs
+*    Created By             : Shelby Simpson
+*    Date Created           : 12/4/2019
+*    Platform Dependencies  : .NET 
+*    Description            : This file contains the definition of the ConfigOrganization class.  
+*    Log                    :
+----------------------------------------------------------------*/
+
+using System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
@@ -29,12 +39,12 @@ namespace ezMESWeb.Configure.User
                 colc = dv.Table.Columns;
 
                 //Initial insert template  
-                fvMain.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
 
                 //Initial Edit template           
-                fvMain.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
-                    fvMain.DataSourceID = "sdsOrgConfig1";
+                    fvUpdate.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.
                 gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
 
@@ -58,24 +68,17 @@ namespace ezMESWeb.Configure.User
         protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
         {
             //modify the mode of form view
-            fvMain.ChangeMode(FormViewMode.Edit);
-            //  set it to true so it will render
-            this.fvMain.Visible = true;
-            //  force databinding
-            this.fvMain.DataBind();
-            //  update the contents in the detail panel
-            this.updateBufferPanel.Update();
-            //  show the modal popup
-            this.btnUpdate_ModalPopupExtender.Show();
-
+            fvUpdate.ChangeMode(FormViewMode.Edit);
         }
 
+        // Hide the popup modal when cancel is clicked.
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             lblError.Text = "";
             btnUpdate_ModalPopupExtender.Hide();
         }
 
+        // Called when submit button is clicked on popup modal for either insertion or modification.
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if (Page.IsValid)
@@ -94,12 +97,12 @@ namespace ezMESWeb.Configure.User
                     ezMES.ITemplate.FormattedTemplate fTemp;
 
 
-                    if (fvMain.CurrentMode == FormViewMode.Insert)
+                    if (fvUpdate.CurrentMode == FormViewMode.Insert)
                     {
-
+                        // No id exists yet for the new organization being created. Id creation is handled by the DBMS
                         ezCmd.Parameters.AddWithValue("@_id", DBNull.Value, ParameterDirection.InputOutput);
 
-                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvMain.InsertItemTemplate;
+                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.InsertItemTemplate;
                     }
                     else
                     {
@@ -107,13 +110,11 @@ namespace ezMESWeb.Configure.User
                             ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable1.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
                         else
                             ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
-                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvMain.EditItemTemplate;
-                        ezCmd.Parameters.AddWithValue("@_username", DBNull.Value);
-                        ezCmd.Parameters.AddWithValue("@_password", DBNull.Value);
+                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.EditItemTemplate;
                     }
 
 
-                    LoadSqlParasFromTemplate(ezCmd, fvMain, fTemp);
+                    LoadSqlParasFromTemplate(ezCmd, fvUpdate, fTemp);
 
                     ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                     ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
@@ -132,7 +133,7 @@ namespace ezMESWeb.Configure.User
                     else
                     {
                         lblError.Text = "";
-                        this.fvMain.Visible = false;
+                        this.fvUpdate.Visible = false;
                         this.btnUpdate_ModalPopupExtender.Hide();
 
                         if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
@@ -173,30 +174,16 @@ namespace ezMESWeb.Configure.User
         protected void btn_Click(object sender, EventArgs e)
         {
             //  set it to true so it will render
-            this.fvMain.Visible = true;
-            fvMain.ChangeMode(FormViewMode.Insert);
+            this.fvUpdate.Visible = true;
+            fvUpdate.ChangeMode(FormViewMode.Insert);
             //  force databinding
-            this.fvMain.DataBind();
+            this.fvUpdate.DataBind();
             //  update the contents in the detail panel
             this.updateBufferPanel.Update();
             //  show the modal popup
             this.btnUpdate_ModalPopupExtender.Show();
         }
 
-        /*
-        protected void btnModify_Click(object sender, EventArgs e)
-        {
-            //  set it to true so it will render
-            this.fvMain.Visible = true;
-            fvMain.ChangeMode(FormViewMode.Edit);
-            //  force databinding
-            this.fvMain.DataBind();
-            //  update the contents in the detail panel
-            this.updateBufferPanel.Update();
-            //  show the modal popup
-            this.btnUpdate_ModalPopupExtender.Show();
-        }
-        */
 
         protected void TabContainer_ActiveTabChanged(object sender, EventArgs e)
         {
@@ -218,17 +205,30 @@ namespace ezMESWeb.Configure.User
                 // first tab i selected
                 btnNewOrganization1.Style["display"] = "";
                 btnNewOrganization2.Style["display"] = "none";
+                // Show host organizations when Host Organizations tab is clicked
                 sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'host' ";
                 gvTable.Caption = "Host Organizations";
+                //Initial insert template  
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
+
+                //Initial Edit template           
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
             }
             else
             {
                 btnNewOrganization2.Style["display"] = "";
                 btnNewOrganization1.Style["display"] = "none";
+                // Show client organizations when Client Organizations is clicked
                 sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'client' ";
                 gvTable.Caption = "Client Organizations";
+                //Initial insert template  
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
+
+                //Initial Edit template           
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
             }
 
+            //Update the GridView
             sdsOrgConfigGrid.DataBind();
             gvTable.DataBind();
             tcMain.DataBind();

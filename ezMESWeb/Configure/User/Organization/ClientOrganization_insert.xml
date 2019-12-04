@@ -53,6 +53,8 @@
     <DisplayName>Root Organization Type</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r order by 1 DESC</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r</DropdownQuery>
   </Column>
 </Table>
+
+
