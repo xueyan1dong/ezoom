@@ -10,6 +10,7 @@
 							  one of the types in this table.
 *    example	            : 
 *    Log                    :
+*      12/04/2019:Xueyan Dong:Added value set up to the table script
 */
 DELIMITER $ 
 DROP TABLE IF EXISTS `root_org_type`$
@@ -18,3 +19,7 @@ CREATE TABLE `root_org_type` (
   `name` varchar(15) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB$
+
+INSERT INTO `root_org_type` (`name`)
+VALUES ('host'), ('client')
+$
