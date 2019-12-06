@@ -48,15 +48,15 @@ height="100%" scrollbars="Horizontal">
 			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Edit" CommandName="Select" />
 			     </ItemTemplate>                 
                  </asp:TemplateField>
-                    <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" />
+                    <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" Visible="false" />
                     <asp:BoundField DataField="name" HeaderText="Name" SortExpression="name" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField DataField="lead_employee" HeaderText="Lead Employee" SortExpression="lead_employee" />
                     <asp:BoundField DataField="phone" HeaderText="Phone" SortExpression="phone" />
                     <asp:BoundField DataField="email" HeaderText="Email" SortExpression="email" />
                     <asp:BoundField DataField="description" HeaderText="Description" SortExpression="description" />
-                    <asp:BoundField DataField="parent_organization" HeaderText="Parent Organization" SortExpression="parent_organization" />
                     <asp:BoundField DataField="root_company" HeaderText="Root Company" SortExpression="root_company" />
+                    <asp:BoundField DataField="parent_organization" HeaderText="Parent Organization" SortExpression="parent_organization" />
                     <%--<asp:BoundField DataField="root_org_type" HeaderText="Root Organization Type" SortExpression="root_org_type" />--%>
                 </Columns>
              </asp:GridView>  
@@ -67,7 +67,7 @@ height="100%" scrollbars="Horizontal">
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            ProviderName="System.Data.Odbc" 
           DeleteCommand="Update `Organization` set status='removed' WHERE `Organization`.id=?" 
-       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type
+       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o2.name as root_company, o1.name as parent_organization, o.root_org_type
   FROM Organization o
   LEFT JOIN Employee e ON e.id = o.lead_employee
   LEFT JOIN Organization o1 ON o1.id = o.parent_organization

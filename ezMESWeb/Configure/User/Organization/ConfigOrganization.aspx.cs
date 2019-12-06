@@ -39,12 +39,12 @@ namespace ezMESWeb.Configure.User
                 colc = dv.Table.Columns;
 
                 //Initial insert template  
-                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
+                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
 
                 //Initial Edit template           
-                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
-                    fvUpdate.DataSourceID = "sdsOrgConfig1";
+                    this.fvUpdate.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.
                 gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
 
@@ -175,7 +175,7 @@ namespace ezMESWeb.Configure.User
         {
             //  set it to true so it will render
             this.fvUpdate.Visible = true;
-            fvUpdate.ChangeMode(FormViewMode.Insert);
+            this.fvUpdate.ChangeMode(FormViewMode.Insert);
             //  force databinding
             this.fvUpdate.DataBind();
             //  update the contents in the detail panel
@@ -206,26 +206,29 @@ namespace ezMESWeb.Configure.User
                 btnNewOrganization1.Style["display"] = "";
                 btnNewOrganization2.Style["display"] = "none";
                 // Show host organizations when Host Organizations tab is clicked
-                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'host' ";
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o2.name as root_company, o1.name as parent_organization, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'host' ";
                 gvTable.Caption = "Host Organizations";
                 //Initial insert template  
-                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
+                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
 
                 //Initial Edit template           
-                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
             }
             else
             {
                 btnNewOrganization2.Style["display"] = "";
                 btnNewOrganization1.Style["display"] = "none";
                 // Show client organizations when Client Organizations is clicked
-                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o1.name as parent_organization, o2.name as root_company, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'client' ";
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o2.name as root_company, o1.name as parent_organization, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'client' ";
                 gvTable.Caption = "Client Organizations";
+
+                DataView dv = (DataView)sdsOrgConfigGrid.Select(DataSourceSelectArguments.Empty);
+                colc = dv.Table.Columns;
                 //Initial insert template  
-                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
+                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
 
                 //Initial Edit template           
-                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
+                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
             }
 
             //Update the GridView

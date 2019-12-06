@@ -37,14 +37,14 @@
     <UI>Textbox</UI>
     <TextBoxLength>255</TextBoxLength>
   </Column>
-  <Column name ="parent_organization">
-    <DisplayName>Parent Organization</DisplayName>
+  <Column name="root_company">
+    <DisplayName>Root Company</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
     <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>
   </Column>
-  <Column name="root_company">
-    <DisplayName>Root Organization</DisplayName>
+  <Column name ="parent_organization">
+    <DisplayName>Parent Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
     <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'host' order by 1</DropdownQuery>

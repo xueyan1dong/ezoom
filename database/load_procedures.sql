@@ -746,7 +746,7 @@ END $
 *    Platform Dependencies  : MySql
 *    Description            : Insert new organization (when _id is NULL) or modify an existing one (When _id is NOT NULL).
 *    example	            : 
-*    Log                    :
+*    Log                    : 12/6/2019 - Added check to make sure current organization does not already exist under the selected parent organization.
 */
 DELIMITER $
 
@@ -779,6 +779,9 @@ BEGIN
     ELSEIF _lead_employee IS NOT NULL AND NOT EXISTS (SELECT id from employee WHERE id = _lead_employee)
     THEN
 		SET _response='The lead employee id you entered is invalid.  Please enter a valid one.';
+	ELSEIF _id IS NULL AND _name IN (SELECT name FROM organization WHERE parent_organization = _parent_organization)
+    THEN
+		SET _response='This parent organization already exists under the root company selected.';
     ELSEIF _id is NULL 
 	THEN
 		INSERT INTO `organization` (
