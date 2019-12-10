@@ -747,6 +747,8 @@ END $
 *    Description            : Insert new organization (when _id is NULL) or modify an existing one (When _id is NOT NULL).
 *    example	            : 
 *    Log                    : 12/6/2019 - Added check to make sure current organization does not already exist under the selected parent organization.
+*							  12/9/2019 - Modified _root_company check to verify it exists in the company or client table (depending on _root_org_type) 
+*										  instead of the organization table.
 */
 DELIMITER $
 
@@ -770,9 +772,12 @@ BEGIN
 	ELSEIF _root_company IS NULL
     THEN
 		SET _response='Please enter a root company id.';
-    ELSEIF NOT EXISTS (SELECT id FROM organization WHERE id = _root_company)
+	ELSEIF _root_org_type = 'host' AND NOT EXISTS (SELECT id FROM company WHERE id = _root_company)
     THEN
-		SET _response='The root company id you entered does not exist.  Please enter a valid one.';
+		SET _response='Please select an existing root host company.';
+	ELSEIF _root_org_type = 'client' AND NOT EXISTS (SELECT id FROM client WHERE id = _root_company)
+    THEN
+		SET _response='Please select an existing root client company.';
 	ELSEIF _parent_organization IS NOT NULL AND NOT EXISTS (SELECT id FROM organization WHERE id = _parent_organization)
     THEN
 		SET _response='The parent organization id you entered does not exist.  Please enter a valid one.';

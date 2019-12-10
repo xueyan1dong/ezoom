@@ -35,14 +35,18 @@ namespace ezMESWeb.Configure.User
             base.OnInit(e);
 
             {
-                DataView dv = (DataView)sdsOrgConfigGrid.Select(DataSourceSelectArguments.Empty);
-                colc = dv.Table.Columns;
+                /*if (!IsPostBack && !IsCallback) // Only run the following code when the page is first initialized
+                {
+                    DataView dv = (DataView)sdsOrgConfigGrid.Select(DataSourceSelectArguments.Empty);
+                    colc = dv.Table.Columns;
 
-                //Initial insert template  
-                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
+                    //Initial insert template  
+                    this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
 
-                //Initial Edit template           
-                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+                    //Initial Edit template           
+                    this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+                }*/
+
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
                     this.fvUpdate.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.
@@ -51,9 +55,10 @@ namespace ezMESWeb.Configure.User
             }
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected override void Page_Load(object sender, EventArgs e)
         {
             base.Page_Load(sender, e);
+
             /*if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
             {
                 for (int i = 0; i < gvTable1.Rows.Count; i++)
@@ -62,7 +67,8 @@ namespace ezMESWeb.Configure.User
                         gvTable1.Rows[i].Enabled = false;
                 }
             };*/
-            if (!lblActiveTab.Text.Equals("")) show_activeTab();
+            //if (!lblActiveTab.Text.Equals("")) show_activeTab();
+            show_activeTab();
         }
 
         protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
@@ -200,13 +206,32 @@ namespace ezMESWeb.Configure.User
             //AjaxControlToolkit.TabPanel activeTab = tcMain.ActiveTab;
 
             //if (activeTab == Tp1)
-            if (Convert.ToInt32(lblActiveTab.Text) == 0)
+            DataView dv = (DataView)sdsOrgConfigGrid.Select(DataSourceSelectArguments.Empty);
+            colc = dv.Table.Columns;
+
+            lblActiveTab.Text = tcMain.ActiveTabIndex.ToString();
+            if (Convert.ToInt32(lblActiveTab.Text) == 1)
+            {
+                btnNewOrganization2.Style["display"] = "";
+                btnNewOrganization1.Style["display"] = "none";
+                // Show client organizations when Client Organizations is clicked
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, c.name as root_company, o1.name as parent_organization, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Client c ON c.id = o.root_company WHERE o.root_org_type = 'client' ";
+                gvTable.Caption = "Client Organizations";
+
+                
+                //Initial insert template  
+                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
+
+                //Initial Edit template           
+                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
+            }
+            else // Host Organization is the default tab
             {
                 // first tab i selected
                 btnNewOrganization1.Style["display"] = "";
                 btnNewOrganization2.Style["display"] = "none";
                 // Show host organizations when Host Organizations tab is clicked
-                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o2.name as root_company, o1.name as parent_organization, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'host' ";
+                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, c.name as root_company, o1.name as parent_organization, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Company c ON c.id = o.root_company WHERE o.root_org_type = 'host' ";
                 gvTable.Caption = "Host Organizations";
                 //Initial insert template  
                 this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
@@ -214,22 +239,15 @@ namespace ezMESWeb.Configure.User
                 //Initial Edit template           
                 this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
             }
+
+            /*if (Convert.ToInt32(lblActiveTab.Text) == 0 || lblActiveTab.Text.Equals("")) // Host Organizations is the default tab
+            {
+                
+            }
             else
             {
-                btnNewOrganization2.Style["display"] = "";
-                btnNewOrganization1.Style["display"] = "none";
-                // Show client organizations when Client Organizations is clicked
-                sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o2.name as root_company, o1.name as parent_organization, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Organization o2 ON o2.id = o.root_company WHERE o.root_org_type = 'client' ";
-                gvTable.Caption = "Client Organizations";
-
-                DataView dv = (DataView)sdsOrgConfigGrid.Select(DataSourceSelectArguments.Empty);
-                colc = dv.Table.Columns;
-                //Initial insert template  
-                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
-
-                //Initial Edit template           
-                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
-            }
+                
+            }*/
 
             //Update the GridView
             sdsOrgConfigGrid.DataBind();

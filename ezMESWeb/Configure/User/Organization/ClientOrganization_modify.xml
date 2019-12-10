@@ -41,7 +41,7 @@
     <DisplayName>Root Company</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">SELECT '', null UNION Select o.name, o.id from organization o where root_org_type = 'client' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">SELECT '', null UNION Select c.name, c.id from client c order by 1</DropdownQuery>
   </Column>
   <Column name ="parent_organization">
     <DisplayName>Parent Organization</DisplayName>

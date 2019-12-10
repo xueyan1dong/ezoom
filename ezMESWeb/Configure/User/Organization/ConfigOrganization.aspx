@@ -3,8 +3,17 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+<script type="text/javascript">
+    // Generate parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
+    function generateParentOrganizations() {
+        // Get root_company dropdown value
+        let rootCompany = document.getElementById('fvUpdate').getAttribute('InsertItemTemplate').getAttribute('Fields');
+        //console.log(rootCompany);
+    }
+</script>
+
 <%-- Tab Container with buttons to select between host and client organization tabs. --%>
-<asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true">
+<asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true" >
     <asp:TabPanel ID="Tp1" runat="server" HeaderText ="Host Organizations">
         <ContentTemplate>
             <% if (Session["Role"].Equals("Admin"))
@@ -26,7 +35,7 @@
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 
 <asp:panel id="pnlScroll" runat="server" width="85%" 
-height="100%" scrollbars="Horizontal">    
+height="100%" scrollbars="Horizontal" >    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
             <asp:GridView ID="gvTable" runat="server" Caption="Host Organizations" 
@@ -67,11 +76,11 @@ height="100%" scrollbars="Horizontal">
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            ProviderName="System.Data.Odbc" 
           DeleteCommand="Update `Organization` set status='removed' WHERE `Organization`.id=?" 
-       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, o2.name as root_company, o1.name as parent_organization, o.root_org_type
+       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, c.name as root_company, o1.name as parent_organization, o.root_org_type
   FROM Organization o
   LEFT JOIN Employee e ON e.id = o.lead_employee
   LEFT JOIN Organization o1 ON o1.id = o.parent_organization
-  LEFT JOIN Organization o2 ON o2.id = o.root_company 
+  LEFT JOIN Company c ON c.id = o.root_company 
   WHERE o.root_org_type = 'host' ">
         </asp:SqlDataSource>
         
