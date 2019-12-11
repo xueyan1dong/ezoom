@@ -254,5 +254,18 @@ namespace ezMESWeb.Configure.User
             gvTable.DataBind();
             tcMain.DataBind();
         }
+
+        protected void AddJSFunction()
+        {
+            //IEnumerator enumerator = ((ezMES.ITemplate.FormattedTemplate)(fvUpdate.EditItemTemplate))._dccol.GetEnumerator();
+            DataColumn col = ((ezMES.ITemplate.FormattedTemplate)(fvUpdate.EditItemTemplate))._dccol["root_company"];
+            //ctl00$ContentPlaceHolder1_fvUpdate_drproot_company
+            /*if (enumerator.Current.GetType() == typeof(Table))
+            {
+                Table tbl = (Table)enumerator.Current;
+                TableRowCollection rows = tbl.Rows;
+
+            }*/
+        }
     }
 }

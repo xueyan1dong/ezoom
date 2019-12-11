@@ -7,8 +7,8 @@
     // Generate parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
     function generateParentOrganizations() {
         // Get root_company dropdown value
-        let rootCompany = document.getElementById('fvUpdate').getAttribute('InsertItemTemplate').getAttribute('Fields');
-        //console.log(rootCompany);
+        let rootCompany = document.getElementById('ctl00$ContentPlaceHolder1_fvUpdate_drproot_company');
+        console.log(rootCompany);
     }
 </script>
 
