@@ -7,15 +7,15 @@
     // Generate parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
     function generateParentOrganizations() {
         // Get root_company dropdown value
-        let rootCompany = document.getElementById('ctl00$ContentPlaceHolder1_fvUpdate_drproot_company');
-        console.log(rootCompany);
+        //let rootCompany = document.getElementById('ctl00$ContentPlaceHolder1_fvUpdate_drproot_company');
+        console.log("Hello");
     }
 </script>
 
 <%-- Tab Container with buttons to select between host and client organization tabs. --%>
-<asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true" >
+<asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true">
     <asp:TabPanel ID="Tp1" runat="server" HeaderText ="Host Organizations">
-        <ContentTemplate>
+        <ContentTemplate >
             <% if (Session["Role"].Equals("Admin"))
                 {%>
             <asp:Button ID="btnNewOrganization1" runat="server" Text='New Organization'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click"></asp:Button>
@@ -97,7 +97,75 @@ height="100%" scrollbars="Horizontal" >
        <asp:FormView ID="fvUpdate" runat="server" DataSourceID="sdsOrgConfig"
        EnableTheming="True" Height="100px" 
        HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" 
-       >      
+       >
+           <ItemTemplate>
+               <table>
+                   <tr>
+                       <td>
+                           <b>Name:</b>
+                       </td>
+                       <td>
+                           <%# Eval("name") %>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <b>Status:</b>
+                       </td>
+                       <td>
+                           <%# Eval("status") %>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <b>Lead Employee:</b>
+                       </td>
+                       <td>
+                           <%# Eval("lead_employee") %>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <b>Phone:</b>
+                       </td>
+                       <td>
+                           <%# Eval("phone") %>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <b>Email:</b>
+                       </td>
+                       <td>
+                           <%# Eval("email") %>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <b>Description:</b>
+                       </td>
+                       <td>
+                           <%# Eval("description") %>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <b>Root Company:</b>
+                       </td>
+                       <td>
+                           <%# Eval("root_company") %>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <b>Parent Organization:</b>
+                       </td>
+                       <td>
+                           <%# Eval("parent_organization") %>
+                       </td>
+                   </tr>
+               </table>
+           </ItemTemplate>
        </asp:FormView>
                   <% if (Session["Role"].Equals("Admin"))
                      {%> 

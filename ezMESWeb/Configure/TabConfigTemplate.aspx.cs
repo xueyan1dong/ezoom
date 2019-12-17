@@ -91,13 +91,13 @@ namespace ezMESWeb
         protected virtual void gvTable_SelectedIndexChanged(object sender, EventArgs e)
         {
             //  set it to true so it will render
-            this.fvUpdate.Visible = true;
+            fvUpdate.Visible = true;
             //  force databinding
-            this.fvUpdate.DataBind();
+            fvUpdate.DataBind();
             //  update the contents in the detail panel
-            this.updateBufferPanel.Update();
+            updateBufferPanel.Update();
             //  show the modal popup
-            this.btnUpdate_ModalPopupExtender.Show();
+            btnUpdate_ModalPopupExtender.Show();
         }
 
   
@@ -106,7 +106,7 @@ namespace ezMESWeb
         protected void fvUpdate_ItemUpdated(object sender, FormViewUpdatedEventArgs e)
         {
             gvTable.DataBind();
-            this.gvTablePanel.Update();
+            gvTablePanel.Update();
         }
 
 

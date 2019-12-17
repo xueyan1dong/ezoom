@@ -47,7 +47,7 @@
     <DisplayName>Parent Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o where root_org_type = 'client' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select "", null, null UNION Select o.name, o.id, o.root_company from organization o where root_org_type = 'client' order by 1</DropdownQuery>
   </Column>
   <Column name="root_org_type">
     <DisplayName>Root Organization Type</DisplayName>

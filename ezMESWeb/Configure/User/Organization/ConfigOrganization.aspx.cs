@@ -40,15 +40,15 @@ namespace ezMESWeb.Configure.User
                     DataView dv = (DataView)sdsOrgConfigGrid.Select(DataSourceSelectArguments.Empty);
                     colc = dv.Table.Columns;
 
-                    //Initial insert template  
+                    //Initial insert template
                     this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
 
-                    //Initial Edit template           
+                    //Initial Edit template
                     this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
                 }*/
 
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
-                    this.fvUpdate.DataSourceID = "sdsOrgConfig1";
+                    fvUpdate.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.
                 gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
 
@@ -69,12 +69,15 @@ namespace ezMESWeb.Configure.User
             };*/
             //if (!lblActiveTab.Text.Equals("")) show_activeTab();
             show_activeTab();
+            AddJSFunction();
         }
 
         protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
         {
             //modify the mode of form view
             fvUpdate.ChangeMode(FormViewMode.Edit);
+            
+            //AddJSFunction();
         }
 
         // Hide the popup modal when cancel is clicked.
@@ -131,41 +134,42 @@ namespace ezMESWeb.Configure.User
                     ezCmd.Dispose();
                     ezConn.Dispose();
 
+                    // This should pop up when a response is returned but isn't
                     if (response.Length > 0)
                     {
                         lblError.Text = response;
-                        this.btnUpdate_ModalPopupExtender.Show();
+                        btnUpdate_ModalPopupExtender.Show();
                     }
                     else
                     {
                         lblError.Text = "";
-                        this.fvUpdate.Visible = false;
-                        this.btnUpdate_ModalPopupExtender.Hide();
+                        fvUpdate.Visible = false;
+                        btnUpdate_ModalPopupExtender.Hide();
 
                         if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
                         {
                             ScriptManager.GetCurrent(this).RegisterDataItem(
                                 // The control I want to send data to
-                                this.gvTable1,
+                                gvTable1,
                                 //  The data I want to send it (the row that was edited)
-                                this.gvTable1.SelectedIndex.ToString()
+                                gvTable1.SelectedIndex.ToString()
                             );
 
                             gvTable1.DataBind();
-                            this.gvTablePanel.Update();
+                            gvTablePanel.Update();
                         }
                         else
                         {
                             //  add the css class for our yellow fade
                             ScriptManager.GetCurrent(this).RegisterDataItem(
                                 // The control I want to send data to
-                                this.gvTable,
+                                gvTable,
                                 //  The data I want to send it (the row that was edited)
-                                this.gvTable.SelectedIndex.ToString()
+                                gvTable.SelectedIndex.ToString()
                             );
 
                             gvTable.DataBind();
-                            this.gvTablePanel.Update();
+                            gvTablePanel.Update();
                         }
                     }
                 }
@@ -180,14 +184,14 @@ namespace ezMESWeb.Configure.User
         protected void btn_Click(object sender, EventArgs e)
         {
             //  set it to true so it will render
-            this.fvUpdate.Visible = true;
-            this.fvUpdate.ChangeMode(FormViewMode.Insert);
+            fvUpdate.Visible = true;
+            fvUpdate.ChangeMode(FormViewMode.Insert);
             //  force databinding
-            this.fvUpdate.DataBind();
+            fvUpdate.DataBind();
             //  update the contents in the detail panel
-            this.updateBufferPanel.Update();
+            updateBufferPanel.Update();
             //  show the modal popup
-            this.btnUpdate_ModalPopupExtender.Show();
+            btnUpdate_ModalPopupExtender.Show();
         }
 
 
@@ -199,6 +203,11 @@ namespace ezMESWeb.Configure.User
             show_activeTab();
             //fvMain.Visible = false;
             //Server.Transfer(string.Format("/Configure/Order/SalesOrderConfig.aspx?Tab={0}", tcMain.ActiveTabIndex));
+        }
+
+        protected void tcMain_Load(object sender, EventArgs e)
+        {
+
         }
 
         protected void show_activeTab()
@@ -220,10 +229,10 @@ namespace ezMESWeb.Configure.User
 
                 
                 //Initial insert template  
-                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientOrganization_insert.xml"));
 
                 //Initial Edit template           
-                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
             }
             else // Host Organization is the default tab
             {
@@ -234,22 +243,14 @@ namespace ezMESWeb.Configure.User
                 sdsOrgConfigGrid.SelectCommand = "SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, c.name as root_company, o1.name as parent_organization, o.root_org_type FROM Organization o LEFT JOIN Employee e ON e.id = o.lead_employee LEFT JOIN Organization o1 ON o1.id = o.parent_organization LEFT JOIN Company c ON c.id = o.root_company WHERE o.root_org_type = 'host' ";
                 gvTable.Caption = "Host Organizations";
                 //Initial insert template  
-                this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
-
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
+                
                 //Initial Edit template           
-                this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
             }
-
-            /*if (Convert.ToInt32(lblActiveTab.Text) == 0 || lblActiveTab.Text.Equals("")) // Host Organizations is the default tab
-            {
-                
-            }
-            else
-            {
-                
-            }*/
 
             //Update the GridView
+            fvUpdate.DataBind();
             sdsOrgConfigGrid.DataBind();
             gvTable.DataBind();
             tcMain.DataBind();
@@ -258,14 +259,13 @@ namespace ezMESWeb.Configure.User
         protected void AddJSFunction()
         {
             //IEnumerator enumerator = ((ezMES.ITemplate.FormattedTemplate)(fvUpdate.EditItemTemplate))._dccol.GetEnumerator();
-            DataColumn col = ((ezMES.ITemplate.FormattedTemplate)(fvUpdate.EditItemTemplate))._dccol["root_company"];
-            //ctl00$ContentPlaceHolder1_fvUpdate_drproot_company
-            /*if (enumerator.Current.GetType() == typeof(Table))
-            {
-                Table tbl = (Table)enumerator.Current;
-                TableRowCollection rows = tbl.Rows;
-
-            }*/
+            //DataColumn col = ((ezMES.ITemplate.FormattedTemplate)(fvUpdate.EditItemTemplate))._dccol["root_company"];
+            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls[0]);
+            lst.Attributes.Add("OnSelectedIndexChanged","generateParentOrganizations()");
+            //lst.Attributes["OnLoad"] = "generateParentOrganizations()";
+            //lst.SelectedIndexChanged += javascript:generateParentOrganizations();
+            //FormViewRow lst = fvUpdate.Row;
+            // Add OnSelectedIndexChanged() method on droproot_company DropDownList
         }
     }
 }
