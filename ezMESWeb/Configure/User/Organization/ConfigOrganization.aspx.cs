@@ -12,8 +12,10 @@ using System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Security;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -30,6 +32,8 @@ namespace ezMESWeb.Configure.User
         protected GridView gvTable1;
         protected Label lblActiveTab;
         protected Button btnNewOrganization1, btnNewOrganization2;
+        protected Dictionary<string, string> dict;
+        protected string serializedDict;
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -50,8 +54,8 @@ namespace ezMESWeb.Configure.User
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
                     fvUpdate.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.
-                gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
-
+                //gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanged);
+                serializedDict = "";
             }
         }
 
@@ -70,14 +74,25 @@ namespace ezMESWeb.Configure.User
             //if (!lblActiveTab.Text.Equals("")) show_activeTab();
             show_activeTab();
             AddJSFunction();
+            this.dict = new Dictionary<string, string>();
+            AddRootCompanyTableCell();
         }
 
-        protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
+        override protected void gvTable_SelectedIndexChanged(object sender, EventArgs e)
         {
             //modify the mode of form view
             fvUpdate.ChangeMode(FormViewMode.Edit);
-            
-            //AddJSFunction();
+
+            //  set it to true so it will render
+            fvUpdate.Visible = true;
+            //  force databinding
+            fvUpdate.DataBind();
+            //  update the contents in the detail panel
+            updateBufferPanel.Update();
+            //  show the modal popup
+            btnUpdate_ModalPopupExtender.Show();
+
+            AddJSFunction();
         }
 
         // Hide the popup modal when cancel is clicked.
@@ -188,6 +203,7 @@ namespace ezMESWeb.Configure.User
             fvUpdate.ChangeMode(FormViewMode.Insert);
             //  force databinding
             fvUpdate.DataBind();
+            AddJSFunction();
             //  update the contents in the detail panel
             updateBufferPanel.Update();
             //  show the modal popup
@@ -256,16 +272,48 @@ namespace ezMESWeb.Configure.User
             tcMain.DataBind();
         }
 
+        // Adds an onchange event to the Root Company dropdown that calls a JS function to dynamically generate
+        // the parent organizations under that root company.
         protected void AddJSFunction()
         {
-            //IEnumerator enumerator = ((ezMES.ITemplate.FormattedTemplate)(fvUpdate.EditItemTemplate))._dccol.GetEnumerator();
-            //DataColumn col = ((ezMES.ITemplate.FormattedTemplate)(fvUpdate.EditItemTemplate))._dccol["root_company"];
+            // Get copy of drproot_company DropDownList
             DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls[0]);
-            lst.Attributes.Add("OnSelectedIndexChanged","generateParentOrganizations()");
-            //lst.Attributes["OnLoad"] = "generateParentOrganizations()";
-            //lst.SelectedIndexChanged += javascript:generateParentOrganizations();
-            //FormViewRow lst = fvUpdate.Row;
-            // Add OnSelectedIndexChanged() method on droproot_company DropDownList
+            // Remove the original DropDownList
+            fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.RemoveAt(0);
+            // Add the onchange event to the copy
+            lst.Attributes.Add("onchange","generateParentOrganizations()");
+            // Add the new DropDownList into the same position as the original
+            fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.Add(lst);
+        }
+
+        // Creates JSON serialized dictionary of parent organizations and their root_company ids.
+        protected void AddRootCompanyTableCell()
+        {
+            string query = "SELECT id, root_company FROM organization WHERE root_org_type = 'host';";
+            ConnectToDb();
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezDataAdapter ezAdapter = new ezDataAdapter();
+            DataSet ds;
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            // Place returned root_company ids into a dictionary indexed on parent organization ids.
+            DataRowCollection rows = ds.Tables[0].Rows;
+            IEnumerator rowEnumerator = rows.GetEnumerator();
+            dict = new Dictionary<string, string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                dict[row.ItemArray.GetValue(0).ToString()] = row.ItemArray.GetValue(1).ToString();
+            }
+            var serializer = new JavaScriptSerializer();
+            serializedDict = serializer.Serialize(dict);
+           
         }
     }
 }

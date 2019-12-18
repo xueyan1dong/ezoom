@@ -4,11 +4,22 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 <script type="text/javascript">
+    let dictionary = JSON.parse('<%=serializedDict%>');
     // Generate parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
     function generateParentOrganizations() {
-        // Get root_company dropdown value
-        //let rootCompany = document.getElementById('ctl00$ContentPlaceHolder1_fvUpdate_drproot_company');
-        console.log("Hello");
+        let rootCompany = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_company').value;
+        let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
+        let i;
+        for (i = 1; i < parentOrganizations.length; i++) {
+            // if parentOrganization id does not correspond to rootCompany in dict
+            if (dictionary[parentOrganizations[i].value] != rootCompany) {
+                parentOrganizations[i].style.display = 'none';
+            }
+            else {
+                parentOrganizations[i].style.display = 'initial';
+            }
+            parentOrganizations.value = parentOrganizations[0];
+        }
     }
 </script>
 
@@ -90,81 +101,14 @@ height="100%" scrollbars="Horizontal" >
    <ContentTemplate>
    <asp:Button id="btnShowPopup" runat="server" style="display:none" />
     <asp:ModalPopupExtender ID="btnUpdate_ModalPopupExtender" runat="server" TargetControlID="btnShowPopup"
-         BackgroundCssClass="modalBackground" PopupControlID="RecordPanel" 
+        BackgroundCssClass="modalBackground" PopupControlID="RecordPanel" 
         PopupDragHandleControlID="RecordPanel" Drag="True" DropShadow="True" >
         </asp:ModalPopupExtender>
-        
+       
        <asp:FormView ID="fvUpdate" runat="server" DataSourceID="sdsOrgConfig"
        EnableTheming="True" Height="100px" 
-       HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" 
-       >
+       HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" >
            <ItemTemplate>
-               <table>
-                   <tr>
-                       <td>
-                           <b>Name:</b>
-                       </td>
-                       <td>
-                           <%# Eval("name") %>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                           <b>Status:</b>
-                       </td>
-                       <td>
-                           <%# Eval("status") %>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                           <b>Lead Employee:</b>
-                       </td>
-                       <td>
-                           <%# Eval("lead_employee") %>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                           <b>Phone:</b>
-                       </td>
-                       <td>
-                           <%# Eval("phone") %>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                           <b>Email:</b>
-                       </td>
-                       <td>
-                           <%# Eval("email") %>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                           <b>Description:</b>
-                       </td>
-                       <td>
-                           <%# Eval("description") %>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                           <b>Root Company:</b>
-                       </td>
-                       <td>
-                           <%# Eval("root_company") %>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td>
-                           <b>Parent Organization:</b>
-                       </td>
-                       <td>
-                           <%# Eval("parent_organization") %>
-                       </td>
-                   </tr>
-               </table>
            </ItemTemplate>
        </asp:FormView>
                   <% if (Session["Role"].Equals("Admin"))
@@ -175,8 +119,7 @@ height="100%" scrollbars="Horizontal" >
        EnableCaching="false"
        SelectCommand="SELECT id, name, status, lead_employee, phone, email, description, parent_organization, root_company, root_org_type
            FROM Organization
-           WHERE id = ?" 
-        >
+           WHERE id = ?" >
 
         <SelectParameters>
            <asp:ControlParameter ControlID="gvTable" Name="vid" 
