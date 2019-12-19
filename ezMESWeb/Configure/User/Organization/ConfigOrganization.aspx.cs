@@ -34,6 +34,7 @@ namespace ezMESWeb.Configure.User
         protected Button btnNewOrganization1, btnNewOrganization2;
         protected Dictionary<string, string> dict;
         protected string serializedDict;
+        protected string query;
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -249,6 +250,8 @@ namespace ezMESWeb.Configure.User
 
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
+
+                query = "SELECT id, root_company FROM organization WHERE root_org_type = 'client';";
             }
             else // Host Organization is the default tab
             {
@@ -263,6 +266,8 @@ namespace ezMESWeb.Configure.User
                 
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
+
+                query = "SELECT id, root_company FROM organization WHERE root_org_type = 'host';";
             }
 
             //Update the GridView
@@ -289,7 +294,6 @@ namespace ezMESWeb.Configure.User
         // Creates JSON serialized dictionary of parent organizations and their root_company ids.
         protected void AddRootCompanyTableCell()
         {
-            string query = "SELECT id, root_company FROM organization WHERE root_org_type = 'host';";
             ConnectToDb();
             ezCmd = new EzSqlCommand
             {

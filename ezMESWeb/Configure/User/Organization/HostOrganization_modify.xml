@@ -11,7 +11,7 @@
     <DisplayName>Status</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <EnumQuery dcol="0" vcol="0"> show columns from organization like 'status'</EnumQuery>
+    <EnumQuery dcol="0" vcol="0"> Show Columns From Organization like 'status'</EnumQuery>
   </Column>
   <Column name ="lead_employee">
     <DisplayName>Lead Employee</DisplayName>
