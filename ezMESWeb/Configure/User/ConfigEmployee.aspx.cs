@@ -2,8 +2,10 @@ using System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Security;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -12,59 +14,66 @@ using CommonLib.Data.EzSqlClient;
 
 namespace ezMESWeb.Configure.User
 {
-   public partial class ConfigEmployee : ConfigTemplate
+   public partial class ConfigEmployee : TabConfigTemplate
    {
-      protected global::System.Web.UI.WebControls.SqlDataSource sdsEmpConfig, sdsEmpConfigGrid;
-      public DataColumnCollection colc;
-      protected Label lblError;
-      protected GridView gvTable1;
-      protected override void OnInit(EventArgs e)
-      {
-         base.OnInit(e);
-
-         {
-            DataView dv = (DataView)sdsEmpConfigGrid.Select(DataSourceSelectArguments.Empty);
-            colc = dv.Table.Columns;
-
-            //Initial insert template  
-            FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"Employee_insert.xml"));
-
-            //Initial Edit template           
-            FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Employee_modify.xml"));
-           if (Session["Role"]!=null && !Session["Role"].ToString().Equals("Admin"))
-            FormView1.DataSourceID = "sdsEmpConfig1";
-            //Event happens before the select index changed clicked.
-            gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
-
-         }
-      }
-
-      protected void Page_Load(object sender, EventArgs e)
-      {
-        base.Page_Load(sender, e);
-        if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsEmpConfig, sdsEmpConfigGrid;
+        public DataColumnCollection colc;
+        protected Label lblError;
+        protected GridView gvTable1;
+        protected Label lblActiveTab;
+        protected Button btnNewUser1, btnNewUser2;
+        protected Dictionary<string, string> dict;
+        protected string serializedDict;
+        protected string query;
+        protected override void OnInit(EventArgs e)
         {
-          for (int i = 0; i < gvTable1.Rows.Count; i++)
-          {
-            if (gvTable1.Rows[i].Cells[2].Text.Equals("removed"))
-              gvTable1.Rows[i].Enabled = false;
-          }
-        };
-      }
-      protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
-      {
-         //modify the mode of form view
-         FormView1.ChangeMode(FormViewMode.Edit);
+            base.OnInit(e);
 
-      }
+            {
+                /*DataView dv = (DataView)sdsEmpConfigGrid.Select(DataSourceSelectArguments.Empty);
+                colc = dv.Table.Columns;
+
+                //Initial insert template  
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"Employee_insert.xml"));
+
+                //Initial Edit template           
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Employee_modify.xml"));
+               if (Session["Role"]!=null && !Session["Role"].ToString().Equals("Admin"))
+                    fvUpdate.DataSourceID = "sdsEmpConfig1";
+                //Event happens before the select index changed clicked.
+                gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
+                */
+            }
+        }
+
+        protected override void Page_Load(object sender, EventArgs e)
+        {
+            base.Page_Load(sender, e);
+            /*if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
+            {
+                for (int i = 0; i < gvTable1.Rows.Count; i++)
+                {
+                if (gvTable1.Rows[i].Cells[2].Text.Equals("removed"))
+                    gvTable1.Rows[i].Enabled = false;
+                }
+            };*/
+
+            show_activeTab();
+        }
+        protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
+        {
+            //modify the mode of form view
+            fvUpdate.ChangeMode(FormViewMode.Edit);
+
+        }
 
 
 
-      protected void btnCancel_Click(object sender, EventArgs e)
-      {
-         lblError.Text = "";
-         ModalPopupExtender.Hide();
-      }
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            lblError.Text = "";
+            btnUpdate_ModalPopupExtender.Hide();
+        }
 
       protected void btnSubmit_Click(object sender, EventArgs e)
       {
@@ -82,12 +91,12 @@ namespace ezMESWeb.Configure.User
               ezMES.ITemplate.FormattedTemplate fTemp;
 
 
-              if (FormView1.CurrentMode == FormViewMode.Insert)
+              if (fvUpdate.CurrentMode == FormViewMode.Insert)
               {
 
                 ezCmd.Parameters.AddWithValue("@_id", DBNull.Value, ParameterDirection.InputOutput);
 
-                fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.InsertItemTemplate;
+                fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.InsertItemTemplate;
               }
               else
               {
@@ -95,13 +104,13 @@ namespace ezMESWeb.Configure.User
                   ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable1.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
                 else
                   ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
-                fTemp = (ezMES.ITemplate.FormattedTemplate)FormView1.EditItemTemplate;
+                fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.EditItemTemplate;
                 ezCmd.Parameters.AddWithValue("@_username", DBNull.Value);
                 ezCmd.Parameters.AddWithValue("@_password", DBNull.Value);
               }
 
 
-              LoadSqlParasFromTemplate(ezCmd, fTemp);
+              LoadSqlParasFromTemplate(ezCmd, fvUpdate, fTemp);
 
               ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
               ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
@@ -115,13 +124,13 @@ namespace ezMESWeb.Configure.User
               if (response.Length > 0)
               {
                 lblError.Text = response;
-                this.ModalPopupExtender.Show();
+                this.btnUpdate_ModalPopupExtender.Show();
               }
               else
               {
                 lblError.Text = "";
-                this.FormView1.Visible = false;
-                this.ModalPopupExtender.Hide();
+                this.fvUpdate.Visible = false;
+                this.btnUpdate_ModalPopupExtender.Hide();
 
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
                 {
@@ -158,19 +167,78 @@ namespace ezMESWeb.Configure.User
 
       }
 
-      protected void btn_Click(object sender, EventArgs e)
-      {
-         //  set it to true so it will render
-         this.FormView1.Visible = true;
-         FormView1.ChangeMode(FormViewMode.Insert);
-         //  force databinding
-         this.FormView1.DataBind();
-         //  update the contents in the detail panel
-         this.updateRecordPanel.Update();
-         //  show the modal popup
-         this.ModalPopupExtender.Show();
-      }
+        protected void btn_Click(object sender, EventArgs e)
+        {
+            //  set it to true so it will render
+            this.fvUpdate.Visible = true;
+            fvUpdate.ChangeMode(FormViewMode.Insert);
+            //  force databinding
+            this.fvUpdate.DataBind();
+            //  update the contents in the detail panel
+            this.updateBufferPanel.Update();
+            //  show the modal popup
+            this.btnUpdate_ModalPopupExtender.Show();
+        }
+
+        protected void TabContainer_ActiveTabChanged(object sender, EventArgs e)
+        {
+
+            //tcMain.ActiveTabIndex = Convert.ToInt16(activeTab);
+            lblActiveTab.Text = tcMain.ActiveTabIndex.ToString();
+            show_activeTab();
+            //fvMain.Visible = false;
+            //Server.Transfer(string.Format("/Configure/Order/SalesOrderConfig.aspx?Tab={0}", tcMain.ActiveTabIndex));
+        }
+
+        protected void show_activeTab()
+        {
+            //AjaxControlToolkit.TabPanel activeTab = tcMain.ActiveTab;
+
+            //if (activeTab == Tp1)
+            DataView dv = (DataView)sdsEmpConfigGrid.Select(DataSourceSelectArguments.Empty);
+            colc = dv.Table.Columns;
+
+            lblActiveTab.Text = tcMain.ActiveTabIndex.ToString();
+            if (Convert.ToInt32(lblActiveTab.Text) == 1)
+            {
+                btnNewUser2.Style["display"] = "";
+                btnNewUser1.Style["display"] = "none";
+                // Show client organizations when Client Organizations is clicked
+                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'client' ";
+                gvTable.Caption = "Client User List";
 
 
-   }
+                //Initial insert template  
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"ClientEmployee_insert.xml"));
+
+                //Initial Edit template           
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientEmployee_modify.xml"));
+
+                //query = "SELECT id, root_company FROM organization WHERE root_org_type = 'client';";
+            }
+            else // Host Organization is the default tab
+            {
+                // first tab i selected
+                btnNewUser1.Style["display"] = "";
+                btnNewUser2.Style["display"] = "none";
+                
+                // Show host organizations when Host Organizations tab is clicked
+                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'host' ";
+                gvTable.Caption = "Host User List";
+                //Initial insert template  
+                fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostEmployee_insert.xml"));
+
+                //Initial Edit template           
+                fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostEmployee_modify.xml"));
+
+                //query = "SELECT id, root_company FROM organization WHERE root_org_type = 'host';";
+            }
+
+            //Update the GridView
+            fvUpdate.DataBind();
+            sdsEmpConfigGrid.DataBind();
+            gvTable.DataBind();
+            tcMain.DataBind();
+        }
+    }
 }

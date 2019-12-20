@@ -5,11 +5,27 @@
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+<%-- Tab Container with buttons to select between host and client user lists tabs. --%>
+<asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true">
+    <asp:TabPanel ID="Tp1" runat="server" HeaderText ="Host User List">
+        <ContentTemplate >
+            <% if (Session["Role"].Equals("Admin"))
+                {%>
+            <asp:Button ID="btnNewUser1" runat="server" Text='New User'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click"></asp:Button>
+                <%}%>
+        </ContentTemplate>
+    </asp:TabPanel>
+    <asp:TabPanel ID="Tp2" runat="server" HeaderText="Client User List">
+        <ContentTemplate>
+            <% if (Session["Role"].Equals("Admin"))
+                {%>
+            <asp:Button ID="btnNewUser2" runat="server" Text='New User'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click"></asp:Button>
+                <%}%>
+        </ContentTemplate>
+    </asp:TabPanel>
+</asp:TabContainer>
+
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
-  <% if ((Session["Role"]!= null) && (Session["Role"].Equals("Admin")))
-     {%> 
-<asp:Button ID="btnInsert" runat="server" Text="Insert" Width="147px" OnClick="btn_Click"/> 
-             <%} %>  
  <asp:panel id="pnlScroll" runat="server" width="85%" 
 height="100%" scrollbars="Horizontal">    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
@@ -99,20 +115,21 @@ height="100%" scrollbars="Horizontal">
                   LEFT JOIN Organization o ON o.id = e.or_id
                   LEFT JOIN employee e1 ON e1.id = e.report_to
 LEFT JOIN users_in_roles ur ON ur.userId = e.id
-LEFT JOIN system_roles sr ON sr.id=ur.roleId ">
+LEFT JOIN system_roles sr ON sr.id=ur.roleId 
+WHERE e.user_type = 'host' ">
         </asp:SqlDataSource>
         
         <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 
        style="margin-top: 19px;  height:500px; width:370px; display:none" HorizontalAlign="Left" >
-   <asp:UpdatePanel ID="updateRecordPanel" runat="server" UpdateMode="Conditional">
+   <asp:UpdatePanel ID="updateBufferPanel" runat="server" UpdateMode="Conditional">
    <ContentTemplate>
    <asp:Button id="btnShowPopup" runat="server" style="display:none" />
-    <asp:ModalPopupExtender ID="ModalPopupExtender" runat="server" TargetControlID="btnShowPopup"
+    <asp:ModalPopupExtender ID="btnUpdate_ModalPopupExtender" runat="server" TargetControlID="btnShowPopup"
          BackgroundCssClass="modalBackground" PopupControlID="RecordPanel" 
         PopupDragHandleControlID="RecordPanel" Drag="True" DropShadow="True" >
         </asp:ModalPopupExtender>
         
-       <asp:FormView ID="FormView1" runat="server" DataSourceID="sdsEmpConfig"
+       <asp:FormView ID="fvUpdate" runat="server" DataSourceID="sdsEmpConfig"
        EnableTheming="True" Height="100px" 
        HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" 
        >      
@@ -158,12 +175,14 @@ LEFT JOIN system_roles sr ON sr.id=ur.roleId ">
        <div class="footer">
           <asp:LinkButton ID="btnSubmit" runat="server" CausesValidation="True" 
             OnClick="btnSubmit_Click"  Text="Submit" />&nbsp;
-          <asp:LinkButton ID="btnCancel" runat="server" 
+          <asp:LinkButton ID="btnCancel1" runat="server" 
            CausesValidation="False" CommandName="Cancel" OnClick="btnCancel_Click"
              Text="Cancel" />
        </div>
        <asp:Label ID="lblError" runat="server" ForeColor="#FF3300" 
                 Height="60px" Width="350px"></asp:Label>
+       <asp:Label ID="lblActiveTab"
+                          runat="server" Visible="False"></asp:Label>
                   
       </ContentTemplate>
       </asp:UpdatePanel>

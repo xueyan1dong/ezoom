@@ -136,6 +136,8 @@
     <Content Include="Configure\Product\ProductCategory.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Configure\User\ClientEmployee_insert.xml" />
+    <Content Include="Configure\User\ClientEmployee_modify.xml" />
     <Content Include="Configure\User\ConfigEmployeeGroup.aspx" />
     <Content Include="Configure\User\Organization\ClientOrganization_insert.xml">
       <SubType>Designer</SubType>
@@ -680,8 +682,8 @@
     <Content Include="Configure\Order\Order.xml" />
     <Content Include="Configure\Product\ProductConfig.aspx" />
     <Content Include="Configure\User\ConfigEmployee.aspx" />
-    <Content Include="Configure\User\Employee_insert.xml" />
-    <Content Include="Configure\User\Employee_modify.xml" />
+    <Content Include="Configure\User\HostEmployee_insert.xml" />
+    <Content Include="Configure\User\HostEmployee_modify.xml" />
     <Content Include="ContactUs.aspx" />
     <Content Include="CSS\calendar.css" />
     <Content Include="CSS\master.css" />

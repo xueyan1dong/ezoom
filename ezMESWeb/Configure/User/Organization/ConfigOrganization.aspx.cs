@@ -204,7 +204,7 @@ namespace ezMESWeb.Configure.User
             fvUpdate.ChangeMode(FormViewMode.Insert);
             //  force databinding
             fvUpdate.DataBind();
-            AddJSFunction();
+            AddJSFunction(true);
             //  update the contents in the detail panel
             updateBufferPanel.Update();
             //  show the modal popup
@@ -279,16 +279,25 @@ namespace ezMESWeb.Configure.User
 
         // Adds an onchange event to the Root Company dropdown that calls a JS function to dynamically generate
         // the parent organizations under that root company.
-        protected void AddJSFunction()
+        protected void AddJSFunction(bool insert = false)
         {
             // Get copy of drproot_company DropDownList
-            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls[0]);
+            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls[0]);
             // Remove the original DropDownList
-            fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.RemoveAt(0);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls.RemoveAt(0);
             // Add the onchange event to the copy
-            lst.Attributes.Add("onchange","generateParentOrganizations()");
+            lst.Attributes.Add("onfocus","generateParentOrganizations()");
             // Add the new DropDownList into the same position as the original
-            fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.Add(lst);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls.Add(lst);
+
+            lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[1].Controls[1].Controls[0]);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[1].Controls[1].Controls.RemoveAt(0);
+            if (insert)
+            {
+                lst.SelectedValue = "active";
+            }
+            lst.Attributes.Add("onfocus", "orderStatusDropdown()");
+            fvUpdate.Row.Controls[0].Controls[0].Controls[1].Controls[1].Controls.Add(lst);
         }
 
         // Creates JSON serialized dictionary of parent organizations and their root_company ids.

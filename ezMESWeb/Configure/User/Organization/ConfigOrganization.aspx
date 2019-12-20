@@ -9,6 +9,7 @@
     function generateParentOrganizations() {
         let rootCompany = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_company').value;
         let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
+        let selectedParent = parentOrganizations.value;
         let i;
         for (i = 1; i < parentOrganizations.length; i++) {
             // if parentOrganization id does not correspond to rootCompany in dict
@@ -18,8 +19,40 @@
             else {
                 parentOrganizations[i].style.display = 'initial';
             }
+        }
+        // Maintain selected value if it exists in the filtered set
+        for (let i = 0; i < parentOrganizations.length; i++) {
+            if (parentOrganizations[i].style.display != 'none') {
+                if (selectedParent == parentOrganizations[i].value) {
+                    parentOrganizations.value = selectedParent;
+                    break;
+                }
+            }
             parentOrganizations.value = parentOrganizations[0];
         }
+    }
+
+    function orderStatusDropdown() {
+        // Get dropdown values
+        let statusDropDown = document.createElement("select");
+        statusDropDown = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpstatus');
+        let selected = statusDropDown.value;
+        // Put them into an array
+        let arr = [];
+        while (statusDropDown.options.length != 0) {
+            arr.push(statusDropDown[0].value);
+            statusDropDown.remove(statusDropDown[0]);
+        }
+        // Sort the array
+        arr.sort();
+        let length = arr.length;
+        // Place them back into the dropdown
+        for (let i = 0; i < length; i++) {
+            let option = document.createElement("option");
+            option.text = arr[i];
+            statusDropDown.append(option);
+        }
+        statusDropDown.value = selected;
     }
 </script>
 

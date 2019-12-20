@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Table name="employee">
+  <Header>Employee</Header>
+  <Column name ="username">
+    <DisplayName>User Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="password">
+    <DisplayName>Password</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="status">
+    <DisplayName>Status</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <EnumQuery dcol="0" vcol="0"> show columns from employee like 'status'</EnumQuery>
+  </Column>
+  <Column name ="or_id">
+    <DisplayName>Organization</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o order by 1</DropdownQuery>
+  </Column>
+  <Column name ="eg_id">
+    <DisplayName>Employee Group</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select e.name, e.id from employee_group e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="firstname">
+    <DisplayName>First Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="lastname">
+    <DisplayName>Last Name</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="middlename">
+    <DisplayName>M.</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>10</TextBoxLength>
+  </Column>
+  <Column name ="email">
+    <DisplayName>Email</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>50</TextBoxLength>
+  </Column>
+  <Column name ="phone">
+    <DisplayName>Phone</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>20</TextBoxLength>
+  </Column>
+  <Column name ="role_id">
+    <DisplayName>Role</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select name, id from system_roles WHERE applicationId=1 order by 1</DropdownQuery>
+  </Column>
+  <Column name ="report_to">
+    <DisplayName>Report To</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">SELECT '', null UNION Select concat(e.firstname, ' ', e.lastname), e.id from employee e order by 1</DropdownQuery>
+  </Column>
+  <Column name ="comment">
+    <DisplayName>Comment</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Textbox</UI>
+    <TextBoxLength>255</TextBoxLength>
+  </Column>
+</Table>
+
+
