@@ -76,10 +76,10 @@ namespace ezMESWeb.Configure.User
             show_activeTab();
             AddJSFunction();
             this.dict = new Dictionary<string, string>();
-            AddRootCompanyTableCell();
+            GetRootCompanyIDs();
         }
 
-        override protected void gvTable_SelectedIndexChanged(object sender, EventArgs e)
+        protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
         {
             //modify the mode of form view
             fvUpdate.ChangeMode(FormViewMode.Edit);
@@ -301,7 +301,7 @@ namespace ezMESWeb.Configure.User
         }
 
         // Creates JSON serialized dictionary of parent organizations and their root_company ids.
-        protected void AddRootCompanyTableCell()
+        protected void GetRootCompanyIDs()
         {
             ConnectToDb();
             ezCmd = new EzSqlCommand
@@ -326,7 +326,7 @@ namespace ezMESWeb.Configure.User
             }
             var serializer = new JavaScriptSerializer();
             serializedDict = serializer.Serialize(dict);
-           
+
         }
     }
 }

@@ -17,7 +17,7 @@
     <DisplayName>Lead Employee</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">SELECT '', null UNION Select concat(e.firstname, ' ', e.lastname), e.id from employee e where user_type = 'client' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select '', null UNION Select concat(e.firstname, ' ', e.lastname), e.id from employee e where user_type = 'client' order by 1</DropdownQuery>
   </Column>
   <Column name ="phone">
     <DisplayName>Phone</DisplayName>
@@ -53,6 +53,6 @@
     <DisplayName>Root Organization Type</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r order by 1</DropdownQuery>
   </Column>
 </Table>

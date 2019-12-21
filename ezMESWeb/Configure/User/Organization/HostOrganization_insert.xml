@@ -17,7 +17,7 @@
     <DisplayName>Lead Employee</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select CONCAT(e.firstname,' ',e.lastname) as name, e.id from employee e where user_type = 'host' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select "", null UNION Select CONCAT(e.firstname,' ',e.lastname) as name, e.id from employee e where user_type = 'host' order by 1</DropdownQuery>
   </Column>
   <Column name ="phone">
     <DisplayName>Phone</DisplayName>

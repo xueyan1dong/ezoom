@@ -20,7 +20,7 @@
     <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o order by 1</DropdownQuery>
   </Column>
   <Column name ="eg_id">
-    <DisplayName>Employee Group</DisplayName>
+    <DisplayName>User Group</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
     <DropdownQuery dcol="0" vcol="1">Select e.name, e.id from employee_group e order by 1</DropdownQuery>
@@ -72,6 +72,12 @@
     <IsEnable>true</IsEnable>
     <UI>Textbox</UI>
     <TextBoxLength>255</TextBoxLength>
+  </Column>
+  <Column name ="user_type">
+    <DisplayName>User Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r order by 1</DropdownQuery>
   </Column>
 </Table>
 

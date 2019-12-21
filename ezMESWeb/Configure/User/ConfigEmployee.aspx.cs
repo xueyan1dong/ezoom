@@ -59,12 +59,25 @@ namespace ezMESWeb.Configure.User
             };*/
 
             show_activeTab();
+            AddJSFunctions();
+            this.dict = new Dictionary<string, string>();
+            GetOrganizationIDs();
         }
-        protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
+        protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
         {
             //modify the mode of form view
             fvUpdate.ChangeMode(FormViewMode.Edit);
 
+            //  set it to true so it will render
+            fvUpdate.Visible = true;
+            //  force databinding
+            fvUpdate.DataBind();
+            //  update the contents in the detail panel
+            updateBufferPanel.Update();
+            //  show the modal popup
+            btnUpdate_ModalPopupExtender.Show();
+
+            AddJSFunctions();
         }
 
 
@@ -174,6 +187,7 @@ namespace ezMESWeb.Configure.User
             fvUpdate.ChangeMode(FormViewMode.Insert);
             //  force databinding
             this.fvUpdate.DataBind();
+            AddJSFunctions(true);
             //  update the contents in the detail panel
             this.updateBufferPanel.Update();
             //  show the modal popup
@@ -204,7 +218,7 @@ namespace ezMESWeb.Configure.User
                 btnNewUser2.Style["display"] = "";
                 btnNewUser1.Style["display"] = "none";
                 // Show client organizations when Client Organizations is clicked
-                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'client' ";
+                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment, e.user_type FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'client' ";
                 gvTable.Caption = "Client User List";
 
 
@@ -214,7 +228,7 @@ namespace ezMESWeb.Configure.User
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientEmployee_modify.xml"));
 
-                //query = "SELECT id, root_company FROM organization WHERE root_org_type = 'client';";
+                query = "SELECT id, or_id FROM employee WHERE user_type = 'client';";
             }
             else // Host Organization is the default tab
             {
@@ -223,7 +237,7 @@ namespace ezMESWeb.Configure.User
                 btnNewUser2.Style["display"] = "none";
                 
                 // Show host organizations when Host Organizations tab is clicked
-                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'host' ";
+                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment, e.user_type FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'host' ";
                 gvTable.Caption = "Host User List";
                 //Initial insert template  
                 fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostEmployee_insert.xml"));
@@ -231,7 +245,7 @@ namespace ezMESWeb.Configure.User
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostEmployee_modify.xml"));
 
-                //query = "SELECT id, root_company FROM organization WHERE root_org_type = 'host';";
+                query = "SELECT id, or_id FROM employee WHERE user_type = 'host';";
             }
 
             //Update the GridView
@@ -239,6 +253,60 @@ namespace ezMESWeb.Configure.User
             sdsEmpConfigGrid.DataBind();
             gvTable.DataBind();
             tcMain.DataBind();
+        }
+
+        protected void AddJSFunctions(bool insert = false)
+        {
+            int index = 2;
+            if (insert)
+                index = 3;
+
+            // Get copy of drproot_company DropDownList
+            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index+8].Controls[1].Controls[0]);
+            // Remove the original DropDownList
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 8].Controls[1].Controls.RemoveAt(0);
+            // Add the onchange event to the copy
+            lst.Attributes.Add("onfocus", "generateReportToEmployees()");
+            // Add the new DropDownList into the same position as the original
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 8].Controls[1].Controls.Add(lst);
+
+            lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls[0]);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls.RemoveAt(0);
+            if (insert)
+            {
+                lst.SelectedValue = "active";
+            }
+            lst.Attributes.Add("onfocus", "orderStatusDropdown()");
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls.Add(lst);
+        }
+
+        // Creates JSON serialized dictionary of parent organizations and their root_company ids.
+        protected void GetOrganizationIDs()
+        {
+            ConnectToDb();
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezDataAdapter ezAdapter = new ezDataAdapter();
+            DataSet ds;
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            // Place returned root_company ids into a dictionary indexed on parent organization ids.
+            DataRowCollection rows = ds.Tables[0].Rows;
+            IEnumerator rowEnumerator = rows.GetEnumerator();
+            dict = new Dictionary<string, string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                dict[row.ItemArray.GetValue(0).ToString()] = row.ItemArray.GetValue(1).ToString();
+            }
+            var serializer = new JavaScriptSerializer();
+            serializedDict = serializer.Serialize(dict);
+
         }
     }
 }

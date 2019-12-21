@@ -56,13 +56,18 @@
     }
 </script>
 
+<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
 <%-- Tab Container with buttons to select between host and client organization tabs. --%>
 <asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true">
     <asp:TabPanel ID="Tp1" runat="server" HeaderText ="Host Organizations">
         <ContentTemplate >
             <% if (Session["Role"].Equals("Admin"))
                 {%>
-            <asp:Button ID="btnNewOrganization1" runat="server" Text='New Organization'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click"></asp:Button>
+            <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:Button ID="btnNewOrganization1" runat="server" Text='New Organization'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click" class="Pointer"></asp:Button>
+                </ContentTemplate>
+            </asp:UpdatePanel>
                 <%}%>
         </ContentTemplate>
     </asp:TabPanel>
@@ -70,13 +75,17 @@
         <ContentTemplate>
             <% if (Session["Role"].Equals("Admin"))
                 {%>
-            <asp:Button ID="btnNewOrganization2" runat="server" Text='New Organization'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click"></asp:Button>
+            <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:Button ID="btnNewOrganization2" runat="server" Text='New Organization'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click" class="Pointer"></asp:Button>
+                </ContentTemplate>
+            </asp:UpdatePanel>
                 <%}%>
         </ContentTemplate>
     </asp:TabPanel>
 </asp:TabContainer>
 
-<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
+
 
 <asp:panel id="pnlScroll" runat="server" width="85%" 
 height="100%" scrollbars="Horizontal" >    

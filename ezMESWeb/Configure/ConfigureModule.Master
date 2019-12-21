@@ -17,6 +17,15 @@
    
     <asp:contentPlaceholder id="head" runat="server" />  
 
+<style type="text/css">
+    .Pointer {
+        cursor: pointer;
+    }
+    .ajax__tab_tab {
+        cursor: pointer;
+    }
+</style>
+
 <script type="text/javascript">
 // Popup window code
 function newPopup(url) {

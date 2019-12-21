@@ -5,13 +5,73 @@
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+<script type="text/javascript">
+    let dictionary = JSON.parse('<%=serializedDict%>');
+
+    function generateReportToEmployees() {
+        let organization = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drporganization').value;
+        let reportToEmployees = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpreport_to');
+        let selectedEmployee = reportToEmployees.value;
+        console.log("Hello");
+        let i;
+        for (i = 1; i < reportToEmployees.length; i++) {
+            // if parentOrganization id does not correspond to rootCompany in dict
+            if (dictionary[reportToEmployees[i].value] != organization) {
+                reportToEmployees[i].style.display = 'none';
+            }
+            else {
+                reportToEmployees[i].style.display = 'initial';
+            }
+        }
+        // Maintain selected value if it exists in the filtered set
+        for (let i = 0; i < reportToEmployees.length; i++) {
+            if (reportToEmployees[i].style.display != 'none') {
+                if (selectedEmployee == reportToEmployees[i].value) {
+                    reportToEmployees.value = selectedEmployee;
+                    break;
+                }
+            }
+            reportToEmployees.value = reportToEmployees[0];
+        }
+    }
+
+    function orderStatusDropdown() {
+        // Get dropdown values
+        let statusDropDown = document.createElement("select");
+        statusDropDown = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpstatus');
+        let selected = statusDropDown.value;
+        // Put them into an array
+        let arr = [];
+        while (statusDropDown.options.length != 0) {
+            arr.push(statusDropDown[0].value);
+            statusDropDown.remove(statusDropDown[0]);
+        }
+        // Sort the array
+        arr.sort();
+        let length = arr.length;
+        // Place them back into the dropdown
+        for (let i = 0; i < length; i++) {
+            let option = document.createElement("option");
+            option.text = arr[i];
+            statusDropDown.append(option);
+        }
+        statusDropDown.value = selected;
+    }
+</script>
+
+<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
+
 <%-- Tab Container with buttons to select between host and client user lists tabs. --%>
 <asp:TabContainer ID="tcMain" runat="server" Height="10px" Width="100%" ActiveTabIndex="0" CssClass="amber_tab" OnActiveTabChanged ="TabContainer_ActiveTabChanged" AutoPostBack  ="true">
     <asp:TabPanel ID="Tp1" runat="server" HeaderText ="Host User List">
-        <ContentTemplate >
+        <ContentTemplate>
             <% if (Session["Role"].Equals("Admin"))
                 {%>
-            <asp:Button ID="btnNewUser1" runat="server" Text='New User'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click"></asp:Button>
+            <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:Button ID="btnNewUser1" runat="server" Text='New User'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click" class="Pointer"></asp:Button>
+                </ContentTemplate>
+            </asp:UpdatePanel>
                 <%}%>
         </ContentTemplate>
     </asp:TabPanel>
@@ -19,13 +79,16 @@
         <ContentTemplate>
             <% if (Session["Role"].Equals("Admin"))
                 {%>
-            <asp:Button ID="btnNewUser2" runat="server" Text='New User'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click"></asp:Button>
+            <asp:UpdatePanel runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <asp:Button ID="btnNewUser2" runat="server" Text='New User'  style ="display: block;  width:103px; font-size:12px" OnClick ="btn_Click" class="Pointer"></asp:Button>
+                </ContentTemplate>
+            </asp:UpdatePanel>
                 <%}%>
         </ContentTemplate>
     </asp:TabPanel>
 </asp:TabContainer>
 
-<asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
  <asp:panel id="pnlScroll" runat="server" width="85%" 
 height="100%" scrollbars="Horizontal">    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
@@ -54,7 +117,7 @@ height="100%" scrollbars="Horizontal">
                     <asp:BoundField DataField="username" HeaderText="Username" SortExpression="username" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
-                    <asp:BoundField DataField="eg_name" HeaderText="Employee Group" SortExpression="eg_name" />
+                    <asp:BoundField DataField="eg_name" HeaderText="User Group" SortExpression="eg_name" />
                     <asp:BoundField DataField="firstname" HeaderText="First Name" SortExpression="firstname" />
                     <asp:BoundField DataField="lastname" HeaderText="Last Name" SortExpression="lastname" />
                     <asp:BoundField DataField="middlename" HeaderText="MI." SortExpression="middlename" />
@@ -71,7 +134,7 @@ height="100%" scrollbars="Horizontal">
               <asp:GridView ID="gvTable1" runat="server" Caption="Employee List" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsEmpConfigGrid" 
                EmptyDataText="No Client currently available" Height="145px" Width="500px"
-               AutoGenerateColumns="False" onselectedindexchanging="gvTable_SelectedIndexChanging"
+               AutoGenerateColumns="False"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
                EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged"
@@ -88,7 +151,7 @@ height="100%" scrollbars="Horizontal">
                     <asp:BoundField DataField="username" HeaderText="Username" SortExpression="username" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
-                    <asp:BoundField DataField="eg_name" HeaderText="Employee Group" SortExpression="eg_name" />
+                    <asp:BoundField DataField="eg_name" HeaderText="User Group" SortExpression="eg_name" />
                     <asp:BoundField DataField="firstname" HeaderText="First Name" SortExpression="firstname" />
                     <asp:BoundField DataField="lastname" HeaderText="Last Name" SortExpression="lastname" />
                     <asp:BoundField DataField="middlename" HeaderText="MI." SortExpression="middlename" />
@@ -109,7 +172,7 @@ height="100%" scrollbars="Horizontal">
           DeleteCommand="Update `Employee` set status='removed' WHERE `Employee`.id=?" 
        SelectCommand="SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, 
        eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, 
-       e.comment 
+       e.comment, e.user_type
   FROM Employee e 
   LEFT JOIN Employee_group eg ON eg.id = e.eg_id
                   LEFT JOIN Organization o ON o.id = e.or_id
@@ -142,7 +205,7 @@ WHERE e.user_type = 'host' ">
        EnableCaching="false"
        SelectCommand="select  username, password, status, or_id, eg_id,
        firstname, lastname, middlename, email,
-       phone, roleId as role_id, report_to, comment from Employee e, users_in_roles u
+       phone, roleId as role_id, report_to, comment, user_type from Employee e, users_in_roles u
        where u.userId = e.id and e.id = ?" 
         >
 
@@ -162,7 +225,7 @@ WHERE e.user_type = 'host' ">
        EnableCaching="false"
        SelectCommand="select  username, password, status, or_id, eg_id,
        firstname, lastname, middlename, email,
-       phone, roleId as role_id, report_to, comment from Employee e, users_in_roles u
+       phone, roleId as role_id, report_to, comment, user_type from Employee e, users_in_roles u
        where u.userId = e.id and e.id = ?" 
         >
 
