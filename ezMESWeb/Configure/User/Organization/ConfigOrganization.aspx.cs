@@ -282,12 +282,17 @@ namespace ezMESWeb.Configure.User
         protected void AddJSFunction(bool insert = false)
         {
             // Get copy of drproot_company DropDownList
-            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls[0]);
+            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls[0]);
             // Remove the original DropDownList
-            fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls.RemoveAt(0);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.RemoveAt(0);
             // Add the onchange event to the copy
-            lst.Attributes.Add("onfocus","generateParentOrganizations()");
+            lst.Attributes.Add("onchange","generateParentOrganizations()");
             // Add the new DropDownList into the same position as the original
+            fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.Add(lst);
+
+            lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls[0]);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls.RemoveAt(0);
+            lst.Attributes.Add("onfocus", "generateParentOrganizations()");
             fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls.Add(lst);
 
             lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[1].Controls[1].Controls[0]);

@@ -29,7 +29,7 @@
     <DisplayName>Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id, o.root_org_type from organization o order by 3 DESC</DropdownQuery>
   </Column>
   <Column name ="eg_id">
     <DisplayName>User Group</DisplayName>

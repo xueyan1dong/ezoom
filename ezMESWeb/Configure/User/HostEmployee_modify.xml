@@ -16,14 +16,14 @@
   <Column name ="user_type">
     <DisplayName>User Type</DisplayName>
     <IsEnable>true</IsEnable>
-    <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r order by 1 DESC</DropdownQuery>
+    <UI>Label</UI>
+    <TextBoxLength>20</TextBoxLength>
   </Column>
   <Column name ="or_id">
     <DisplayName>Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id from organization o order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select o.name, o.id, o.root_org_type from organization o order by 3 DESC</DropdownQuery>
   </Column>
   <Column name ="eg_id">
     <DisplayName>User Group</DisplayName>

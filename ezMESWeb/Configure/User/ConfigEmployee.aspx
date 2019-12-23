@@ -6,7 +6,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 <script type="text/javascript">
-    let dictionary = JSON.parse('<%=serializedDict%>');
+    let dictionaryReportToEmployees = JSON.parse('<%=serializedDictReportToEmployees%>');
 
     function generateReportToEmployees() {
         let organization = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpor_id').value;
@@ -15,7 +15,7 @@
 
         for (let i = 1; i < reportToEmployees.length; i++) {
             // if parentOrganization id does not correspond to rootCompany in dict
-            if (dictionary[reportToEmployees[i].value] != organization) {
+            if (dictionaryReportToEmployees[reportToEmployees[i].value] != organization) {
                 reportToEmployees[i].style.display = 'none';
             }
             else {
@@ -56,16 +56,43 @@
         }
         statusDropDown.value = selected;
     }
-    /*
+    let dictionaryOrganizations = JSON.parse('<%=serializedDictOrganizations%>');
     function orderOrganizationDropdown() {
-        let userType = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpuser_type');
+        let userType = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpuser_type') || document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_lbluser_type');
+        let userTypeValue = userType.value || userType.textContent;
         let organizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpor_id');
         let selectedOrganization = organizations.value;
-        for (let i = 0; i < organizations.length; i++) {
-            // if organization is not of the user type
-
+        let length = organizations.length;
+        for (let i = 0; i < length; i++) {
+            organization = organizations[i];
+            // if organization is not of the user type, hide it
+            if (dictionaryOrganizations[organization.value] != userTypeValue) {
+                organization.style.display = 'none';
+            }
+            else {
+                organization.style.display = '';
+                if (userTypeValue == "host") {
+                    if (organization.label == "Waterworks") {
+                        organization.selected = "selected";
+                    }
+                }
+                else {
+                    if (organization.label == "Dayton Grey Contacts") {
+                        organization.selected = "selected";
+                    }
+                }
+            }
         }
-    }*/
+        for (let i = 0; i < length; i++) {
+            if (organizations[i].style.display != 'none') {
+                if (selectedOrganization == organizations[i].value) {
+                    organizations.value = selectedOrganization;
+                    break;
+                }
+            }
+        }
+        generateReportToEmployees();
+    }
 </script>
 
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
@@ -98,22 +125,22 @@
     </asp:TabPanel>
 </asp:TabContainer>
 
- <asp:panel id="pnlScroll" runat="server" width="85%" 
-height="100%" scrollbars="Horizontal">    
+ <asp:panel id="pnlScroll" runat="server" width="100%" 
+height="100%" scrollbars="Horizontal" >    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
                   <% if (Session["Role"].Equals("Admin"))
                      {%> 
             <asp:GridView ID="gvTable" runat="server" Caption="Employee List" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsEmpConfigGrid" 
-               EmptyDataText="No Client currently available" Height="145px" Width="500px"
+               EmptyDataText="No Client currently available" Height="100%" Width="100%"
                AutoGenerateColumns="False" EnablePersistedSelection="true"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
-                    AllowPaging="True"  AllowSorting="True" PageSize="15" 
+                    AllowPaging="True"  AllowSorting="True" PageSize="15"
                EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged"
              >
       
-                <SelectedRowStyle  BackColor="#FFFFCC"/>
+                <SelectedRowStyle BackColor="#FFFFCC"/>
                 <Columns>
 
                     <asp:CommandField ShowDeleteButton="True" />
@@ -143,7 +170,7 @@ height="100%" scrollbars="Horizontal">
                      { %>
               <asp:GridView ID="gvTable1" runat="server" Caption="Employee List" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsEmpConfigGrid" 
-               EmptyDataText="No Client currently available" Height="145px" Width="500px"
+               EmptyDataText="No Client currently available" Height="100%" Width="100%"
                AutoGenerateColumns="False" EnablePersistedSelection="true"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
@@ -194,7 +221,7 @@ WHERE e.user_type = 'host' ">
         </asp:SqlDataSource>
         
         <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 
-       style="margin-top: 19px;  height:500px; width:370px; display:none" HorizontalAlign="Left" >
+       style="margin-top: 19px;  height:100%; width:100%; display:none" HorizontalAlign="Left" >
    <asp:UpdatePanel ID="updateBufferPanel" runat="server" UpdateMode="Conditional">
    <ContentTemplate>
    <asp:Button id="btnShowPopup" runat="server" style="display:none" />
@@ -204,7 +231,7 @@ WHERE e.user_type = 'host' ">
         </asp:ModalPopupExtender>
         
        <asp:FormView ID="fvUpdate" runat="server" DataSourceID="sdsEmpConfig"
-       EnableTheming="True" Height="100px" 
+       EnableTheming="True" Height="100%" 
        HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" 
        >      
        </asp:FormView>

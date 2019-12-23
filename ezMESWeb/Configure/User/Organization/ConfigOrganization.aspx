@@ -87,13 +87,13 @@
 
 
 
-<asp:panel id="pnlScroll" runat="server" width="85%" 
+<asp:panel id="pnlScroll" runat="server" width="100%" 
 height="100%" scrollbars="Horizontal" >    
    <asp:UpdatePanel ID="gvTablePanel" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
             <asp:GridView ID="gvTable" runat="server" Caption="Host Organizations" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsOrgConfigGrid" 
-               EmptyDataText="No Client currently available" Height="145px" Width="500px"
+               EmptyDataText="No Client currently available" Height="100%" Width="100%"
                AutoGenerateColumns="False" EnablePersistedSelection="true"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
@@ -138,7 +138,7 @@ height="100%" scrollbars="Horizontal" >
         </asp:SqlDataSource>
         
         <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 
-       style="margin-top: 19px;  height:500px; width:370px; display:none" HorizontalAlign="Left" >
+       style="margin-top: 19px;  height:100%; width:100%; display:none" HorizontalAlign="Left" >
    <asp:UpdatePanel ID="updateBufferPanel" runat="server" UpdateMode="Conditional">
    <ContentTemplate>
    <asp:Button id="btnShowPopup" runat="server" style="display:none" />
@@ -148,7 +148,7 @@ height="100%" scrollbars="Horizontal" >
         </asp:ModalPopupExtender>
        
        <asp:FormView ID="fvUpdate" runat="server" DataSourceID="sdsOrgConfig"
-       EnableTheming="True" Height="100px" 
+       EnableTheming="True" Height="100%" 
        HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" >
            <ItemTemplate>
            </ItemTemplate>

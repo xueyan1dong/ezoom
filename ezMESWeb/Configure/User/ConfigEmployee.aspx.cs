@@ -23,7 +23,8 @@ namespace ezMESWeb.Configure.User
         protected Label lblActiveTab;
         protected Button btnNewUser1, btnNewUser2;
         protected Dictionary<string, string> dict;
-        protected string serializedDict;
+        protected string serializedDictReportToEmployees;
+        protected string serializedDictOrganizations;
         protected string query;
         protected override void OnInit(EventArgs e)
         {
@@ -265,13 +266,13 @@ namespace ezMESWeb.Configure.User
                 index = 2;
 
             // Get copy of drproot_company DropDownList
-            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index+10].Controls[1].Controls[0]);
+            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index+2].Controls[1].Controls[0]);
             // Remove the original DropDownList
-            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 10].Controls[1].Controls.RemoveAt(0);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 2].Controls[1].Controls.RemoveAt(0);
             // Add the onchange event to the copy
-            lst.Attributes.Add("onfocus", "generateReportToEmployees()");
+            lst.Attributes.Add("onchange", "generateReportToEmployees()");
             // Add the new DropDownList into the same position as the original
-            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 10].Controls[1].Controls.Add(lst);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 2].Controls[1].Controls.Add(lst);
 
             lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls[0]);
             fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls.RemoveAt(0);
@@ -281,12 +282,19 @@ namespace ezMESWeb.Configure.User
             }
             lst.Attributes.Add("onfocus", "orderStatusDropdown()");
             fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls.Add(lst);
-
+            if (insert)
+            {
+                // Enforce constraint where organization dropdown depends on selection of user_type.
+                lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index + 1].Controls[1].Controls[0]);
+                fvUpdate.Row.Controls[0].Controls[0].Controls[index + 1].Controls[1].Controls.RemoveAt(0);
+                lst.Attributes.Add("onchange", "orderOrganizationDropdown()");
+                fvUpdate.Row.Controls[0].Controls[0].Controls[index + 1].Controls[1].Controls.Add(lst);
+            }
             // Enforce constraint where organization dropdown depends on selection of user_type.
-            /*lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index+2].Controls[1].Controls[0]);
-            fvUpdate.Row.Controls[0].Controls[0].Controls[index+2].Controls[1].Controls.RemoveAt(0);
+            lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index + 2].Controls[1].Controls[0]);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 2].Controls[1].Controls.RemoveAt(0);
             lst.Attributes.Add("onfocus", "orderOrganizationDropdown()");
-            fvUpdate.Row.Controls[0].Controls[0].Controls[index+2].Controls[1].Controls.Add(lst);*/
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 2].Controls[1].Controls.Add(lst);
         }
 
         // Creates JSON serialized dictionary of parent organizations and their root_company ids.
@@ -314,8 +322,30 @@ namespace ezMESWeb.Configure.User
                 dict[row.ItemArray.GetValue(0).ToString()] = row.ItemArray.GetValue(1).ToString();
             }
             var serializer = new JavaScriptSerializer();
-            serializedDict = serializer.Serialize(dict);
+            serializedDictReportToEmployees = serializer.Serialize(dict);
 
+            query = "SELECT id, root_org_type FROM organization;";
+
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezAdapter = new ezDataAdapter();
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            rows = ds.Tables[0].Rows;
+            rowEnumerator = rows.GetEnumerator();
+            dict = new Dictionary<string, string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                dict[row.ItemArray.GetValue(0).ToString()] = row.ItemArray.GetValue(1).ToString();
+            }
+            serializer = new JavaScriptSerializer();
+            serializedDictOrganizations = serializer.Serialize(dict);
         }
     }
 }
