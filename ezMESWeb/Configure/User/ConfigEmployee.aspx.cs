@@ -59,7 +59,8 @@ namespace ezMESWeb.Configure.User
             };*/
 
             show_activeTab();
-            AddJSFunctions();
+            if (!IsPostBack)
+                AddJSFunctions(true);
             this.dict = new Dictionary<string, string>();
             GetOrganizationIDs();
         }
@@ -174,7 +175,9 @@ namespace ezMESWeb.Configure.User
             }
             catch (Exception ex)
             {
-              lblError.Text = ex.Message;
+                //lblError.Text = ex.Message;
+                lblError.Text = "An error occurred.";
+                this.btnUpdate_ModalPopupExtender.Show();
             }
          }
 
@@ -218,7 +221,7 @@ namespace ezMESWeb.Configure.User
                 btnNewUser2.Style["display"] = "";
                 btnNewUser1.Style["display"] = "none";
                 // Show client organizations when Client Organizations is clicked
-                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment, e.user_type FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'client' ";
+                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.user_type, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'client' ";
                 gvTable.Caption = "Client User List";
 
 
@@ -228,7 +231,7 @@ namespace ezMESWeb.Configure.User
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientEmployee_modify.xml"));
 
-                query = "SELECT id, or_id FROM employee WHERE user_type = 'client';";
+                query = "SELECT id, or_id FROM employee;";
             }
             else // Host Organization is the default tab
             {
@@ -237,7 +240,7 @@ namespace ezMESWeb.Configure.User
                 btnNewUser2.Style["display"] = "none";
                 
                 // Show host organizations when Host Organizations tab is clicked
-                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment, e.user_type FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'host' ";
+                sdsEmpConfigGrid.SelectCommand = "SELECT e.id, e.company_id, e.username, e.password, e.status, e.user_type, e.or_id, o.name as o_name, e.eg_id, eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, e.comment FROM Employee e LEFT JOIN Employee_group eg ON eg.id = e.eg_id LEFT JOIN Organization o ON o.id = e.or_id LEFT JOIN employee e1 ON e1.id = e.report_to LEFT JOIN users_in_roles ur ON ur.userId = e.id LEFT JOIN system_roles sr ON sr.id = ur.roleId WHERE e.user_type = 'host' ";
                 gvTable.Caption = "Host User List";
                 //Initial insert template  
                 fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostEmployee_insert.xml"));
@@ -245,7 +248,7 @@ namespace ezMESWeb.Configure.User
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostEmployee_modify.xml"));
 
-                query = "SELECT id, or_id FROM employee WHERE user_type = 'host';";
+                query = "SELECT id, or_id FROM employee;";
             }
 
             //Update the GridView
@@ -257,18 +260,18 @@ namespace ezMESWeb.Configure.User
 
         protected void AddJSFunctions(bool insert = false)
         {
-            int index = 2;
+            int index = 1;
             if (insert)
-                index = 3;
+                index = 2;
 
             // Get copy of drproot_company DropDownList
-            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index+8].Controls[1].Controls[0]);
+            DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index+10].Controls[1].Controls[0]);
             // Remove the original DropDownList
-            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 8].Controls[1].Controls.RemoveAt(0);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 10].Controls[1].Controls.RemoveAt(0);
             // Add the onchange event to the copy
             lst.Attributes.Add("onfocus", "generateReportToEmployees()");
             // Add the new DropDownList into the same position as the original
-            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 8].Controls[1].Controls.Add(lst);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index + 10].Controls[1].Controls.Add(lst);
 
             lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls[0]);
             fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls.RemoveAt(0);
@@ -278,6 +281,12 @@ namespace ezMESWeb.Configure.User
             }
             lst.Attributes.Add("onfocus", "orderStatusDropdown()");
             fvUpdate.Row.Controls[0].Controls[0].Controls[index].Controls[1].Controls.Add(lst);
+
+            // Enforce constraint where organization dropdown depends on selection of user_type.
+            /*lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[index+2].Controls[1].Controls[0]);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index+2].Controls[1].Controls.RemoveAt(0);
+            lst.Attributes.Add("onfocus", "orderOrganizationDropdown()");
+            fvUpdate.Row.Controls[0].Controls[0].Controls[index+2].Controls[1].Controls.Add(lst);*/
         }
 
         // Creates JSON serialized dictionary of parent organizations and their root_company ids.

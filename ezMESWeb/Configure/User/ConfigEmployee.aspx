@@ -9,12 +9,11 @@
     let dictionary = JSON.parse('<%=serializedDict%>');
 
     function generateReportToEmployees() {
-        let organization = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drporganization').value;
+        let organization = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpor_id').value;
         let reportToEmployees = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpreport_to');
         let selectedEmployee = reportToEmployees.value;
-        console.log("Hello");
-        let i;
-        for (i = 1; i < reportToEmployees.length; i++) {
+
+        for (let i = 1; i < reportToEmployees.length; i++) {
             // if parentOrganization id does not correspond to rootCompany in dict
             if (dictionary[reportToEmployees[i].value] != organization) {
                 reportToEmployees[i].style.display = 'none';
@@ -57,6 +56,16 @@
         }
         statusDropDown.value = selected;
     }
+    /*
+    function orderOrganizationDropdown() {
+        let userType = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpuser_type');
+        let organizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpor_id');
+        let selectedOrganization = organizations.value;
+        for (let i = 0; i < organizations.length; i++) {
+            // if organization is not of the user type
+
+        }
+    }*/
 </script>
 
 <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" />
@@ -98,7 +107,7 @@ height="100%" scrollbars="Horizontal">
             <asp:GridView ID="gvTable" runat="server" Caption="Employee List" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsEmpConfigGrid" 
                EmptyDataText="No Client currently available" Height="145px" Width="500px"
-               AutoGenerateColumns="False" 
+               AutoGenerateColumns="False" EnablePersistedSelection="true"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
                EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged"
@@ -114,6 +123,7 @@ height="100%" scrollbars="Horizontal">
 			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Edit" CommandName="Select" />
 			     </ItemTemplate>                 
                  </asp:TemplateField>
+                    <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" Visible="false" />
                     <asp:BoundField DataField="username" HeaderText="Username" SortExpression="username" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
@@ -134,7 +144,7 @@ height="100%" scrollbars="Horizontal">
               <asp:GridView ID="gvTable1" runat="server" Caption="Employee List" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsEmpConfigGrid" 
                EmptyDataText="No Client currently available" Height="145px" Width="500px"
-               AutoGenerateColumns="False"
+               AutoGenerateColumns="False" EnablePersistedSelection="true"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
                EnableTheming="False" onpageindexchanged="gvTable_PageIndexChanged"
@@ -148,6 +158,7 @@ height="100%" scrollbars="Horizontal">
 			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Edit" CommandName="Select" />
 			     </ItemTemplate>                 
                  </asp:TemplateField>
+                    <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" Visible="false" />
                     <asp:BoundField DataField="username" HeaderText="Username" SortExpression="username" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
@@ -170,9 +181,9 @@ height="100%" scrollbars="Horizontal">
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            ProviderName="System.Data.Odbc" 
           DeleteCommand="Update `Employee` set status='removed' WHERE `Employee`.id=?" 
-       SelectCommand="SELECT e.id, e.company_id, e.username, e.password, e.status, e.or_id, o.name as o_name, e.eg_id, 
+       SelectCommand="SELECT e.id, e.company_id, e.username, e.password, e.status, e.user_type, e.or_id, o.name as o_name, e.eg_id, 
        eg.name as eg_name, e.firstname, e.lastname, e.middlename, e.email, e.phone, ur.roleId as role_id, sr.name as role, concat(e1.firstname, ' ', e1.lastname) as report_to, 
-       e.comment, e.user_type
+       e.comment
   FROM Employee e 
   LEFT JOIN Employee_group eg ON eg.id = e.eg_id
                   LEFT JOIN Organization o ON o.id = e.or_id
@@ -203,9 +214,9 @@ WHERE e.user_type = 'host' ">
        ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        EnableCaching="false"
-       SelectCommand="select  username, password, status, or_id, eg_id,
+       SelectCommand="select e.id, username, password, status, user_type, or_id, eg_id,
        firstname, lastname, middlename, email,
-       phone, roleId as role_id, report_to, comment, user_type from Employee e, users_in_roles u
+       phone, roleId as role_id, report_to, comment from Employee e, users_in_roles u
        where u.userId = e.id and e.id = ?" 
         >
 
@@ -223,9 +234,9 @@ WHERE e.user_type = 'host' ">
        ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        EnableCaching="false"
-       SelectCommand="select  username, password, status, or_id, eg_id,
+       SelectCommand="select e.id, username, password, status, user_type, or_id, eg_id,
        firstname, lastname, middlename, email,
-       phone, roleId as role_id, report_to, comment, user_type from Employee e, users_in_roles u
+       phone, roleId as role_id, report_to, comment from Employee e, users_in_roles u
        where u.userId = e.id and e.id = ?" 
         >
 

@@ -1044,6 +1044,7 @@ CREATE PROCEDURE `modify_employee`(
   IN _username varchar(20),
   IN _password varchar(20),
   IN _status enum('active','inactive','removed'),
+  IN _user_type enum('host','client'),
   IN _or_id int(10) unsigned,
   IN _eg_id int(10) unsigned,
   IN _firstname varchar(20),
@@ -1077,17 +1078,20 @@ BEGIN
     SET _response='Last name is required. Please fill the last name.';
   ELSEIF  _role_id IS NULL OR NOT EXISTS (SELECT * FROM system_roles WHERE id=_role_id)
   THEN 
-    SET _response='Role is required. Please select a role.';   
+    SET _response='Role is required. Please select a role.';
+  ELSEIF _user_type IS NULL
+  THEN
+	SET _response='Please select a user type from the dropdown.';
   ELSEIF _id is NULL 
   THEN
     INSERT INTO `employee` (
          id, company_id, username, password,
-         status, or_id, eg_id, firstname,
+         status, user_type, or_id, eg_id, firstname,
          lastname, middlename, email,
          phone, report_to, comment)
     values (
           _id, 1, _username, _password,
-         _status, _or_id, _eg_id, _firstname,
+         _status, _user_type, _or_id, _eg_id, _firstname,
          _lastname, _middlename, _email,
          _phone, _report_to, _comment
          );
@@ -1101,7 +1105,8 @@ BEGIN
   ELSE
     UPDATE `employee` 
       SET 
-      status = _status, 
+      status = _status,
+      user_type = _user_type,
       or_id = _or_id, 
       eg_id = _eg_id, 
       firstname = _firstname,

@@ -19,6 +19,12 @@
     <UI>Dropdown</UI>
     <EnumQuery dcol="0" vcol="0"> show columns from employee like 'status'</EnumQuery>
   </Column>
+  <Column name ="user_type">
+    <DisplayName>User Type</DisplayName>
+    <IsEnable>true</IsEnable>
+    <UI>Dropdown</UI>
+    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r order by 1</DropdownQuery>
+  </Column>
   <Column name ="or_id">
     <DisplayName>Organization</DisplayName>
     <IsEnable>true</IsEnable>
@@ -78,12 +84,6 @@
     <IsEnable>true</IsEnable>
     <UI>Textbox</UI>
     <TextBoxLength>255</TextBoxLength>
-  </Column>
-  <Column name ="user_type">
-    <DisplayName>User Type</DisplayName>
-    <IsEnable>true</IsEnable>
-    <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select r.name, r.name from root_org_type r order by 1</DropdownQuery>
   </Column>
 </Table>
 
