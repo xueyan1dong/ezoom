@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 	
+*    12/23/2019: Shelby Simpson: Added user_type variable and check for username uniqueness.				
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_employee`$
@@ -16,6 +17,7 @@ CREATE PROCEDURE `modify_employee`(
   IN _username varchar(20),
   IN _password varchar(20),
   IN _status enum('active','inactive','removed'),
+  IN _user_type enum('host','client'),
   IN _or_id int(10) unsigned,
   IN _eg_id int(10) unsigned,
   IN _firstname varchar(20),
@@ -35,6 +37,9 @@ BEGIN
   ELSEIF _id IS NULL AND ( _password is NULL OR length(_password) < 1)
   THEN 
     SET _response='Password is required. Please fill the password.';
+  ELSEIF _username IN (SELECT username FROM employee)
+  THEN
+	SET _response='This username already exists.  Please enter a different one.';
   ELSEIF  _status is NULL OR length(_status) < 1
   THEN 
     SET _response='Status is required. Please fill the Status.';
@@ -54,12 +59,12 @@ BEGIN
   THEN
     INSERT INTO `employee` (
          id, company_id, username, password,
-         status, or_id, eg_id, firstname,
+         status, user_type, or_id, eg_id, firstname,
          lastname, middlename, email,
          phone, report_to, comment)
     values (
           _id, 1, _username, _password,
-         _status, _or_id, _eg_id, _firstname,
+         _status, _user_type, _or_id, _eg_id, _firstname,
          _lastname, _middlename, _email,
          _phone, _report_to, _comment
          );
@@ -74,6 +79,7 @@ BEGIN
     UPDATE `employee` 
       SET 
       status = _status, 
+      user_type = _user_type,
       or_id = _or_id, 
       eg_id = _eg_id, 
       firstname = _firstname,

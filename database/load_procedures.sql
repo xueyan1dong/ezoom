@@ -1064,6 +1064,9 @@ BEGIN
   ELSEIF _id IS NULL AND ( _password is NULL OR length(_password) < 1)
   THEN 
     SET _response='Password is required. Please fill the password.';
+  ELSEIF _username IN (SELECT username FROM employee)
+  THEN
+	SET _response='This username already exists.  Please enter a different one.';
   ELSEIF  _status is NULL OR length(_status) < 1
   THEN 
     SET _response='Status is required. Please fill the Status.';
