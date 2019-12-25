@@ -90,6 +90,10 @@ namespace ezMESWeb.Configure.User
             fvUpdate.DataBind();
             //  update the contents in the detail panel
             updateBufferPanel.Update();
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction1", "generateRootCompanies()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction2", "filterRootCompanies()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction3", "generateParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction4", "filterParentOrganizations()", true);
             //  show the modal popup
             btnUpdate_ModalPopupExtender.Show();
 
@@ -101,6 +105,7 @@ namespace ezMESWeb.Configure.User
         {
             lblError.Text = "";
             btnUpdate_ModalPopupExtender.Hide();
+            fvUpdate.ChangeMode(FormViewMode.Insert);
         }
 
         // Called when submit button is clicked on popup modal for either insertion or modification.
@@ -207,6 +212,10 @@ namespace ezMESWeb.Configure.User
             AddJSFunction(true);
             //  update the contents in the detail panel
             updateBufferPanel.Update();
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction1", "generateRootCompanies()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction2", "filterRootCompanies()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction3", "generateParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction4", "filterParentOrganizations()", true);
             //  show the modal popup
             btnUpdate_ModalPopupExtender.Show();
         }
@@ -251,7 +260,7 @@ namespace ezMESWeb.Configure.User
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
 
-                query = "SELECT id, root_company FROM organization WHERE root_org_type = 'client';";
+                query = "SELECT id, root_company FROM organization;";
             }
             else // Host Organization is the default tab
             {
@@ -267,7 +276,7 @@ namespace ezMESWeb.Configure.User
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
 
-                query = "SELECT id, root_company FROM organization WHERE root_org_type = 'host';";
+                query = "SELECT id, root_company FROM organization;";
             }
 
             //Update the GridView
@@ -286,13 +295,14 @@ namespace ezMESWeb.Configure.User
             // Remove the original DropDownList
             fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.RemoveAt(0);
             // Add the onchange event to the copy
-            lst.Attributes.Add("onchange","generateParentOrganizations()");
+            lst.Attributes.Add("onchange","filterParentOrganizations()");
+            lst.Attributes.Add("onfocus", "filterRootCompanies()");
             // Add the new DropDownList into the same position as the original
             fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls.Add(lst);
 
             lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls[0]);
             fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls.RemoveAt(0);
-            lst.Attributes.Add("onfocus", "generateParentOrganizations()");
+            lst.Attributes.Add("onfocus", "filterParentOrganizations()");
             fvUpdate.Row.Controls[0].Controls[0].Controls[7].Controls[1].Controls.Add(lst);
 
             lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[1].Controls[1].Controls[0]);
@@ -303,6 +313,16 @@ namespace ezMESWeb.Configure.User
             }
             lst.Attributes.Add("onfocus", "orderStatusDropdown()");
             fvUpdate.Row.Controls[0].Controls[0].Controls[1].Controls[1].Controls.Add(lst);
+
+            // run generateRootCompanies() on focus of the modal
+            //fvUpdate.Attributes.Add("onfocus", "generateRootCompanies()");
+            if (insert)
+            {
+                lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[5].Controls[1].Controls[0]);
+                fvUpdate.Row.Controls[0].Controls[0].Controls[5].Controls[1].Controls.RemoveAt(0);
+                lst.Attributes.Add("onchange", "filterRootCompanies()");
+                fvUpdate.Row.Controls[0].Controls[0].Controls[5].Controls[1].Controls.Add(lst);
+            }
         }
 
         // Creates JSON serialized dictionary of parent organizations and their root_company ids.

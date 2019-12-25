@@ -4,34 +4,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 <script type="text/javascript">
-    let dictionary = JSON.parse('<%=serializedDict%>');
-    // Generate parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
-    function generateParentOrganizations() {
-        let rootCompany = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_company').value;
-        let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
-        let selectedParent = parentOrganizations.value;
-        let i;
-        for (i = 1; i < parentOrganizations.length; i++) {
-            // if parentOrganization id does not correspond to rootCompany in dict
-            if (dictionary[parentOrganizations[i].value] != rootCompany) {
-                parentOrganizations[i].style.display = 'none';
-            }
-            else {
-                parentOrganizations[i].style.display = 'initial';
-            }
-        }
-        // Maintain selected value if it exists in the filtered set
-        for (let i = 0; i < parentOrganizations.length; i++) {
-            if (parentOrganizations[i].style.display != 'none') {
-                if (selectedParent == parentOrganizations[i].value) {
-                    parentOrganizations.value = selectedParent;
-                    break;
-                }
-            }
-            parentOrganizations.value = parentOrganizations[0];
-        }
-    }
-
     function orderStatusDropdown() {
         // Get dropdown values
         let statusDropDown = document.createElement("select");
@@ -53,6 +25,109 @@
             statusDropDown.append(option);
         }
         statusDropDown.value = selected;
+    }
+
+    let rootCompanyDict = {};
+
+    function generateRootCompanies() {
+        let rootCompanies = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_company');
+        // Put all root companies into a dictionary as keys with their root org type as values
+        for (let i = 0; i < rootCompanies.length; i++) {
+            let rootCompany = rootCompanies[i].text;
+            let rootCompanyName = rootCompany.substr(0, rootCompany.indexOf('#'));
+            let rootCompanyOrgType = rootCompany.substr(rootCompany.indexOf('#') + 1, rootCompany.length - 1);
+            rootCompanyDict[rootCompanyName] = rootCompanyOrgType;
+            // Replace text name in dropdown
+            rootCompanies[i].text = rootCompanyName;
+            rootCompanies[i].classList.add(rootCompanyOrgType + "RootCompany");
+        }
+    }
+
+    let parentOrganizationDict = {};
+
+    function generateParentOrganizations() {
+        let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
+        // Put all parent organizations into a dictionary as keys with their root org type as value
+        for (let i = 1; i < parentOrganizations.length; i++) {
+            let parentOrganization = parentOrganizations[i].text;
+            let parentOrganizationName = parentOrganization.substr(0, parentOrganization.indexOf('#'));
+            let parentOrganizationOrgType = parentOrganization.substr(parentOrganization.indexOf("#") + 1, parentOrganization.length - 1);
+            parentOrganizationDict[parentOrganizationName] = parentOrganizationOrgType;
+            // Replace text name in dropdown
+            parentOrganizations[i].text = parentOrganizationName;
+            parentOrganizations[i].classList.add(parentOrganizationOrgType + "ParentOrganization");
+        }
+    }
+
+    function filterRootCompanies() {
+        let rootOrgType = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_org_type') || document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_lblroot_org_type');
+        let rootOrgTypeValue = rootOrgType.value || rootOrgType.textContent;
+        let rootCompanies = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_company');
+        let selectedRootCompany = rootCompanies.options[rootCompanies.selectedIndex];
+        // Filter the dropdown by using rootCompanyDict
+        for (let i = 0; i < rootCompanies.length; i++) {
+            let rootCompany = rootCompanies[i];
+            if (!(rootCompany.classList.contains(rootOrgTypeValue + "RootCompany"))) {
+                rootCompany.style.display = 'none';
+            }
+            else {
+                rootCompany.style.display = 'initial';
+                if (rootOrgTypeValue == "host") {
+                    if (rootCompany.text == "Waterworks" && rootCompany.classList.contains("hostRootCompany")) {
+                        rootCompany.selected = "selected";
+                    }
+                }
+                else {
+                    if (rootCompany.text == "Dayton Grey Corp" && rootCompany.classList.contains("clientRootCompany")) {
+                        rootCompany.selected = "selected";
+                    }
+                }
+            }
+        }
+        // Maintain the selected value if it exists in the filtered set
+        for (let i = 0; i < rootCompanies.length; i++) {
+            if (rootCompanies[i].style.display != 'none') {
+                if (selectedRootCompany == rootCompanies[i]) {
+                    selectedRootCompany.selected = "selected";
+                    break;
+                }
+            }
+        }
+        filterParentOrganizations();
+    }
+
+    let dictionary = JSON.parse('<%=serializedDict%>');
+    // Generate parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
+    function filterParentOrganizations() {
+        let rootOrgType = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_org_type') || document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_lblroot_org_type');
+        let rootOrgTypeValue = rootOrgType.value || rootOrgType.textContent;
+        let rootCompanies = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_company');
+        let rootCompany = rootCompanies.options[rootCompanies.selectedIndex];
+        let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
+        let selectedParent = parentOrganizations.value;
+        for (let i = 1; i < parentOrganizations.length; i++) {
+            let parentOrganization = parentOrganizations[i];
+            // if parentOrganization id does not correspond to rootCompany in dict
+            // or the root company it does correspond to does not contain the class required class
+            // when the ID matches, the parent organizations show up for both host and client
+            // the problem is that we don't know whether the parent organizations are host or client
+            if (dictionary[parentOrganizations[i].value] != rootCompany.value || !(parentOrganizations[i].classList.contains(rootOrgTypeValue + "ParentOrganization"))) {
+                parentOrganizations[i].style.display = 'none';
+            }
+            else {
+                parentOrganizations[i].style.display = 'initial';
+            }
+        }
+        // Maintain selected value if it exists in the filtered set
+        for (let i = 0; i < parentOrganizations.length; i++) {
+            if (parentOrganizations[i].style.display != 'none') {
+                if (selectedParent == parentOrganizations[i].value) {
+                    parentOrganizations.value = selectedParent;
+                    break;
+                }
+            }
+            parentOrganizations.value = parentOrganizations[0];
+        }
     }
 </script>
 
@@ -113,12 +188,12 @@ height="100%" scrollbars="Horizontal" >
                     <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" Visible="false" />
                     <asp:BoundField DataField="name" HeaderText="Name" SortExpression="name" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
-                    <asp:BoundField DataField="lead_employee" HeaderText="Lead Employee" SortExpression="lead_employee" />
                     <asp:BoundField DataField="phone" HeaderText="Phone" SortExpression="phone" />
                     <asp:BoundField DataField="email" HeaderText="Email" SortExpression="email" />
                     <asp:BoundField DataField="description" HeaderText="Description" SortExpression="description" />
                     <asp:BoundField DataField="root_company" HeaderText="Root Company" SortExpression="root_company" />
                     <asp:BoundField DataField="parent_organization" HeaderText="Parent Organization" SortExpression="parent_organization" />
+                    <asp:BoundField DataField="lead_employee" HeaderText="Lead Employee" SortExpression="lead_employee" />
                     <%--<asp:BoundField DataField="root_org_type" HeaderText="Root Organization Type" SortExpression="root_org_type" />--%>
                 </Columns>
              </asp:GridView>  
@@ -129,7 +204,7 @@ height="100%" scrollbars="Horizontal" >
            ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
            ProviderName="System.Data.Odbc" 
           DeleteCommand="Update `Organization` set status='removed' WHERE `Organization`.id=?" 
-       SelectCommand="SELECT o.id, o.name, o.status, concat(e.firstname,' ',e.lastname) as lead_employee, o.phone, o.email, o.description, c.name as root_company, o1.name as parent_organization, o.root_org_type
+       SelectCommand="SELECT o.id, o.name, o.status, o.phone, o.email, o.description, o.root_org_type, c.name as root_company, o1.name as parent_organization, concat(e.firstname,' ',e.lastname) as lead_employee
   FROM Organization o
   LEFT JOIN Employee e ON e.id = o.lead_employee
   LEFT JOIN Organization o1 ON o1.id = o.parent_organization
@@ -159,7 +234,7 @@ height="100%" scrollbars="Horizontal" >
        ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
        ProviderName="System.Data.Odbc"  InsertCommand="Insert"
        EnableCaching="false"
-       SelectCommand="SELECT id, name, status, lead_employee, phone, email, description, parent_organization, root_company, root_org_type
+       SelectCommand="SELECT id, name, status, phone, email, description, root_org_type, parent_organization, root_company, lead_employee
            FROM Organization
            WHERE id = ?" >
 

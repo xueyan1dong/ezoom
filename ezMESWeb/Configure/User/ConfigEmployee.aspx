@@ -153,7 +153,7 @@ height="100%" scrollbars="Horizontal" >
                     <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" Visible="false" />
                     <asp:BoundField DataField="username" HeaderText="Username" SortExpression="username" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
-                    <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
+                    <asp:BoundField DataField="o_name" HeaderText="Organization" SortExpression="o_name" />
                     <asp:BoundField DataField="eg_name" HeaderText="User Group" SortExpression="eg_name" />
                     <asp:BoundField DataField="firstname" HeaderText="First Name" SortExpression="firstname" />
                     <asp:BoundField DataField="lastname" HeaderText="Last Name" SortExpression="lastname" />
@@ -188,7 +188,7 @@ height="100%" scrollbars="Horizontal" >
                     <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" Visible="false" />
                     <asp:BoundField DataField="username" HeaderText="Username" SortExpression="username" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
-                    <asp:BoundField DataField="o_name" HeaderText="Oragnization" SortExpression="o_name" />
+                    <asp:BoundField DataField="o_name" HeaderText="Organization" SortExpression="o_name" />
                     <asp:BoundField DataField="eg_name" HeaderText="User Group" SortExpression="eg_name" />
                     <asp:BoundField DataField="firstname" HeaderText="First Name" SortExpression="firstname" />
                     <asp:BoundField DataField="lastname" HeaderText="Last Name" SortExpression="lastname" />

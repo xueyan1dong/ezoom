@@ -749,6 +749,7 @@ END $
 *    Log                    : 12/6/2019 - Added check to make sure current organization does not already exist under the selected parent organization.
 *							  12/9/2019 - Modified _root_company check to verify it exists in the company or client table (depending on _root_org_type) 
 *										  instead of the organization table.
+*							  12/24/2019 - Added checks for host and client root_org_types.
 */
 DELIMITER $
 
@@ -756,22 +757,29 @@ DROP PROCEDURE IF EXISTS modify_organization$
 CREATE PROCEDURE modify_organization (
 	INOUT _id INT(10) unsigned,
     IN _name varchar(255),
+    IN _status enum('active', 'inactive', 'removed'),
     IN _lead_employee INT(10) unsigned,
     IN _phone varchar(45),
     IN _email varchar(45),
     IN _description text,
+    IN _root_org_type enum('host','client'),
     IN _parent_organization INT(10) unsigned,
     IN _root_company INT(10) unsigned,
-    IN _root_org_type varchar(15),
     OUT _response varchar(255)
 )
 BEGIN
 	IF  _id IS NULL AND (_name IS NULL OR length(_name) < 1)
 	THEN 
 		SET _response='An organization name is required. Please fill one in.';
-	ELSEIF _root_company IS NULL
+	ELSEIF _status IS NULL
+    THEN
+		SET _response='Please select a status for the organization.';
+    ELSEIF _root_company IS NULL
     THEN
 		SET _response='Please enter a root company id.';
+	ELSEIF _root_org_type IS NULL
+    THEN
+		SET _response='Please select a valid root organization type.';
 	ELSEIF _root_org_type = 'host' AND NOT EXISTS (SELECT id FROM company WHERE id = _root_company)
     THEN
 		SET _response='Please select an existing root host company.';
@@ -790,10 +798,10 @@ BEGIN
     ELSEIF _id is NULL 
 	THEN
 		INSERT INTO `organization` (
-			id, name, lead_employee, root_company, parent_organization,
+			id, name, status, lead_employee, root_company, parent_organization,
 			phone, email, description, root_org_type)
 		values (
-			_id, _name, _lead_employee, _root_company, _parent_organization,
+			_id, _name, _status, _lead_employee, _root_company, _parent_organization,
 			_phone, _email, _description, _root_org_type
 			);
 		SET _id = last_insert_id();
@@ -801,6 +809,7 @@ BEGIN
 		UPDATE `organization`
 			SET
             name = _name,
+            status = _status,
             phone = _phone,
             email = _email,
             description = _description,

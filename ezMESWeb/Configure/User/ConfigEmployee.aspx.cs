@@ -88,6 +88,7 @@ namespace ezMESWeb.Configure.User
         {
             lblError.Text = "";
             btnUpdate_ModalPopupExtender.Hide();
+            fvUpdate.ChangeMode(FormViewMode.Insert);
         }
 
       protected void btnSubmit_Click(object sender, EventArgs e)
