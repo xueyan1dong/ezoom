@@ -47,13 +47,13 @@
     <DisplayName>Parent Organization</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select '', null UNION Select CONCAT(name,'#',root_org_type) as name, id from organization order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select '', null UNION Select CONCAT(name,'#',root_company,'#',root_org_type) as name, id from organization order by 1</DropdownQuery>
   </Column>
   <Column name ="lead_employee">
     <DisplayName>Lead Employee</DisplayName>
     <IsEnable>true</IsEnable>
     <UI>Dropdown</UI>
-    <DropdownQuery dcol="0" vcol="1">Select '', null UNION Select CONCAT(e.firstname,' ',e.lastname) as name, e.id from employee e where user_type = 'host' order by 1</DropdownQuery>
+    <DropdownQuery dcol="0" vcol="1">Select '', null UNION Select CONCAT(e.firstname,' ',e.lastname,'#',e.or_id) as name, e.id from employee e order by 1</DropdownQuery>
   </Column>
 </Table>
 

@@ -283,6 +283,7 @@
       <DependentUpon>LabelPrint.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="PasswordHasher.cs" />
     <Compile Include="Reports\NewOrderDemandPrediction.aspx.cs">
       <DependentUpon>NewOrderDemandPrediction.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

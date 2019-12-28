@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*	 12/26/2019: Shelby Simpson: Added check for '#' in client name.					
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_client`$
@@ -45,6 +46,9 @@ BEGIN
   IF _name IS NULL OR length(_name)<1
   THEN
     SET _response='Client name is required. Please input the client name.';
+  ELSEIF _name LIKE '#'
+  THEN
+	SET _response='\'#\' is not a valid character.  Please enter a different name.';
   ELSEIF _type IS NULL OR length(_type)<1
   THEN
     SET _response='Client type is required. Please input the client type.';  

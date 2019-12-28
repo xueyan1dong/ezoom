@@ -14,8 +14,8 @@ using CommonLib.Data.EzSqlClient;
 
 namespace ezMESWeb.Configure.User
 {
-   public partial class ConfigEmployee : TabConfigTemplate
-   {
+    public partial class ConfigEmployee : TabConfigTemplate
+    {
         protected global::System.Web.UI.WebControls.SqlDataSource sdsEmpConfig, sdsEmpConfigGrid;
         public DataColumnCollection colc;
         protected Label lblError;
@@ -39,7 +39,7 @@ namespace ezMESWeb.Configure.User
 
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Employee_modify.xml"));
-               if (Session["Role"]!=null && !Session["Role"].ToString().Equals("Admin"))
+                if (Session["Role"]!=null && !Session["Role"].ToString().Equals("Admin"))
                     fvUpdate.DataSourceID = "sdsEmpConfig1";
                 //Event happens before the select index changed clicked.
                 gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
@@ -91,99 +91,113 @@ namespace ezMESWeb.Configure.User
             fvUpdate.ChangeMode(FormViewMode.Insert);
         }
 
-      protected void btnSubmit_Click(object sender, EventArgs e)
-      {
-         if (Page.IsValid)
-         {
-            string response;
-
-            try
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            if (Page.IsValid)
             {
-              ConnectToDb();
-              ezCmd = new EzSqlCommand();
-              ezCmd.Connection = ezConn;
-              ezCmd.CommandText = "modify_employee";
-              ezCmd.CommandType = CommandType.StoredProcedure;
-              ezMES.ITemplate.FormattedTemplate fTemp;
+                string response;
 
-
-              if (fvUpdate.CurrentMode == FormViewMode.Insert)
-              {
-
-                ezCmd.Parameters.AddWithValue("@_id", DBNull.Value, ParameterDirection.InputOutput);
-
-                fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.InsertItemTemplate;
-              }
-              else
-              {
-                if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
-                  ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable1.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
-                else
-                  ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
-                fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.EditItemTemplate;
-                ezCmd.Parameters.AddWithValue("@_username", DBNull.Value);
-                ezCmd.Parameters.AddWithValue("@_password", DBNull.Value);
-              }
-
-
-              LoadSqlParasFromTemplate(ezCmd, fvUpdate, fTemp);
-
-              ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
-              ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
-
-              ezCmd.ExecuteNonQuery();
-              response = ezCmd.Parameters["@_response"].Value.ToString();
-
-              ezCmd.Dispose();
-              ezConn.Dispose();
-
-              if (response.Length > 0)
-              {
-                lblError.Text = response;
-                this.btnUpdate_ModalPopupExtender.Show();
-              }
-              else
-              {
-                lblError.Text = "";
-                this.fvUpdate.Visible = false;
-                this.btnUpdate_ModalPopupExtender.Hide();
-
-                if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
+                try
                 {
-                  ScriptManager.GetCurrent(this).RegisterDataItem(
-                    // The control I want to send data to
-                      this.gvTable1,
-                    //  The data I want to send it (the row that was edited)
-                      this.gvTable1.SelectedIndex.ToString()
-                  );
+                    ConnectToDb();
+                    ezCmd = new EzSqlCommand();
+                    ezCmd.Connection = ezConn;
+                    ezCmd.CommandText = "modify_employee";
+                    ezCmd.CommandType = CommandType.StoredProcedure;
+                    ezMES.ITemplate.FormattedTemplate fTemp;
 
-                  gvTable1.DataBind();
-                  this.gvTablePanel.Update();
+
+                    if (fvUpdate.CurrentMode == FormViewMode.Insert)
+                    {
+
+                        ezCmd.Parameters.AddWithValue("@_id", DBNull.Value, ParameterDirection.InputOutput);
+
+                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.InsertItemTemplate;
+
+                        // Add username and password and then remove them from template.Fields array
+                        /*string name = ((ezMES.ITemplate.FieldItem)(fTemp.Fields[0])).Key;
+                        string txtValue = ((TextBox)fvUpdate.Row.FindControl(name)).Text;
+                        ezCmd.Parameters.AddWithValue("@_username", txtValue);
+                        // Remove username from Fields array
+                        fTemp.Fields.RemoveAt(0);
+                        // Hash password and then add it as a parameter
+                        name = ((ezMES.ITemplate.FieldItem)(fTemp.Fields[0])).Key;
+                        txtValue = ((TextBox)fvUpdate.Row.FindControl(name)).Text;
+                        // password is 54 bytes long consisting of: 24-byte salt, "|", "1000", "|", 24-byte hash
+                        string password = ezMESWeb.PasswordHasher.Generate(txtValue);
+                        ezCmd.Parameters.AddWithValue("@_password", password);
+                        // Remove password from Fields array
+                        fTemp.Fields.RemoveAt(0);*/
+                    }
+                    else
+                    {
+                        if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
+                            ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable1.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
+                        else
+                            ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
+                        fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.EditItemTemplate;
+                        ezCmd.Parameters.AddWithValue("@_username", DBNull.Value);
+                        ezCmd.Parameters.AddWithValue("@_password", DBNull.Value);
+                    }
+
+                    LoadSqlParasFromTemplate(ezCmd, fvUpdate, fTemp);
+
+                    ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
+                    ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
+
+                    ezCmd.ExecuteNonQuery();
+                    response = ezCmd.Parameters["@_response"].Value.ToString();
+
+                    ezCmd.Dispose();
+                    ezConn.Dispose();
+
+                    if (response.Length > 0)
+                    {
+                    lblError.Text = response;
+                    this.btnUpdate_ModalPopupExtender.Show();
+                    }
+                    else
+                    {
+                    lblError.Text = "";
+                    this.fvUpdate.Visible = false;
+                    this.btnUpdate_ModalPopupExtender.Hide();
+
+                    if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
+                    {
+                        ScriptManager.GetCurrent(this).RegisterDataItem(
+                        // The control I want to send data to
+                            this.gvTable1,
+                        //  The data I want to send it (the row that was edited)
+                            this.gvTable1.SelectedIndex.ToString()
+                        );
+
+                        gvTable1.DataBind();
+                        this.gvTablePanel.Update();
+                    }
+                    else
+                    {
+                        //  add the css class for our yellow fade
+                        ScriptManager.GetCurrent(this).RegisterDataItem(
+                        // The control I want to send data to
+                            this.gvTable,
+                        //  The data I want to send it (the row that was edited)
+                            this.gvTable.SelectedIndex.ToString()
+                        );
+
+                        gvTable.DataBind();
+                        this.gvTablePanel.Update();
+                    }
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                  //  add the css class for our yellow fade
-                  ScriptManager.GetCurrent(this).RegisterDataItem(
-                    // The control I want to send data to
-                      this.gvTable,
-                    //  The data I want to send it (the row that was edited)
-                      this.gvTable.SelectedIndex.ToString()
-                  );
-
-                  gvTable.DataBind();
-                  this.gvTablePanel.Update();
+                    //lblError.Text = ex.Message;
+                    lblError.Text = "An error occurred.";
+                    this.btnUpdate_ModalPopupExtender.Show();
                 }
-              }
             }
-            catch (Exception ex)
-            {
-                //lblError.Text = ex.Message;
-                lblError.Text = "An error occurred.";
-                this.btnUpdate_ModalPopupExtender.Show();
-            }
-         }
 
-      }
+        }
 
         protected void btn_Click(object sender, EventArgs e)
         {

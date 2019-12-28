@@ -43,22 +43,6 @@
         }
     }
 
-    let parentOrganizationDict = {};
-
-    function generateParentOrganizations() {
-        let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
-        // Put all parent organizations into a dictionary as keys with their root org type as value
-        for (let i = 1; i < parentOrganizations.length; i++) {
-            let parentOrganization = parentOrganizations[i].text;
-            let parentOrganizationName = parentOrganization.substr(0, parentOrganization.indexOf('#'));
-            let parentOrganizationOrgType = parentOrganization.substr(parentOrganization.indexOf("#") + 1, parentOrganization.length - 1);
-            parentOrganizationDict[parentOrganizationName] = parentOrganizationOrgType;
-            // Replace text name in dropdown
-            parentOrganizations[i].text = parentOrganizationName;
-            parentOrganizations[i].classList.add(parentOrganizationOrgType + "ParentOrganization");
-        }
-    }
-
     function filterRootCompanies() {
         let rootOrgType = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_org_type') || document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_lblroot_org_type');
         let rootOrgTypeValue = rootOrgType.value || rootOrgType.textContent;
@@ -96,8 +80,21 @@
         filterParentOrganizations();
     }
 
-    let dictionary = JSON.parse('<%=serializedDict%>');
-    // Generate parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
+    let parentOrganization2DArray = [];
+
+    function generateParentOrganizations() {
+        let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
+        // Store parent organization names, root companies, and root org types into an array
+        for (let i = 1; i < parentOrganizations.length; i++) {
+            let parentOrganization = parentOrganizations[i].text;
+            parentOrganization2DArray[i - 1] = parentOrganization.split('#');
+            // Replace text name in dropdown
+            parentOrganizations[i].text = parentOrganization2DArray[i - 1][0];
+            parentOrganizations[i].classList.add(parentOrganization2DArray[i - 1][2] + "ParentOrganization");
+        }
+    }
+
+    // Filter parent_organization dropdown dynamically to only show parent orgs with the same root_company as the one chosen.
     function filterParentOrganizations() {
         let rootOrgType = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drproot_org_type') || document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_lblroot_org_type');
         let rootOrgTypeValue = rootOrgType.value || rootOrgType.textContent;
@@ -107,26 +104,70 @@
         let selectedParent = parentOrganizations.value;
         for (let i = 1; i < parentOrganizations.length; i++) {
             let parentOrganization = parentOrganizations[i];
-            // if parentOrganization id does not correspond to rootCompany in dict
-            // or the root company it does correspond to does not contain the class required class
-            // when the ID matches, the parent organizations show up for both host and client
-            // the problem is that we don't know whether the parent organizations are host or client
-            if (dictionary[parentOrganizations[i].value] != rootCompany.value || !(parentOrganizations[i].classList.contains(rootOrgTypeValue + "ParentOrganization"))) {
-                parentOrganizations[i].style.display = 'none';
+            if (parentOrganization2DArray[i - 1][1] != rootCompany.value || !(parentOrganization.classList.contains(rootOrgTypeValue + "ParentOrganization"))) {
+                parentOrganization.style.display = 'none';
             }
             else {
-                parentOrganizations[i].style.display = 'initial';
+                parentOrganization.style.display = 'initial';
             }
         }
         // Maintain selected value if it exists in the filtered set
         for (let i = 0; i < parentOrganizations.length; i++) {
             if (parentOrganizations[i].style.display != 'none') {
                 if (selectedParent == parentOrganizations[i].value) {
-                    parentOrganizations.value = selectedParent;
+                    selectedParent.selected = "selected";
                     break;
                 }
             }
-            parentOrganizations.value = parentOrganizations[0];
+            parentOrganizations[0].selected = "selected";
+        }
+    }
+
+    let leadEmployee2DArray = [];
+
+    function generateLeadEmployees() {
+        let leadEmpoyees = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drplead_employee');
+        // Store lead employee names and org IDs into an array
+        for (let i = 1; i < leadEmpoyees.length; i++) {
+            let leadEmployee = leadEmpoyees[i].text;
+            leadEmployee2DArray[i - 1] = leadEmployee.split('#');
+            // Replace text name in dropdown
+            leadEmpoyees[i].text = leadEmployee2DArray[i - 1][0];
+        }
+    }
+
+    // Filter lead_employee dropdown to only show lead employees with the same or_id as the parent organization chosen.
+    function filterLeadEmployees() {
+        // Get parent organization select value
+        let parentOrganizations = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drpparent_organization');
+        let parentOrganization = parentOrganizations.options[parentOrganizations.selectedIndex];
+        let leadEmployees = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_drplead_employee');
+        if (parentOrganization == parentOrganizations[0]) {
+            for (let i = 1; i < leadEmployees.length; i++) {
+                leadEmployees[i].style.display = 'none';
+            }
+        }
+        else {
+            let selectedEmployee = leadEmployees.value;
+            for (let i = 1; i < leadEmployees.length; i++) {
+                let leadEmployee = leadEmployees[i];
+                if (leadEmployee2DArray[i - 1][1] != parentOrganization.value) {
+                    leadEmployee.style.display = 'none';
+                }
+                else {
+                    leadEmployee.style.display = 'initial';
+                }
+            }
+            // Maintain selected value if it exists in the filtered set
+            for (let i = 0; i < leadEmployees.length; i++) {
+                if (leadEmployees[i].style.display != 'none') {
+                    if (selectedEmployee == leadEmployees[i].value) {
+                        selectedEmployee.selected = "selected";
+                        break;
+                    }
+                }
+                leadEmployees[0].selected = "selected";
+            }
         }
     }
 </script>

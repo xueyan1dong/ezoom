@@ -10,6 +10,7 @@
 *							  12/9/2019 - Modified _root_company check to verify it exists in the company or client table (depending on _root_org_type) 
 *										  instead of the organization table.
 *							  12/24/2019 - Added checks for host and client root_org_types.
+*							  12/26/2019 - Added check for '#' in organization name.
 */
 DELIMITER $
 
@@ -31,6 +32,9 @@ BEGIN
 	IF  _id IS NULL AND (_name IS NULL OR length(_name) < 1)
 	THEN 
 		SET _response='An organization name is required. Please fill one in.';
+	ELSEIF _name LIKE '#'
+    THEN
+		SET _response='\'#\' is an invalid character.  Please enter a different name.';
 	ELSEIF _status IS NULL
     THEN
 		SET _response='Please select a status for the organization.';

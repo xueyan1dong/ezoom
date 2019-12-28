@@ -74,7 +74,7 @@ namespace ezMESWeb.Configure.User
             };*/
             //if (!lblActiveTab.Text.Equals("")) show_activeTab();
             show_activeTab();
-            AddJSFunction();
+            AddJSFunctions();
             this.dict = new Dictionary<string, string>();
             GetRootCompanyIDs();
         }
@@ -91,13 +91,15 @@ namespace ezMESWeb.Configure.User
             //  update the contents in the detail panel
             updateBufferPanel.Update();
             ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction1", "generateRootCompanies()", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction2", "filterRootCompanies()", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction3", "generateParentOrganizations()", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction4", "filterParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction2", "generateParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction3", "generateLeadEmployees()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction4", "filterRootCompanies()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction5", "filterParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction6", "filterLeadEmployees()", true);
             //  show the modal popup
             btnUpdate_ModalPopupExtender.Show();
 
-            AddJSFunction();
+            AddJSFunctions();
         }
 
         // Hide the popup modal when cancel is clicked.
@@ -209,13 +211,15 @@ namespace ezMESWeb.Configure.User
             fvUpdate.ChangeMode(FormViewMode.Insert);
             //  force databinding
             fvUpdate.DataBind();
-            AddJSFunction(true);
+            AddJSFunctions(true);
             //  update the contents in the detail panel
             updateBufferPanel.Update();
             ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction1", "generateRootCompanies()", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction2", "filterRootCompanies()", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction3", "generateParentOrganizations()", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction4", "filterParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction2", "generateParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction3", "generateLeadEmployees()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction4", "filterRootCompanies()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction5", "filterParentOrganizations()", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "CallMyFunction6", "filterLeadEmployees()", true);
             //  show the modal popup
             btnUpdate_ModalPopupExtender.Show();
         }
@@ -286,9 +290,7 @@ namespace ezMESWeb.Configure.User
             tcMain.DataBind();
         }
 
-        // Adds an onchange event to the Root Company dropdown that calls a JS function to dynamically generate
-        // the parent organizations under that root company.
-        protected void AddJSFunction(bool insert = false)
+        protected void AddJSFunctions(bool insert = false)
         {
             // Get copy of drproot_company DropDownList
             DropDownList lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[6].Controls[1].Controls[0]);
@@ -323,12 +325,17 @@ namespace ezMESWeb.Configure.User
                 lst.Attributes.Add("onchange", "filterRootCompanies()");
                 fvUpdate.Row.Controls[0].Controls[0].Controls[5].Controls[1].Controls.Add(lst);
             }
+
+            lst = (DropDownList)(fvUpdate.Row.Controls[0].Controls[0].Controls[8].Controls[1].Controls[0]);
+            fvUpdate.Row.Controls[0].Controls[0].Controls[8].Controls[1].Controls.RemoveAt(0);
+            lst.Attributes.Add("onfocus", "filterLeadEmployees()");
+            fvUpdate.Row.Controls[0].Controls[0].Controls[8].Controls[1].Controls.Add(lst);
         }
 
         // Creates JSON serialized dictionary of parent organizations and their root_company ids.
         protected void GetRootCompanyIDs()
         {
-            ConnectToDb();
+            /*ConnectToDb();
             ezCmd = new EzSqlCommand
             {
                 Connection = ezConn,
@@ -351,7 +358,7 @@ namespace ezMESWeb.Configure.User
             }
             var serializer = new JavaScriptSerializer();
             serializedDict = serializer.Serialize(dict);
-
+            */
         }
     }
 }
