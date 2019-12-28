@@ -221,6 +221,7 @@ CREATE TABLE `employee_group` (
 *    6/19/2018: Peiyu Ge: added header info. 		
 *    6/17/2019: Xueyan Dong: added column location_id for recording employee default location		
 *    7/9/2019: Xueyan Dong: added column user_type, to indicate whether the user is employee or client user	
+*    12/27/2019: Xueyan Dong: added column creation_date and update_datetime to table
 */
 DELIMITER $  
 DROP TABLE IF EXISTS `employee`$
@@ -243,6 +244,8 @@ CREATE TABLE  `employee` (
   `location_id` int(11) unsigned DEFAULT NULL,  -- default location that the user positioned at
   `user_type` enum('host','client') DEFAULT NULL, -- indicate whether the user is the employee of the company who host/operates on eZOOM 
                                          -- or the employee of the client of the company
+  `creation_date` date, -- date when the user was created
+  `update_datetime` datetime, -- datetime when the user info was updated.
   PRIMARY KEY (`id`),
   UNIQUE KEY `em_un1` (`username`)
 ) ENGINE=InnoDB$
