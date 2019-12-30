@@ -11,6 +11,7 @@
 *										  instead of the organization table.
 *							  12/24/2019 - Added checks for host and client root_org_types.
 *							  12/26/2019 - Added check for '#' in organization name.
+*							  12/29/2019 - Changed order of variables.
 */
 DELIMITER $
 
@@ -19,13 +20,13 @@ CREATE PROCEDURE modify_organization (
 	INOUT _id INT(10) unsigned,
     IN _name varchar(255),
     IN _status enum('active', 'inactive', 'removed'),
-    IN _lead_employee INT(10) unsigned,
     IN _phone varchar(45),
     IN _email varchar(45),
     IN _description text,
     IN _root_org_type enum('host','client'),
-    IN _parent_organization INT(10) unsigned,
     IN _root_company INT(10) unsigned,
+    IN _parent_organization INT(10) unsigned,
+    IN _lead_employee INT(10) unsigned,
     OUT _response varchar(255)
 )
 BEGIN

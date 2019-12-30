@@ -136,6 +136,7 @@ namespace ezMESWeb.Configure.User
                         else
                             ezCmd.Parameters.AddWithValue("@_id", Convert.ToInt32(gvTable.SelectedPersistedDataKey.Values["id"]), ParameterDirection.InputOutput);
                         fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.EditItemTemplate;
+                        fTemp.Fields.RemoveAt(0); // remove username field
                         ezCmd.Parameters.AddWithValue("@_username", DBNull.Value);
                         ezCmd.Parameters.AddWithValue("@_password", DBNull.Value);
                     }

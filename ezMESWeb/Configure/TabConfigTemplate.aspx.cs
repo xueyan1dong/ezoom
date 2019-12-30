@@ -216,6 +216,40 @@ namespace ezMESWeb
                     }
 
                 }
+                else if (name.IndexOf("lbl") == 0) //label
+                {
+                    string param = "@_" + theItem.Value;
+                    DataColumn _dc = fTemp._dccol[theItem.Value];
+                    Label lblTemp = (Label)FormView1.Row.FindControl(name);
+                    if (lblTemp.Text != null && lblTemp.Text.Length > 0)
+                    {
+                        switch (_dc.DataType.ToString())
+                        {
+                            case "System.String":
+                                ezCmd.Parameters.AddWithValue(param, lblTemp.Text);
+                                break;
+                            case "System.UInt32":
+                                ezCmd.Parameters.AddWithValue(param, Convert.ToInt32(lblTemp.Text));
+                                break;
+                            case "System.Int16":
+                            case "System.Int32":
+                            case "System.Int64":
+                            case "int":
+                                ezCmd.Parameters.AddWithValue(param, Convert.ToInt64(lblTemp.Text));
+                                break;
+                            case "System.Decimal":
+                                ezCmd.Parameters.AddWithValue(param, lblTemp.Text);
+                                break;
+                            case "System.DateTime":
+                                ezCmd.Parameters.AddWithValue(param, Convert.ToDateTime(lblTemp.Text));
+                                break;
+                            default:
+                                ezCmd.Parameters.AddWithValue(param, lblTemp.Text);
+                                break;
+
+                        }
+                    }
+                }
             }
         }
 
