@@ -18,7 +18,7 @@ height="100%" scrollbars="Horizontal">
                      {%> 
             <asp:GridView ID="gvTable" runat="server" Caption="Employee Groups" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsEmpGroupConfigGrid" 
-               EmptyDataText="No employee group currently available" Height="145px" Width="500px"
+               EmptyDataText="No employee group currently available" Height="100%" Width="100%"
                AutoGenerateColumns="False" 
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
@@ -49,7 +49,7 @@ height="100%" scrollbars="Horizontal">
                      { %>
               <asp:GridView ID="gvTable1" runat="server" Caption="Employee Groups" 
                CssClass="datagrid" GridLines="None" DataSourceID="sdsEmpGroupConfigGrid" 
-               EmptyDataText="No employee group currently available" Height="145px" Width="500px"
+               EmptyDataText="No employee group currently available" Height="100%" Width="100%"
                AutoGenerateColumns="False" onselectedindexchanging="gvTable_SelectedIndexChanging"
                onselectedindexchanged="gvTable_SelectedIndexChanged"  DataKeyNames="id" 
                     AllowPaging="True"  AllowSorting="True" PageSize="15" 
@@ -98,7 +98,7 @@ height="100%" scrollbars="Horizontal">
         </asp:SqlDataSource>
         
         <asp:Panel ID="RecordPanel" runat="server" ScrollBars="Auto" CssClass="detail" 
-       style="margin-top: 19px;  height:500px; width:370px; display:none" HorizontalAlign="Left" >
+       style="margin-top: 19px;  height:100%; width:100%; display:none" HorizontalAlign="Left" >
    <asp:UpdatePanel ID="updateRecordPanel" runat="server" UpdateMode="Conditional">
    <ContentTemplate>
    <asp:Button id="btnShowPopup" runat="server" style="display:none" />
@@ -108,7 +108,7 @@ height="100%" scrollbars="Horizontal">
         </asp:ModalPopupExtender>
         
        <asp:FormView ID="FormView1" runat="server" DataSourceID="sdsEmpGroupConfig"
-       EnableTheming="True" Height="100px" 
+       EnableTheming="True" Height="100%" 
        HorizontalAlign="Center" Width="100%" CssClass="detailgrid" DefaultMode="Insert" CellPadding="4" ForeColor="#333333" 
        >      
        </asp:FormView>

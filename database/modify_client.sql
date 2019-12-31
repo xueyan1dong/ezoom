@@ -8,7 +8,8 @@
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 
-*	 12/26/2019: Shelby Simpson: Added check for '#' in client name.					
+*	 12/26/2019: Shelby Simpson: Added check for '#' in client name.
+*	 12/30/2019: Shelby Simpson: Increased length of _person2_email to VARCHAR(40).						
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_client`$
@@ -34,7 +35,7 @@ IN _person1_cellphone varchar(20),
 IN _person1_email varchar(40),
 IN _person2_workphone varchar(20),
 IN _person2_cellphone varchar(20),
-IN _person2_email varchar(20),
+IN _person2_email varchar(40),
 IN _ifactive tinyint(1) unsigned,
 IN _comment text,
 OUT _response varchar(255)

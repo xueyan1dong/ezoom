@@ -32,31 +32,16 @@ namespace ezMESWeb.Configure.User
         protected GridView gvTable1;
         protected Label lblActiveTab;
         protected Button btnNewOrganization1, btnNewOrganization2;
-        protected Dictionary<string, string> dict;
-        protected string serializedDict;
         protected string query;
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             {
-                /*if (!IsPostBack && !IsCallback) // Only run the following code when the page is first initialized
-                {
-                    DataView dv = (DataView)sdsOrgConfigGrid.Select(DataSourceSelectArguments.Empty);
-                    colc = dv.Table.Columns;
-
-                    //Initial insert template
-                    this.fvUpdate.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"HostOrganization_insert.xml"));
-
-                    //Initial Edit template
-                    this.fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
-                }*/
-
                 if (Session["Role"] != null && !Session["Role"].ToString().Equals("Admin"))
                     fvUpdate.DataSourceID = "sdsOrgConfig1";
                 //Event happens before the select index changed clicked.
                 //gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanged);
-                serializedDict = "";
             }
         }
 
@@ -72,11 +57,8 @@ namespace ezMESWeb.Configure.User
                         gvTable1.Rows[i].Enabled = false;
                 }
             };*/
-            //if (!lblActiveTab.Text.Equals("")) show_activeTab();
             show_activeTab();
             AddJSFunctions();
-            this.dict = new Dictionary<string, string>();
-            GetRootCompanyIDs();
         }
 
         protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
@@ -263,8 +245,6 @@ namespace ezMESWeb.Configure.User
 
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"ClientOrganization_modify.xml"));
-
-                query = "SELECT id, root_company FROM organization;";
             }
             else // Host Organization is the default tab
             {
@@ -279,8 +259,6 @@ namespace ezMESWeb.Configure.User
                 
                 //Initial Edit template           
                 fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"HostOrganization_modify.xml"));
-
-                query = "SELECT id, root_company FROM organization;";
             }
 
             //Update the GridView
@@ -330,35 +308,6 @@ namespace ezMESWeb.Configure.User
             fvUpdate.Row.Controls[0].Controls[0].Controls[8].Controls[1].Controls.RemoveAt(0);
             lst.Attributes.Add("onfocus", "filterLeadEmployees()");
             fvUpdate.Row.Controls[0].Controls[0].Controls[8].Controls[1].Controls.Add(lst);
-        }
-
-        // Creates JSON serialized dictionary of parent organizations and their root_company ids.
-        protected void GetRootCompanyIDs()
-        {
-            /*ConnectToDb();
-            ezCmd = new EzSqlCommand
-            {
-                Connection = ezConn,
-                CommandText = query,
-                CommandType = CommandType.Text
-            };
-            ezDataAdapter ezAdapter = new ezDataAdapter();
-            DataSet ds;
-            ds = new DataSet();
-            ezAdapter.SelectCommand = ezCmd;
-            ezAdapter.Fill(ds);
-            // Place returned root_company ids into a dictionary indexed on parent organization ids.
-            DataRowCollection rows = ds.Tables[0].Rows;
-            IEnumerator rowEnumerator = rows.GetEnumerator();
-            dict = new Dictionary<string, string>();
-            while (rowEnumerator.MoveNext())
-            {
-                DataRow row = (DataRow)(rowEnumerator.Current);
-                dict[row.ItemArray.GetValue(0).ToString()] = row.ItemArray.GetValue(1).ToString();
-            }
-            var serializer = new JavaScriptSerializer();
-            serializedDict = serializer.Serialize(dict);
-            */
         }
     }
 }

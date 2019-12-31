@@ -22,6 +22,14 @@ namespace ezMESWeb.Configure.Client
          base.OnInit(e);
 
          {
+            
+         }
+      }
+
+        protected override void Page_Load(object sender, EventArgs e)
+        {
+            base.Page_Load(sender, e);
+
             DataView dv = (DataView)sdsClientConfigGrid.Select(DataSourceSelectArguments.Empty);
             colc = dv.Table.Columns;
 
@@ -32,16 +40,22 @@ namespace ezMESWeb.Configure.Client
             FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Client_Modify.xml"));
 
             //Event happens before the select index changed clicked.
-            gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
-         }
-      }
+            //gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
+        }
 
-      protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
-      {
-         //modify the mode of form view
-         FormView1.ChangeMode(FormViewMode.Edit);
-
-      }
+        protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //modify the mode of form view
+            FormView1.ChangeMode(FormViewMode.Edit);
+            //  set it to true so it will render
+            FormView1.Visible = true;
+            //  force databinding
+            FormView1.DataBind();
+            //  update the contents in the detail panel
+            updateRecordPanel.Update();
+            //  show the modal popup
+            ModalPopupExtender.Show();
+        }
 
 
 
@@ -89,13 +103,13 @@ namespace ezMESWeb.Configure.Client
             if (response.Length > 0)
             {
                lblError.Text = response;
-               this.ModalPopupExtender.Show();
+               ModalPopupExtender.Show();
             }
             else
             {
                lblError.Text = "";
-               this.FormView1.Visible = false;
-               this.ModalPopupExtender.Hide();
+               FormView1.Visible = false;
+               ModalPopupExtender.Hide();
 
                //  add the css class for our yellow fade
                ScriptManager.GetCurrent(this).RegisterDataItem(
@@ -106,7 +120,7 @@ namespace ezMESWeb.Configure.Client
                );
 
                gvTable.DataBind();
-               this.gvTablePanel.Update();
+               gvTablePanel.Update();
 
             }
          }
@@ -116,14 +130,14 @@ namespace ezMESWeb.Configure.Client
       protected void btn_Click(object sender, EventArgs e)
       {
          //  set it to true so it will render
-         this.FormView1.Visible = true;
+         FormView1.Visible = true;
          FormView1.ChangeMode(FormViewMode.Insert);
          //  force databinding
-         this.FormView1.DataBind();
+         FormView1.DataBind();
          //  update the contents in the detail panel
-         this.updateRecordPanel.Update();
+         updateRecordPanel.Update();
          //  show the modal popup
-         this.ModalPopupExtender.Show();
+         ModalPopupExtender.Show();
       }
 
 

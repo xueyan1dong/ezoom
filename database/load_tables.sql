@@ -61,7 +61,7 @@ CREATE TABLE `client` (
   `person1_email` varchar(40) NOT NULL,
   `person2_workphone` varchar(20) DEFAULT NULL,
   `person2_cellphone` varchar(20) DEFAULT NULL,
-  `person2_email` varchar(20) DEFAULT NULL,
+  `person2_email` varchar(40) DEFAULT NULL,
   `firstlistdate` date NOT NULL,
   `updateddate` date DEFAULT NULL,
   `ifactive` tinyint(1) unsigned NOT NULL DEFAULT '1',

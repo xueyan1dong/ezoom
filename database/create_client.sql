@@ -7,7 +7,8 @@
 *    Description            : 
 *    example	            : 
 *    Log                    :
-*    6/19/2018: Peiyu Ge: added header info. 					
+*    6/19/2018: Peiyu Ge: added header info. 
+*	 12/30/2019: Shelby Simpson: Changed person2_email length to VARCHAR(40).				
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `client`$
@@ -33,7 +34,7 @@ CREATE TABLE `client` (
   `person1_email` varchar(40) NOT NULL,
   `person2_workphone` varchar(20) DEFAULT NULL,
   `person2_cellphone` varchar(20) DEFAULT NULL,
-  `person2_email` varchar(20) DEFAULT NULL,
+  `person2_email` varchar(40) DEFAULT NULL,
   `firstlistdate` date NOT NULL,
   `updateddate` date DEFAULT NULL,
   `ifactive` tinyint(1) unsigned NOT NULL DEFAULT '1',
