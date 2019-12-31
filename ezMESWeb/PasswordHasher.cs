@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Konscious.Security.Cryptography;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -17,6 +18,8 @@ namespace ezMESWeb
         ///
         public static string Generate(string password, int iterations = 1000)
         {
+            
+            
             //generate a random salt for hashing
             var salt = new byte[24];
             new RNGCryptoServiceProvider().GetBytes(salt);

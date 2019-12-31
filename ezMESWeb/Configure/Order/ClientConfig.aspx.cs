@@ -22,39 +22,24 @@ namespace ezMESWeb.Configure.Client
          base.OnInit(e);
 
          {
-            
-         }
+                DataView dv = (DataView)sdsClientConfigGrid.Select(DataSourceSelectArguments.Empty);
+                colc = dv.Table.Columns;
+
+                //Initial insert template  
+                FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"Client_Insert.xml"));
+
+                //Initial Edit template           
+                FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Client_Modify.xml"));
+
+                //Event happens before the select index changed clicked.
+                gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
+            }
       }
 
-        protected override void Page_Load(object sender, EventArgs e)
-        {
-            base.Page_Load(sender, e);
-
-            DataView dv = (DataView)sdsClientConfigGrid.Select(DataSourceSelectArguments.Empty);
-            colc = dv.Table.Columns;
-
-            //Initial insert template  
-            FormView1.InsertItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.SelectedItem, colc, false, Server.MapPath(@"Client_Insert.xml"));
-
-            //Initial Edit template           
-            FormView1.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Client_Modify.xml"));
-
-            //Event happens before the select index changed clicked.
-            //gvTable.SelectedIndexChanging += new GridViewSelectEventHandler(gvTable_SelectedIndexChanging);
-        }
-
-        protected override void gvTable_SelectedIndexChanged(object sender, EventArgs e)
+        protected void gvTable_SelectedIndexChanging(object sender, EventArgs e)
         {
             //modify the mode of form view
             FormView1.ChangeMode(FormViewMode.Edit);
-            //  set it to true so it will render
-            FormView1.Visible = true;
-            //  force databinding
-            FormView1.DataBind();
-            //  update the contents in the detail panel
-            updateRecordPanel.Update();
-            //  show the modal popup
-            ModalPopupExtender.Show();
         }
 
 

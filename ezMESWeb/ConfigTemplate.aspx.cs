@@ -146,7 +146,7 @@ namespace ezMESWeb
             }
           }
         }
-        protected virtual void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserID"] == null)
                 Server.Transfer("/Default.aspx");
