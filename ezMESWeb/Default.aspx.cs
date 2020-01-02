@@ -10,6 +10,7 @@
 *    11/03/2009: Fey Xue: first created
 *    06/17/2019: Xueyan Dong: Pull out and save employee location in session variable
 *    07/11/2019: Xueyan Dong: Added code to direct user to different home page according to user role
+*    01/02/2020: Shelby Simpson: Added hashed password check.
 ----------------------------------------------------------------*/
 
 using System;
@@ -17,6 +18,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.Configuration;
 using System.Collections;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -42,12 +44,12 @@ namespace ezMESWeb
 
         }
 
-        /*protected void btnLogin_Click(object sender, EventArgs e)
+        protected void btnLogin_Click(object sender, EventArgs e)
         {
             string userName = txtUserId.Text;
             string password = txtPassword.Text;
-            string strSQL = "SELECT password FROM employee WHERE username = '" + userName + "'";
-            // Retrieve hashed password from database
+            string strSQL = "SELECT username, creation_date, password FROM employee WHERE username = '" + userName + "'";
+            // Retrieve username, creation_date, and hashed password from database
             EzSqlConnection ezConn;
             EzSqlCommand ezCmd = new EzSqlCommand();
             ezDataAdapter ezAdapter = new ezDataAdapter();
@@ -90,12 +92,21 @@ namespace ezMESWeb
                 lblResults.Text = "Failed to log in, due to " + ex.Message;
                 return;
             }
-            if (ezMESWeb.PasswordHasher.IsValid(password, ds.Tables[0].Rows[0].ItemArray[0].ToString()))
+
+            DateTime dateTime = (DateTime)ds.Tables[0].Rows[0].ItemArray[1];
+            byte[] salt = ezMESWeb.PasswordHasher.CreateSalt(ds.Tables[0].Rows[0].ItemArray[0].ToString(), dateTime.ToShortDateString());
+
+            // Uncomment these three lines to hash the existing password and write the hash to the DB replacing the existing password in the employee table.
+            //byte[] hash = ezMESWeb.PasswordHasher.Generate(ds.Tables[0].Rows[0].ItemArray[2].ToString(), salt);
+            //ds = HashPassword(userName, Convert.ToBase64String(hash));
+            //if (ds.Tables[0].Rows.Count == 0) { return; }
+
+            if (ezMESWeb.PasswordHasher.IsValid(password, ds.Tables[0].Rows[0].ItemArray[2].ToString(), salt))
             {
                 strSQL = "SELECT e.id, e.firstname, e.lastname, s.name, e.location_id " +
             "FROM employee e, system_roles s, users_in_roles u " +
             "WHERE username= \"" + userName + "\" AND password=\""
-            + ds.Tables[0].Rows[0].ItemArray[0].ToString() + "\"" + " and status='active' and e.id = u.userId and u.roleId = s.id and s.applicationId = 1";
+            + ds.Tables[0].Rows[0].ItemArray[2].ToString() + "\"" + " and status='active' and e.id = u.userId and u.roleId = s.id and s.applicationId = 1";
 
                 ezCmd = new EzSqlCommand();
                 ezAdapter = new ezDataAdapter();
@@ -133,7 +144,7 @@ namespace ezMESWeb
                         + password + "\"" + " and e.id = u.userId and u.roleId =  s.id and s.applicationId = 1";
 
                     OdbcCommand cmd1 = new OdbcCommand(strSQL, conn1);
-                
+                */
                 try
                 {
 
@@ -182,8 +193,86 @@ namespace ezMESWeb
             }
 
             
-        }*/
+        }
 
+        // Enters the inputted hash as the password of employee username in the employee table.
+        protected DataSet HashPassword(string username, string hash)
+        {
+            string strSQL = "UPDATE employee SET password = '" + hash + "' WHERE username = '" + username + "'";
+
+            int length = hash.Length;
+
+            try
+            {
+                string dbConnKey = ConfigurationManager.AppSettings.Get("DatabaseType");
+
+                string connStr = ConfigurationManager.ConnectionStrings["ezmesConnectionString"].ConnectionString;
+                DbConnectionType ezType;
+
+                if (dbConnKey.Equals("ODBC"))
+                {
+                    ezType = DbConnectionType.MySqlODBC;
+
+                }
+                else if (dbConnKey.Equals("MySql"))
+                {
+                    //ezType = DbConnectionType.MySql;
+                    ezType = DbConnectionType.MySqlADO;
+                }
+                else
+                    ezType = DbConnectionType.Unknown;
+
+                EzSqlConnection ezConn = new EzSqlConnection(ezType, connStr);
+                ezConn.Open();
+
+
+                EzSqlCommand ezCmd = new EzSqlCommand
+                {
+                    Connection = ezConn,
+                    CommandText = strSQL,
+                    CommandType = CommandType.Text
+                };
+                //System.Data.DataSet ds = dbutil.GetDataSet(strQuery, "temp");
+                DataSet ds = new DataSet();
+                ezDataAdapter ezAdapter = new ezDataAdapter();
+                ezAdapter.SelectCommand = ezCmd;
+                ezAdapter.Fill(ds);
+
+                ezAdapter.Dispose();
+                ezCmd.Dispose();
+                ezConn.Dispose();
+
+                strSQL = "SELECT username, creation_date, password FROM employee WHERE username = '" + username + "'";
+
+                ezConn = new EzSqlConnection(ezType, connStr);
+                ezConn.Open();
+
+
+                ezCmd = new EzSqlCommand
+                {
+                    Connection = ezConn,
+                    CommandText = strSQL,
+                    CommandType = CommandType.Text
+                };
+                //System.Data.DataSet ds = dbutil.GetDataSet(strQuery, "temp");
+                ds = new DataSet();
+                ezAdapter = new ezDataAdapter();
+                ezAdapter.SelectCommand = ezCmd;
+                ezAdapter.Fill(ds);
+
+                ezAdapter.Dispose();
+                ezCmd.Dispose();
+                ezConn.Dispose();
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                lblResults.Visible = true;
+                lblResults.Text = "Failed to log in, due to " + ex.Message;
+                return new DataSet();
+            }
+        }
+        /*
         protected void btnLogin_Click(object sender, EventArgs e)
         {
             string userName = txtUserId.Text;
@@ -240,7 +329,7 @@ namespace ezMESWeb
                 lblResults.Visible = true;
                 lblResults.Text = "Failed to log in, due to " + ex.Message;
                 return;
-            }
+            }*/
             /*    OdbcDataReader sqlReader;
                 string DefaultConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ezmesConnectionString"].ConnectionString;
                 OdbcConnection conn1 = new OdbcConnection(DefaultConnectionString);
@@ -250,7 +339,7 @@ namespace ezMESWeb
                     + password + "\"" + " and e.id = u.userId and u.roleId =  s.id and s.applicationId = 1";
 
                 OdbcCommand cmd1 = new OdbcCommand(strSQL, conn1);
-            */
+            *//*
             try
             {
 
@@ -292,7 +381,7 @@ namespace ezMESWeb
                 lblResults.Text = "Fail to log in due to " + ex.Message;
             }
 
-        }
+        }*/
 
         //protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
         //{

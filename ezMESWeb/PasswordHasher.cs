@@ -3,63 +3,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 
 namespace ezMESWeb
 {
     public class PasswordHasher
     {
-        ///
-        /// Return a string delimited with random salt, #iterations and hashed password
-        /// can be store in database for validation.
-        ///
-        ///
-        ///
-        ///
-        public static string Generate(string password, int iterations = 1000)
+        // Creates a salt from the inputted username and creation_date
+        public static byte[] CreateSalt(string username, string creation_date)
         {
-            
-            
-            //generate a random salt for hashing
-            var salt = new byte[24];
-            new RNGCryptoServiceProvider().GetBytes(salt);
-
-            //hash password given salt and iterations (default to 1000)
-            //iterations provide difficulty when cracking
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations);
-            byte[] hash = pbkdf2.GetBytes(24);
-
-            //return delimited string with salt | #iterations | hash
-            return Convert.ToBase64String(salt) + "|" + iterations + "|" +
-                Convert.ToBase64String(hash);
-
+            return Encoding.ASCII.GetBytes(username + creation_date);
         }
 
-        ///
-        /// Returns true of hash if test password matches hashed password within origDelimHash
-        ///
-        ///
-        ///
-        /// 
-        public static bool IsValid(string testPassword, string origDelimHash)
+        // Generates the password hash using Argon2id
+        public static byte[] Generate(string password, byte[] salt)
         {
-            //extract original values from delimited hash text
-            var origHashedParts = origDelimHash.Split('|');
-            var origSalt = Convert.FromBase64String(origHashedParts[0]);
-            var origIterations = Int32.Parse(origHashedParts[1]);
-            var origHash = origHashedParts[2];
+            var argon2 = new Argon2id(Encoding.ASCII.GetBytes(password))
+            {
+                Salt = salt,
+                DegreeOfParallelism = 4, // Number of cores
+                MemorySize = 8192, // Measured in KiB
+                Iterations = 10
+            };
 
-            //generate hash from test password and original salt and iterations
-            var pbkdf2 = new Rfc2898DeriveBytes(testPassword, origSalt, origIterations);
-            byte[] testHash = pbkdf2.GetBytes(24);
+            var hash = argon2.GetBytes(128);
+            return hash;
+        }
 
-            //if hash values match then return success
-            if (Convert.ToBase64String(testHash) == origHash)
-                return true;
-
-            //no match return false
-            return false;
-
+        // Checks whether the inputted password is valid
+        public static bool IsValid(string testPassword, string origDelimHash, byte[] salt)
+        {
+            var newHash = Generate(testPassword, salt);
+            byte[] hash = Convert.FromBase64String(origDelimHash);
+            //byte[] hash = Encoding.ASCII.GetBytes(origDelimHash);
+            return hash.SequenceEqual(newHash);
         }
     }
 }

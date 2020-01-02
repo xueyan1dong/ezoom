@@ -8,7 +8,8 @@
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 	
-*    12/23/2019: Shelby Simpson: Added user_type variable and check for username uniqueness.				
+*    12/23/2019: Shelby Simpson: Added user_type variable and check for username uniqueness.
+*    01/02/2020: Shelby Simpson: Added _datetime variable for creation_date and update_datetime attributes.			
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `modify_employee`$
@@ -28,6 +29,7 @@ CREATE PROCEDURE `modify_employee`(
   IN _role_id int(10) unsigned,
   IN _report_to int(10) unsigned,
   IN _comment text,
+  IN _datetime datetime,
   OUT _response varchar(255)
 )
 BEGIN
@@ -61,12 +63,12 @@ BEGIN
          id, company_id, username, password,
          status, user_type, or_id, eg_id, firstname,
          lastname, middlename, email,
-         phone, report_to, comment)
+         phone, report_to, comment, creation_date)
     values (
           _id, 1, _username, _password,
          _status, _user_type, _or_id, _eg_id, _firstname,
          _lastname, _middlename, _email,
-         _phone, _report_to, _comment
+         _phone, _report_to, _comment, CAST(_datetime as date)
          );
     SET _id = last_insert_id();
     INSERT INTO users_in_roles (
@@ -88,7 +90,8 @@ BEGIN
       email = _email,
       phone = _phone, 
       report_to = _report_to, 
-      comment = _comment
+      comment = _comment,
+      update_datetime = _datetime
     WHERE id = _id;
     
     UPDATE users_in_roles 

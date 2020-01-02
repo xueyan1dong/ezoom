@@ -105,6 +105,7 @@ namespace ezMESWeb.Configure.User
                     ezCmd.CommandText = "modify_employee";
                     ezCmd.CommandType = CommandType.StoredProcedure;
                     ezMES.ITemplate.FormattedTemplate fTemp;
+                    string datetime = DateTime.Now.ToShortDateString();
 
 
                     if (fvUpdate.CurrentMode == FormViewMode.Insert)
@@ -115,19 +116,20 @@ namespace ezMESWeb.Configure.User
                         fTemp = (ezMES.ITemplate.FormattedTemplate)fvUpdate.InsertItemTemplate;
 
                         // Add username and password and then remove them from template.Fields array
-                        /*string name = ((ezMES.ITemplate.FieldItem)(fTemp.Fields[0])).Key;
-                        string txtValue = ((TextBox)fvUpdate.Row.FindControl(name)).Text;
+                        string field = ((ezMES.ITemplate.FieldItem)(fTemp.Fields[0])).Key;
+                        string txtValue = ((TextBox)fvUpdate.Row.FindControl(field)).Text;
                         ezCmd.Parameters.AddWithValue("@_username", txtValue);
                         // Remove username from Fields array
                         fTemp.Fields.RemoveAt(0);
+                        // Create salt
+                        byte[] salt = ezMESWeb.PasswordHasher.CreateSalt(txtValue, datetime);
                         // Hash password and then add it as a parameter
-                        name = ((ezMES.ITemplate.FieldItem)(fTemp.Fields[0])).Key;
-                        txtValue = ((TextBox)fvUpdate.Row.FindControl(name)).Text;
-                        // password is 54 bytes long consisting of: 24-byte salt, "|", "1000", "|", 24-byte hash
-                        string password = ezMESWeb.PasswordHasher.Generate(txtValue);
+                        field = ((ezMES.ITemplate.FieldItem)(fTemp.Fields[0])).Key;
+                        txtValue = ((TextBox)fvUpdate.Row.FindControl(field)).Text;
+                        string password = Convert.ToBase64String(ezMESWeb.PasswordHasher.Generate(txtValue, salt));
                         ezCmd.Parameters.AddWithValue("@_password", password);
                         // Remove password from Fields array
-                        fTemp.Fields.RemoveAt(0);*/
+                        fTemp.Fields.RemoveAt(0);
                     }
                     else
                     {
@@ -143,6 +145,7 @@ namespace ezMESWeb.Configure.User
 
                     LoadSqlParasFromTemplate(ezCmd, fvUpdate, fTemp);
 
+                    ezCmd.Parameters.AddWithValue("@_datetime", DateTime.Now);
                     ezCmd.Parameters.AddWithValue("@_response", DBNull.Value);
                     ezCmd.Parameters["@_response"].Direction = ParameterDirection.Output;
 
