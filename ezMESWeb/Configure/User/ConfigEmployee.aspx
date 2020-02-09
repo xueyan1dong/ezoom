@@ -146,8 +146,13 @@ height="100%" scrollbars="Horizontal" >
                     <asp:CommandField ShowDeleteButton="True" />
                     
                  <asp:TemplateField>
-			   <ItemTemplate>
+			     <ItemTemplate>
 			       <asp:LinkButton ID="btnViewDetails" runat="server" Text="Edit" CommandName="Select" />
+			     </ItemTemplate>                 
+                 </asp:TemplateField>
+                 <asp:TemplateField>
+			     <ItemTemplate>
+			       <asp:LinkButton ID="btnChangePassword" runat="server" Text="Change Password" CommandName="Select" OnClick="AddPasswordTemplate" />
 			     </ItemTemplate>                 
                  </asp:TemplateField>
                     <asp:BoundField DataField="id" HeaderText="ID" SortExpression="id" ReadOnly="true" InsertVisible="false" Visible="false" />

@@ -120,7 +120,7 @@ namespace ezMESWeb.Configure.Process
 
             // The value of ifTclLoaded Label will be changed to loaded if initial page load is done. 
             // This prevents the following steps in page_load() when calling btnSearch_click()
-            if ((!IsPostBack || fvMain.CurrentMode == FormViewMode.ReadOnly)&& ifTcLoaded.Text.Equals("notLoaded"))
+            if ((!IsPostBack || fvMain.CurrentMode == FormViewMode.ReadOnly) && ifTcLoaded.Text.Equals("notLoaded"))
             {
               
                 try
@@ -843,6 +843,8 @@ namespace ezMESWeb.Configure.Process
                 btnCancel.Text = "Delete Recipe";
  
             }
+
+            
         }
 
         protected void tcMain_ActiveTabChanged(object sender, EventArgs e)

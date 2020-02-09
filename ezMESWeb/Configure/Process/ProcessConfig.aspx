@@ -348,7 +348,7 @@ order by position_id"
        </asp:SqlDataSource>
        
         <asp:Panel ID="UpdatePanel" runat="server" CssClass="detail" style="display:none"
-              Height="482px" HorizontalAlign="Left" Width="350px">
+              Height="100%" HorizontalAlign="Left" Width="100%">
        <asp:UpdatePanel ID="updateBufferPanel" runat="server" UpdateMode="Conditional">
            <ContentTemplate>
            <asp:Button id="btnShowPopup" runat="server" style="display:none" />
@@ -361,7 +361,7 @@ order by position_id"
             <asp:FormView ID="fvUpdate" runat="server" BorderStyle="Groove" 
                  BorderWidth="0px" Caption="Update Selected Position in Workflow:" 
                  DataKeyNames="position_id,step_id" DataSourceID="sdsUpdate" 
-                   DefaultMode="Edit" Height="290px" 
+                   DefaultMode="Edit" Height="100%" 
                 HorizontalAlign="Center" onitemupdated="fvUpdate_ItemUpdated" Width="100%">
                 
                      <EditItemTemplate>
@@ -474,20 +474,20 @@ order by position_id"
                                 </asp:TableCell>
                             </asp:TableRow>
 
-                            <asp:TableRow ID="tbrApprove2" runat="server">
-                                <asp:TableCell ID="TableCell381" runat="server" Height="25px" HorizontalAlign="Right">
+                            <asp:TableRow ID="tbrApprove2" runat="server" Width="100%">
+                                <asp:TableCell ID="TableCell381" runat="server" Height="25px" HorizontalAlign="Right" ColumnSpan="2" >
                                 Approved By:
                                 </asp:TableCell>
-                                <asp:TableCell ID="TableCell382" runat="server" Height="25px" HorizontalAlign="Left">
+                                <asp:TableCell ID="TableCell382" runat="server" Height="25px" HorizontalAlign="Left" ColumnSpan="2" >
                                     <asp:DropDownList ID="ddApproval2" runat="server" 
                                     DataSourceID="sdsEmployee" DataTextField="name" DataValueField="id" 
-                                    Height="25px" Width="166px">
+                                    Height="25px" Width="100%">
                                     </asp:DropDownList>
                                     <asp:TextBox ID="approve_emp_idTextBox" runat="server" 
                                     Text='<%# Bind("approve_emp_id") %>' Visible="False" />
                                  </asp:TableCell>
                             </asp:TableRow>
-                            <asp:TableRow ID="TableRow42" runat="server">
+                            <asp:TableRow ID="TableRow42" runat="server" Width="100%">
                                 <asp:TableCell ID="TableCell421" ColumnSpan="2" runat="server" Height="25px" HorizontalAlign="Center">
                                 <asp:CheckBox ID="chkProductMade2" runat="server" Text="Product Made?" />
                                 <asp:TextBox ID="product_madeTextBox" runat="server" 

@@ -80,6 +80,9 @@ namespace ezMESWeb.Configure.User
             btnUpdate_ModalPopupExtender.Show();
 
             AddJSFunctions();
+
+            // If Change Password button was clicked, change fvUpdates EditItemTemplate to Employee_changePassword.xml
+
         }
 
 
@@ -276,6 +279,11 @@ namespace ezMESWeb.Configure.User
             sdsEmpConfigGrid.DataBind();
             gvTable.DataBind();
             tcMain.DataBind();
+        }
+
+        protected void AddPasswordTemplate()
+        {
+            fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Employee_changePassword.xml"));
         }
 
         protected void AddJSFunctions(bool insert = false)

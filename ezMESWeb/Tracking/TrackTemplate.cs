@@ -334,7 +334,7 @@ namespace ezMESWeb.Tracking
           switch (stepType)
           {
             case "consume material":
-            Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+            Server.Execute("StartConsumeMaterial.aspx?step_status=" + stepStatus +
               "&sub_process=" + subProcessId
               + "&position=" + position
               + "&sub_position=" + subPosition
@@ -356,7 +356,7 @@ namespace ezMESWeb.Tracking
               , false);
             break;
             case "disassemble":
-            Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+            Server.Execute("StartConsumeMaterial.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -370,7 +370,7 @@ namespace ezMESWeb.Tracking
                 , false);
             break;
             case "display message":
-            Server.Transfer("PassDisplayStep.aspx?step_status=" + stepStatus +
+            Server.Execute("PassDisplayStep.aspx?step_status=" + stepStatus +
               "&sub_process=" + subProcessId
               + "&position=" + position
               + "&sub_position=" + subPosition
@@ -382,7 +382,7 @@ namespace ezMESWeb.Tracking
               , false);
             break;
             case "deliver to customer":
-            Server.Transfer("CustomerDeliver.aspx?step_status=" + stepStatus +
+            Server.Execute("CustomerDeliver.aspx?step_status=" + stepStatus +
               "&sub_process=" + subProcessId
               + "&position=" + position
               + "&sub_position=" + subPosition
@@ -395,7 +395,7 @@ namespace ezMESWeb.Tracking
 
             break;
             case "condition":
-              Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+              Server.Execute("StartConsumeMaterial.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -409,7 +409,7 @@ namespace ezMESWeb.Tracking
                 , false);
               break;
             case "reposition":
-              Server.Transfer("Reposition.aspx?step_status=" + stepStatus 
+              Server.Execute("Reposition.aspx?step_status=" + stepStatus 
                 + "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -431,7 +431,7 @@ namespace ezMESWeb.Tracking
               //   + "&quantity=" + quantity
               //   + "&rework_limit=" + reworkLimit
               //   + "&step_type=" + stepType, true);
-              Server.Transfer("ToWarehouseStep.aspx?step_status=" + stepStatus +
+              Server.Execute("ToWarehouseStep.aspx?step_status=" + stepStatus +
                 "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition
@@ -445,7 +445,7 @@ namespace ezMESWeb.Tracking
                 , false);
               break;
             case "scrap":
-              Server.Transfer("UnholdLot.aspx?step_status=" + stepStatus
+              Server.Execute("UnholdLot.aspx?step_status=" + stepStatus
                 + "&sub_process=" + subProcessId
                 + "&position=" + position
                 + "&sub_position=" + subPosition

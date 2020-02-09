@@ -150,6 +150,9 @@
     <Content Include="Configure\User\ClientEmployee_insert.xml" />
     <Content Include="Configure\User\ClientEmployee_modify.xml" />
     <Content Include="Configure\User\ConfigEmployeeGroup.aspx" />
+    <Content Include="Configure\User\Employee_changePassword.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configure\User\Organization\ClientOrganization_insert.xml">
       <SubType>Designer</SubType>
     </Content>
