@@ -81,7 +81,7 @@ namespace ezMESWeb.Tracking
               ezCmd.Parameters.AddWithValue("@_response", DBNull.Value, ParameterDirection.Output);
 
               if (Convert.ToInt32(ezCmd.ExecuteScalar()) == 0)
-                lblError.Text = "You are not allowed to access next step.";
+                lblError.Text = "You are not allowed to access the next step.";
 
               response = ezCmd.Parameters["@_response"].Value.ToString();
               if (response.Length > 0)
@@ -97,7 +97,7 @@ namespace ezMESWeb.Tracking
                 newStep.Visible = false;
                 txtQuantity.Visible = false;
                 txtComment.Visible = false;
-                lblEquipment.Visible = false;
+                //lblEquipment.Visible = false;
                 ezCmd.Dispose();
                 ezConn.Dispose();
                 return;
