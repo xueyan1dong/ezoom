@@ -102,7 +102,7 @@
     <ContentTemplate>
 <asp:GridView ID="GridView1" runat="server" Caption="Orders"
                CssClass="GridStyle" GridLines="None"  DataKeyNames="id" DataSourceID="SqlDataSource1" PagerStyle-BackColor="#f2e8da"
-               EmptyDataText="There is no orders" Height="200px" Width="1024px" AllowPaging="True" AllowSorting="True"
+               EmptyDataText="There are no orders" Height="200px" Width="1024px" AllowPaging="True" AllowSorting="True"
                AutoGenerateColumns="False" OnSelectedIndexChanged = "GridView1_OnSelectedIndexChanged" PagerSettings-Mode="NumericFirstLast" OnRowDataBound="GridView1_OnRowDataBound" > <%--OnRowCreated="GridView1_RowCreated --%>               
            
    

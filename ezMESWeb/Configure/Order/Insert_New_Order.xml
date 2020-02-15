@@ -30,7 +30,7 @@
   <Column name ="state_date">
     <DisplayName>Date of the State</DisplayName>
     <IsEnable>true</IsEnable>
-    <UI>Textbox</UI>
+    <UI>datetime</UI>
     <TextBoxLength>20</TextBoxLength>
   </Column>
 
@@ -67,7 +67,7 @@
   <Column name ="expected_deliver_date">
     <DisplayName>Expected Delivery Date</DisplayName>
     <IsEnable>true</IsEnable>
-    <UI>Textbox</UI>
+    <UI>datetime</UI>
     <TextBoxLength>20</TextBoxLength>
   </Column>
   <Column name ="internal_contact">

@@ -359,6 +359,26 @@ namespace ezMESWeb.Configure.Order
                 ezCmd.Parameters.AddWithValue("@_order_type", "customer");
 
                 fTemp = (ezMES.ITemplate.FormattedTemplate)insertNewOrder.InsertItemTemplate;
+
+                ezMES.ITemplate.FieldItem theItem = ((ezMES.ITemplate.FieldItem)fTemp.Fields[4]);
+                TextBox date1 = (TextBox)insertNewOrder.Row.FindControl(theItem.Key);
+                string[] date = date1.Text.Split('/');
+                string month = date[0];
+                if (month.Length == 1) { month = "0" + month; }
+                string day = date[1];
+                if (day.Length == 1) { day = "0" + day; }
+                string year = date[2];
+                date1.Text = year + "-" + day + "-" + month;
+                theItem = ((ezMES.ITemplate.FieldItem)fTemp.Fields[10]);
+                date1 = (TextBox)insertNewOrder.Row.FindControl(theItem.Key);
+                date = date1.Text.Split('/');
+                month = date[0];
+                if (month.Length == 1) { month = "0" + month; }
+                day = date[1];
+                if (day.Length == 1) { day = "0" + day; }
+                year = date[2];
+                date1.Text = year + "-" + day + "-" + month;
+
                 LoadSqlParasFromTemplate(ezCmd, insertNewOrder, fTemp);
                 ezCmd.Parameters["@_recorder_id"].Value = Convert.ToInt32(Session["UserID"]);
                 ezCmd.Parameters.AddWithValue("@_order_id", DBNull.Value);
