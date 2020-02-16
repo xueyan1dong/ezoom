@@ -368,8 +368,8 @@ namespace ezMESWeb.Configure.Order
                 string day = date[1];
                 if (day.Length == 1) { day = "0" + day; }
                 string year = date[2];
-                date1.Text = year + "-" + day + "-" + month;
-                theItem = ((ezMES.ITemplate.FieldItem)fTemp.Fields[10]);
+                ((TextBox)(insertNewOrder.Controls[0].Controls[1].Controls[0].Controls[0].Controls[4].Controls[1].Controls[0])).Text = year + "-" + month + "-" + day;
+                theItem = ((ezMES.ITemplate.FieldItem)fTemp.Fields[11]);
                 date1 = (TextBox)insertNewOrder.Row.FindControl(theItem.Key);
                 date = date1.Text.Split('/');
                 month = date[0];
@@ -377,7 +377,7 @@ namespace ezMESWeb.Configure.Order
                 day = date[1];
                 if (day.Length == 1) { day = "0" + day; }
                 year = date[2];
-                date1.Text = year + "-" + day + "-" + month;
+                ((TextBox)(insertNewOrder.Controls[0].Controls[1].Controls[0].Controls[0].Controls[10].Controls[1].Controls[0])).Text = year + "-" + month + "-" + day;
 
                 LoadSqlParasFromTemplate(ezCmd, insertNewOrder, fTemp);
                 ezCmd.Parameters["@_recorder_id"].Value = Convert.ToInt32(Session["UserID"]);
