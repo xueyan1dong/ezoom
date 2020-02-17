@@ -130,7 +130,7 @@
        SelectCommand=" SELECT distinct g.id, ponumber, 
 p.name as Priority, 
 DATE_FORMAT((SELECT min(h.state_date) FROM order_state_history h WHERE h.order_id = g.id AND h.state='POed'),'%m/%d/%Y') AS order_date,
-get_local_time(g.expected_deliver_date) as Expected_Deliver_Date,
+DATE_FORMAT(g.expected_deliver_date,'%m/%d/%Y') as Expected_Deliver_Date,
 t1.r as Quantity_Requested,
 t1.pr as Quantity_in_Process,
 (t1.m + t1.s) as Quantity_Made_Or_Shipped

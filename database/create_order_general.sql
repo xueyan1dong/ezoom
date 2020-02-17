@@ -10,6 +10,7 @@
 *    6/19/2018: Peiyu Ge: added header info. 	
 *    09/25/2018: Xueyan Dong: removed id from the defined key, so that orders have to have unique po number within the same 
 *                             type, client
+*    02/16/2020: Shelby Simpson: Modified expected_deliery_date from datetime to date type.
 */
 DELIMITER $  -- for escaping purpose
 DROP TABLE IF EXISTS `order_general`$
@@ -25,7 +26,7 @@ CREATE TABLE `order_general` (
   `tax_amount` decimal(14,2) unsigned DEFAULT NULL,
   `other_fees` decimal(16,2) unsigned DEFAULT NULL,
   `total_price` decimal(16,2) unsigned DEFAULT NULL,
-  `expected_deliver_date` datetime DEFAULT NULL,  
+  `expected_deliver_date` date DEFAULT NULL,  
   `internal_contact` int(10) unsigned NOT NULL,
   `external_contact` varchar(255) DEFAULT NULL,
   `comment` text,

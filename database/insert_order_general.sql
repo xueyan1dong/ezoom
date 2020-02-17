@@ -8,7 +8,8 @@
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info. 
-*    09/25/2018: Xueyan Dong: added check for entries violating unique key					
+*    09/25/2018: Xueyan Dong: added check for entries violating unique key	
+*    02/16/2020: Shelby Simpson: Modified _state_date and _expected_delivery_date variables from datetime to date type.		
 */
 DELIMITER $  -- for escaping purpose
 DROP PROCEDURE IF EXISTS `insert_order_general`$
@@ -18,13 +19,13 @@ CREATE PROCEDURE `insert_order_general`(
   IN _client_id int(10) unsigned,
   IN _priority tinyint(2) unsigned,
   IN _state varchar(10),
-  IN _state_date datetime,
+  IN _state_date date,
   IN _net_total decimal(16,2) unsigned,
   IN _tax_percentage tinyint(2) unsigned,
   IN _tax_amount decimal(14,2) unsigned,
   IN _other_fees decimal(16,2) unsigned,
   IN _total_price decimal(16,2) unsigned,
-  IN _expected_deliver_date datetime,
+  IN _expected_deliver_date date,
   IN _internal_contact int(10) unsigned,
   IN _external_contact varchar(255),
   IN _recorder_id int(10) unsigned,
