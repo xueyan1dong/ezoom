@@ -135,7 +135,7 @@ height=70% ScrollBars="Auto">
     <asp:Label ID="lblInstruction" runat="server" Height="100%" Width="100%" Visible="false" Style="font-family:Times New Roman;font-size:20px;  line-height:22px;"></asp:Label>
     </asp:TableCell>
     <asp:TableCell ID=tcImage HorizontalAlign="left">
-        <asp:Image ID="imgDiagram" runat="server"  Width="500px" Height="100%" Visible="False" ImageAlign="TextTop" />
+        <asp:Image ID="imgDiagram" runat="server"  Width="100%" Height="100%" Visible="False" ImageAlign="TextTop" />
     </asp:TableCell>
     </asp:TableRow>
     <asp:TableRow><asp:TableCell ColumnSpan =2>

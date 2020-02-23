@@ -361,13 +361,13 @@ namespace ezMESWeb.Reports
                   {
                     if (imageInfo.Width < 500)
                     {
-                      imgDiagram.Width = imageInfo.Width;
-                      imgDiagram.Height = imageInfo.Height;
+                      imgDiagram2.Width = imageInfo.Width;
+                      imgDiagram2.Height = imageInfo.Height;
                     }
 
  
-                    imgDiagram.ImageUrl = imageFilename;
-                    imgDiagram.Visible = true;
+                    imgDiagram2.ImageUrl = imageFilename;
+                    imgDiagram2.Visible = true;
                   }
                 }
 
