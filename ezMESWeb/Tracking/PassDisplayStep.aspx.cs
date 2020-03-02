@@ -148,7 +148,7 @@ namespace ezMESWeb.Tracking
         ezCmd.Parameters.AddWithValue("@_quantity", txtQuantity.Text.Trim());
         ezCmd.Parameters.AddWithValue("@_equipment_id", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_device_id", DBNull.Value);
-        ezCmd.Parameters.AddWithValue("@_approver_id", DBNull.Value);
+        ezCmd.Parameters.AddWithValue("@_approver_id", Convert.ToInt32(Session["UserID"]));
         ezCmd.Parameters.AddWithValue("@_approver_password", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_short_result", DBNull.Value);
         ezCmd.Parameters.AddWithValue("@_comment", txtComment.Text);
