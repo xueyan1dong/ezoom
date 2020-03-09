@@ -160,16 +160,16 @@ namespace ezMESWeb
                         //for admin and engineer, present configuration module as default
                         if (Session["Role"].ToString().Equals("Admin") ||
                             Session["Role"].ToString().Equals("Engineer"))
-                            Server.Transfer("~/Configure/configuration.aspx");
+                            Response.Redirect("~/Configure/configuration.aspx");
                         //for operator, present operator specific tracking menu
                         else if (Session["Role"].ToString().Equals("Operator"))
-                            Server.Transfer("~/Tracking/OperatorTracking.aspx");
+                            Response.Redirect("~/Tracking/OperatorTracking.aspx");
                         //for qa or client qa, present QA tracking menu
                         else if (Session["Role"].ToString().Equals("QA") || Session["Role"].ToString().Equals("ClientQA"))
-                            Server.Transfer("~/Tracking/QATracking.aspx");
+                            Response.Redirect("~/Tracking/QATracking.aspx");
                         //for manager and qa, present general tracking menu
                         else
-                            Server.Transfer("~/Tracking/Tracking.aspx");
+                            Response.Redirect("~/Tracking/Tracking.aspx");
 
                         break;
                     }
