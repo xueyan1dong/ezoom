@@ -6,6 +6,19 @@
 <asp:content ID="Content2" contentplaceholderid="head" runat="server"> 
 
  <script type="text/javascript" language="javascript">
+     let displayMessageStepList = JSON.parse('<%=serializedDisplayMessageSteps%>');
+     // Restrict the auto start option for display message type steps.
+     function restrictAutostart() {
+         // Find the id of the step name in the edit template.
+         let stepDrp = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_ddStep2');
+         let step = stepDrp.options[stepDrp.selectedIndex].text;
+         // If the step name is in the list, make the auto start box unclickable.
+         if (displayMessageStepList.includes(step)) {
+             document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_chkIfAutoStart2').checked = false;
+             document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_chkIfAutoStart2').disabled = true;
+         }
+     }
+
   function reloadContent(sender, e)
   {
     window.location="ProcessConfig.aspx?Tab="+sender.get_activeTabIndex()

@@ -15,8 +15,10 @@ using System;
 using System.Collections;
 using System.Configuration;
 using System.Data;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Security;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -51,6 +53,10 @@ namespace ezMESWeb
         protected LinkButton LinkButton1;
         protected TableRow tbrApprove;
         protected Button btnDuplicate;
+
+        protected string query;
+        protected List<string> displayMessageStepList;
+        protected string serializedDisplayMessageSteps;
 
         protected override void Page_Load(object sender, EventArgs e)
         {
@@ -141,7 +147,8 @@ namespace ezMESWeb
 
 
                 }
-              
+            query = "SELECT name FROM step WHERE step_type_id = 2;";
+            GetStepTypes();
         }
         private void updateUrl()
         {
@@ -209,7 +216,9 @@ namespace ezMESWeb
                 ((DropDownList)fvUpdate.FindControl("ddStep2")).SelectedValue = stepId;
             }
 
-            
+            ((DropDownList)fvUpdate.FindControl("ddStep2")).Attributes.Add("onchange", "restrictAutostart()");
+            ((CheckBox)fvUpdate.FindControl("chkIfAutoStart2")).Attributes.Add("onchange", "restrictAutostart()");
+
 
             ((RadioButtonList)fvUpdate.FindControl("rblStepOrProcess2")).SelectedValue = stepChoice;
 
@@ -917,6 +926,38 @@ namespace ezMESWeb
                 lblMainError.Text = ex.Message;
             }
 
+        }
+
+        protected void AddJSFunctions()
+        {
+
+        }
+
+        protected void GetStepTypes()
+        {
+            ConnectToDb();
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezDataAdapter ezAdapter = new ezDataAdapter();
+            DataSet ds;
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            // Place returned root_company ids into a dictionary indexed on parent organization ids.
+            DataRowCollection rows = ds.Tables[0].Rows;
+            IEnumerator rowEnumerator = rows.GetEnumerator();
+            displayMessageStepList = new List<string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                displayMessageStepList.Add(row.ItemArray.GetValue(0).ToString());
+            }
+            var serializer = new JavaScriptSerializer();
+            serializedDisplayMessageSteps = serializer.Serialize(displayMessageStepList);
         }
     }
 }

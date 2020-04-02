@@ -423,7 +423,7 @@ namespace ezMESWeb.Tracking
                 , false);
               break;
             case "ship to location":
-              //Server.Transfer("StartConsumeMaterial.aspx?step_status=" + stepStatus +
+              //Server.Execute("StartConsumeMaterial.aspx?step_status=" + stepStatus +
               //   "&sub_process=" + subProcessId
               //   + "&position=" + position
               //   + "&sub_position=" + subPosition
@@ -506,7 +506,7 @@ namespace ezMESWeb.Tracking
           {
             case "consume material":
             case "condition":
-              Server.Transfer("EndConsumeMaterial.aspx?step_status=" + stepStatus +
+              Server.Execute("EndConsumeMaterial.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
                 + "&sub_process=" + subProcessId
                 + "&position=" + positionId
@@ -519,8 +519,9 @@ namespace ezMESWeb.Tracking
                 + "&lot_alias=" + lotAlias
                 , false);
               break;
+               
             case "disassemble":
-              Server.Transfer("EndDisassemble.aspx?step_status=" + stepStatus +
+              Server.Execute("EndDisassemble.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
                 + "&sub_process=" + subProcessId
                 + "&position=" + positionId
@@ -535,7 +536,7 @@ namespace ezMESWeb.Tracking
               break;
 
             case "hold lot":
-              Server.Transfer("UnholdLot.aspx?step_status=" + stepStatus +
+              Server.Execute("UnholdLot.aspx?step_status=" + stepStatus +
                 "&start_time=" + startTime
                 + "&sub_process=" + subProcessId
                 + "&position=" + positionId
