@@ -959,5 +959,13 @@ namespace ezMESWeb
             var serializer = new JavaScriptSerializer();
             serializedDisplayMessageSteps = serializer.Serialize(displayMessageStepList);
         }
+
+        protected void FilterApprovers()
+        {
+            // Find approver dropdown control
+            // Query DB for list of users from the proper organization
+            string query = "SELECT  ";
+            // Filter dropdown on this list
+        }
     }
 }

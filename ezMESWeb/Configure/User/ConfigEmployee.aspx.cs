@@ -281,7 +281,7 @@ namespace ezMESWeb.Configure.User
             tcMain.DataBind();
         }
 
-        protected void AddPasswordTemplate()
+        protected void AddPasswordTemplate(object sender, EventArgs e)
         {
             fvUpdate.EditItemTemplate = new ezMES.ITemplate.FormattedTemplate(System.Web.UI.WebControls.ListItemType.EditItem, colc, true, Server.MapPath(@"Employee_changePassword.xml"));
         }
