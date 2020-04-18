@@ -135,7 +135,7 @@ namespace ezMESWeb.Tracking
           ezCmd = new EzSqlCommand();
           ezCmd.Connection = ezConn;
           ezCmd.CommandText =
-            "SELECT need_approval, approve_emp_usage, approve_emp_id FROM process_step WHERE process_id= "
+            "SELECT need_approval, approver_usage, approve_emp_id FROM process_step WHERE process_id= "
             + Session["process_id"].ToString()
             + " AND position_id = "
             + Request.QueryString["position"]

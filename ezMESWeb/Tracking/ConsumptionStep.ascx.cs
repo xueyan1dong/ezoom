@@ -81,7 +81,7 @@ namespace ezMESWeb.Tracking
           string 
             imageFilename, 
             ynApproval, 
-            approveEmpUsage, 
+            approverUsage, 
             approveEmp, 
             prompt, 
             instruction,
@@ -123,11 +123,11 @@ namespace ezMESWeb.Tracking
             if(subProcessID.Length > 0)
             {
               subPosition = Request.QueryString["sub_position"].Length >0?Request.QueryString["sub_position"].ToString():subPosition;
-              ezCmd.CommandText = "SELECT  prompt, if_autostart, YN_need_approval, approve_emp_usage, approve_emp_name FROM view_process_step WHERE process_id="
+              ezCmd.CommandText = "SELECT  prompt, if_autostart, YN_need_approval, approver_usage, approve_emp_name FROM view_process_step WHERE process_id="
               + subProcessID + " AND position_id=" + subPosition;
             }
             else
-              ezCmd.CommandText = "SELECT  prompt, if_autostart, YN_need_approval, approve_emp_usage, approve_emp_name FROM view_process_step WHERE process_id="
+              ezCmd.CommandText = "SELECT  prompt, if_autostart, YN_need_approval, approver_usage, approve_emp_name FROM view_process_step WHERE process_id="
               + Request.QueryString["process_id"]/*Session["process_id"].ToString() */ + " AND position_id=" + position;
 
             ezCmd.CommandType = CommandType.Text;
@@ -139,7 +139,7 @@ namespace ezMESWeb.Tracking
               ifAutostart = Convert.ToInt16(ezReader["if_autostart"]);
               ynApproval = ezReader["YN_need_approval"].ToString();
               approveEmp = ezReader["approve_emp_name"].ToString();
-              approveEmpUsage = ezReader["approve_emp_usage"].ToString();
+              approverUsage = ezReader["approver_usage"].ToString();
               prompt = ezReader["prompt"].ToString();
              
               ezCmd.CommandText = "select_step_details";
@@ -180,7 +180,7 @@ namespace ezMESWeb.Tracking
 
                 if (ynApproval.Equals("Y"))
                 {
-                  lblIntro.Text += "The step needs approval upon finish from " + approveEmpUsage + " " + approveEmp + ".<br/>";
+                  lblIntro.Text += "The step needs approval upon finish from " + approverUsage + " " + approveEmp + ".<br/>";
                 }
 
 

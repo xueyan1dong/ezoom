@@ -2888,25 +2888,25 @@ END$
 */
 DELIMITER $ 
 DROP PROCEDURE IF EXISTS `modify_step_in_process`$
-CREATE procedure modify_step_in_process (
-  IN _process_id int(10) unsigned,  -- id of process that the position belongs to
-  IN _position_id  int(5) unsigned, -- id of position. unique in current process
-  IN _step_id int(10) unsigned,  -- id of step that current position points to
-  IN _prev_step_pos  int(5) unsigned, -- id of previous position
-  IN _next_step_pos  int(5) unsigned, -- id of next position to go to for non condition step. for conditions step, if condition is met at the end of this step
-  IN _false_step_pos  int(5) unsigned, -- id of position to go to if current step is a condition step and condition is not met at the end of this step
-  IN _segment_id int(5) unsigned,  -- id of the segment this step/position belongs to
-  IN _rework_limit smallint(2) unsigned, -- limit of rework to this step/position
-  IN _if_sub_process tinyint(1), -- whether the position is pointing to a sub process
-  IN _prompt varchar(255),  -- prompt to show to operator at this position
-  IN _if_autostart tinyint(1) unsigned,  -- whether to autostart the step at this position
-  IN _need_approval tinyint(1), -- whether the step/position need approval
-  IN _approve_emp_usage enum('employee group','employee category','employee'),
-  IN _approve_emp_id int(10) unsigned,  -- the id of employee group, employee category or employee, who approves the step depending on _approve_emp_usage
-  IN _employee_id int(10) unsigned,  -- id of employee who add or modifyied this step/position
-  IN _product_made tinyint(1) unsigned,  -- whether final product is made at this step/position
+CREATE PROCEDURE `modify_step_in_process`(
+  IN _process_id int(10) unsigned,  
+  IN _position_id  int(5) unsigned, 
+  IN _step_id int(10) unsigned,  
+  IN _prev_step_pos  int(5) unsigned, 
+  IN _next_step_pos  int(5) unsigned, 
+  IN _false_step_pos  int(5) unsigned, 
+  IN _segment_id int(5) unsigned,  
+  IN _rework_limit smallint(2) unsigned, 
+  IN _if_sub_process tinyint(1), 
+  IN _prompt varchar(255),  
+  IN _if_autostart tinyint(1) unsigned,  
+  IN _need_approval tinyint(1), 
+  IN _approver_usage enum('user group','organization','user'),
+  IN _approve_emp_id int(10) unsigned,  
+  IN _employee_id int(10) unsigned,  
+  IN _product_made tinyint(1) unsigned,  
   OUT _response varchar(255)
-) 
+)
 BEGIN
   DECLARE _step_type varchar(20);
   DECLARE _eventtime datetime;
@@ -2927,21 +2927,21 @@ THEN
 ELSEIF _segment_id IS NOT NULL AND NOT EXISTS(SELECT * FROM process_segment WHERE process_id=_process_id AND segment_id = _segment_id)
 THEN
   SET _response = "The segment you chose does not exist in database";
-ELSEIF _product_made = 1 AND -- if setting current step/position as product made
+ELSEIF _product_made = 1 AND 
         (EXISTS (SELECT position_id FROM process_step ps WHERE process_id = _process_id AND position_id != _position_id AND product_made = 1)
-        -- no other step/position should be set as product made
+        
          OR EXISTS (SELECT ps.position_id FROM process_step ps 
                       JOIN process_step ps2
                         ON ps.process_id = ps.step_id
                            AND ps2.product_made=1
                     WHERE ps.process_id = _process_id AND ps.if_sub_process=1)
-         -- no other sub process should have it set up
+         
          OR EXISTS (SELECT position_id
                       FROM process_step ps
                      WHERE ps.process_id = _step_id
                        AND _if_sub_process = 1
                        AND ps.product_made = 1)
-        -- if current step is a sub process, inside the sub process should not have it set up
+        
         )
 THEN
   SET _response = "There is already a step or sub step has been marked as 'Product Made', please turn of that step before check current step as 'Product Made'";
@@ -2975,7 +2975,7 @@ ELSE
           prompt = _prompt,
           if_autostart = _if_autostart,
           need_approval = _need_approval,
-          approve_emp_usage = _approve_emp_usage,
+          approver_usage = _approver_usage,
           approve_emp_id = _approve_emp_id,
           product_made = _product_made
       WHERE process_id= _process_id
@@ -6137,11 +6137,11 @@ IN _lot_id int(10) unsigned,
   IN _device_id int(10) unsigned,
   IN _approver_id int(10) unsigned,
   IN _approver_password varchar(20),
-  IN _short_result varchar(255), -- for short result
+  IN _short_result varchar(255), 
   IN _comment text,
-  -- IN _location nvarchar(255), -- for location
+  
   IN _location_id int(11) unsigned,
-  IN _value1 VARCHAR(255),  -- currently only for loging tracking number in "ship to location" step, if para1 of the step = 'Log Tracking Num'. 
+  IN _value1 VARCHAR(255),  
   INOUT _process_id int(10) unsigned,
   INOUT _sub_process_id int(10) unsigned,
   INOUT _position_id int(5) unsigned,
@@ -6154,18 +6154,18 @@ IN _lot_id int(10) unsigned,
 )
 BEGIN
  
- -- xxxx_p are for position step just processed before this step
- -- xxxx_n are for the position step to be passed in this call
- -- xxxx_nn are for the next postion step after the step to be passed in this call
- -- inout parameters _process_id, _sub_Process_id, _position_id, _sub_position_id, _step_id should have the same value
- -- as the xxxx_n obtained from call to get_next_step_for_lot
+ 
+ 
+ 
+ 
+ 
   DECLARE _process_id_p, _sub_process_id_p, _sub_process_id_n, _sub_process_id_nn int(10) unsigned; 
   DECLARE _position_id_p, _position_id_n, _position_id_nn int(5) unsigned;  
   DECLARE _sub_position_id_p, _sub_position_id_n, _sub_position_id_nn int(5) unsigned; 
   DECLARE _step_id_p, _step_id_n, _step_id_nn int(10) unsigned;
   DECLARE _step_type varchar(20);
   DECLARE _need_approval tinyint(1) unsigned;
-  DECLARE _approve_emp_usage enum('employee group','employee category','employee');
+  DECLARE _approver_usage enum('user group','organization','user');
   DECLARE _approve_emp_id int(10) unsigned;
   DECLARE _uomid smallint(3) unsigned;
   DECLARE _start_timecode char(15);
@@ -6187,7 +6187,7 @@ BEGIN
   ELSEIF NOT EXISTS (SELECT * FROM lot_status WHERE id= _lot_id)
   THEN
     SET _response = "The batch you selected is not in database.";
-  ELSE  -- pull in lot current info, which do not have the step to be passed yet
+  ELSE  
     SELECT lot_status,
            step_status,
            process_id,
@@ -6226,8 +6226,8 @@ BEGIN
     THEN
       SET _response = "The batch didn't finish last step normally, thus can't start new step.";
     ELSE
-    -- send in last step info through _process_id_p, _sub_process_id_p, _position_id_p, _sub_position_id_p and 
-    -- get the info of the step to be processed in this call and save them into _sub_process_id_n, _position_id_n, _sub_position_id_n, _step_id_n etc.
+    
+    
     CALL get_next_step_for_lot(_lot_id, 
                               _lot_alias, 
                               _lot_status, 
@@ -6253,7 +6253,7 @@ BEGIN
         AND _position_id IS NULL
         AND _sub_position_id IS NULL
         AND _step_id IS NULL
-      THEN  -- step information wasn't supplied from input, replenish them through the internal variables
+      THEN  
         
         SET _process_id = _process_id_p;
         SET _sub_process_id = _sub_process_id_n;
@@ -6265,7 +6265,7 @@ BEGIN
         AND _position_id <=>_position_id_n
         AND _sub_position_id <=>_sub_position_id_n
         AND _step_id <=> _step_id_n
-      THEN -- new step information was supplied and checked against the result from call to get_next_step_for_lot
+      THEN 
         SET _response='';
       ELSE
         SET _response = "The step you are about to start doesn't match the workflow followed by the batch.";
@@ -6273,19 +6273,19 @@ BEGIN
         
       IF _response IS NULL OR length(_response)=0  
       THEN
-           -- check approver information and product made infomation of the pass step
+           
         IF _sub_process_id IS NULL
         THEN
-          SELECT need_approval, approve_emp_usage, approve_emp_id, product_made 
-            INTO _need_approval, _approve_emp_usage, _approve_emp_id, _product_made 
+          SELECT need_approval, approver_usage, approve_emp_id, product_made 
+            INTO _need_approval, _approver_usage, _approve_emp_id, _product_made 
             FROM process_step
            WHERE process_id = _process_id
                AND position_id = _position_id
                AND step_id = _step_id
           ;
         ELSE
-          SELECT need_approval, approve_emp_usage, approve_emp_id,product_made
-            INTO _need_approval, _approve_emp_usage, _approve_emp_id, _product_made
+          SELECT need_approval, approver_usage, approve_emp_id,product_made
+            INTO _need_approval, _approver_usage, _approve_emp_id, _product_made
             FROM process_step
            WHERE process_id = _sub_process_id
              AND position_id = _sub_position_id
@@ -6293,10 +6293,10 @@ BEGIN
              ;
         END IF;
         
-        -- perform check approver routine
-        CALL check_approver(_need_approval, _approve_emp_usage, _approve_emp_id, _approver_id, _approver_password, _response);
+        
+        CALL check_approver(_need_approval, _approver_usage, _approve_emp_id, _approver_id, _approver_password, _response);
 
-        -- if approver routine passed
+        
         IF _response IS NULL OR length(_response)=0 
         THEN
           
@@ -6304,8 +6304,8 @@ BEGIN
             
           SET _step_status = 'ended';
           
-          -- below logic is to preserve current location, if lot is not at those
-          -- ship steps
+          
+          
           IF _step_type NOT IN ('ship to location', 'ship outof warehouse', 'deliver to customer')
           THEN
             SELECT _location_id = location_id
@@ -6320,7 +6320,7 @@ BEGIN
             SET _quantity_status = 'in process';
           END IF;
           
-          -- record this step into lot history
+          
           INSERT INTO lot_history
           (
             lot_id,
@@ -6370,9 +6370,9 @@ BEGIN
             _quantity_status,
             trim(_value1)
           ); 
-          -- now that lot history is logged. update current lot information and order detail
+          
           IF row_count() > 0 THEN
-            -- look beyond the step just passed to see if at the last step
+            
             CALL get_next_step_for_lot(_lot_id, 
                                   _lot_alias, 
                                   _lot_status, 
@@ -6390,8 +6390,8 @@ BEGIN
                                   _rework_limit,
                                   _if_autostart,
                                   _response);
-          -- check next position id, if NULL then workflow completes
-            -- if no more step to perform and not special steps
+          
+            
             IF (_response IS NULL OR length(_response)=0) AND _position_id_nn IS NULL THEN 
               SET _lot_status = 'done';
             ELSE
@@ -6410,8 +6410,8 @@ BEGIN
             WHERE id=_lot_id;
 			  
             
-            -- if actual quantity changed, adjust quantities in order_detail. quantity_shipped will never need adjust, 
-            -- because once product is shipped to customer, the quantity record should not change
+            
+            
             IF _actual_quantity_p != _quantity
             THEN
               IF _quantity_status_p = 'in process' THEN
@@ -6431,7 +6431,7 @@ BEGIN
               END IF;
             END IF;
 					  
-            -- if product is made at the step, deduct the quantity from quantity_in_process and add it to quantity_made in order_detail
+            
             IF _product_made = 1
             THEN
               UPDATE order_detail
@@ -6445,9 +6445,9 @@ BEGIN
             ELSE
               SET _response="Error when recording step pass in batch history.";
             END IF; 
-            -- if lot is not done
-            -- below process is for auto start next step. if call to start_lot_step return _autostart_timecode
-            -- we know next step is auto-started, thus, set output parameters to next step
+            
+            
+            
             IF (_response IS NULL OR length(_response)=0) and _lot_status != 'done' THEN
               SET _process_id_p = null;
               SET _sub_process_id_n = null;
