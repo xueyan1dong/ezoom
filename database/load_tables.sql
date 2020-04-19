@@ -787,9 +787,6 @@ CREATE TABLE `process_step` (
   `prompt` varchar(255) DEFAULT NULL,  -- prompt for user when batch comes to the step/position
   `if_autostart` tinyint(1) unsigned NOT NULL default '1', -- whether to automatically start this step after previous step finished
   `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0', -- whether need another employee or employee group or employ category to approve when ending the step
-  `approve_emp_usage` enum('user group', 'organization','user') DEFAULT NULL, -- if need_approval = 1, this field determine whether a particular employee
-                                                                                          -- or a particular employee category or a partcular employee group can
-                                                                                          -- approve the execution of the step
   `approver_usage` enum('user group', 'organization','user') DEFAULT NULL, -- if need_approval = 1, this field determine whether a particular user
                                                                                           -- or a particular organization (this is big) or a partcular user group can
                                                                                           -- approve the execution of the step
@@ -894,7 +891,8 @@ VIEW `view_process_step` AS
 *    example	            : 
 *    Log                    :
 *    6/19/2018: Peiyu Ge: added header info.
-*    11/09/2018: xdong: added new column product_made to mark whether a final step produces the product desired	 					
+*    11/09/2018: xdong: added new column product_made to mark whether a final step produces the product desired	 
+*    04/19/2020: Shelby Simpson: Altered column approve_emp_usage to approver_usage.					
 */
 DELIMITER $ 
 DROP TABLE IF EXISTS `process_step_history`$
@@ -914,7 +912,7 @@ CREATE TABLE `process_step_history` (
   `prompt` varchar(255) DEFAULT NULL,  
   `if_autostart` tinyint(1) unsigned NOT NULL default '1',
   `need_approval` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `approve_emp_usage` enum('employee group','employee category','employee') DEFAULT NULL,
+  `approver_usage` enum('user group','employee category','user') DEFAULT NULL,
   `approve_emp_id` int(10) unsigned DEFAULT NULL,  
   `product_made` tinyint(1) unsigned NOT NULL DEFAULT 0,  -- it will only be 1 if completion of the step produce the final product ordered
   PRIMARY KEY (`event_time`, process_id, position_id)

@@ -2893,7 +2893,7 @@ CREATE PROCEDURE `modify_step_in_process`(
   IN _position_id  int(5) unsigned, 
   IN _step_id int(10) unsigned,  
   IN _prev_step_pos  int(5) unsigned, 
-  IN _next_step_pos  int(5) unsigned, 
+  IN _next_step_pos  varchar(100), 
   IN _false_step_pos  int(5) unsigned, 
   IN _segment_id int(5) unsigned,  
   IN _rework_limit smallint(2) unsigned, 
@@ -2998,7 +2998,7 @@ ELSE
       prompt,
       if_autostart,
       need_approval,
-      approve_emp_usage,
+      approver_usage,
       approve_emp_id,
       product_made
     )
@@ -3017,7 +3017,7 @@ ELSE
       prompt,
       if_autostart,
       need_approval,
-      approve_emp_usage,
+      approver_usage,
       approve_emp_id,
       product_made
     FROM process_step

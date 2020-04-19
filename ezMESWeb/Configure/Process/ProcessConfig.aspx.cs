@@ -353,13 +353,13 @@ namespace ezMESWeb
                     if (chkApproval.Checked)
                     {
                         ezCmd.Parameters.AddWithValue("@_need_approval", 1);
-                        ezCmd.Parameters.AddWithValue("@_approve_emp_usage", "employee");
+                        ezCmd.Parameters.AddWithValue("@_approver_usage", "user");
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id", ddApproval.SelectedValue);
                     }
                     else
                     {
                         ezCmd.Parameters.AddWithValue("@_need_approval", 0);
-                        ezCmd.Parameters.AddWithValue("@_approve_emp_usage", DBNull.Value);
+                        ezCmd.Parameters.AddWithValue("@_approver_usage", DBNull.Value);
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id", DBNull.Value);
                     }
                     ezCmd.Parameters.AddWithValue("@_employee_id", Convert.ToInt32(Session["UserID"]));
@@ -488,14 +488,14 @@ namespace ezMESWeb
                     if (((CheckBox)fvUpdate.FindControl("chkApproval2")).Checked)
                     {
                         ezCmd.Parameters.AddWithValue("@_need_approval", 1);
-                        ezCmd.Parameters.AddWithValue("@_approve_emp_usage", "employee");
+                        ezCmd.Parameters.AddWithValue("@_approver_usage", "user");
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id",
                             ((DropDownList)fvUpdate.FindControl("ddApproval2")).SelectedValue);
                     }
                     else
                     {
                         ezCmd.Parameters.AddWithValue("@_need_approval", 0);
-                        ezCmd.Parameters.AddWithValue("@_approve_emp_usage", DBNull.Value);
+                        ezCmd.Parameters.AddWithValue("@_approver_usage", DBNull.Value);
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id", DBNull.Value);
                     }
                     ezCmd.Parameters.AddWithValue("@_employee_id", Convert.ToInt32(Session["UserID"]));
@@ -857,8 +857,56 @@ namespace ezMESWeb
         protected bool validate_position(string posText, string name, bool checkLength, Label errorLabel)
         {
             int positionNum;
-            
-            
+
+            string step_id;
+
+            if (((RadioButtonList)fvUpdate.FindControl("rblStepOrProcess2")).SelectedValue.Equals("step"))
+            {
+                step_id = ((DropDownList)fvUpdate.FindControl("ddStep2")).SelectedValue;
+            }
+            else
+            {
+                step_id = ((DropDownList)fvUpdate.FindControl("ddSubProcess2")).SelectedValue;
+            }
+
+            // check if step is of reposition type by querying db
+            try
+            {
+                ConnectToDb();
+                ezCmd = new EzSqlCommand();
+                ezCmd.Connection = ezConn;
+                ezCmd.CommandText = "SELECT step_type_id FROM step where id = " + step_id + ";";
+                ezCmd.CommandType = CommandType.Text;
+                ezDataAdapter ezAdapter = new ezDataAdapter();
+                DataSet ds = new DataSet();
+                ezAdapter.SelectCommand = ezCmd;
+                ezAdapter.Fill(ds);
+                DataRowCollection rows = ds.Tables[0].Rows;
+                IEnumerator rowEnumerator = rows.GetEnumerator();
+                rowEnumerator.MoveNext();
+                DataRow row = (DataRow)(rowEnumerator.Current);
+
+                int temp;
+
+                if (row.ItemArray[0].ToString() == "9" && name == "Next Step Position") // Step is of type reposition
+                {
+                    // Check that the input for next_position is a comma separated list.
+                    string[] steps = posText.Split(',');
+                    foreach (string step in steps)
+                    {
+                        if (!Int32.TryParse(step, out temp))
+                        {
+                            errorLabel.Text = name + " field requires a comma-separated list of integer numbers. Please correct and try again.";
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
             if (checkLength && (posText.Length < 1))
             {
                 //lblErrorInsert.Text = name+" number is required, please fill and try again.";
