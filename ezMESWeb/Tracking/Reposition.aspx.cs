@@ -15,6 +15,7 @@ using System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -177,7 +178,28 @@ namespace ezMESWeb.Tracking
 
           if (Request.QueryString["step_type"].Equals("reposition"))
           {
-            ezCmd.CommandText =
+                        // write a query to get the string of next steps and split it into an array delimited on comma.  
+                        ezCmd.CommandText = "SELECT next_step_pos FROM process_step WHERE process_id = " + Request.QueryString["process_id"].ToString()
+                            + " AND step_id = " + Request.QueryString["step"] + ";";
+                        ezCmd.CommandType = CommandType.Text;
+
+                        ezReader.Close();
+                        ezReader.Dispose();
+                        ezDataAdapter ezAdapter = new ezDataAdapter();
+                        DataSet ds;
+                        ds = new DataSet();
+                        ezAdapter.SelectCommand = ezCmd;
+                        ezAdapter.Fill(ds);
+                        // Place returned root_company ids into a dictionary indexed on parent organization ids.
+                        DataRowCollection rows = ds.Tables[0].Rows;
+                        IEnumerator rowEnumerator = rows.GetEnumerator();
+                        string nextStepList;
+                        rowEnumerator.MoveNext();
+                        DataRow row = (DataRow)(rowEnumerator.Current);
+                        nextStepList = row.ItemArray[0].ToString();
+                        string[] nextStepListArray = nextStepList.Split(',');
+
+                        ezCmd.CommandText =
                   "SELECT null as sub_process_id, p.position_id, null as sub_position_id, p.step_id, s.name, s.description "
                 + " FROM process_step p, step s WHERE process_id = "
                 + Request.QueryString["process_id"].ToString()
@@ -198,7 +220,9 @@ namespace ezMESWeb.Tracking
 
             while (ezReader.Read())
             {
-              newRow = CreateTableRow();
+                // Only add step if it is a next step for this reposition
+                if (!nextStepListArray.Contains(ezReader["position_id"].ToString())) continue;
+                newRow = CreateTableRow();
 
 
               newCell = CreateTableCell(
@@ -208,8 +232,9 @@ namespace ezMESWeb.Tracking
                 ezReader["sub_process_id"],
                 ezReader["sub_position_id"],
                 ezReader["step_id"]));
-                  
-                  
+               
+              
+
               newRow.Cells.Add(newCell);
 
               newCell = CreateTableCell(String.Format("{0}", ezReader["name"]));

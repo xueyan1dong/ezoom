@@ -454,7 +454,7 @@ namespace ezMESWeb
                         ezCmd.Parameters.AddWithValue("@_prev_step_pos", DBNull.Value);
 
                     if (nextPosition.Length > 0)
-                        ezCmd.Parameters.AddWithValue("@_next_step_pos", nextPosition);
+                        ezCmd.Parameters.AddWithValue("@_next_step_pos", nextPosition.Replace(" ",""));
                     else
                         ezCmd.Parameters.AddWithValue("@_next_step_pos", DBNull.Value);
 
