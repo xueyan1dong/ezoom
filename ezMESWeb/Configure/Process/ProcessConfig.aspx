@@ -486,12 +486,23 @@ order by position_id"
                                 Text='<%# Bind("need_approval") %>' Visible="False" />
                                 </asp:TableCell>
                             </asp:TableRow>
-
+                            <asp:TableRow ID="tbrApproverUsage2" runat="server" Width="100%">
+                                <asp:TableCell ID="TableCell379" runat="server" Height="25px" HorizontalAlign="Right" >
+                                    Approver Usage:
+                                </asp:TableCell>
+                                <asp:TableCell ID="TableCell380" runat="server" Height="25px" HorizontalAlign="Left" >
+                                    <asp:DropDownList ID="ddApproverUsage2" runat="server" Height="25px" Width="100%">
+                                        <asp:ListItem>user</asp:ListItem>
+                                        <asp:ListItem>user group</asp:ListItem>
+                                        <asp:ListItem>organization</asp:ListItem>
+                                    </asp:DropDownList>
+                                </asp:TableCell>
+                            </asp:TableRow>
                             <asp:TableRow ID="tbrApprove2" runat="server" Width="100%">
-                                <asp:TableCell ID="TableCell381" runat="server" Height="25px" HorizontalAlign="Right" ColumnSpan="2" >
+                                <asp:TableCell ID="TableCell381" runat="server" Height="25px" HorizontalAlign="Right" >
                                 Approved By:
                                 </asp:TableCell>
-                                <asp:TableCell ID="TableCell382" runat="server" Height="25px" HorizontalAlign="Left" ColumnSpan="2" >
+                                <asp:TableCell ID="TableCell382" runat="server" Height="25px" HorizontalAlign="Left" >
                                     <asp:DropDownList ID="ddApproval2" runat="server" 
                                     DataSourceID="sdsEmployee" DataTextField="name" DataValueField="id" 
                                     Height="25px" Width="100%">
@@ -769,7 +780,19 @@ order by position_id"
                        <asp:TableCell ID="TableCell8" ColumnSpan="2" runat="server" Height="25px" HorizontalAlign="Center">
                            <asp:CheckBox ID="chkApproval" runat="server" Text="Need Approval?" />
                        </asp:TableCell>
-                   </asp:TableRow>                   
+                   </asp:TableRow>
+                   <asp:TableRow ID="tbrApproverUsage" runat="server" style="display:none" >
+                       <asp:TableCell ID="TableCell125" runat="server" Height="25px" HorizontalAlign="Right">
+                           Approver Usage:
+                       </asp:TableCell>
+                       <asp:TableCell ID="TableCell126" runat="server" Height="25px" HorizontalAlign="Left">
+                           <asp:DropDownList ID="ddAppoverUsage" runat="server" Height="25px" Width="166px">
+                               <asp:ListItem>user</asp:ListItem>
+                               <asp:ListItem>user group</asp:ListItem>
+                               <asp:ListItem>organization</asp:ListItem>
+                           </asp:DropDownList>
+                       </asp:TableCell>
+                   </asp:TableRow>
                    <asp:TableRow ID="tbrApprove" runat="server" style="display:none" >
                        <asp:TableCell ID="TableCell27" runat="server" Height="25px" HorizontalAlign="Right">
                            Approve By:</asp:TableCell>

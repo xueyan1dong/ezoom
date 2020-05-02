@@ -37,6 +37,7 @@ namespace ezMESWeb
             ddStep, 
             ddSubProcess, 
             ddApproval,
+            ddApproverUsage,
             drpSegment2;
         protected RadioButtonList rblUsage, rblStepOrProcess;
         protected TextBox nameTextBox, 
@@ -51,7 +52,7 @@ namespace ezMESWeb
         protected CheckBox chkApproval, chkIfAutoStart, chkProductMade;
 
         protected LinkButton LinkButton1;
-        protected TableRow tbrApprove;
+        protected TableRow tbrApprove, tbrApproverUsage;
         protected Button btnDuplicate;
 
         protected string query;
@@ -136,8 +137,10 @@ namespace ezMESWeb
                     //toggle "approved by" on Step Insertion popup form
                     chkApproval.Attributes.Add("OnClick", "showApprovedBy('" + chkApproval.ClientID
                         + "','" + tbrApprove.ClientID + "')");
+                    chkApproval.Attributes.Add("OnClick", "showApprovedBy('" + chkApproval.ClientID
+                        + "','" + tbrApproverUsage.ClientID + "')");
 
-                    ezReader.Dispose();
+                ezReader.Dispose();
                     ezCmd.Dispose();
                     //ezConn.Dispose();
                 }
@@ -259,11 +262,16 @@ namespace ezMESWeb
                     + ((DropDownList)fvUpdate.FindControl("ddStep2")).ClientID + "','"
                     + ((DropDownList)fvUpdate.FindControl("ddSubProcess2")).ClientID + "','"
                     + ((CheckBox)fvUpdate.FindControl("chkIfAutoStart2")).ClientID + "')");
-        
+
+            ((CheckBox)fvUpdate.FindControl("chkApproval2")).Attributes.Add(
+                "OnClick",
+                "showApprovedBy('" + ((CheckBox)fvUpdate.FindControl("chkApproval2")).ClientID
+                + "','" + ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).ClientID + "')");
             ((CheckBox)fvUpdate.FindControl("chkApproval2")).Attributes.Add(
                 "OnClick",
                 "showApprovedBy('" + ((CheckBox)fvUpdate.FindControl("chkApproval2")).ClientID
                 + "','" + ((TableRow)fvUpdate.FindControl("tbrApprove2")).ClientID + "')");
+            
 
             toggle_dropdowns(stepChoice, approveChoice, false);
             this.btnUpdate_ModalPopupExtender.Show();
@@ -823,14 +831,19 @@ namespace ezMESWeb
                 if (approve)
                 {
                     tbrApprove.Attributes.Add("style", "display:block");
+                    tbrApproverUsage.Attributes.Add("style", "display:block");
                 }
                 else
+                {
                     tbrApprove.Attributes.Add("style", "display:none");
+                    tbrApproverUsage.Attributes.Add("style", "display:none");
+                }
             }
             else //Update Popup Form
             {
                 ((DropDownList)fvUpdate.FindControl("ddStep2")).Attributes.Remove("style");
                 ((DropDownList)fvUpdate.FindControl("ddSubProcess2")).Attributes.Remove("style");
+                ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).Attributes.Remove("style");
                 ((TableRow)fvUpdate.FindControl("tbrApprove2")).Attributes.Remove("style");
                 if (substep.Equals("sub process"))
                 {
@@ -845,10 +858,14 @@ namespace ezMESWeb
 
                 if (approve)
                 {
+                    ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).Attributes.Add("style", "display:block");
                     ((TableRow)fvUpdate.FindControl("tbrApprove2")).Attributes.Add("style", "display:block");
                 }
                 else
+                {
+                    ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).Attributes.Add("style", "display:none");
                     ((TableRow)fvUpdate.FindControl("tbrApprove2")).Attributes.Add("style", "display:none");
+                }
             }
 
 
