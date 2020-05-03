@@ -379,7 +379,7 @@ order by position_id"
                 
                      <EditItemTemplate>
                      &nbsp;&nbsp;
-                        <asp:Table ID="Table3" runat="server" CssClass="detailgrid">
+                        <asp:Table ID="Table3" runat="server" CssClass="detailgrid" Width="100%" Height="100%">
                             <asp:TableRow ID="TableRow31" runat="server">
                               <asp:TableCell ID="TableCell311" runat="server" Height="25px" HorizontalAlign="Right">
                               Position: 
@@ -491,10 +491,9 @@ order by position_id"
                                     Approver Usage:
                                 </asp:TableCell>
                                 <asp:TableCell ID="TableCell380" runat="server" Height="25px" HorizontalAlign="Left" >
-                                    <asp:DropDownList ID="ddApproverUsage2" runat="server" Height="25px" Width="100%">
-                                        <asp:ListItem>user</asp:ListItem>
-                                        <asp:ListItem>user group</asp:ListItem>
-                                        <asp:ListItem>organization</asp:ListItem>
+                                    <asp:DropDownList ID="ddApproverUsage2" runat="server" 
+                                        DataSourceId="sdsUsage" DataTextField="name" DataValueField="id" 
+                                        Height="25px" Width="100%">
                                     </asp:DropDownList>
                                 </asp:TableCell>
                             </asp:TableRow>
@@ -550,6 +549,10 @@ order by position_id"
                          <asp:TextBox ID="need_approvalTextBox" runat="server" 
                              Text='<%# Bind("need_approval") %>' />
                          <br />
+                         approver_usage:
+                         <asp:TextBox ID="approver_usageTextBox" runat="server"
+                             Text='<%# Bind("approver_usage") %>' />
+                         <br />
                          approve_emp_id:
                          <asp:TextBox ID="approve_emp_idTextBox" runat="server" 
                              Text='<%# Bind("approve_emp_id") %>' />
@@ -592,6 +595,10 @@ order by position_id"
                          <asp:Label ID="need_approvalLabel" runat="server" 
                              Text='<%# Bind("need_approval") %>' />
                          <br />
+                         approver_usage:
+                         <asp:Label ID="approver_usageLabel" runat="server"
+                             Text='<%# Bind("approver_usage") %>' />
+                         <br />
                          approve_emp_id:
                          <asp:Label ID="approve_emp_idLabel" runat="server" 
                              Text='<%# Bind("approve_emp_id") %>' />
@@ -619,7 +626,7 @@ order by position_id"
              <asp:SqlDataSource ID="sdsUpdate" runat="server" 
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
                  ProviderName="System.Data.Odbc"       
-                 SelectCommand="SELECT position_id, step_id, prev_step_pos, next_step_pos, false_step_pos, segment_id, rework_limit, if_sub_process, prompt, if_autostart, need_approval, approve_emp_id, product_made FROM process_step WHERE process_id=? and position_id = ?">
+                 SelectCommand="SELECT position_id, step_id, prev_step_pos, next_step_pos, false_step_pos, segment_id, rework_limit, if_sub_process, prompt, if_autostart, need_approval, approver_usage, approve_emp_id, product_made FROM process_step WHERE process_id=? and position_id = ?">
                  <SelectParameters>
                      <asp:ControlParameter ControlID="txtID" Name="process_id" 
                          PropertyName="Text" DefaultValue="0" />
@@ -663,6 +670,11 @@ order by position_id"
                          PropertyName="Text" />
                  </SelectParameters>
              </asp:SqlDataSource>
+             <asp:SqlDataSource ID="sdsUsage" runat="server" 
+                 SelectCommand=" select id, concat(firstname, ' ', lastname) as name from employee ORDER BY lastname" 
+                 ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
+                 ProviderName="System.Data.Odbc">
+             </asp:SqlDataSource>
              <asp:SqlDataSource ID="sdsEmployee" runat="server" 
                  SelectCommand=" select id, concat(firstname, ' ', lastname) as name from employee ORDER BY lastname" 
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
@@ -686,7 +698,7 @@ order by position_id"
 
           <ContentTemplate>
 
-       <asp:Table ID="Table1" runat="server" BorderWidth="0" Width="100%" Height="398px">
+       <asp:Table ID="Table1" runat="server" BorderWidth="0" Width="100%" Height="100%">
            <asp:TableRow ID="TableRow1" runat="server">
                <asp:TableCell ID="TableCell1" runat="server" Height="30px" HorizontalAlign="Center">
                    Add New Step or Sub Workflow to Current Workflow
@@ -786,10 +798,9 @@ order by position_id"
                            Approver Usage:
                        </asp:TableCell>
                        <asp:TableCell ID="TableCell126" runat="server" Height="25px" HorizontalAlign="Left">
-                           <asp:DropDownList ID="ddAppoverUsage" runat="server" Height="25px" Width="166px">
-                               <asp:ListItem>user</asp:ListItem>
-                               <asp:ListItem>user group</asp:ListItem>
-                               <asp:ListItem>organization</asp:ListItem>
+                           <asp:DropDownList ID="ddAppoverUsage" runat="server" 
+                               DataSourceId="sdsUsage" DataTextField="name" DataValueField="id" 
+                               Height="25px" Width="166px">
                            </asp:DropDownList>
                        </asp:TableCell>
                    </asp:TableRow>
