@@ -136,9 +136,7 @@ namespace ezMESWeb
                         chkIfAutoStart.ClientID+"')");
                     //toggle "approved by" on Step Insertion popup form
                     chkApproval.Attributes.Add("OnClick", "showApprovedBy('" + chkApproval.ClientID
-                        + "','" + tbrApprove.ClientID + "')");
-                    chkApproval.Attributes.Add("OnClick", "showApprovedBy('" + chkApproval.ClientID
-                        + "','" + tbrApproverUsage.ClientID + "')");
+                        + "',['" + tbrApprove.ClientID + "','" + tbrApproverUsage.ClientID + "'])");
 
                 ezReader.Dispose();
                     ezCmd.Dispose();
@@ -240,6 +238,7 @@ namespace ezMESWeb
             {
                 approveChoice = true;
                 ((DropDownList)fvUpdate.FindControl("ddApproval2")).SelectedValue = ((TextBox)fvUpdate.FindControl("approve_emp_idTextBox")).Text;
+                ((DropDownList)fvUpdate.FindControl("ddApproverUsage2")).SelectedValue = ((TextBox)fvUpdate.FindControl("approver_usage_TextBox")).Text;
             }
             else
                 approveChoice = false;
@@ -266,11 +265,7 @@ namespace ezMESWeb
             ((CheckBox)fvUpdate.FindControl("chkApproval2")).Attributes.Add(
                 "OnClick",
                 "showApprovedBy('" + ((CheckBox)fvUpdate.FindControl("chkApproval2")).ClientID
-                + "','" + ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).ClientID + "')");
-            ((CheckBox)fvUpdate.FindControl("chkApproval2")).Attributes.Add(
-                "OnClick",
-                "showApprovedBy('" + ((CheckBox)fvUpdate.FindControl("chkApproval2")).ClientID
-                + "','" + ((TableRow)fvUpdate.FindControl("tbrApprove2")).ClientID + "')");
+                + "',['" + ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).ClientID + "','" + ((TableRow)fvUpdate.FindControl("tbrApprove2")).ClientID + "'])");
             
 
             toggle_dropdowns(stepChoice, approveChoice, false);

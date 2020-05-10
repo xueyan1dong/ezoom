@@ -61,10 +61,12 @@
         
          
   }
-  function showApprovedBy(chk, tbr)
+  function showApprovedBy(chk, tbrList)
   {
-    var chkitem = document.getElementById(chk);
-    var tbritem = document.getElementById(tbr);
+      var chkitem = document.getElementById(chk);
+      for (var i = 0; i < tbrList.length; i++) {
+          var tbritem = document.getElementById(tbrList[i]);
+          console.log(tbritem);
     
     if (chkitem.checked)
     {
@@ -73,6 +75,8 @@
     else {
       tbritem.style.display='none';
     }
+      }
+    
     
   }
 </script> 
@@ -492,9 +496,13 @@ order by position_id"
                                 </asp:TableCell>
                                 <asp:TableCell ID="TableCell380" runat="server" Height="25px" HorizontalAlign="Left" >
                                     <asp:DropDownList ID="ddApproverUsage2" runat="server" 
-                                        DataSourceId="sdsUsage" DataTextField="name" DataValueField="id" 
                                         Height="25px" Width="100%">
+                                        <asp:ListItem>user</asp:ListItem>
+                                        <asp:ListItem>user group</asp:ListItem>
+                                        <asp:ListItem>organization</asp:ListItem>
                                     </asp:DropDownList>
+                                    <asp:TextBox ID="approver_usage_Textbox" runat="server"
+                                        Text='<%# Bind("approver_usage") %>' Visible="false" />
                                 </asp:TableCell>
                             </asp:TableRow>
                             <asp:TableRow ID="tbrApprove2" runat="server" Width="100%">
@@ -798,9 +806,11 @@ order by position_id"
                            Approver Usage:
                        </asp:TableCell>
                        <asp:TableCell ID="TableCell126" runat="server" Height="25px" HorizontalAlign="Left">
-                           <asp:DropDownList ID="ddAppoverUsage" runat="server" 
-                               DataSourceId="sdsUsage" DataTextField="name" DataValueField="id" 
-                               Height="25px" Width="166px">
+                           <asp:DropDownList ID="ddAppoverUsage" runat="server"  
+                               Height="25px" Width="100%">
+                               <asp:ListItem>user</asp:ListItem>
+                               <asp:ListItem>user group</asp:ListItem>
+                               <asp:ListItem>organization</asp:ListItem>
                            </asp:DropDownList>
                        </asp:TableCell>
                    </asp:TableRow>
@@ -810,7 +820,7 @@ order by position_id"
                        <asp:TableCell ID="TableCell28" runat="server" Height="25px" HorizontalAlign="Left">
                            <asp:DropDownList ID="ddApproval" runat="server" 
                                DataSourceID="sdsEmployee" DataTextField="name" DataValueField="id"
-                               Height="25px" Width="166px">
+                               Height="25px" Width="100%">
                            </asp:DropDownList>
                        </asp:TableCell>
                    </asp:TableRow>
