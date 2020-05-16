@@ -78,7 +78,71 @@
       }
     
     
-  }
+     }
+
+     let usersList = JSON.parse('<%=serializedUsers%>');
+     let userGroupsList = JSON.parse('<%=serializedUserGroups%>');
+     let organizationsList = JSON.parse('<%=serializedOrganizations%>');
+
+     function filterApproverUsage() {
+         let approverUsageDropdownValue = document.getElementById('ctl00_ContentPlaceHolder1_ddApproverUsage').value;
+         let approverDropdown = document.getElementById('ctl00_ContentPlaceHolder1_ddApproval');
+         approverDropdown.options.length = 0;
+         if (approverUsageDropdownValue == "user") {
+             // Make the user list be the approver dropdown
+             for (let i = 0; i < usersList.length; i++) {
+                 let option = document.createElement('option');
+                 option.text = usersList[i];
+                 approverDropdown.add(option, approverDropdown[i]);
+             }
+         }
+         else if (approverUsageDropdownValue == "user group") {
+             // Make the user group list be the approver dropdown
+             for (let i = 0; i < userGroupsList.length; i++) {
+                 let option = document.createElement('option');
+                 option.text = userGroupsList[i];
+                 approverDropdown.add(option, approverDropdown[i]);
+             }
+         }
+         else {
+             // Make the organization list be the approver dropdown
+             for (let i = 0; i < organizationsList.length; i++) {
+                 let option = document.createElement('option');
+                 option.text = organizationsList[i];
+                 approverDropdown.add(option, approverDropdown[i]);
+             }
+         }
+     }
+
+     function filterApproverUsage2() {
+         let approverUsageDropdownValue = document.getElementById('ctl00_ContentPlaceHolder1_ddApproverUsage2').value;
+         let approverDropdown = document.getElementById('ctl00_ContentPlaceHolder1_ddApproval2');
+         approverDropdown.options.length = 0;
+         if (approverUsageDropdownValue == "user") {
+             // Make the user list be the approver dropdown
+             for (let i = 0; i < usersList.length; i++) {
+                 let option = document.createElement('option');
+                 option.text = usersList[i];
+                 approverDropdown.add(option, approverDropdown[i]);
+             }
+         }
+         else if (approverUsageDropdownValue == "user group") {
+             // Make the user group list be the approver dropdown
+             for (let i = 0; i < userGroupsList.length; i++) {
+                 let option = document.createElement('option');
+                 option.text = userGroupsList[i];
+                 approverDropdown.add(option, approverDropdown[i]);
+             }
+         }
+         else {
+             // Make the organization list be the approver dropdown
+             for (let i = 0; i < organizationsList.length; i++) {
+                 let option = document.createElement('option');
+                 option.text = organizationsList[i];
+                 approverDropdown.add(option, approverDropdown[i]);
+             }
+         }
+     }
 </script> 
 </asp:content> 
 
@@ -806,7 +870,7 @@ order by position_id"
                            Approver Usage:
                        </asp:TableCell>
                        <asp:TableCell ID="TableCell126" runat="server" Height="25px" HorizontalAlign="Left">
-                           <asp:DropDownList ID="ddAppoverUsage" runat="server"  
+                           <asp:DropDownList ID="ddApproverUsage" runat="server"  
                                Height="25px" Width="100%">
                                <asp:ListItem>user</asp:ListItem>
                                <asp:ListItem>user group</asp:ListItem>

@@ -57,7 +57,7 @@ namespace ezMESWeb
 
         protected string query;
         protected List<string> displayMessageStepList;
-        protected string serializedDisplayMessageSteps;
+        protected string serializedDisplayMessageSteps, serializedUsers, serializedUserGroups, serializedOrganizations;
 
         protected override void Page_Load(object sender, EventArgs e)
         {
@@ -137,6 +137,9 @@ namespace ezMESWeb
                     //toggle "approved by" on Step Insertion popup form
                     chkApproval.Attributes.Add("OnClick", "showApprovedBy('" + chkApproval.ClientID
                         + "',['" + tbrApprove.ClientID + "','" + tbrApproverUsage.ClientID + "'])");
+                ddApproverUsage.Attributes.Add("onchange", "filterApproverUsage()");
+
+                FilterApprovers();
 
                 ezReader.Dispose();
                     ezCmd.Dispose();
@@ -266,6 +269,7 @@ namespace ezMESWeb
                 "OnClick",
                 "showApprovedBy('" + ((CheckBox)fvUpdate.FindControl("chkApproval2")).ClientID
                 + "',['" + ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).ClientID + "','" + ((TableRow)fvUpdate.FindControl("tbrApprove2")).ClientID + "'])");
+            ((DropDownList)fvUpdate.FindControl("ddApproverUsage2")).Attributes.Add("onchange", "filterApproverUsage2()");
             
 
             toggle_dropdowns(stepChoice, approveChoice, false);
@@ -1024,7 +1028,76 @@ namespace ezMESWeb
         {
             // Find approver dropdown control
             // Query DB for list of users from the proper organization
-            string query = "SELECT  ";
+            // Select all users, user groups, and organizations into different columns using join
+            query = "SELECT username FROM employee;";
+            ConnectToDb();
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezDataAdapter ezAdapter = new ezDataAdapter();
+            DataSet ds;
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            DataRowCollection rows = ds.Tables[0].Rows;
+            IEnumerator rowEnumerator = rows.GetEnumerator();
+            List<string> usersList = new List<string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                usersList.Add(row.ItemArray.GetValue(0).ToString());
+            }
+            var serializer = new JavaScriptSerializer();
+            serializedUsers = serializer.Serialize(usersList);
+
+            query = "SELECT name FROM employee_group;";
+            ConnectToDb();
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezAdapter = new ezDataAdapter();
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            rows = ds.Tables[0].Rows;
+            rowEnumerator = rows.GetEnumerator();
+            List<string> userGroupsList = new List<string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                userGroupsList.Add(row.ItemArray.GetValue(0).ToString());
+            }
+            serializer = new JavaScriptSerializer();
+            serializedUserGroups = serializer.Serialize(userGroupsList);
+
+            query = "SELECT name FROM organization;";
+            ConnectToDb();
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezAdapter = new ezDataAdapter();
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            rows = ds.Tables[0].Rows;
+            rowEnumerator = rows.GetEnumerator();
+            List<string> organizationsList = new List<string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                organizationsList.Add(row.ItemArray.GetValue(0).ToString());
+            }
+            serializer = new JavaScriptSerializer();
+            serializedOrganizations = serializer.Serialize(organizationsList);
             // Filter dropdown on this list
         }
     }
