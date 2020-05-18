@@ -360,7 +360,8 @@ namespace ezMESWeb
                     if (chkApproval.Checked)
                     {
                         ezCmd.Parameters.AddWithValue("@_need_approval", 1);
-                        ezCmd.Parameters.AddWithValue("@_approver_usage", "user");
+                        //ezCmd.Parameters.AddWithValue("@_approver_usage", "user");
+                        ezCmd.Parameters.AddWithValue("@_approver_usage", ddApproverUsage.SelectedValue);
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id", ddApproval.SelectedValue);
                     }
                     else
@@ -495,7 +496,7 @@ namespace ezMESWeb
                     if (((CheckBox)fvUpdate.FindControl("chkApproval2")).Checked)
                     {
                         ezCmd.Parameters.AddWithValue("@_need_approval", 1);
-                        ezCmd.Parameters.AddWithValue("@_approver_usage", "user");
+                        ezCmd.Parameters.AddWithValue("@_approver_usage", ((DropDownList)fvUpdate.FindControl("ddApproverUsage2")).SelectedValue);
                         ezCmd.Parameters.AddWithValue("@_approve_emp_id",
                             ((DropDownList)fvUpdate.FindControl("ddApproval2")).SelectedValue);
                     }
@@ -1029,7 +1030,7 @@ namespace ezMESWeb
             // Find approver dropdown control
             // Query DB for list of users from the proper organization
             // Select all users, user groups, and organizations into different columns using join
-            query = "SELECT username FROM employee;";
+            query = "SELECT id, username FROM employee;";
             ConnectToDb();
             ezCmd = new EzSqlCommand
             {
@@ -1044,16 +1045,16 @@ namespace ezMESWeb
             ezAdapter.Fill(ds);
             DataRowCollection rows = ds.Tables[0].Rows;
             IEnumerator rowEnumerator = rows.GetEnumerator();
-            List<string> usersList = new List<string>();
+            Dictionary<string, string> usersList = new Dictionary<string, string>();
             while (rowEnumerator.MoveNext())
             {
                 DataRow row = (DataRow)(rowEnumerator.Current);
-                usersList.Add(row.ItemArray.GetValue(0).ToString());
+                usersList[row.ItemArray.GetValue(0).ToString()] = (row.ItemArray.GetValue(1).ToString());
             }
             var serializer = new JavaScriptSerializer();
             serializedUsers = serializer.Serialize(usersList);
 
-            query = "SELECT name FROM employee_group;";
+            query = "SELECT id, name FROM employee_group;";
             ConnectToDb();
             ezCmd = new EzSqlCommand
             {
@@ -1067,16 +1068,16 @@ namespace ezMESWeb
             ezAdapter.Fill(ds);
             rows = ds.Tables[0].Rows;
             rowEnumerator = rows.GetEnumerator();
-            List<string> userGroupsList = new List<string>();
+            Dictionary<string, string> userGroupsList = new Dictionary<string, string>();
             while (rowEnumerator.MoveNext())
             {
                 DataRow row = (DataRow)(rowEnumerator.Current);
-                userGroupsList.Add(row.ItemArray.GetValue(0).ToString());
+                userGroupsList[row.ItemArray.GetValue(0).ToString()] = (row.ItemArray.GetValue(1).ToString());
             }
             serializer = new JavaScriptSerializer();
             serializedUserGroups = serializer.Serialize(userGroupsList);
 
-            query = "SELECT name FROM organization;";
+            query = "SELECT id, name FROM organization;";
             ConnectToDb();
             ezCmd = new EzSqlCommand
             {
@@ -1090,11 +1091,11 @@ namespace ezMESWeb
             ezAdapter.Fill(ds);
             rows = ds.Tables[0].Rows;
             rowEnumerator = rows.GetEnumerator();
-            List<string> organizationsList = new List<string>();
+            Dictionary<string, string> organizationsList = new Dictionary<string, string>();
             while (rowEnumerator.MoveNext())
             {
                 DataRow row = (DataRow)(rowEnumerator.Current);
-                organizationsList.Add(row.ItemArray.GetValue(0).ToString());
+                organizationsList[row.ItemArray.GetValue(0).ToString()] = (row.ItemArray.GetValue(1).ToString());
             }
             serializer = new JavaScriptSerializer();
             serializedOrganizations = serializer.Serialize(organizationsList);

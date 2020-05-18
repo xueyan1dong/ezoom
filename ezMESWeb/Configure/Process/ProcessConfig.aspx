@@ -85,61 +85,77 @@
      let organizationsList = JSON.parse('<%=serializedOrganizations%>');
 
      function filterApproverUsage() {
-         let approverUsageDropdownValue = document.getElementById('ctl00_ContentPlaceHolder1_ddApproverUsage').value;
+         let approverUsageDropdown = document.getElementById('ctl00_ContentPlaceHolder1_ddApproverUsage');
+         let approverUsageDropdownText = approverUsageDropdown.options[approverUsageDropdown.selectedIndex].text;
          let approverDropdown = document.getElementById('ctl00_ContentPlaceHolder1_ddApproval');
          approverDropdown.options.length = 0;
-         if (approverUsageDropdownValue == "user") {
+         let i = 0;
+         if (approverUsageDropdownText == "user") {
              // Make the user list be the approver dropdown
-             for (let i = 0; i < usersList.length; i++) {
+             for (const [key, value] of Object.entries(usersList)) {
                  let option = document.createElement('option');
-                 option.text = usersList[i];
+                 option.text = value;
+                 option.value = key;
                  approverDropdown.add(option, approverDropdown[i]);
+                 i++;
              }
          }
-         else if (approverUsageDropdownValue == "user group") {
+         else if (approverUsageDropdownText == "user group") {
              // Make the user group list be the approver dropdown
-             for (let i = 0; i < userGroupsList.length; i++) {
+             for (const [key, value] of Object.entries(userGroupsList)) {
                  let option = document.createElement('option');
-                 option.text = userGroupsList[i];
+                 option.text = value;
+                 option.value = key;
                  approverDropdown.add(option, approverDropdown[i]);
+                 i++;
              }
          }
          else {
              // Make the organization list be the approver dropdown
-             for (let i = 0; i < organizationsList.length; i++) {
+             for (const [key, value] of Object.entries(organizationsList)) {
                  let option = document.createElement('option');
-                 option.text = organizationsList[i];
+                 option.text = value;
+                 option.value = key;
                  approverDropdown.add(option, approverDropdown[i]);
+                 i++;
              }
          }
      }
 
      function filterApproverUsage2() {
-         let approverUsageDropdownValue = document.getElementById('ctl00_ContentPlaceHolder1_ddApproverUsage2').value;
-         let approverDropdown = document.getElementById('ctl00_ContentPlaceHolder1_ddApproval2');
+         let approverUsageDropdown = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_ddApproverUsage2');
+         let approverUsageDropdownText = approverUsageDropdown.options[approverUsageDropdown.selectedIndex].text;
+         let approverDropdown = document.getElementById('ctl00_ContentPlaceHolder1_fvUpdate_ddApproval2');
          approverDropdown.options.length = 0;
-         if (approverUsageDropdownValue == "user") {
+         let i = 0;
+         if (approverUsageDropdownText == "user") {
              // Make the user list be the approver dropdown
-             for (let i = 0; i < usersList.length; i++) {
+             for (const [key, value] of Object.entries(usersList)) {
                  let option = document.createElement('option');
-                 option.text = usersList[i];
+                 option.text = value;
+                 option.value = key;
                  approverDropdown.add(option, approverDropdown[i]);
+                 i++;
              }
          }
-         else if (approverUsageDropdownValue == "user group") {
+         else if (approverUsageDropdownText == "user group") {
              // Make the user group list be the approver dropdown
-             for (let i = 0; i < userGroupsList.length; i++) {
+             for (const [key, value] of Object.entries(userGroupsList)) {
                  let option = document.createElement('option');
-                 option.text = userGroupsList[i];
+                 option.text = value;
+                 option.value = key;
                  approverDropdown.add(option, approverDropdown[i]);
+                 i++;
              }
          }
          else {
              // Make the organization list be the approver dropdown
-             for (let i = 0; i < organizationsList.length; i++) {
+             for (const [key, value] of Object.entries(organizationsList)) {
                  let option = document.createElement('option');
-                 option.text = organizationsList[i];
+                 option.text = value;
+                 option.value = key;
                  approverDropdown.add(option, approverDropdown[i]);
+                 i++;
              }
          }
      }
