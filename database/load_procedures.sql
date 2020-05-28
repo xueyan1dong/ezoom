@@ -10569,3 +10569,40 @@ MOD_PROD_ATTR: BEGIN
 		_operation		
 	);
 END$
+
+/*
+*    Copyright 2009 ~ Current  IT Helps LLC
+*    Source File            : get_approvers.sql
+*    Created By             : Shelby Simpson
+*    Date Created           : 2020
+*    Platform Dependencies  : MySql
+*    Description            : Gets the list of approvers for a workflow step based on selection of approver usage.
+*    Log                    :
+  
+*/
+DROP PROCEDURE IF EXISTS `get_approvers`$
+CREATE PROCEDURE `get_approvers`(
+	IN _process_id int(10) unsigned,
+    IN _position_id int(10) unsigned
+    )
+BEGIN
+	DECLARE _approver_usage enum('user', 'user_group', 'organization');
+    
+    SELECT approver_usage
+    INTO _approver_usage
+    FROM process_step
+    WHERE process_id = _process_id AND position_id = _position_id;
+    
+    IF _approver_usage = 'user'
+    THEN
+		SELECT id, firstname + ' ' + lastname
+        FROM employee;
+	ELSEIF _approver_usage = 'user_group'
+    THEN
+		SELECT id, name
+        FROM employee_group;
+	ELSE
+		SELECT id, name
+        FROM organization;
+	END IF;
+END$

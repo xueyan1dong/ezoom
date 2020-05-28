@@ -759,9 +759,13 @@ order by position_id"
                  </SelectParameters>
              </asp:SqlDataSource>
              <asp:SqlDataSource ID="sdsUsage" runat="server" 
-                 SelectCommand=" select id, concat(firstname, ' ', lastname) as name from employee ORDER BY lastname" 
+                 SelectCommand="get_approvers"
+                 SelectCommandType="StoredProcedure"
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
                  ProviderName="System.Data.Odbc">
+                 <SelectParameters>
+                     
+                 </SelectParameters>
              </asp:SqlDataSource>
              <asp:SqlDataSource ID="sdsEmployee" runat="server" 
                  SelectCommand=" select id, concat(firstname, ' ', lastname) as name from employee ORDER BY lastname" 
