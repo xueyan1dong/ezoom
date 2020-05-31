@@ -591,7 +591,7 @@ order by position_id"
                                 </asp:TableCell>
                                 <asp:TableCell ID="TableCell382" runat="server" Height="25px" HorizontalAlign="Left" >
                                     <asp:DropDownList ID="ddApproval2" runat="server" 
-                                    DataSourceID="sdsEmployee" DataTextField="name" DataValueField="id" 
+                                    DataSourceID="sdsUsage" DataTextField="name" DataValueField="id" 
                                     Height="25px" Width="100%">
                                     </asp:DropDownList>
                                     <asp:TextBox ID="approve_emp_idTextBox" runat="server" 
@@ -759,12 +759,15 @@ order by position_id"
                  </SelectParameters>
              </asp:SqlDataSource>
              <asp:SqlDataSource ID="sdsUsage" runat="server" 
-                 SelectCommand="get_approvers"
+                 SelectCommand="{call get_approvers( ?, ?)}"
                  SelectCommandType="StoredProcedure"
                  ConnectionString="<%$ ConnectionStrings:ezmesConnectionString %>" 
                  ProviderName="System.Data.Odbc">
                  <SelectParameters>
-                     
+                     <asp:ControlParameter ControlID="txtID" Name="process_id" 
+                         PropertyName="Text" DefaultValue="0" />
+                     <asp:ControlParameter ControlID="gvTable" DefaultValue="0" Name="position_id" 
+                         PropertyName="SelectedValue" />
                  </SelectParameters>
              </asp:SqlDataSource>
              <asp:SqlDataSource ID="sdsEmployee" runat="server" 

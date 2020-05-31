@@ -6,13 +6,13 @@ BEGIN
 	DECLARE _approver_usage enum('user', 'user_group', 'organization');
     
     SELECT approver_usage
-    INTO _approver_usage
-    FROM process_step
-    WHERE process_id = _process_id AND position_id = _position_id;
+	INTO _approver_usage
+	FROM process_step
+	WHERE process_id = _process_id AND position_id = _position_id;
     
-    IF _approver_usage = 'user'
+    IF _approver_usage = 'user' OR _approver_usage IS NULL
     THEN
-		SELECT id, firstname + ' ' + lastname
+		SELECT id, CONCAT(firstname, ' ', lastname) as name
         FROM employee;
 	ELSEIF _approver_usage = 'user_group'
     THEN
