@@ -272,7 +272,6 @@ namespace ezMESWeb
             ((DropDownList)fvUpdate.FindControl("ddApproverUsage2")).Attributes.Add("onchange", "filterApproverUsage2()");
             //((DropDownList)fvUpdate.FindControl("ddApproverUsage2")).Attributes.Add("onload", "filterApproverUsage2()");
 
-
             toggle_dropdowns(stepChoice, approveChoice, false);
             this.btnUpdate_ModalPopupExtender.Show();
         }
@@ -859,8 +858,8 @@ namespace ezMESWeb
 
                 if (approve)
                 {
-                    ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).Attributes.Add("style", "display:block");
-                    ((TableRow)fvUpdate.FindControl("tbrApprove2")).Attributes.Add("style", "display:block");
+                    ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).Attributes.Add("style", "display:table-row");
+                    ((TableRow)fvUpdate.FindControl("tbrApprove2")).Attributes.Add("style", "display:table-row");
                 }
                 else
                 {

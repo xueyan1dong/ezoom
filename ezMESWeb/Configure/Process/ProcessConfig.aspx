@@ -785,8 +785,8 @@ order by position_id"
                  </SelectParameters>                
              </asp:SqlDataSource>             
   <asp:Panel   
-   ID="InsertPanel" runat="server" Height="460px" CssClass="detail" 
-                 style="display:none" Width="350px" 
+   ID="InsertPanel" runat="server" Height="100%" CssClass="detail" 
+                 style="display:none" Width="100%" 
                  HorizontalAlign="Left" >
              <asp:UpdatePanel ID="insertBufferPanel" runat="server" UpdateMode="Conditional">          
  
