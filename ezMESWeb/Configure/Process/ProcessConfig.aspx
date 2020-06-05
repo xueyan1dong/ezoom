@@ -159,6 +159,34 @@
              }
          }
      }
+
+     let repositionStepList = JSON.parse('<%=serializedRepositionSteps%>');
+
+     // JS function to display reposition step notification when reposition step is selected.
+     function showRepositionNotification() {
+         let notificationLabel = document.getElementById('ctl00_ContentPlaceHolder1_RepositionNotificationLabel');
+         let stepDropdown = document.getElementById('ctl00_ContentPlaceHolder1_ddStep');
+         let stepSelected = stepDropdown.options[stepDropdown.selectedIndex].text;
+         if (stepSelected in repositionStepList) {
+             notificationLabel.style.visibility = "visible";
+         }
+         else {
+             notificationLabel.style.visibility = "hidden";
+         }
+     }
+
+     function showRepositionNotification2() {
+         console.log("test");
+         let notificationLabel = document.getElementById('RepositionNotificationLabel2');
+         let stepDropdown = document.getElementById('ddStep2');
+         let stepSelected = stepDropdown.options[stepDropdown.selectedIndex].text;
+         if (stepSelected in repositionStepList) {
+             notificationLabel.style.visibility = "visible";
+         }
+         else {
+             notificationLabel.style.visibility = "hidden";
+         }
+     }
 </script> 
 </asp:content> 
 
@@ -605,7 +633,8 @@ order by position_id"
                                 Text='<%# Bind("product_made") %>' Visible="False" />
                                 </asp:TableCell>                               
                             </asp:TableRow> 
-                       </asp:Table>    
+                       </asp:Table>   
+                             <asp:Label ID="RepositionNotificationLabel2" runat="server" Visible="false">Please enter which steps you would like to reposition to in the Next Step Position field.</asp:Label>
 
                      </EditItemTemplate>
                      <InsertItemTemplate>
@@ -929,6 +958,7 @@ order by position_id"
                </asp:TableCell>
            </asp:TableRow>
            </asp:Table> 
+              <asp:Label ID="RepositionNotificationLabel" runat="server" Visible="true">Please enter which steps you would like to reposition to in the Next Step Position field.</asp:Label>
                         
  
                <asp:Label ID="lblErrorInsert" runat="server" ForeColor="#FF3300" 

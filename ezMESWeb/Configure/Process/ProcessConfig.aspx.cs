@@ -57,7 +57,7 @@ namespace ezMESWeb
 
         protected string query;
         protected List<string> displayMessageStepList;
-        protected string serializedDisplayMessageSteps, serializedUsers, serializedUserGroups, serializedOrganizations;
+        protected string serializedDisplayMessageSteps, serializedUsers, serializedUserGroups, serializedOrganizations, serializedRepositionSteps;
 
         protected override void Page_Load(object sender, EventArgs e)
         {
@@ -138,8 +138,12 @@ namespace ezMESWeb
                     chkApproval.Attributes.Add("OnClick", "showApprovedBy('" + chkApproval.ClientID
                         + "',['" + tbrApprove.ClientID + "','" + tbrApproverUsage.ClientID + "'])");
                 ddApproverUsage.Attributes.Add("onchange", "filterApproverUsage()");
+                ddStep.Attributes.Add("onchange", "showRepositionNotification()");
+                
+
 
                 FilterApprovers();
+                GetRepositionSteps();
 
                 ezReader.Dispose();
                     ezCmd.Dispose();
@@ -271,6 +275,8 @@ namespace ezMESWeb
                 + "',['" + ((TableRow)fvUpdate.FindControl("tbrApproverUsage2")).ClientID + "','" + ((TableRow)fvUpdate.FindControl("tbrApprove2")).ClientID + "'])");
             ((DropDownList)fvUpdate.FindControl("ddApproverUsage2")).Attributes.Add("onchange", "filterApproverUsage2()");
             //((DropDownList)fvUpdate.FindControl("ddApproverUsage2")).Attributes.Add("onload", "filterApproverUsage2()");
+            ((DropDownList)fvUpdate.FindControl("ddStep2")).Attributes.Add("onchange", "showRepositionNotification2()");
+            
 
             toggle_dropdowns(stepChoice, approveChoice, false);
             this.btnUpdate_ModalPopupExtender.Show();
@@ -1100,6 +1106,33 @@ namespace ezMESWeb
             serializer = new JavaScriptSerializer();
             serializedOrganizations = serializer.Serialize(organizationsList);
             // Filter dropdown on this list
+        }
+
+        protected void GetRepositionSteps()
+        {
+            query = "SELECT name FROM step WHERE step_type_id = 9;";
+            ConnectToDb();
+            ezCmd = new EzSqlCommand
+            {
+                Connection = ezConn,
+                CommandText = query,
+                CommandType = CommandType.Text
+            };
+            ezDataAdapter ezAdapter = new ezDataAdapter();
+            DataSet ds;
+            ds = new DataSet();
+            ezAdapter.SelectCommand = ezCmd;
+            ezAdapter.Fill(ds);
+            DataRowCollection rows = ds.Tables[0].Rows;
+            IEnumerator rowEnumerator = rows.GetEnumerator();
+            List<string> repositionSteps = new List<string>();
+            while (rowEnumerator.MoveNext())
+            {
+                DataRow row = (DataRow)(rowEnumerator.Current);
+                repositionSteps.Add(row.ItemArray.GetValue(0).ToString());
+            }
+            var serializer = new JavaScriptSerializer();
+            serializedRepositionSteps = serializer.Serialize(repositionSteps);
         }
     }
 }
