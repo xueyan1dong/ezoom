@@ -167,12 +167,14 @@
          let notificationLabel = document.getElementById('ctl00_ContentPlaceHolder1_RepositionNotificationLabel');
          let stepDropdown = document.getElementById('ctl00_ContentPlaceHolder1_ddStep');
          let stepSelected = stepDropdown.options[stepDropdown.selectedIndex].text;
-         if (stepSelected in repositionStepList) {
-             notificationLabel.style.visibility = "visible";
+         console.log(stepSelected);
+         for (int i = 0; i < repositionStepList.length; i++) {
+             if (stepSelected == repositionStepList[i]) {
+                 notificationLabel.style.visibility = "visible";
+                 return;
+             }
          }
-         else {
-             notificationLabel.style.visibility = "hidden";
-         }
+         notificationLabel.style.visibility = "hidden";
      }
 
      function showRepositionNotification2() {
@@ -958,8 +960,7 @@ order by position_id"
                </asp:TableCell>
            </asp:TableRow>
            </asp:Table> 
-              <asp:Label ID="RepositionNotificationLabel" runat="server" Visible="true">Please enter which steps you would like to reposition to in the Next Step Position field.</asp:Label>
-                        
+              <asp:Label ID="RepositionNotificationLabel" runat="server" Visible="true" Text="Please enter which steps you would like to reposition to in the Next Step Position field."></asp:Label>
  
                <asp:Label ID="lblErrorInsert" runat="server" ForeColor="#FF3300" 
                   Height="60px" Width="350px"></asp:Label>
